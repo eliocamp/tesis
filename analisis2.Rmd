@@ -1,0 +1,820 @@
+---
+title: "Análisis"
+author: "Elio"
+date: " "
+output: 
+  html_document: 
+    fig_height: 6
+    fig_width: 9
+---
+
+```{r setup, include=FALSE, cache = FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+source("helperfun.R")
+
+theme_elio <- theme_minimal() + 
+  theme(legend.position = "bottom")
+
+world3 <- mapa(c(-90, 90), res = 3)
+HS3 <- mapa(c(-90, 20), rest = 3)
+```
+
+# Analizando datos speedy 
+(luego de la reunión del 5 de agosto de 2016)
+
+
+Cambiando, decidimos dejar un poco de lado el geopotencial y ver más función corriente, u y T.
+
+Variables: geop, streamf, T, U, V. 
+Cosas para ver:
+* Estado medio
+* SD por latitud, mes
+* Mapas de las ondas
+* R^2 de las ondas
+* Cortes longitudinales de cada onda en distintas latitudes
+
+Comparación con NCEP
+(pasar a la misma resolución usando interpolación bilineal)
+
+
+## Comparación con NCEP:
+NCEP no brinda información de función corriente, para comparar uso geopotencial, U y T.
+
+```{r leo_speedy}
+# Leo speedy y hago anomalías mensuales
+m_speedy <- fread("SPEEDY/todo_m_speedy.csv")
+m_speedy[, month := factor(month, levels = month.abb)]
+
+# setindex(speedy, lon, lat, lev, month, year)
+
+vars <- c("gh", "u", "v", "psi", "temp")
+avars <- paste0("a", vars)
+allvars <- c(vars, avars)
+sp_levs <- m_speedy[, unique(lev)]
+# Anomalías mensuales 
+m_speedy[, c(avars) := lapply(.SD, FUN = anom), 
+         by = .(lat, lev, month),
+         .SDcols = vars]
+setcolorder(m_speedy, c("lon", "lat", "lev", "month", allvars))
+setorder(m_speedy, month, -lev, lat, lon)
+```
+
+```{r leo_ncep}
+m_ncep <- fread("NCEP/todo_m_ncep.csv")
+m_ncep <- m_ncep[lat <= 0]
+m_ncep[, month := factor(month, levels = month.abb)]
+m_ncep[, psi := NA]
+m_ncep[, temp := temp + 273.16]
+m_ncep[,  c(avars) := lapply(.SD, FUN = anom), by = .(lat, lev, month), 
+            .SDcols = vars]
+np_levs <- m_ncep[, unique(lev)]
+setcolorder(m_ncep, c("lon", "lat", "lev", "month", allvars))
+setorder(m_ncep, month, -lev, lat, lon)
+```
+
+```{r interpolo_speedy}
+m_speedy.long <- melt(m_speedy, id.vars = c("lon", "lat", "lev", "month"))
+m_speedy.interp <- m_speedy.long[, 
+                    approx(x = lev, y = value,
+                              xout = np_levs),
+                    by = .(lon, lat, month, variable)]
+colnames(m_speedy.interp)[5:6] <- c("lev", "sp")
+m_speedy <- m_speedy.interp
+```
+
+
+Correlación lineal para cada nivel, mes y variable, separando en parte total y parte asimétrica. 
+
+```{r sp-ncep_cor}
+m_ncep.long <- melt(m_ncep, id.vars = c("lon", "lat", "lev", "month"), value.name = "nc")
+sp_nc <- merge(m_speedy.interp, m_ncep.long)
+
+remove(m_speedy.interp)
+
+cors <- sp_nc[lev %in% sp_levs, .(Correlacion = cor(sp, nc)), by = .(lev, month, variable)]
+levs <- unique(cors$lev)
+
+corsa <- cors[grepl("a", variable)]$Correlacion
+cors <- cors[!grepl("a", variable)]
+cors[, Asimetrica := corsa]
+colnames(cors) <- c("lev", "month", "variable", "Total", "Asimetrica")
+cors <- melt(cors, id.vars = c("lev", "month", "variable"), variable.name = "Parte", 
+              value.name = "Correlacion")
+
+```
+
+```{r plot_cor, fig.height = 8}
+ggplot(cors, aes(lev, Correlacion, color = Parte)) +
+  geom_hline(yintercept = 0, color = "gray45") +
+  geom_line() + facet_grid(month~variable) +
+  scale_color_brewer(type = "qual", name = "Variable") +
+  coord_flip() + scale_x_continuous(trans = "reverselog", breaks = levs) +
+  scale_y_continuous(limits = c(-1, 1), minor_breaks = NULL) +
+  xlab("Nivel") +  theme_bw() +
+  theme(legend.position = "bottom", legend.key.height = unit(5, "points")) +
+  ggtitle("Correlación lineal entre Speedy y NCEP ")
+```
+
+```{r correlaciones}
+interp.levs <- exp(seq(log(925), log(30), length.out = 40))
+
+cors.interp <- cors[!is.na(Correlacion), 
+                    interp.dt(as.numeric(month), lev, Correlacion, linear = T,
+                              yo = interp.levs),
+                    by = .(Parte, variable)]
+colnames(cors.interp) <- c("Parte", "variable", "month", "lev", "Correlacion")
+
+cor_plot <- ggplot(cors.interp, aes(month, lev)) +
+  geom_raster(aes(fill = Correlacion)) +
+  geom_contour(aes(z = Correlacion, color = ..level..), 
+               binwidth = 0.2) +
+  facet_wrap(variable~Parte, scales = "free", ncol = 2) + 
+  scale_y_continuous(trans = "reverselog", breaks = levs) +
+  scale_x_continuous(labels = month.abb, breaks = 1:12) +
+  scale_fill_distiller(type = "div", palette = "RdBu", direction = 1) +
+  scale_color_gradient(low = "black", high = "black") +
+  theme_minimal()
+  # scale_fill_gradient2(low = "#67001f", high = "#053061")
+cor_plot <- direct.label(cor_plot, method = "bottom.pieces")
+```
+
+* Altura geopotencial (gh)
+    Para el caso del campo total, la correlación del campo es buena (>0.8)en casi todos los niveles y meses, excepto en 30hPa durante verano donde los campos ¡está anticorrelacionados! La parte asimétrica zonal muestra valores menores, indicando que gran parte de la correlación del campo total se debe a la capacidad del modelo de reproducir el gradiente meridional. Sin embargo, se siguen obteniendo correlaciones >0.6 en casi todos los niveles y meses. Se observa un mínimo relativo en 500hPa donde en se tienen correlaciones menores durante casi todo el año y uno en niveles altos centrado en septiembre, donde la correlación llega a ser nula. 
+
+* Viento zonal (U)
+    Las correlaciones con el campo total son >=0.8 en todo el año y todos los niveles, sin embargo, la parte asimétrica muestra correlaciones mucho más baja con un máximo de \~0.6 en 925hPa. Esto indica que el modelo resuelve correctamente la estructura media del Jet, pero no sus variaciones zonales. 
+   
+* Viento meridional (V)
+    Los campos de correlación son prácticamente idénticos entre parte total y parte asimétrica. Ésta muestra un patrón de bajas correlaciones en general, con anticorrelaciones en niveles altos (entre 300 y 200 hPa) durante todo el año 
+   
+* Temperatura (T)
+    La correlación con el campo total muestra una estructura similar que la altura geopotencial, con una excelente correlación en todos los meses para niveles mayores a 200hPa, pero anticorrelacionado en niveles altos en todos los meses salvo en invierno. La parte asimétrica muestra correlaciones bajas en todos los niveles salvo en 925hPa. 
+    
+## Parte simétrica 
+
+### Altura geopotencial
+
+```{r gh_media-lineas}
+sp_nc_mean <- sp_nc[, lapply(.SD, mean), by = .(lat, lev, month, variable), 
+                    .SDcols = c("sp", "nc")]
+sp_nc_mean.long <- melt(sp_nc_mean, id.vars = c("lat", "lev", "month", "variable"), variable.name = "modelo")
+
+
+ggplot(sp_nc_mean.long[variable == "gh"], aes(lat, value/1000)) + 
+  geom_line(aes(color = modelo, group = interaction(modelo, as.factor(lev)), 
+                linetype = as.factor(lev))) +
+  scale_linetype_manual(values = rep(c(1,2), length.out = 17)) +
+  guides(linetype = FALSE) +
+  geom_text(data = sp_nc_mean.long[month == "Dic" & lat %~% -50 & modelo == "sp" & variable == "gh"], aes(label = lev), nudge_y = 0) +
+  facet_grid(~month) + 
+  theme_elio + 
+  scale_color_brewer(type = "qual", palette = 6, labels = c("Speedy", "NCEP"),
+                     name = "Modelo") +
+  scale_x_reverse() +
+  ylab("Media zonal de altura geopotencial (kmgp)") + xlab("Latitud")
+```
+
+```{r gh_media-corte}
+interp.levs <- exp(seq(log(1000), log(10), length.out = 60))
+sp_nc_corte <- sp_nc_mean.long[!is.na(value), 
+                               interp.dt(lat, lev, value, linear = T,
+                                         yo = interp.levs, nx = 60),
+                               by = .(month, variable, modelo)]
+colnames(sp_nc_corte)[4:6] <- c("lat", "lev", "value")
+sp_nc_corte.wide <- data.table::dcast(sp_nc_corte, month + variable + lat + lev ~ modelo)
+
+corte_latlev_zonal <- function(var, lineas_width, title, scale = "seq") {
+  M <- sp_nc_corte[variable == var, max(value, na.rm = T)]
+  m <- sp_nc_corte[variable == var, min(value,  na.rm = T)]
+  m <- floor(m/lineas_width)*lineas_width
+  M <- ceiling(M/lineas_width)*lineas_width
+  
+  g <- ggplot(sp_nc_corte.wide[variable == var], aes(lat, lev))
+   
+  # lineas_width <- 5000
+  if (scale == "div") {
+    side <- max(-m, M)
+    lineas = seq(-side, side, by = lineas_width)
+    div_pal = colorRampPalette(brewer.pal(name = "RdBu", n = 11))
+    colors <- div_pal(length(lineas) - 1)
+    colors <- colors[length(colors):1]
+    inicio <- 0
+  g <- g + geom_raster(aes(fill = nc)) + 
+    scale_fill_manual(values = colors, drop = FALSE, name = "NCEP") 
+  } else {
+    lineas = seq(m, M, by = lineas_width)
+    inicio <- lineas[1]
+    g <- g + geom_raster(aes(fill = cut_width(nc, lineas_width, boundary = inicio))) +
+      scale_fill_viridis(name = "NCEP", option = "plasma",
+                       direction = 1, discrete = T, drop = FALSE,
+                       label = c(lineas, lineas[length(lineas)] + lineas_width))
+  }
+  
+ g <- g +  
+    geom_contour(aes(z = sp), alpha = 0.8, color = "black", breaks = lineas) +
+    geom_dl(aes(z = sp, label = ..level..), method = "top.pieces", 
+            stat = "contour", color = "black", breaks = jumpby(lineas, 2)) +
+    facet_wrap(~month, ncol = 3) +
+    scale_y_continuous(trans = "reverselog", breaks = levs) +
+    scale_x_reverse() +
+    theme_minimal() + 
+    ggtitle(paste0(title, "\n lineas = ", lineas_width)) +
+    geom_hline(yintercept = 30, color = "gray45", linetype = 2)
+}
+
+g <- corte_latlev_zonal(var = "gh", lineas_width = 5000, title = "Altura geopotencial media (mgp)")
+g
+```
+
+Comparando la parte zonalmente simétrica de la altura geopotencial se hace evidente la razón de la anticorrelación en niveles altos durante verano. En niveles bajos y medios, el gradiente meridional de geopotencial es positivo (más alturas hacia el ecuador) durane todo el año, con una amplitid que aumenta con la altura. En niveles altos, sin embargo, durante verano NCEP muestra que éste se invierte, mostrando mayores alturas en el altas latitudes. Speedy, por su parte, no logra capturar este comportamiento y sigue repitiendo la estructura básica de nieles inferiores. Esto puede deberse a que Speedy tiene una estratósfera en un nivel más alto que NCEP en los meses de verano. 
+
+Más allá de esta salvedad, se ve que todos los niveles existe una buena concordancia entre ambos modelos. La excepción es 50 y 70 hPa, donde Speedy sobreestima la altura geopotencial en todos los meses y latitudes considerablemente. 
+
+### Temperatura 
+
+En la temperatura, se observa que la anticorrelación que se observa en 200 hPa tiene una explicación similar a la de la altura geopotencial. En niveles bajos, el gradiente de temperatura zonal es positivo (mayores temperaturas en el ecuador) mientras que en niveles altos, por encima de 100hPa, este gradiente de invierte. La región intermedia, donde el gradiente es nulo se encuentra cerca de los 200hPa. En los meses de verano para Speedy ésta está lieramente más alta que para NCEP, y ese defasaje es lo que da lugar a la anticorrelación. 
+
+Esta diferencia puede indicar que Speedy no captura algún proceso estratosférico. ¿Será que lo que se observa es producto del calentamiento por la producción de Ozono? Hay que investigar cómo Speedy trata el proceso de ozonogénesis, ya que podría ser que no tiene en cuenta el calor extra o lo subestima. 
+
+Analizando la parte simétrica de la temperatura, es evidente que Speedy subestima la temperatura significativamente, con diferencias de casi 60K en bajas latitudes en 100hPa. Por otro lado, también sbreestima el ciclo anual en altas latitudes; tanto que en verano invierte el gradiente de temperatura, dando origen a la anticorrelación observada. (En otras palabras, es un desastre)
+
+Observando el perfil en altura.. ¿estratósfera? En -90 speedy parece que ve la estratósfera en en 30hPa mientras que NCEP la pone mucho más abajo, en 300hPa en invierno. En trópico y ecuador no se aprecia la inversión estratosférica. 
+
+Speedy sobreestima el gradiente de temperatura. ¿Esto significa más inestabilidad? 
+
+```{r T_media}
+plotlevs <- c(850, 500, 300, 200, 100, 30)
+ggplot(sp_nc_mean.long[variable == "temp" & lev %in% plotlevs], aes(lat, value)) + 
+  geom_line(aes(color = modelo, group = interaction(modelo, as.factor(lev)))) +
+  facet_grid(lev~month) + 
+  theme_minimal() + 
+  scale_color_brewer(type = "qual", palette = 6, labels = c("Speedy", "NCEP"),
+                     name = "Modelo") +
+  scale_y_continuous() +
+  scale_x_reverse() +
+  ylab("Media zonal de la temperatura (K)") + xlab("Latitud")
+```
+
+
+
+```{r T_media-corte}
+g <- corte_latlev_zonal(var = "temp", lineas_width = 10, title = "Temperatura media (K)")
+g
+```
+
+```{r T_media-perf}
+lats <- sp_nc_mean.long[, unique(lat)][c(1, 6, 12, 18, 24)]
+
+ggplot(sp_nc_mean.long[variable == "temp" & lat %in% lats], aes(lev, value - 273.16)) +
+  geom_line(aes(color = modelo, group = interaction(modelo, as.factor(lat)))) +
+  facet_grid(lat~month) +
+  coord_flip() +
+  theme_minimal() +
+  scale_color_brewer(type = "qual", palette = 6, labels = c("Speedy", "NCEP"),
+                     name = "Modelo") +
+  scale_x_continuous(trans = "reverselog", breaks = levs) +
+  scale_y_continuous(breaks = seq(-90, 30, by = 40)) +
+  xlab("Nivel (hPa)") + ylab("Temperatura  (C)")
+```
+
+
+### Viento zonal
+
+
+```{r corte_u}
+# g <- corte_latlev_zonal(var = "u", lineas_width = 10, title = "Viento zonal (m/s)", scale = "div")
+# 
+# div_pal = colorRampPalette(brewer.pal(name = "RdBu", n = 11))
+# g + discrete_scale(values = div_pal(20), name = "NCEP", drop = FALSE)
+# 
+#   
+plot_var = "u"
+M <- ceiling(sp_nc_corte[variable == plot_var, max(value, na.rm = T)])
+m <- floor(sp_nc_corte[variable == plot_var, min(value,  na.rm = T)])
+lineas_width <- 10
+m <- floor(m/lineas_width)*lineas_width
+lineas = seq(m, M, by = lineas_width)
+
+ggplot(sp_nc_corte.wide[variable == plot_var], aes(lat, lev)) +
+  geom_raster(aes(fill = nc)) +
+  geom_contour(aes(z = sp, linetype = as.factor(-sign(..level..))),
+               alpha = 0.8, color = "black", breaks = lineas) +
+  geom_dl(aes(z = sp, label = ..level..), method = "top.pieces", 
+          stat = "contour", color = "black", breaks = jumpby(lineas, 2)) +
+  
+  geom_contour(aes(z = nc), 
+               alpha = 0.8, color = "grey33", breaks = lineas) +
+  geom_dl(aes(z = nc, label = ..level..), method = "bottom.pieces", 
+          stat = "contour", color = "grey33", breaks = jumpby(lineas, 2)) +
+  scale_linetype_manual(values = c(1, 2, 3)) +
+  facet_wrap(~month, ncol = 3) +
+  scale_y_continuous(trans = "reverselog", breaks = levs) +
+  scale_x_reverse() +
+  scale_fill_gradient2(name = "NCEP", high = muted("red"), low = muted("blue")) +
+  theme_minimal() + ggtitle(paste0("Viento zonal (m/s) \n lineas = ", lineas_width))
+```
+
+
+Por su parte, el viento zonal ambos modelos muestran una estructura similar con el jet subtropical bien definido aunque Speedy lo muestra más intenso y ligeramente corrido hacia el ecuador y en niveles más altos que NCEP durante los meses de verano. Durante el invierno, NCEP muestra el jet subpolar, pero Speedy no logra representarlo por falta de niveles verticales, aunque la estructura por debajo del jet se muestra similar aunque subestimando la magnitud. 
+
+Speedy tampoco muestra los vientos del este en niveles altos que dominan bajas latitudes en invierno y casi todas las latitudes en verano. Tiene un mínimo y valores negativos, pero muy subestimados.
+
+```{r u_media}
+ggplot(sp_nc_mean.long[variable == "u" & lev %in% plotlevs], aes(lat, value)) + 
+  geom_line(aes(color = modelo, group = interaction(modelo, as.factor(lev)))) +
+  facet_grid(lev~month) + 
+  theme_minimal() + 
+  scale_color_brewer(type = "qual", palette = 6, labels = c("Speedy", "NCEP"),
+                     name = "Modelo") +
+  scale_y_continuous(breaks = seq(-10, 60, by = 20)) +
+  scale_x_reverse() +
+  ylab("Media zonal del viento zonal (m/s)") + xlab("Latitud") +
+  theme_elio
+```
+
+### Viento meridional
+
+
+```{r v_medio-corte}
+plot_var = "v"
+M <- ceiling(sp_nc_corte[variable == plot_var, max(value, na.rm = T)])
+m <- floor(sp_nc_corte[variable == plot_var, min(value,  na.rm = T)])
+lineas_width <- .5
+m <- floor(m/lineas_width)*lineas_width
+lineas = seq(lineas_width, M, by = lineas_width)
+
+ggplot(sp_nc_corte.wide[variable == plot_var], aes(lat, lev)) +
+  geom_raster(aes(fill = nc)) +
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               alpha = 0.9, color = "black", breaks = fill_neg(lineas)) +
+  geom_dl(aes(z = sp, label = ..level..), method = "top.pieces", 
+          stat = "contour", color = "black", breaks = jumpby(fill_neg(lineas), 2)) +
+  
+  geom_contour(aes(z = nc), 
+               alpha = 0.6, color = "grey33", breaks = fill_neg(lineas)) +
+  geom_dl(aes(z = nc, label = ..level..), method = "bottom.pieces", 
+          stat = "contour", color = "grey33", breaks = jumpby(fill_neg(lineas), 2)) +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  facet_wrap(~month, ncol = 3) +
+  scale_y_continuous(trans = "reverselog", breaks = levs) +
+  scale_x_reverse() +
+  scale_fill_gradient2(name = "NCEP", high = muted("red"), low = muted("blue")) +
+  theme_elio + ggtitle(paste0("Viento zonal (m/s) \n lineas = ", lineas_width))
+```
+
+
+```{r v-medio_corte_detalle}
+plot_var = "v"
+M <- ceiling(sp_nc_corte[variable == plot_var, max(value, na.rm = T)])
+m <- floor(sp_nc_corte[variable == plot_var, min(value,  na.rm = T)])
+lineas_width <- .5
+m <- floor(m/lineas_width)*lineas_width
+lineas = seq(lineas_width, M, by = lineas_width)
+
+ggplot(sp_nc_corte.wide[variable == plot_var & lev >= 500], aes(lat, lev)) +
+  geom_raster(aes(fill = nc)) +
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               alpha = 0.9, color = "black", breaks = fill_neg(lineas)) +
+  geom_dl(aes(z = sp, label = ..level..), method = "top.pieces", 
+          stat = "contour", color = "black", breaks = jumpby(fill_neg(lineas), 2)) +
+  
+  geom_contour(aes(z = nc), 
+               alpha = 0.6, color = "grey33", breaks = fill_neg(lineas)) +
+  geom_dl(aes(z = nc, label = ..level..), method = "bottom.pieces", 
+          stat = "contour", color = "grey33", breaks = jumpby(fill_neg(lineas), 2)) +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  facet_wrap(~month, ncol = 3) +
+  scale_y_continuous(trans = "reverselog", breaks = levs) +
+  scale_x_reverse() +
+  scale_fill_gradient2(name = "NCEP", high = muted("red"), low = muted("blue")) +
+  theme_elio + ggtitle(paste0("Viento zonal (m/s) \n lineas = ", lineas_width))
+```
+
+En el viento meridional, Speedy parece capturar la estructura general de la circulación pero subestima las magnitudes. En bajas latitudes, hay un dipolo entre niveles bajos y altos que alterna entre invierno y verano; se trata de la parte convergente en superficie y divergente en altura de la ITCZ, que se mueve hacia el hemisferio de verano. 
+
+En altas latitudes, en superficie hay máximos de viento del sur debido a los vientos catabáticos de la antártida. Nuevamente, Speedy captura esta característica, pero con una considerable subestimación. 
+
+
+```{r v_media}
+ggplot(sp_nc_mean.long[variable == "v" & lev %in% plotlevs], aes(lat, value)) + 
+  geom_line(aes(color = modelo, group = interaction(modelo, as.factor(lev)))) +
+  facet_grid(lev~month, scales = "free_y") + 
+  theme_elio + 
+  scale_color_brewer(type = "qual", palette = 6, labels = c("Speedy", "NCEP"),
+                     name = "Modelo") +
+  scale_y_continuous() +
+  scale_x_reverse() +
+  ylab("Media zonal de la temperatura (K)") + xlab("Latitud")
+```
+
+## Parte Antisimétrica
+### Altura geopotencial
+
+Campos por estación y nivel:
+
+```{r gha_mapa, fig.height=12, fig.width=12*4/5}
+sp_nc[, estacion := asign_season(month)]
+g_data <- rep_lon(sp_nc[variable == "agh", .(sp = mean(sp), nc = mean(nc)),
+                        by = .(lat, lon, lev, estacion)])
+maplevs <- plotlevs[plotlevs != 850]
+m_data <- g_data[lev %in% maplevs]
+M <- m_data[, (max(c(abs(min(nc)), max(nc))))]
+M <- ceiling(M)
+# cuts <- seq(-M, M, length.out = 10)
+# lineas <- floor(abs(cuts[1] - cuts[2]))
+# cuts <- cuts[cuts != 0]
+s <- 0.5
+linea <- 60
+lineas <- seq(linea, M, by = linea)
+# m_data <- m_data[lev == 30 & estacion == "Primavera"]
+
+ggplot(m_data, aes(lon, lat)) +
+  # geom_tile(aes(fill = nc)) +
+  facet_grid(lev~estacion) +
+  HS3 +
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "red4", size = s, alpha = 0.8) +
+  # geom_dl(aes(z = sp, label = ..level..), method = "top.pieces", stat = "contour", breaks = fill_neg(jumpby(lineas, 2)), color = "red4") + 
+  
+  geom_contour(aes(z = nc, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "blue4", size = s,  alpha = 0.8) +
+  # geom_dl(aes(z = nc, label = ..level..), method = "bottom.pieces", stat = "contour", breaks = fill_neg(jumpby(lineas, 2)), color = "blue4") + 
+  
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"), 
+                       name = "NCEP") +
+  scale_linetype_manual(values = c(2, 1, 1)) +
+  coord_map("stereographic", orientation = c(-90,0, 60),
+            ylim = c(-90, -20)) +
+  scale_x_continuous(breaks = seq(0, 330, by = 30)) +
+  # annotate(geom = "text", x = seq(0, 330, by = 30), y = -5, 
+  #          label = seq(0, 330, by = 30), color = "gray45") +
+  # scale_y_continuous(breaks = seq(0+15, -90+15, by = -15)) +
+  # annotate(geom = "text", x = 0, y = seq(0+15, -90+15, by = -15), 
+  #          label = seq(0+15, -90+15, by = -15), color = "gray45") +
+  theme_elio + 
+  theme(legend.position = "bottom", legend.key.height = unit(5, "points"),
+        axis.title = element_blank(), axis.text = element_blank()) +
+  ggtitle(paste0("Z* para NCEP (azul) y SPEEDY (rojo) \n lineas = ", linea))
+```
+
+
+Corte en -65º
+
+```{r gha-corte}
+
+ggplot(g_data[lat %~% -65], aes(lon, lev)) +
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "red4", size = s,  alpha = 0.8) +
+  geom_contour(aes(z = nc, linetype = as.factor(sign(..level..))), 
+               breaks = fill_neg(lineas), color = "blue4", size = s,  alpha = 0.8) +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  facet_grid(~estacion) +
+  scale_y_continuous(trans = "reverselog", breaks = levs) +
+  theme_bw() +
+  ggtitle(paste0("Z* para NCEP (azul) y SPEEDY (rojo) en -65º \n lineas = ", linea)) 
+```
+
+Un pequeño experimento no del todo exitoso para visualizar el corte:
+
+```{r gha-corte-polar}
+
+ggplot(g_data[lat %~% -65], aes(lon, lev)) +
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "red4", size = s,  alpha = 0.8) +
+  geom_contour(aes(z = nc, linetype = as.factor(sign(..level..))), 
+               breaks = fill_neg(lineas), color = "blue4", size = s,  alpha = 0.8) +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  facet_grid(~estacion) +
+  scale_y_continuous(trans = "reverselog", breaks = levs, limits = c(15000, 10)) +
+  scale_x_continuous(breaks = seq(60, 360, by = 60)) +
+  theme_bw() +
+  ggtitle(paste0("Z* para NCEP (azul) y SPEEDY (rojo) en -65º \n lineas = ", linea)) +
+   coord_polar(start = -300*pi/180, direction = 1) + # annotate(geom = "line", x = c(0, 360), y = rep(925, 2)) +
+  annotate(geom = "rect", xmax = 360, xmin = 0, ymax = 15000, ymin = 925, fill = "white")
+```
+
+Desvío estándar de anomalía de geopotencial. 
+
+```{r agh-sd, fig.height=9*2.5}
+sp_nc_sd <- sp_nc[, .(sp = sd(sp), nc = sd(nc)), 
+                                     by = .(lat, month, lev, variable)]
+g_data <- sp_nc_sd[lev %in% plotlevs & variable == "agh"]
+
+M <- g_data[, (max(c(abs(min(nc)), max(nc))))]
+M <- ceiling(M)
+s <- 0.7
+linea <- 40
+lineas <- seq(linea, M, by = linea)
+
+ggplot(g_data, aes(as.numeric(month), lat)) +
+  facet_grid(lev~.) +
+  geom_contour(aes(z = sp), breaks = fill_neg(lineas), 
+               color = "red4", size = s,  alpha = 0.8) +
+  geom_dl(aes(label = ..level.., z = sp), color = "red4", 
+          stat = "contour", method = "bottom.pieces", 
+          breaks = jumpby(fill_neg(lineas), 2)) +
+  
+  geom_contour(aes(z = nc), breaks = fill_neg(lineas), 
+               color = "blue4", size = s,  alpha = 0.8) +
+  geom_dl(aes(label = ..level.., z = nc), color = "blue4", 
+          stat = "contour", method = "top.pieces", 
+          breaks = jumpby(fill_neg(lineas), 2)) + 
+  theme_elio +
+  scale_x_continuous(breaks = 1:12, labels = month.abb)
+  
+```
+
+
+
+
+
+### Viento zonal.
+
+
+```{r ua_mapa, fig.height=12, fig.width=12*4/5}
+
+g_data <- rep_lon(sp_nc[variable == "au", .(sp = mean(sp), nc = mean(nc)),
+                        by = .(lat, lon, lev, estacion)])
+maplevs <- plotlevs[plotlevs != 850]
+m_data <- g_data[lev %in% maplevs]
+M <- m_data[, (max(c(abs(min(nc)), max(nc))))]
+M <- ceiling(M)
+
+s <- 0.3
+linea <- 5
+lineas <- seq(linea, M, by = linea)
+
+ggplot(m_data, aes(lon, lat)) +
+  # geom_tile(aes(fill = nc)) +
+  facet_grid(lev~estacion) +
+  HS3+
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "red4", size = s, alpha = 0.8) +
+  # geom_dl(aes(z = sp, label = ..level..), method = "top.pieces", stat = "contour", breaks = fill_neg(jumpby(lineas, 2)), color = "red4") + 
+  
+  geom_contour(aes(z = nc, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "blue4", size = s,  alpha = 0.8) +
+  # geom_dl(aes(z = nc, label = ..level..), method = "bottom.pieces", stat = "contour", breaks = fill_neg(jumpby(lineas, 2)), color = "blue4") + 
+  
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"), 
+                       name = "NCEP") +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  coord_map("stereographic", orientation = c(-90,0, 60),
+            ylim = c(-90, 0)) +
+  scale_x_continuous(breaks = seq(0, 330, by = 30)) +
+  # annotate(geom = "text", x = seq(0, 330, by = 30), y = -5, 
+  #          label = seq(0, 330, by = 30), color = "gray45") +
+  # scale_y_continuous(breaks = seq(0+15, -90+15, by = -15)) +
+  # annotate(geom = "text", x = 0, y = seq(0+15, -90+15, by = -15), 
+  #          label = seq(0+15, -90+15, by = -15), color = "gray45") +
+  theme_bw() + 
+  theme(legend.position = "bottom", legend.key.height = unit(5, "points"),
+        axis.title = element_blank(), axis.text = element_blank()) +
+  ggtitle(paste0("U* para NCEP (azul) y SPEEDY (rojo) \n lineas = ", linea))
+```
+
+
+```{r ua-corte}
+linea <- 2
+lineas <- seq(linea, M, by = linea)
+
+ggplot(g_data[lat %~% -65], aes(lon, lev)) +
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "red4", size = s) +
+  geom_contour(aes(z = nc, linetype = as.factor(sign(..level..))), 
+               breaks = fill_neg(lineas), color = "blue4", size = s) +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  facet_grid(~estacion) +
+  scale_y_continuous(trans = "reverselog", breaks = levs) +
+  theme_bw() +
+  ggtitle(paste0("U* para NCEP (azul) y SPEEDY (rojo) en -65º \n lineas = ", linea))
+```
+
+
+
+```{r ua-sd, fig.height=9*2.5}
+
+g_data <- sp_nc_sd[lev %in% plotlevs & variable == "au"]
+
+M <- g_data[, (max(c(abs(min(nc)), max(nc))))]
+M <- ceiling(M)
+s <- 0.7
+linea <- 4.5
+lineas <- seq(linea, M, by = linea)
+
+ggplot(g_data, aes(as.numeric(month), lat)) +
+  facet_grid(lev~.) +
+  geom_contour(aes(z = sp), breaks = fill_neg(lineas), 
+               color = "red4", size = s,  alpha = 0.8) +
+  geom_dl(aes(label = ..level.., z = sp), color = "red4", 
+          stat = "contour", method = "bottom.pieces", 
+          breaks = jumpby(fill_neg(lineas), 2)) +
+  
+  geom_contour(aes(z = nc), breaks = fill_neg(lineas), 
+               color = "blue4", size = s,  alpha = 0.8) +
+  geom_dl(aes(label = ..level.., z = nc), color = "blue4", 
+          stat = "contour", method = "top.pieces", 
+          breaks = jumpby(fill_neg(lineas), 2)) + 
+  theme_elio +
+  scale_x_continuous(breaks = 1:12, labels = month.abb)
+  
+```
+
+
+
+### Temperatura
+
+
+```{r Ta_mapa, fig.height=12, fig.width=12*4/5}
+
+g_data <- rep_lon(sp_nc[variable == "atemp", .(sp = mean(sp), nc = mean(nc)),
+                        by = .(lat, lon, lev, estacion)])
+maplevs <- plotlevs[plotlevs != 850]
+m_data <- g_data[lev %in% maplevs]
+M <- m_data[, (max(c(abs(min(nc)), max(nc))))]
+M <- ceiling(M)
+
+s <- 0.3
+linea <- 2
+lineas <- seq(linea, M, by = linea)
+# m_data <- m_data[lev == 200]
+ggplot(m_data, aes(lon, lat)) +
+  # geom_tile(aes(fill = nc)) +
+  facet_grid(lev~estacion) +
+  HS3+
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "red4", size = s, alpha = 0.8) +
+  # geom_dl(aes(z = sp, label = ..level..), method = "top.pieces", stat = "contour", breaks = fill_neg(jumpby(lineas, 2)), color = "red4") + 
+  
+  geom_contour(aes(z = nc, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "blue4", size = s,  alpha = 0.8) +
+  # geom_dl(aes(z = nc, label = ..level..), method = "bottom.pieces", stat = "contour", breaks = fill_neg(jumpby(lineas, 2)), color = "blue4") + 
+  
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"), 
+                       name = "NCEP") +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  coord_map("stereographic", orientation = c(-90,0, 60),
+            ylim = c(-90, 0)) +
+  scale_x_continuous(breaks = seq(0, 330, by = 30)) +
+  # annotate(geom = "text", x = seq(0, 330, by = 30), y = -5, 
+  #          label = seq(0, 330, by = 30), color = "gray45") +
+  # scale_y_continuous(breaks = seq(0+15, -90+15, by = -15)) +
+  # annotate(geom = "text", x = 0, y = seq(0+15, -90+15, by = -15), 
+  #          label = seq(0+15, -90+15, by = -15), color = "gray45") +
+  theme_bw() + 
+  theme(legend.position = "bottom", legend.key.height = unit(5, "points"),
+        axis.title = element_blank(), axis.text = element_blank()) +
+  ggtitle(paste0("T* para NCEP (azul) y SPEEDY (rojo) \n lineas = ", linea))
+```
+
+
+```{r Ta-corte}
+linea <- 2
+lineas <- seq(linea, M, by = linea)
+
+ggplot(g_data[lat %~% -65], aes(lon, lev)) +
+  geom_contour(aes(z = sp, linetype = as.factor(sign(..level..))),
+               breaks = fill_neg(lineas), color = "red4", size = s,  alpha = 0.8) +
+  geom_contour(aes(z = nc, linetype = as.factor(sign(..level..))), 
+               breaks = fill_neg(lineas), color = "blue4", size = s,  alpha = 0.8) +
+  scale_linetype_manual(values = c(2, 1, 1), guide = "none") +
+  facet_grid(~estacion) +
+  scale_y_continuous(trans = "reverselog", breaks = levs) +
+  theme_bw() +
+  ggtitle(paste0("T* para NCEP (azul) y SPEEDY (rojo) en -65º \n lineas = ", linea))
+```
+
+
+
+
+
+```{r tempa-sd, fig.height=9*2.5}
+
+g_data <- sp_nc_sd[lev %in% plotlevs & variable == "atemp"]
+
+M <- g_data[, (max(c(abs(min(nc)), max(nc))))]
+M <- ceiling(M)
+s <- 0.7
+linea <- 1
+lineas <- seq(linea, M, by = linea)
+
+ggplot(g_data, aes(as.numeric(month), lat)) +
+  facet_grid(lev~.) +
+  geom_contour(aes(z = sp), breaks = fill_neg(lineas), 
+               color = "red4", size = s,  alpha = 0.8) +
+  geom_dl(aes(label = ..level.., z = sp), color = "red4", 
+          stat = "contour", method = "bottom.pieces", 
+          breaks = jumpby(fill_neg(lineas), 2)) +
+  
+  geom_contour(aes(z = nc), breaks = fill_neg(lineas), 
+               color = "blue4", size = s,  alpha = 0.8) +
+  geom_dl(aes(label = ..level.., z = nc), color = "blue4", 
+          stat = "contour", method = "top.pieces", 
+          breaks = jumpby(fill_neg(lineas), 2)) + 
+  theme_elio + 
+  scale_x_continuous(breaks = 1:12, labels = month.abb)
+  
+```
+
+
+
+# Ondas cuasiestacionarias
+
+```{r qs}
+colnames(m_ncep.long)[6] <- "value"
+colnames(m_speedy.long)[6] <- "value"
+m_ncep.long[, modelo := "nc"]
+m_speedy.long[, modelo := "sp"]
+sp_nc.long <- rbind(m_ncep.long, m_speedy.long)
+remove(m_ncep.long, m_speedy.long)
+
+temp <- sp_nc.long[stringi::stri_sub(variable, 1, 1) == "a"]
+qs <- temp[, qs_fit(value, n = 1:4), by = .(lat, lev, month, modelo, variable)]
+qs_labels <- c("1" = "QS 1",
+               "2" = "QS 2",
+               "3" = "QS 3",
+               "4" = "QS 4")
+mod_labels <- c("nc" = "NCEP", 
+                "sp" = "SPEEDY")
+```
+
+### R^2
+
+```{r r-sqrd-qs_corte, fig.height=12}
+qs_gh <- qs[variable == "agh"]
+
+qs_gh_interp <- qs_gh[!is.na(R.sqr), 
+                    interp.dt(lat, lev, R.sqr, linear = T,
+                              yo = interp.levs),
+                    by = .(month, modelo, variable, QS)]
+colnames(qs_gh_interp)[5:7] <- c("lat", "lev", "R.sqr")
+
+temp <- qs_gh[!is.na(Amplitud), 
+                    interp.dt(lat, lev, Amplitud, linear = T,
+                              yo = interp.levs),
+                    by = .(month, modelo, variable, QS)]
+colnames(temp)[5:7] <- c("lat", "lev", "Amplitud")
+
+qs_gh_interp$Amplitud <- temp$Amplitud
+
+g_data <- qs_gh_interp
+# g_data <- g_data[lat >= -50 & lat < -35 & lev > 100 & QS == 3]
+g_nc <- g_data[modelo == "nc"]
+g_sp <- g_data[modelo == "sp"]
+lineas_width <- 0.25
+lineas <- seq(0, 1, by = lineas_width)
+s <- 0.7
+
+ggplot(g_nc, aes(lat, lev)) + scale_y_continuous(trans = "reverselog") +
+  facet_grid(month ~ QS, labeller = labeller(QS = qs_labels)) +
+  geom_tile(aes(fill = cut_width(R.sqr, lineas_width, boundary = 0))) +
+  scale_fill_brewer(palette = "Blues", name = "NCEP") +
+  geom_contour(aes(z = R.sqr), breaks = lineas, 
+               color = "black", data = g_sp, size = s, alpha = 0.7) +
+  geom_dl(aes(z = R.sqr, label = ..level..), data = g_sp, color = "black", 
+          stat = "contour", method = list("top.pieces", cex = 0.8), 
+          breaks = jumpby(lineas, 2)) +
+  theme_elio + ggtitle(paste0("R^2 de cada número de onda por latitud y mes \nNCEP (sombreado) y SPEEDY (contornos) - lineas = ", lineas_width))
+```
+
+### Amplitud
+
+```{r qs-ampl_corte, fig.height=12}
+s <- 0.7
+
+g_data[lev >= 30 & lev <= 925, MaxAmpl := max(Amplitud), by = .(QS, modelo)]
+g_data[, MaxAmpl := max(MaxAmpl, na.rm = T), by = .(QS, modelo)]
+g_data[, Norm_Ampl := Amplitud/MaxAmpl]
+
+M <- ceiling(g_data[, max(Norm_Ampl, na.rm = T)])
+lineas_width <- 0.25
+lineas <- c(seq(0, 1, by = lineas_width), 2)
+
+region_3 <- c(latmin = -65, latmax = -40, levmin = 30, levmax = 925)
+
+ggplot(g_data[modelo == "sp"], aes(lat, lev)) + 
+                           scale_y_continuous(trans = "reverselog") +
+  scale_x_reverse() +
+  facet_grid(month ~ QS, labeller = labeller(QS = qs_labels)) +
+  
+  geom_raster(data = g_data[modelo == "nc"], 
+              aes(fill = cut(Norm_Ampl, breaks = lineas))) +
+
+  geom_contour(aes(z = Norm_Ampl), binwidth = lineas_width,
+               color = "black", size = s, alpha = 0.7)  + 
+  # geom_dl(aes(z = Norm_Ampl, label = ..level..), 
+          # binwidth = lineas_width, stat = "contour", method = "top.pieces") +
+  # annotate(geom = "rect",
+  #          xmin = region_3[1], xmax = region_3[2],
+  #          ymin = region_3[3], ymax = region_3[4],
+  #          fill = NA, color = "black") +
+  scale_fill_brewer(palette = "Blues", name = "NCEP") +
+
+  theme_elio + ggtitle(paste0("Amplitud normalizada para cada número de onda por latitud y mes \nNCEP (sombreado) y SPEEDY (contornos) - lineas = ", lineas_width))
+# save.image(file = "analisis2.rda")
+```

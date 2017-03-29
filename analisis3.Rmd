@@ -1,0 +1,799 @@
+---
+title: "Análisis 3"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+```{r setup, include=FALSE, cache = FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+source("helperfun.R")
+
+theme_elio <- theme_minimal() + 
+  theme(legend.position = "bottom")
+
+world3 <- mapa(c(-90, 90), res = 3)
+HS3 <- mapa(c(-90, 20), res = 3)
+load("analisis2.rda")
+```
+
+# QS3 
+
+Nos vamos a quedar con la onda 3 y vamos a analizar la zona entre 65º y 40ºS y entre 925 y 30 hPa
+
+```{r amplqs3, fig.height=12}
+g_data <- qs_gh_interp[QS == 3]
+region_3 <- c(latmin = -65, latmax = -40, levmin = 30, levmax = 925)
+M <- ceiling(g_data[, max(Amplitud, na.rm = T)])
+lineas_width <- 10
+lineas <- seq(0, M, by = lineas_width)
+s <- 0.7
+
+ggplot(g_data[modelo == "sp"], aes(lat, lev)) + 
+  scale_y_continuous(trans = "reverselog") +
+  scale_x_reverse() +
+  facet_grid(month ~ .) +
+  
+  geom_raster(data = g_data[modelo == "nc"], 
+              aes(fill = cut(Amplitud, breaks = lineas))) +
+  
+  geom_contour(aes(z = Amplitud), binwidth = lineas_width,
+               color = "black", size = s, alpha = 0.7)  + 
+  # geom_dl(aes(z = Amplitud, label = ..level..), 
+  # binwidth = lineas_width, stat = "contour", method = "top.pieces") +
+  annotate(geom = "rect",
+           xmin = region_3[1], xmax = region_3[2],
+           ymin = region_3[3], ymax = region_3[4],
+           fill = NA, color = "black") +
+  scale_fill_brewer(palette = "Blues", name = "NCEP") +
+  
+  theme_elio + ggtitle(paste0("Amplitud de QS3 por latitud y mes \nNCEP (sombreado) y SPEEDY (contornos) - lineas = ", lineas_width))
+
+```
+
+En esa caja puedo tomar el valor promedio (que sería equivalente a la integral, ya que el área se mantiene igual) o el máximo. El ciclo anual de ambas variables tanto para NCEP como para SPEEDY se muestra en la siguiente figura:
+
+```{r qs3seasonal}
+qs3_gh <- qs_gh[QS == 3, ]
+invisible(
+  qs3_gh[, region := (lat >= region_3[1] & lat <= region_3[2] &
+                  lev >= region_3[3] & lev <= region_3[4])]
+)
+g_data <- qs3_gh[region == T, 
+       .(Mean_Ampl = mean(Amplitud), Max_Ampl = max(Amplitud)), 
+       by = .(month, modelo)]
+invisible(
+g_data[, Area_equiv := Mean_Ampl/Max_Ampl]
+)
+g <- ggplot(g_data, aes(as.numeric(month), Area_equiv)) + 
+  geom_line(aes(color = modelo)) +
+  scale_color_brewer(type = "qual", palette = 6, labels = c("NCEP", "SPEEDY"),
+                     name = "Modelo", direction = -1) +
+  scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes") +
+  scale_y_continuous(limits = c(NA, 1)) +
+  ylab("Amplitud media / Amplitud máxima") + 
+  theme_elio
+
+g_data <- melt(g_data[, !"Area_equiv", with = F], 
+               id.vars = c("modelo", "month"),
+               variable.name = "Tipo", value.name = "Amplitud")
+
+ggplot(g_data, aes(as.numeric(month), Amplitud)) +
+  geom_line(aes(color = modelo, linetype = Tipo)) +
+  scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes") +
+  scale_color_brewer(type = "qual", palette = 6, labels = mod_labels,
+                     name = "Modelo", direction = -1) +
+  theme_elio
+```
+
+Se observa que no hay mucha correlación entre los modelos. Mientras que NCEP tiene un ciclo semianual con máximos en febrero y agosto, Speedy tiene los máximos en junio y noviembre. Casi una anticorrelación perfecta.
+
+Otra medida de posible relevancia es la relación entre la amplitud máxima y la media. Ésto da una idea de cuan concentrado está la anomalía de geopotencial. Valores cercanos a 1 implican que la misma está distribuida de forma pareja en todo el área de estudio, mientras que valores menores implican una distribución más concentrada.
+
+```{r}
+g
+```
+
+Esta variable muestra un comportamiento muy parecido en ambos modelos, con un máximo en el invierno y un mínimo en verano, indicando que el patrón de QS3 se encuentra mas localizado en verano que en invierno. 
+
+Una cosa que hay que tener cuidado es cómo caracterizar la amplitud de la onda 3 en toda la región mediante un número para hacer una serie temporal. La elección más naive es la media, pero ésto sólo es útil si la variable tiene una distribución simétrica y unimodal. Una variable como la amplitud está acotado inferiormente por el cero, por lo que la primera propiedad no se cumple a priori (aunque puede ser aproximada si la amplitud es grande).
+
+La funciones de distribución para cada mes estimadas a partir de los datos muestran que en varios meses tampoco se cumple la segunda propiedad.
+
+```{r, fig.height=12, message=FALSE, warning=FALSE}
+ggplot(qs3_gh[region == T, ], aes(Amplitud)) + 
+  geom_density(aes(color = modelo)) + facet_grid(month~.) +
+  scale_color_brewer(type = "qual", palette = 6, labels = mod_labels,
+                     name = "Modelo", direction = -1) + 
+  xlab("Densidad") +
+  theme_elio
+```
+
+En particular, agosto y noviembre muestran distribuciones multimodales en speedy y ncep respectivamente. Esto quizás podría poner en duda la validez de usar la media como representativo de la actividad de la onda 3 en toda la región. 
+
+## Serie temporal onda 3
+
+Independientemente de esto, armo una serie temporal mensual con la amplitud de la QS3 para el período 1985-2015 usando datos de NCEP.
+
+```{r carga_ncep}
+# load("NCEP/todo_ncep.rda")
+# 
+# ncep_r3 <- ncep[lat >= region_3[1] & lat <= region_3[2] &
+#                   lev >= region_3[3] & lev <= region_3[4]]
+load("NCEP/ncep_r3.rda")
+
+invisible({
+  ncep_r3[, agh := anom(gh), by = .(lat, lev, month)]
+  qs3 <- ncep_r3[, qs_fit(agh, n = 3), by = .(lat, lev, time)]
+  qs3[, month := as.numeric(stringi::stri_sub(time, 6, 7))]
+  qs3[, month := factor(month, levels = c(12, 1:11), ordered = T)]
+  qs3[, year := as.numeric(stringi::stri_sub(time, 1, 4))]
+  })
+```
+
+Meses de verano donde activo e inactivo  se definen si la amplitud es mayor, menor o que la media (del mes) en 1 desvío estandar (del mes):
+
+```{r onda3-time, fig.height=12}
+qs3_mean <- qs3[, .(Mean_Ampl = mean(Amplitud),
+                    Max_Ampl = max(Amplitud)), 
+                by = .(month, year, time)]
+invisible(
+qs3_mean[, `:=`(MeanMean_Ampl = mean(Mean_Ampl),
+                SDMean_Ampl = sd(Mean_Ampl),
+                MeanMax_Ampl = mean(Max_Ampl),
+                SDMax_Ampl = sd(Max_Ampl)),
+                by = .(month)]
+)
+shift_season <- function(month, year) {
+  ifelse(month == 12, year + 1, year)
+}
+invisible({
+qs3_mean[, Año_estacion := shift_season(month, year)]
+
+qs3_mean[, Anom := ifelse(Mean_Ampl > MeanMean_Ampl + SDMean_Ampl,
+                          "Activo", 
+                          ifelse(Mean_Ampl < MeanMean_Ampl - SDMean_Ampl, 
+                                 "Inactivo", "Normal"))]
+})
+# Alternativa: usando terciles. 
+# qs3_mean[, Anom := cut(Mean_Ampl, 
+#                breaks = quantile(Mean_Ampl, seq(0, 1, length.out = 4)),
+#                include.lowest = T, labels = c("Inactivo", "Normal", "Activo")),
+#          by = month]
+
+years <- seq(1984, 2016, by = 1)
+lab <- stri_sub(years, 3, 4)
+labs <- paste0(lab, "/", shift(lab, type = "lead"))
+n <- length(years) 
+years <- years[-c(1)]
+labs <- labs[-c(n)]
+# years <- unique(qs3_mean$Año_estacion)
+
+
+g <- ggplot(qs3_mean, 
+       aes(Año_estacion, Mean_Ampl)) + 
+  geom_col(aes(fill = Anom)) +
+  geom_line(aes(y = MeanMean_Ampl), linetype = 2, color = "gray4") +
+  scale_x_continuous(breaks = jumpby(years, 2),
+                     labels = jumpby(labs, 2),
+                     name = "Año de fin de estación") +
+  scale_fill_brewer(palette = "Set1")  + 
+  ylab("Amplitud media QS3") +
+  theme_elio + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+g + facet_grid(month~., labeller = labeller(month = month.abb))
+```
+
+La gran mayoría de los meses de veranos son normales con 5-6 veranos activo o inactivos.
+
+Se observa que no hay muchos meses con amplitud mucho mayor que la media y que no están agrupados en un mismo verano. Es decir, no hay mucha correlación entre la amplitud de un mes y el siguiente. 
+
+Para ver esto último con más exactitud, se puede estimar la función de autocorrelación. 
+
+```{r}
+autocor <- acf.sig(qs3_mean$Mean_Ampl, method = "large.lag")
+
+ggplot(autocor, aes(lag, acf)) + 
+  geom_line() + geom_point() +
+  geom_line(aes(y = sig.cut), linetype = 2) +
+  geom_line(aes(y = -sig.cut), linetype = 2) +
+  geom_hline(yintercept = 0) +
+  scale_x_continuous(limits = c(0, 12*3),
+                     name = "Lag (meses)", 
+                     breaks = seq(0, 12*3, by = 6)) +
+  ylab("Autocorrelación mensual QS3") +
+  theme_elio
+```
+
+Se ve que la autocorrelación a lag 1 no es significativa (utilizando método large lag), pero además se ve un evidente ciclo anual.  
+
+```{r q3_seasonal, echo=TRUE}
+ggplot(qs3_mean, aes(factor(month, labels = month.abb), Mean_Ampl)) + 
+  geom_boxplot() + 
+  xlab("Mes") + ylab("Amplitud media QS3") +
+  theme_elio
+```
+
+¿Tiene otros ciclos? Le quito el ciclo anual restando la media anual y hago fourier. 
+
+```{r}
+fourier <- as.dt(convert.fft(fft(qs3_mean[, .(Mean_Ampl - MeanMean_Ampl)]$V1)))
+
+ggplot(fourier, aes(freq, ampl)) + 
+  geom_line() +
+  theme_elio + xlab("Frecuencia") + ylab("Amplitud")
+```
+
+No, no hay ningún ciclo obvio. 
+
+
+```{r}
+qs3 <- merge(qs3, qs3_mean[, .(month, year, Anom)])
+# 
+# g_data <- qs3[, .(Amplitud = mean(Amplitud)), by = .(lat, lev, Anom, month)]
+# 
+# g_data <- g_data[, interp.dt(lat, lev, Amplitud, linear = T,
+#                               yo = interp.levs),
+#                     by = .(Anom, month)]
+# colnames(g_data) <- c("Anom", "month", "lat", "lev", "Amplitud")
+# # g_data <- g_data[month %in% 1:2]
+# ggplot(g_data, aes(lat, lev)) + 
+#   scale_y_continuous(trans = "reverselog") +
+#   geom_contour(aes(z = Amplitud), binwidth = 10, 
+#                color = "black") +
+#   geom_dl(aes(z = Amplitud, label = ..level..),
+#           stat = "contour", binwidth = 20, color = "black",
+#           method = "top.pieces") +
+#   facet_grid(month~Anom, labeller = labeller(month = month.abb)) +
+#   theme_elio
+#   
+```
+
+Esto es la distribución espacial de la amplitud en la región de estudio para cada mes y clasificación. No sé si sirve para mucho. Se ve que en febrero en algunos meses hay más separación que en otros. 
+
+```{r}
+ggplot(qs3, aes(Amplitud)) + 
+  geom_density(aes(color = Anom)) +
+  facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb)) +
+  theme_elio
+```
+
+
+## Composiciones de variables. 
+
+Ahora la idea es ver los campos de variables que podrían ser forantes y comparar años activos vs. inactivos. 
+
+### SST
+
+```{r leo_sst}
+load("NCEP/sst_todo.rda")
+
+## Agrego máscara de océanos
+library(maptools)
+library(maps)
+
+make_mask <- function(lat, lon) {
+  seamask <- map("world2", fill=TRUE, col = "transparent", plot = F)
+  IDs <- sapply(strsplit(seamask$names, ":"), function(x) x[1])
+  seamask <- map2SpatialPolygons(seamask, IDs = IDs,
+                                 proj4string = CRS("+proj=longlat +datum=WGS84"))
+  
+  points <- SpatialPoints(expand.grid(lon, lat), 
+                          proj4string = CRS(proj4string(seamask)))
+  sea <-  is.na(over(points, seamask))
+  return(sea)
+}
+
+lat <- unique(sst$lat)
+lon <- unique(sst$lon)
+sea <- make_mask(lat, lon)
+invisible(sst[, sea := sea])
+
+sst <- merge(sst, qs3_mean[, .(time, Anom, Mean_Ampl)], all = T)
+invisible({
+  sst[, month := as.numeric(stringi::stri_sub(time, 6, 7))]
+  sst[, month := factor(month, levels = c(12, 1:11), ordered = T)]
+  sst[sea == F, sst := NA]
+  sst[, msst := mean(sst, na.rm = T), by = .(lat, month)]
+  sst[, asst := sst - msst]
+})
+```
+
+Probé la composición de SST de años activos e inactivos y prácticamente no se ve diferencia, así que directamente muestro la diferencia (activo - inactivo):
+
+```{r,  fig.height=10, fig.width=10}
+sst_comp <- sst[!is.na(Anom), 
+           .(sst = mean(sst, na.rm = T)), 
+           by = .(lat, lon, Anom, month)]
+tmp <- sst_comp[, .(Anom = "Diferencia",
+                    sst = sst[Anom == "Activo"] - sst[Anom == "Inactivo"]),
+                by = .(lat, lon, month)]
+sst_comp <- rbind(sst_comp, tmp)
+remove(tmp)
+
+gdata <- sst_comp[Anom == "Diferencia"]
+
+ggplot(gdata, aes(lon, lat)) + 
+  geom_contour(aes(z = sst, color = ..level..), binwidth = .5) +
+  world3 +
+  coord_quickmap() +
+  scale_color_gradient2(high = muted("red"), low = muted("blue"), name = "SST \n(Activo - Inactivo)") +
+  theme_elio + facet_wrap(~month, labeller = labeller(month = month.abb),
+                          ncol = 3) +
+  labs(title = "Diferencia de SST entre años activos e inactivos", 
+       subtitle = "lineas = 0.5")
+```
+
+```{r, fig.height=10, fig.width=10}
+invisible(
+  sst[!is.na(Mean_Ampl) & !is.na(asst), sd := sd(asst), by = .(lat, lon, month)]
+  )
+
+# sst_lm <-
+#   sst[!is.na(Mean_Ampl) & !is.na(asst) & sd != 0,
+#       {
+#         a <- summary(lm(Mean_Ampl ~ asst))
+#         list(estimate  = a$coefficients[2, 1],
+#              se        = a$coefficients[2, 2])
+#       },
+#       by = .(lon, lat, month)]
+# save(sst_lm, file = "sst_lm.rda")
+load("sst_lm.rda")
+
+# sst_ARMA <-
+#   sst[!is.na(Mean_Ampl) & !is.na(asst) & sd != 0,
+#       {
+#         a <- arima(Mean_Ampl, xreg = asst,
+#                    order = c(1, 0, 1), method = "ML")
+#         list(estimate = coef(a)[[4]],
+#              se       = sqrt(diag(a$var.coef))[4])
+#       },
+#       by = .(lon, lat, month)]
+# save(sst_ARMA, file = "sst_ARMA.rda")
+sst_lm[, month := factor(month, levels = c(12, 1:11), ordered = T)]
+sst_lm[, t := abs(estimate)/se]
+ggplot(sst_lm, aes(lon, lat)) + 
+  geom_raster(aes(fill = estimate)) +
+  # geom_contour(aes(z = abs(estimate/se)), breaks = 2:100, color = "black") +
+  geom_point(size = 0.1, shape = 3, alpha = 0.4,
+             data = sst_lm[t > 2]) +
+  world3 + coord_quickmap() +
+  theme_elio +
+  facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) + 
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"),
+                       name = "Regresión (LM)", limits = c(-40, 40))
+```
+
+
+
+### SST*
+
+
+```{r}
+sst_comp <- sst[!is.na(Anom), 
+           .(asst = mean(asst, na.rm = T)), 
+           by = .(lat, lon, Anom, month)]
+tmp <- sst_comp[, .(Anom = "Diferencia",
+                    asst = asst[Anom == "Inactivo"] - asst[Anom == "Activo"]),
+                by = .(lat, lon, month)]
+sst_comp <- rbind(sst_comp, tmp)
+remove(tmp)
+
+gdata <- sst_comp[Anom %in% c("Activo", "Inactivo")]
+
+
+g <- ggplot(gdata, aes(lon, lat)) + 
+  geom_contour(aes(z = asst, color = ..level..), binwidth = 2.5) +
+  world3 +
+  coord_quickmap() +
+  scale_color_gradient2(high = muted("red"), low = muted("blue")) +
+  theme_elio
+
+```
+
+DEF: 
+(líneas = 2.5)
+```{r sst_actin_DEF, fig.height=10, fig.width=10}
+g + facet_grid_paginate(month~Anom, labeller = labeller(month = month.abb), 
+                         nrow = 3, ncol = 2,
+                         page = 1)
+```
+
+MAM
+
+```{r sst_actin_MAM, fig.height=10, fig.width=10}
+g + facet_grid_paginate(month~Anom, labeller = labeller(month = month.abb), 
+                         nrow = 3, ncol = 2,
+                         page = 2)
+```
+
+JJA
+
+```{r sst_actin_JJA, fig.height=10, fig.width=10}
+g + facet_grid_paginate(month~Anom, labeller = labeller(month = month.abb), 
+                         nrow = 3, ncol = 2,
+                         page = 3)
+```
+
+
+SON:
+
+```{r sst_actin_SON, fig.height=10, fig.width=10}
+g + facet_grid_paginate(month~Anom, labeller = labeller(month = month.abb), 
+                         nrow = 3, ncol = 2,
+                         page = 4)
+```
+
+
+No se puede ver a ojo mucha diferencia. Restando ambos campos (íneas = 0.5):
+
+
+```{r diferencia, fig.height=10, fig.width=10}
+
+# dividir por la anomalía. 
+
+lineas <- seq(-3, 3, by = 0.5)
+gdata <- sst_comp[Anom == "Diferencia"]
+ggplot(gdata, aes(lon, lat)) + 
+  geom_contour(aes(z = asst, color = ..level..), breaks = lineas) + 
+  world3 +
+  coord_quickmap() +
+  facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) + 
+  scale_color_gradient2(high = muted("red"), low = muted("blue")) +
+  theme_elio
+```
+
+En algunos meses se ve que la zona del pacífico ecuatorial tiene grandes diferencias, con nomviembre, diciemre y enero caracterizado por diferencias positivas (años activos con mayor temperatura que inactivos) aunque lo contrario en septiembre y febrero. 
+
+Al hacer la clasificación binaria entre activos e inactivos se pierde información. Una alternativa es hacer la regresión de la SST en la amplitud de la onda QS3. Es decir, modelar $QS3 = m\times SST + b + \epsilon$ para cada punto del globo. 
+
+```{r, fig.height=9, fig.width=10}
+invisible(
+  sst[!is.na(Mean_Ampl) & !is.na(asst), sd := sd(asst), by = .(lat, lon, month)]
+  )
+
+asst_lm <-
+  sst[!is.na(Mean_Ampl) & !is.na(asst) & sd != 0,
+      {
+        a <- summary(fastLm(cbind(1, Mean_Ampl), asst))
+        list(estimate  = a$coefficients[2, 1],
+             se        = a$coefficients[2, 2])
+      },
+      by = .(lon, lat, month)]
+save(asst_lm, file = "asst_lm.rda")
+load("asst_lm.rda")
+
+# asst_ARMA <-
+#   sst[!is.na(Mean_Ampl) & !is.na(asst) & sd != 0,
+#       {
+#         a <- arima(Mean_Ampl, xreg = asst,
+#                    order = c(1, 0, 1), method = "ML")
+#         list(estimate = coef(a)[[4]],
+#              se       = sqrt(diag(a$var.coef))[4])
+#       },
+#       by = .(lon, lat, month)]
+# save(asst_ARMA, file = "asst_ARMA.rda")
+load("asst_ARMA.rda")
+
+invisible({
+  asst_lm[, t := abs(estimate/se)]
+  asst_ARMA[, t := abs(estimate/se)]
+})
+
+ggplot(asst_lm, aes(lon, lat)) + 
+  geom_raster(aes(fill = estimate)) +
+  # geom_contour(aes(z = abs(estimate/se)), breaks = 2:100, color = "black") +
+  geom_point(size = 0.1, shape = 3, alpha = 0.4,
+             data = asst_lm[t > 2]) +
+  world3 + coord_quickmap() +
+  theme_elio +
+  facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) + 
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"),
+                       name = "Regresión (LM)")
+```
+
+Si quiero ser un poco más riguroso y tener en cuenta la estructura de correlación que seguro existe en las series, puedo usar un modelo ARMA(1, 1) para estimar la pendiente.
+
+```{r regresion_ARMA, fig.height=10, fig.width=10}
+ggplot(asst_ARMA, aes(lon, lat)) + 
+  geom_raster(aes(fill = estimate)) +
+  # geom_contour(aes(z = abs(estimate/se)), breaks = 2:100, color = "black") +
+  geom_point(size = 0.1, shape = 3, alpha = 0.4,
+             data = asst_ARMA[t > 2]) +
+  world3 + coord_quickmap() +
+  theme_elio +
+  facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) + 
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"),
+                       name = "Regresión (ARMA)", limits = c(-40, 40))
+```
+
+En ambas figuras las cruces marcan regiones donde la magnitud de la regresión es mayor a 2 veces el error estandar de la misma (\~ p-valor < 0.05).
+
+(Alternativa: hacer test t-student para cada punto de latitud entre años activos e inactivos. )
+
+```{r}
+# test <- 
+#   sst[!is.na(Mean_Ampl) & !is.na(asst) & sd != 0,
+#       t.test(asst[Anom == "Activo"], y = asst[Anom == "Inactivo"]), 
+#       by = .(lat, lon, month)]
+# 
+# ggplot(test, aes(lon, lat)) +
+#   geom_raster(aes(fill = estimate))  +
+#   geom_point(aes(alpha = p.value < 0.05), size = 0.1, shape = 3) +
+#   scale_alpha_discrete(range = c(0, 0.7)) +
+#   scale_fill_gradient2(high = muted("red"), low = muted("blue")) +
+#   facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) +
+#   coord_quickmap() +
+#   world3 +
+#   theme_elio
+```
+
+
+## OLR
+
+Regresión de OLR en la QS3. 
+
+```{r, fig.height=9, fig.width=10}
+invisible({
+load("NCEP/olr_todo.rda")
+olr <- olr[qs3_mean[, .(time, Mean_Ampl)], on = "time"]
+olr[, month := as.numeric(stringi::stri_sub(time, 6, 7))]
+olr[, month := factor(month, levels = c(12, 1:11), ordered = T)]
+olr_lm <-
+  olr[!is.na(olr),
+      {
+        a <- summary(fastLm(olr ~ Mean_Ampl))
+        list(estimate  = a$coefficients[2, 1],
+             se        = a$coefficients[2, 2])
+      },
+      by = .(lon, lat, month)]
+})
+
+ggplot(olr_lm, aes(lon, lat)) + geom_tile(aes(fill = estimate)) +
+  facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) + 
+  geom_point(size = 0.1, shape = 3, alpha = 0.4,
+             data = olr_lm[abs(estimate) > 2*se]) +
+  world3 + coord_quickmap() +
+  theme_elio + 
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"),
+                       name = "Regresión")
+```
+
+No hay ninguna señal notable, excepto febrero, donde se ve un patrón con menor convección en el Pacífico occidental (OLR mayor) y menor convección en el Pacífico central (OLR menor)
+
+
+## Sanity Check
+
+Bueno, nada de lo anterior dio una señal demasiado clara. ¿Estamos haciendo las cosas bien? Es muy posible que el índice que estoy usando no tenga mucha relación con nada. O sea, la onda 3 no es ni de cerca el patrón principal de variabilidad, por lo que nunca voy a tener mucha señal. 
+
+Veamos si hay una señal clara al menos con el geopotencial en 300hPa. Si no hay señal clara, estamos en el horno. 
+
+```{r, fig.width=10, fig.height=10}
+invisible({
+ghncep <- fread("NCEP/hgt_ncep.csv") # crea ncep
+library(RcppArmadillo)
+ghncep <- ghncep[qs3_mean[, .(time, Mean_Ampl)], on = "time"]
+ghncep[, month := as.numeric(stringi::stri_sub(time, 6, 7))]
+ghncep[, month := factor(month, levels = c(12, 1:11), ordered = T)]
+ncep_lm <-
+  ghncep[!is.na(Mean_Ampl) & lev == 300,
+      {
+        a <- summary(fastLm(gh ~ Mean_Ampl))
+        list(estimate  = a$coefficients[2, 1],
+             se        = a$coefficients[2, 2])
+      },
+      by = .(lon, lat, month, lev)]
+
+})
+ggplot(ncep_lm, aes(lon, lat)) + geom_tile(aes(fill = estimate)) +
+  facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) + 
+  geom_point(size = 0.1, shape = 3, alpha = 0.4,
+             data = ncep_lm[abs(estimate) > 2*se]) +
+  world3 + coord_quickmap() +
+  theme_elio + 
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"),
+                       name = "Regresión")
+```
+
+Bueno, perfecto. Se ve lo que se tenía que ver. Está relacionado con ondas 3 en el hemisferio sur. 
+
+
+## ¿ENSO?
+
+Los mapas de SST sugerían una relación entre temperaturas del Pacífico central y la amplitud de la onda 3, ¿habrá alguna relación con El Niño?
+
+```{r, fig.height=6, fig.width=8}
+
+# MEI
+mei <- readLines("https://www.esrl.noaa.gov/psd/enso/mei/table.html")
+columnas <- c("year", month.abb)
+regex <- "19|20"
+mei <- mei[grepl(regex, stringr::str_sub(mei, 1, 4))]
+mei <- transpose(as.data.table(strsplit(mei, "\\t")))
+colnames(mei) <- columnas
+mei <- mei[, lapply(.SD, as.numeric)]
+mei <- mei[year %in% 1985:2015]
+mei.l <- melt(mei, id.vars = "year", variable.name = "month", value.name = "MEI")
+mei.l[, month := rep(1:12, each = 31)]
+
+mei <- mei.l[qs3_mean[, .(year, month, Mean_Ampl)], on = c("year", "month")]
+
+ggplot(mei, aes(MEI, Mean_Ampl)) + geom_point(alpha = 0.7) + 
+  geom_smooth(color = "black") + 
+  ylab("Amplitud de la onda 3 (mgp)") + xlab("Índice MEI") +
+  facet_wrap(~month, ncol = 3,  labeller = labeller(month = month.abb)) +
+  theme_elio
+```
+
+Nop. 
+
+
+### Datos de estación
+
+El patrón de geopotencial parece indicar que en Argentina la onda QS3 tiende a generar un centro de alta presión, trayendo aire seco y frío desde altas latitudes a la sona del SESA.
+
+Tengo datos de estación de CLARIS-LPB. 
+
+```{r, fig.width=10, fig.height=11}
+invisible({
+files <- list.files("ESTACION/Datos")
+for (e in seq_along(files)) {
+  d <- fread(paste0("ESTACION/Datos/", files[e]), na.strings = "-99.9")
+  colnames(d) <- c("estacion", "date", "pr", "tmax", "tmin")
+  d[, year := as.numeric(stringi::stri_sub(date, 1, 4))]
+  d[, month := date_month2factor(date)]
+  d <- d[year >= 1985]
+  if (e == 1) {
+    estaciones <- d
+  } else {
+    estaciones <- rbind(estaciones, d)
+  }
+}
+
+estaciones_m <- estaciones[, lapply(.SD, FUN = mean), by = .(estacion, year, month), .SDcols = c("pr", "tmax", "tmin")]
+
+metadatos <- fread("ESTACION/METADATA 1960-2012.csv")
+
+estaciones_m <- estaciones_m[metadatos[, .(estacion, lat, lon)], on = "estacion"]
+estaciones_m <- estaciones_m[qs3_mean[, .(month, year, Mean_Ampl)], on = c("month", "year")]
+})
+gdata <-estaciones_m[!is.na(pr), .(Correlacion = cor(pr, Mean_Ampl), lat = lat, lon = lon), 
+             by = .(estacion, month)]
+
+ggplot(gdata, aes(lon, lat)) + geom_point(aes(color = Correlacion)) +
+  scale_color_gradient2(high = muted("blue"), low = muted("red")) +
+  facet_wrap(~month, ncol = 3,  labeller = labeller(month = month.abb)) +
+  mapa(lat = c(-90, 0), pm = 0) + 
+  coord_quickmap(xlim = c(-80, -45), ylim = c(-45, -20)) +
+  theme_elio + ggtitle("Correlación de QS3 con Precipitación media")
+```
+
+```{r, fig.width=10, fig.height=11}
+gdata <- estaciones_m[!is.na(tmin), 
+                     .(Correlacion = cor(tmin, Mean_Ampl), lat = lat, lon = lon),
+                     by = .(estacion, month)]
+
+ggplot(gdata, aes(lon, lat)) + geom_point(aes(color = Correlacion)) +
+  scale_color_gradient2(high = muted("red"), low = muted("blue")) +
+  facet_wrap(~month, ncol = 3,  labeller = labeller(month = month.abb)) +
+  mapa(lat = c(-90, 0), pm = 0) + 
+  coord_quickmap(xlim = c(-80, -45), ylim = c(-45, -20)) +
+  theme_elio + ggtitle("Correlación de QS3 con Temperatura mínima media mensual")
+```
+
+En efecto, la actividad de la onda QS3 trae temperaturas más frías y reduce la precipitación en gran parte del país. 
+
+### Regresiones con QS1 + QS3
+
+Voy a *filtrar* la señal dominante de la QS1 haciendo una regresión múltiple con ambas ondas.
+
+
+```{r, fig.height=9, fig.width=6}
+ncep[, agh := anom(gh), by = .(lat, lev, month)]
+
+qs <- ncep[, qs_fit(agh, n = c(1, 3)), by = .(lat, lev, time)]
+qs[, month := date_month2factor(time)]
+
+qs_interp <- qs[, .(Amplitud = mean(Amplitud)), by = .(lat, lev, month, QS)][, 
+                    interp.dt(lat, lev, Amplitud, linear = T,
+                              yo = interp.levs),
+                    by = .(month, QS)]
+colnames(qs_interp)[3:5] <- c("lat", "lev", "Amplitud")
+
+region_1 <- c(latmin = -75, latmax = -40, levmin = 30, levmax = 500)
+
+ggplot(qs_interp[QS == 1], aes(lat, lev)) + 
+  scale_x_reverse() + 
+  geom_tile(aes(fill = log(Amplitud))) +
+  geom_contour(aes(z = Amplitud), color = "black") +
+  facet_grid(month~QS) +
+  scale_fill_distiller(direction = 1) +
+  scale_y_continuous(trans = "reverselog") +
+  annotate(geom = "rect", xmin = region_1[1], xmax = region_1[2],
+           ymin = region_1[3], ymax = region_1[4],
+           fill = NA, color = "black")
+
+```
+
+```{r}
+qs <- qs[(QS == 1 &
+            lat >= region_1[["latmin"]] & lat <= region_1[["latmax"]] &
+            lev >= region_1[["levmin"]] & lev <= region_1[["levmax"]]) |
+            (QS == 3 &
+            lat >= region_3[["latmin"]] & lat <= region_3[["latmax"]] &
+            lev >= region_3[["levmin"]] & lev <= region_3[["levmax"]]), 
+          lapply(.SD, FUN = mean), by = .(time, QS), .SDcols = c("Amplitud", "Fase")]
+qs1 <- dcast(qs, time ~ QS, value.var = "Amplitud")
+setnames(qs1, "1", "QS1")
+setnames(qs1, "3", "QS3")
+
+```
+
+
+```{r, fig.height=10, fig.width=10}
+
+sstqs <- sst[qs1, on = "time"]
+
+asst_lm2 <-
+  sstqs[!is.na(QS1) & !is.na(QS3) & !is.na(asst) & sd != 0,
+      {
+        a <- summary(fastLm(cbind(1, QS1, QS3), asst))
+        list(estimate.QS1  = a$coefficients[2, 1],
+             se.QS1        = a$coefficients[2, 2],
+             estimate.QS3  = a$coefficients[3, 1],
+             se.QS3        = a$coefficients[3, 2])
+      },
+      by = .(lon, lat, month)]
+ggplot(asst_lm2, aes(lon, lat)) + 
+  geom_raster(aes(fill = estimate.QS3)) +
+  # geom_contour(aes(z = abs(estimate/se)), breaks = 2:100, color = "black") +
+  geom_point(size = 0.1, shape = 3, alpha = 0.4,
+             data = asst_lm2[abs(estimate.QS3) > 2*se.QS3]) +
+  world3 + coord_quickmap() +
+  theme_elio +
+  facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) + 
+  scale_fill_gradient2(high = muted("red"), low = muted("blue"),
+                       name = "Regresión (LM)")
+```
+
+Da prácticamente exactametne igual, salvo que --obviamente-- la magnitud de la regresión es menor. ¡Maldición! Ni me gasto en hacer lo mismo para OLR... 
+
+
+¿Cuál es la correlación entre la onda 1 y la onda 3?
+
+```{r}
+qs <- ncep[, qs_fit(agh, n = c(1, 3)), by = .(lat, lev, time)]
+qs[, month := date_month2factor(time)]
+
+cor13 <- qs[, .(cor = cor(Amplitud[QS == 1], Amplitud[QS == 3], use = "complete.obs")), by = .(lat, lev, month)]
+
+cor13_interp <- cor13[, interp.dt(lat, lev, cor, linear = T,
+                              yo = interp.levs),
+                    by = .(month)]
+colnames(cor13_interp)[2:4] <- c("lat", "lev", "cor")
+
+
+ggplot(cor13_interp, aes(lat, lev)) +
+  geom_raster(aes(fill = cor), interpolate = T) + 
+  scale_y_continuous(trans = "reverselog") +
+  scale_x_reverse() +
+  scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+  theme_elio +
+    annotate(geom = "rect", xmin = region_3[1], xmax = region_3[2],
+           ymin = region_3[3], ymax = region_3[4],
+           fill = NA, color = "black")
+  
+```
+
+Ciertemante la correlación no es nula, pero el patrón es bastante complejo. En la estratósfera la correlación es muy positiva salvo en bajas latitudes, mientras que en la tropósfera hay correlaciones postiivas en bajas latitudes y neutras o negativas en más altas. La región en la que me estoy concentrando tiene tanto correlaciones positivas como negativas. 
+
+En cualquier caso, queda claro que la onda 1 y la onda 3 no son independientes. Esto pone en duda un poco la idea de analizar sólo la onda 3. 
+
+
+LIteratura sobre QS en el HN. 
+
