@@ -1,17 +1,3 @@
----
-title: "Guía de Estilo"
-author: "Elio Campitelli"
-date: "March 29, 2017"
-output: 
-  html_document: 
-    highlight: textmate
-    theme: flatly
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
-```
-
 Para homogeneizar el código, voy a hacer y adoptar una guía de estilo además de algunas "buenas prácticas". Está basada en la [guía de estilo de Google](https://google.github.io/styleguide/Rguide.xml) y otras que fui encontrando. 
 
 ## Nombres
