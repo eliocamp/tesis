@@ -1,3 +1,5 @@
+# Guía de estilo
+
 Para homogeneizar el código, voy a hacer y adoptar una guía de estilo además de algunas "buenas prácticas". Está basada en la [guía de estilo de Google](https://google.github.io/styleguide/Rguide.xml) y otras que fui encontrando. 
 
 ## Nombres
