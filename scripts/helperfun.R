@@ -1,0 +1,306 @@
+## Archivo con funciones 
+
+#Librerías
+library(ggplot2)
+library(ggforce)
+library(stringi)
+library(ggthemes)
+library(data.table)
+library(viridis)
+library(lubridate)
+library(directlabels)
+library(akima)
+library(compiler)
+library(RColorBrewer)
+library(rworldmap)
+enableJIT(0)
+
+# Mapa
+mapa <- function(lat = c(-90, 0), fill = NA, res = 1, smooth = 1, pm = 180, ...) {
+  mlat <- min(lat)
+  Mlat <- max(lat)
+  # m <- getMap(resolution = "coarse")
+  data(coastsCoarse)
+  m <- coastsCoarse
+  m <- as.data.table(fortify(m))
+  m[, group := as.numeric(group)]
+  m[, id := as.numeric(id)]
+  m2 <- copy(m)
+  m2[, long := long + 360]
+  m2[, group := group + max(group) + 1]
+
+  m <- rbind(m, m2)
+  cut <- max(smooth, res)
+  notsmooth <- m[, .N, by = group][N < cut + 4, group]
+  # m <- m[long < 0 & long > 360, `:=`(long = NA, lat = NA)]
+  m[, MO := max(order), by = group]
+  m[!(group %in% notsmooth) & order != 1 & order != MO, 
+    `:=`(long = zoo::rollmean(long, smooth, fill = "extend"),
+         lat = zoo::rollmean(lat, smooth, fill = "extend")), 
+    by = group]
+  
+  m[, keep := c(1, rep(0, res)), by = group]
+  m <- m[order == 1 | order == MO | keep == 1, .SD, by = group]
+  m <- m[!(group %in% notsmooth)]
+  m <- m[long >= pm - 180 & long <= 180 + pm]
+  m <- m[lat >= mlat & lat <= Mlat]
+
+  return(geom_path(data = m, aes(long, lat, group = group), 
+                      color="black", 
+                      inherit.aes=F, size = 0.2))
+}
+
+# Repite la longitud, para cerrar los contornos en un plot polar
+rep_lon <- function(x) {
+  border <- x[lon == min(lon), ]
+  border$lon <- 360
+  rbind(x, border)
+}
+
+# lm2 <- function(...) {
+#   lm(...)
+# }
+# lm_m <- memoise(lm2)
+# Función para calcular onda estacionaria y su amplitud
+qs_fit <- function(x, n = 1) {
+  f <- fft(x)
+  f <- f/length(f)
+  amp <- Mod(f)*2
+  fase <- Arg(f)
+  r <- amp^2/(2*sd(x)^2)
+  n <- n + 1
+  
+  cols <- c("Amplitud", "Fase", "R.sqr", "QS")
+  ret <- list(amp[n], fase[n], r[n], n - 1)
+  names(ret) <- cols
+  return(ret)
+}
+
+# qs_fit_m <- memoise(qs_fit)
+
+
+ncread <- function(file, vars, dims = c("lon", "lat", "lev", "time")){
+  ncfile <- nc_open(file)
+  dimensions <- list()
+  for (i in 1:length(dims)){
+    dimensions[[dims[i]]] <- ncvar_get(ncfile, dims[i])
+  }
+  # 
+  # if (!is.null(lat)) latvar <- ncvar_get(ncfile, "lat")
+  # if (!is.null(lon)) lonvar <- ncvar_get(ncfile, "lon")
+  # if (!is.null(time)) timevar <- ncvar_get(ncfile, "time")
+  # if (!is.null(lev)) levvar <- ncvar_get(ncfile, "lev")
+  
+  var1 <- ncvar_get(ncfile, vars[1])
+  
+  # dimnames(var1) <- list(lon, lat, lev, time)
+  dimnames(var1) <- dimensions
+  # nc <- as.data.table(melt(var1, varnames = c("lon", "lat", "lev", "time"), value.name = vars[1]))
+  nc <- as.data.table(melt(var1, varnames = names(dimensions), value.name = vars[1]))
+  nc[, c(vars[-1]) := lapply(vars[-1], ncvar_get, nc = ncfile)]
+  nc_close(ncfile)
+  return(nc)
+}
+
+
+# "Similar"
+`%~%` <- function(x, target) {
+  x <- abs(x - target)
+  return(x == min(x))
+}
+
+`%b%` <- function(x, limits) {
+    return(x >= limits[1] & x <= limits[2])
+}
+
+
+
+# Salteado
+jumpby <- function(vector, by) {
+    vector[seq(1, length(vector), by = by)] 
+}
+
+# Repetir vector en negativo
+fill_neg <- function(vector) {
+  c(-vector[order(-vector)], vector)
+}
+
+
+library("scales")
+reverselog_trans <- function(base = 10) {
+  trans <- function(x) -log(x, base)
+  inv <- function(x) base^(-x)
+  trans_new(paste0("reverselog-", format(base)), trans, inv, 
+            log_breaks(base = base), 
+            domain = c(1e-100, Inf))
+}
+
+# Nombres de los meses en español
+month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun", 
+               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+names(month.abb) <- as.character(1:12)
+
+
+
+# Asigna estaciones del año 
+asign_season <- function(month) {
+  seasons <- c("Verano", "Verano", rep(c("Otoño", "Invierno", "Primavera"), each = 3), "Verano")
+  return(factor(seasons[month], levels = c("Verano", "Otoño", "Invierno", "Primavera")))
+}
+
+# Para hacer anomalías.
+anom <- function(x) {
+  as.numeric(scale(x, scale = F))
+}
+
+# Para interpolación en data table
+interp.dt <- function(...){
+  int <- interp(...)
+  r <- with(int, { 
+    grid <- expand.grid(x, y)
+    r <- list(grid[,1], grid[, 2], c(z))
+    return(r)
+  })
+}
+
+# Función que hace autocorrelograma y su test según Anderson o large lag.
+acf.sig <- function(x, lag.max=0.3*length(x), alpha = 0.05, method=c("anderson","large.lag", "salas"), sided="one") {
+  autocor <- acf(x, lag.max=lag.max, plot = F)$acf
+  N <- length(x)
+  e <- -1/(N-1)
+  if (method[1]=="anderson"){
+    var <- (N-2)/(N-1)^2
+  } else if (method[1]=="large.lag"){
+    var <- vector()
+    for (i in 1:length(autocor)){
+      v <- ifelse(i==1,1/N, 1/N * (1+2*sum(autocor[1:i-1]^2)))
+      var<- c(var, v)
+    }
+  } else if (method[1]=="salas"){
+    var <- vector()
+    
+    for (i in 1:length(autocor)){
+      v <- (N-1-i)/(N-i)^2
+      var<- c(var, v)
+      e <- -1/(N-i)
+    }
+  }
+  if (sided=="one"){
+    a <- alpha
+    q <- qnorm(a, lower.tail=F)
+    sigupp <- e + sqrt(var)*q
+    ret <- data.frame(lag=0:lag.max, acf=autocor, sig.cut=sigupp)
+  } else if (sided == "two"){
+    a <- alpha/2
+    q <- qnorm(a, lower.tail=F)
+    sigupp <- e+sqrt(var)*q
+    siginf <- e-sqrt(var)*q
+    ret <- data.frame(lag=0:lag.max, acf=autocor, upp.sig.cut=sigupp, low.sig.cut=siginf)
+  }
+  ret
+}
+
+
+
+# Convierte la salida de la función fft en un formato
+# legible por humanos. 
+
+convert.fft <- function(cs, sample.rate=1, full=T) {
+  distance.center <- function(c) Mod(c)
+  angle <- function(c) Arg(c)
+  is.even <- function(x) ceiling(x/2) == x/2
+  N <- length(cs)
+  if (full==T){
+    nyq <- ifelse(is.even(N), N/2+1, (N+1)/2)
+    cs <- cs[2:nyq]
+  }
+  NP <- length(cs)
+  cs <- cs / N # normalize
+  
+  df <- data.frame(cycle    = 1:(NP),
+                   freq     = 1:(NP) * sample.rate / N,
+                   per      = N/(1:(NP) * sample.rate),
+                   ampl = sapply(cs, Mod),
+                   delay    = sapply(cs, angle),
+                   spect    = sqrt(sapply(cs, Mod)),
+                   comp = cs)
+  
+  non.unique <- ifelse(is.even(NP), NP-1, NP)
+  df$ampl [1:non.unique] <- df$ampl[1:non.unique]*2
+  df
+}
+
+# Abreviatura para as.data.table
+as.dt <- function(...) {
+  as.data.table(...)
+}
+
+
+
+# Función para agregar etiquetas a contornos
+# Uso: primero crear un objeto ggplot con todo el plot 
+# luego agregar un geom_text con data = make_labels(g)
+
+minvar <- function (x, y){
+  counts = length(x)
+  xdiffs = diff(x)
+  ydiffs = diff(y)
+  avgGradient = ydiffs/xdiffs
+  squareSum = avgGradient * avgGradient
+  variance = (squareSum - (avgGradient * avgGradient) / counts / counts)
+  variance = c(9999999, variance) #99999 pads this so the length is same as original and the first values are not selected
+  return(variance == min(variance))
+}
+
+make_labels <- function(g, step = 2) {
+  tmp3 <- as.data.table(ggplot_build(g)$data[[1]])
+  tmp3[, var := minvar(x, y), by = group]
+  return(tmp3[var == T][seq(1, .N, by = step)])
+}
+
+
+factor2cols <- function(x, column, factors) {
+  column <- deparse(substitute(column))
+  for(h in factors){
+    x[, (h) := ifelse(get(column) == h, 1, 0)]
+  }
+  x[is.na(get(column)), (factors) := 0]
+}
+
+# convierte una fecha en formato AAAA-MM-DD en mes con factor y ordenado según estaciones
+date_month2factor <- function(x) { 
+  factor(as.numeric(stringi::stri_sub(x, 6, 7)), levels = c(12, 1:11), ordered = T)
+}
+
+# genera coeficiente y error estandar de regresión lineal. Para uso en data.table
+lmcoef <- function(formula) {
+  a <- summary(fastLm(formula = formula))
+  list(estimate  = a$coefficients[2, 1],
+       se        = a$coefficients[2, 2])
+}
+
+
+
+panel_timeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
+  M <- max(x)
+  m <- min(x)
+  step <- (M - m)/n
+  g <- g + labs(x="", y="") + theme(axis.title = element_blank())
+  library(grid)
+  library(gridExtra)
+  plots <- list()
+  
+  for (i in 1:n) {
+    if (i == 1) {
+      pl <- ggplot_gtable(ggplot_build(g))
+      leg <- which(sapply(pl$grobs, function(x) x$name) == "guide-box")
+      legend <- pl$grobs[[leg]]
+    }
+    pl <- g + coord_cartesian(xlim = as.Date(c(m + step*(i-1), m + i*step))) +
+      theme(axis.title = element_blank()) + guides(color = FALSE)
+    pl <- ggplot_gtable(ggplot_build(pl))
+    plots[[i]] <- pl 
+  }
+  plots[[n + 1]] <- legend
+  grid.arrange(grobs = plots, ncol = 1, heights = c(rep(10, n), 2), bottom = xlab, left = ylab)
+}

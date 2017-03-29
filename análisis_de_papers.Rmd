@@ -1,0 +1,250 @@
+---
+title: "Análisis de Papers"
+output: html_document
+---
+
+Este documento tiene resúmenes, comentarios y algunas reproducciones y extensiones de papers leídos.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+source("helperfun.R")
+
+theme_elio <- theme_minimal() + 
+  theme(legend.position = "bottom")
+
+world3 <- mapa(c(-90, 90), res = 3)
+HS3 <- mapa(c(-90, 20), res = 3)
+HS5 <- mapa(c(-90, 20), res = 5)
+```
+
+## A zonal wave 3 index for the Southern Hemisphere - Marilyn Raphael
+
+[link](http://onlinelibrary.wiley.com/doi/10.1029/2004GL020365/full)
+
+### Descripción y replicación
+
+Describe características de la onda 3 que son consistentes con lo que se ve en la regresión de QS3 con geopotencial en 300hPa de mis figuras (¡yey!). Altas a sotavento de los continentes y un corrimiento de fase entre otoño e invierno que se revierte en primavera. 
+
+Utilizando la ubicación media de estas altas, calcula un índice a partir de la altura geopotencial en 500hPa. El índice es
+
+$$
+I_i = \frac{X_{3m} - \bar{X}_{3m}}{\sigma_{3m}} \\
+I = \mathrm{mean}(I_i)
+$$
+
+Donde $X_{3m}$ es la media trimensual de la variable, $\bar{X}_{3m}$ es la media climatológica de la media trimensual y $\sigma_{3m}$ es el desvío estandar de la media trimensual. Se calcula el índice en 3 puntos $i$ (50°E, 166°E y 76°W, todos en 49°S) y el índice de onda 3 es la media de los 3 sub-índices.
+
+Esta es una replicación de la metodología. A la anomalía zonal de geopotencial en 500hPa en 49°S y en las 3 longitudes usadas en el estudio le hago una media móvil de 3 meses; luego escalo cada serie según su media y desvío estándar y finalmente saco la media de las 3 series. 
+
+```{r replicacion_indice}
+load("NCEP/todo_ncep.rda")
+invisible({
+zw <- ncep[lat %~% -49 & lev == 500]
+zw[, agh := anom(gh), by = month]
+zw <- zw[lon %~% 50 | lon %~% 166 | lon %~% 289]
+zw <- zw[, .(agh = zoo::rollmean(agh, k = 3, fill = NA), time = time), by = .(lon)]
+zw[, I := as.numeric(scale(agh)), by = .(lon)]
+zw3 <- zw[, .(I = mean(I)), by = .(time)]
+})
+
+ggplot(zw3, aes(as.Date(time), I)) + geom_line() + 
+  theme_elio +
+  ylab("ZW3") + xlab("Fecha") + 
+  scale_x_date(date_labels = "%Y")
+```
+
+Los resultados no son idéntidos --debido a el uso de un período más corto-- pero sí comparables. En particular, se ve muy bien la fase negativa en la midad de los 90. 
+
+El paper muestra un ciclo anual. Mi replicación consigue uno con una forma similar 
+
+```{r ciclo_anual}
+ggplot(zw3, aes(as.factor(month(as.Date(time))), I)) + 
+  geom_tufteboxplot() + 
+  scale_x_discrete(labels = c("DEF", "EFM", "FMA", "MAM", "AMJ", "MJJ", "JJA", "JAS", "ASO", "SON", "OND", "NDE")) + theme_elio 
+```
+
+
+Los campos de geopotencial en 500hPa separando entre trimeses "Positivos" y "Neutros" replican excelentemente. En ambos casos hya una clara onda 1 --esperable dado que representa el 90% de la variabilidad-- pero durante los meses Negativos la misma es más intensa (llegando a >140 mgp) y más compacta mientras que en los meses Positivos, se tiene una onda 1 más extendida, débil y casi bimodal. Eso se debe a que la ubicación de las altas y bajas de la onda 3, que coinciden con las bajas y las altas de la onda 1. 
+
+```{r composicion, fig.height=10, fig.width=6}
+invisible({
+ncep <- ncep[zw3, on = "time"]
+comp <- ncep[lev == 500]
+comp[, agh := anom(gh), by = .(lat, month)]
+comp[, Fase := ifelse(I >= 1, "Positiva", ifelse(I <= -1, "Negativa", "Neutra"))]
+comp <- comp[, .(agh = mean(agh)), by = .(lon, lat, Fase)]
+})
+ggplot(rep_lon(comp[Fase %in% c("Positiva", "Negativa")]), aes(lon, lat)) + 
+  geom_contour(aes(z = agh, linetype = as.factor(-sign(..level..))), binwidth = 20, color = "black") + 
+  facet_grid(Fase~.) + world3 + 
+  coord_map("stereographic", orientation = c(-90,0, 0), ylim = c(-90, -20)) +
+  theme_elio
+```
+
+
+### Comentarios
+
+Está bueno tener el índice, pero ¿por qué hacer uno en base a mediciones en puntos específicos? Especialmente considerando que no está usando mediciones de estaciones. En el paper la autora comenta que el corrimiento en la fase durante el invierno modifica el índice incluso aunque la actividad de la onda sea igual. ¿Por qué no calcular la magnitud de la onda 3 y seacabó? No entiendo bien. 
+
+Tampoco entiendo por qué usar 500hPa cuando en mi análisis anterior se ve que el máximo de la onda se da en ~300hPa
+
+Pero bueno, ¿qué tan bien coincide el índice de Raphael con la amplitud de la QS3 alrededor de 300 hpa?
+
+```{r comparar_indices}
+load("NCEP/ncep_r3.rda")
+
+invisible({
+ncep_r3[, agh := anom(gh), by = .(lat, lev, month)]
+qs3 <- ncep_r3[, qs_fit(agh, n = 3), by = .(lat, lev, time)]
+qs3[, month := as.numeric(stringi::stri_sub(time, 6, 7))]
+qs3[, month := factor(month, levels = c(12, 1:11), ordered = T)]
+qs3[, year := as.numeric(stringi::stri_sub(time, 1, 4))]
+
+
+qs3_mean <- qs3[, .(Mean_Ampl = mean(Amplitud),
+                    Fase = mean(Fase)), 
+              by = .(time)]
+
+
+indices <- zw3[qs3_mean[, .(time, Mean_Ampl, Fase)], on = "time"]
+setnames(indices, c("I", "Mean_Ampl"), c("Raphael", "Amplitud"))
+indices[, Amplitud := zoo::rollmean(Amplitud, 3, fill = NA)]
+indices[, Amplitud := as.numeric(scale(Amplitud)), by = month(time)]
+indices[, Fase := zoo::rollmean(Fase, 3, fill = NA)*180/pi]
+indices[, Fase := Fase - mean(Fase), by = month(time)]
+
+})
+ggplot(indices, aes(Raphael, Amplitud)) +
+  geom_point(alpha = 0.5) + 
+  geom_smooth(method = "lm", color = "black", se = F) +
+  geom_smooth(color = "black",  linetype = 2) +
+  ylab("Amplitud") + xlab("Índice Raphael") +
+  theme_elio
+  
+```
+
+Respuesta: para el ogt. La correlación es de `r indices[, cor(Raphael, Amplitud, use = "complete.obs")]`, lo cual no parece muy bueno. (Aclaración: la amplitud originalmente es mensual y no está estandarizada; para esta comparación hice una media móvil de 3 meses y luego estandaricé según la media y el desvío estándar de cada trimes). Es más, la línea a rayas es la relación a partir de un suavizado local donde hay claros indicios de una relación no lineal. 
+
+También se puede buscar la relación entre el índice de Raphael y la fase de la onda 3. 
+
+```{r raphael_fases}
+ggplot(indices, aes(Raphael, Fase)) +
+  geom_point(alpha = 0.5) + 
+  geom_smooth(method = "lm", color = "black", se = F) +
+  geom_smooth(color = "black",  linetype = 2) +
+  ylab("Fase") + xlab("Índice Raphael") +
+  theme_elio
+```
+
+Se ve que hay una relación, lo cual es un problema ya que quiere decir que no sólo está capturando la actividad de la onda sino también su posición. ¿Es un problema? Quizás para el uso operativo sea una ventaja si es que con un sólo número se busca sumarizar ambas variables de una forma consistente con sus efectos, pero para la investigación básica, a mí me parece que es mejor que no haya contaminación entre variables. 
+
+Podemos ver cómo interaccionan las 4 variables 
+
+```{r indices_fases}
+ggplot(indices, aes(Raphael, Amplitud)) +
+  stat_summary_hex(aes(z = Fase), bins = 10) +
+  scale_fill_gradient2(name = "Corrimiento de \nFase") +
+  coord_cartesian(xlim = c(-3, 3), ylim = c(-3, 3)) +
+  theme_elio
+```
+
+Mirando el corrimiento de la fase con respecto a su media trimensual en cada región del espacio muetral se ve que cuando el índice y la amplitud están en una etapa muy positiva, la fase suele ser negativa y viceversa. 
+
+Pero si vemos la serie temporal, taaan mal no está. Se puede ver que hay años donde la amplitud y el índice se siguen más o menos bien, aunque en otros está muy mal. Cerca de 1990, por ejemplo, ambos concuerdan; mientras que para 1995, el importante evento de índice negativo en el índice de Raphael ¡aparece como un evento positivo en la amplitud de la onda!
+
+```{r serie_temporal}
+g <- ggplot(melt(indices[, .(time, Raphael, Amplitud)], 
+            id.vars = "time", variable.name = "Indice", value.name = "valor"), 
+       aes(as.Date(time), valor, color = Indice)) +
+  geom_line(alpha = 0.7) +
+  scale_color_brewer(palette = "Set1") + 
+  ylab("Valor del índice") + xlab("Fecha") + 
+  scale_x_date(expand = c(0, 1), date_breaks  = "2 years", date_labels = "%Y") +
+  theme_elio
+
+panel_timeseries(g, as.Date(indices$time), n = 2, xlab = "Fecha", ylab = "Valor")
+
+```
+
+
+Cabe una alcaración imporante que quizás explique parte de la diferencia. La amplitud es, antes de ser estandarizada, intrínsecamente positiva mientras que el índice de Raphael, no. En el caso de que la onda 3 tenga una amplitud grande pero que la fase esté corrida 180°, La amplitud sería muy positiva mientras que el índice de Raphael daría negativo. 
+
+
+## The influence of atmospheric zonal wave three on Antarctic sea ice variability - Marilyn Raphael
+
+En este paper agarra el índice que desarrolló anteriormente y lo usa para caracterizar el impacto de la onda 3 en el hielo marítimo. Curisoamente, comenta que en el paper anterior había un error en los datos que exageraba los valores negativos y el evento negativo de medidados de los 90 se reduce mucho una vez corregido. 
+
+Dada la estructura de cuñas y vaguadas asociada a la QS3, los resultados no son sorprendentes. Las regiones asociadas con viento meridional del norte muestran menor concentración de hielo y viceversa. Esto se apoya también en la relación de la temperatura del aire y el flujo de calor con el índice de onda 3 (nuevamente, alta tempertura y flujo hacia el océano donde hay viento del norte y viceversa). 
+
+Estas dos últimas variables tienen que ver con procesos termodinámicos, pero estaría bueno también complementarlo con el flujo de la calota de hielo para tener los procesos dinámicos. 
+
+
+```{r, fig.height=10, fig.width=8}
+load("NCEP/iceflow.rda")
+setkey(iceflow, x, y)
+iceflow[, time := as.Date(paste(año, mes, "01", sep = "-"))]
+indices.l <- melt(indices[, time := as.Date(time)], 
+                  id.vars = "time", measure.vars = c("Raphael", "Amplitud"), 
+                  variable.name = "indice", value.name = "valor")
+iceflow.l <- melt(iceflow,
+                  id.vars = c("x", "y", "time"), measure.vars = c("u", "v"),
+                  variable.name = "direccion", value.name = "valor")
+ice.indice <- merge(iceflow.l, indices.l, by = "time", allow.cartesian = T)
+
+
+ice.cor <- ice.indice[, .(cor = cor(valor.x, valor.y, use = "complete.obs"),
+                          n = .N), by = .(x, y, direccion, indice, month(time))]
+
+
+ggplot(ice.cor[n > 50], aes(x, y)) + 
+  geom_tile(aes(fill = cor)) + 
+  scale_y_reverse() + 
+  facet_grid(indice~direccion) + 
+  scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+  coord_fixed() +
+  theme_elio
+```
+
+FALTAAAA. PUTO R, POR QUÉ ME SOBREESCRIBÍS CON VERSIONES VIEJAS???
+
+### A Novel Approach to Diagnosing Southern Hemisphere Planetary Wave Activity and Its Influence on Regional Climate Variability
+Damien Irving y Ian Simmonds
+[link](http://journals.ametsoc.org/doi/10.1175/JCLI-D-15-0287.1#)
+
+Leyendo este paper se abren las puertas a muchos otros papers interesantes. Se cita un poco la literatura sobre la circulación asimétrica del HS y se comentan distintos métodos para caracterizarla, lo cual resutla particularmente relevante a lo que estoy haciendo ahora. Un tema central es la crítica a el índice tipo Raphael y a los que utilizan amplitud en el espacio de Fourier ya que no logran capturar partes importantes de la variabilidad. El índice Raphael no distingue amplitud de fase, pero la amplitud y fase no logran capturar la variación de la amplitud de la onda dentro de un mismo círculo de latitud. Se puede observar en los mapas de composición que la amplitud de las bajas y altas es mucho mayor en el océano pacífico que en el resto del hemisferio, pero un índice que se basa únicamente en la descomposición de Fourier por cada círculo de latitud no puede capturar eso. Cita un [paper de Trenberth](http://journals.ametsoc.org/doi/pdf/10.1175/1520-0493%281985%29113%3C0003%3ABITSH%3E2.0.CO%3B2) que me llamó la atención porque comenta que es posible que la onda 3 no sea bien descripta por un número de onda zonal --por lo dicho anteriormente-- y que sea más bien un tren de ondas que se propaga desde Australia hasta Sudamérica. 
+
+(Como aclaración, me gustó mucho que ponga el código de todo en un repositorio en github. Voy a tratar de desarrollar un workflow que involucre eso).
+
+En este estudio los autores usan una técnica para obtener un *wave envelope* que es la amplitud de la actividad de onda para cada longitud. Este método tiene la ventaja de capturar la variabiliad zonal de la actividad de onda pero, por otro lado, mezcla la señal de un amplio ancho de banda en el espacio de Fourier, lo cual no hace posible dividir entre números de onda. 
+
+El método toma una función real $$\nu (x)$$ (que en este caso sería la altura geopotencial en función de la longitud y en un determinado nivel y latitud) y realiza la transformada de Fourier y luego realizar la antitransformada para una determinada banda con $$0 < k_min < k < k_max$$. El módulo de esta función (compleja) en el espacio de latitud es el *envelope*.
+
+```{r, fig.height=8, fig.width=6}
+envelope <- function(x, kmin = 1, kmax = 9) {
+  N <- length(x)
+  x_hat <- fft(x)/N
+  
+  x_hat_trans <- rep(0, N)
+  x_hat_trans[kmin:kmax] <- x_hat[kmin:kmax]
+  env <- Mod(fft(x_hat_trans, inverse = T))*2
+  return(env)
+}
+
+ncep[, env := envelope(as.numeric(scale(v, scale = F))), by = .(lat, lev, time)]
+gdata <- ncep[lev == 500, .(env = mean(env)), by = .(lon, lat, month)]
+ggplot(gdata[month == 9], aes(lon, lat)) +
+  geom_tile(aes(fill = env)) +
+  facet_wrap(~month, ncol = 3) +
+  coord_map("stereographic", orientation = c(-90,0, 60),
+            ylim = c(-90, -20)) +
+  scale_fill_distiller(direction = 1) +
+  theme_elio
+```
+
+
+
+### Stationary Wave Interference and Its Relation to Tropical Convection and Arctic Warming
+
+[link](http://journals.ametsoc.org.sci-hub.bz/doi/full/10.1175/JCLI-D-15-0267.1)
+
+Analiza el hemisferio norte, pero tiene una metodología para calcular un índice de ondas estacionarias (todos los núemros de onda juntos)
