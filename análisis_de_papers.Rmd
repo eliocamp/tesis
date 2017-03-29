@@ -7,7 +7,7 @@ Este documento tiene resúmenes, comentarios y algunas reproducciones y extensio
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-source("helperfun.R")
+source("scripts/helperfun.R")
 
 theme_elio <- theme_minimal() + 
   theme(legend.position = "bottom")
@@ -37,7 +37,7 @@ Donde $X_{3m}$ es la media trimensual de la variable, $\bar{X}_{3m}$ es la media
 Esta es una replicación de la metodología. A la anomalía zonal de geopotencial en 500hPa en 49°S y en las 3 longitudes usadas en el estudio le hago una media móvil de 3 meses; luego escalo cada serie según su media y desvío estándar y finalmente saco la media de las 3 series. 
 
 ```{r replicacion_indice}
-load("NCEP/todo_ncep.rda")
+load("DATOS/NCEP/todo_ncep.rda")
 invisible({
 zw <- ncep[lat %~% -49 & lev == 500]
 zw[, agh := anom(gh), by = month]
@@ -91,7 +91,7 @@ Tampoco entiendo por qué usar 500hPa cuando en mi análisis anterior se ve que 
 Pero bueno, ¿qué tan bien coincide el índice de Raphael con la amplitud de la QS3 alrededor de 300 hpa?
 
 ```{r comparar_indices}
-load("NCEP/ncep_r3.rda")
+load("DATOS/NCEP/ncep_r3.rda")
 
 invisible({
 ncep_r3[, agh := anom(gh), by = .(lat, lev, month)]
@@ -180,7 +180,7 @@ Estas dos últimas variables tienen que ver con procesos termodinámicos, pero e
 
 
 ```{r, fig.height=10, fig.width=8}
-load("NCEP/iceflow.rda")
+load("DATOS/NCEP/iceflow.rda")
 setkey(iceflow, x, y)
 iceflow[, time := as.Date(paste(año, mes, "01", sep = "-"))]
 indices.l <- melt(indices[, time := as.Date(time)], 
