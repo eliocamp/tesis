@@ -14,39 +14,30 @@ library(ggthemes)
 library(data.table)
 library(viridis)
 library(lubridate)
-library(memoise)
-source("helperfun.R")
+library(magrittr)
+source("scripts/helperfun.R")
+enableJIT(3)
+map.world.3 <- BuildMap(res = 3, smooth = 3)
+map.SH.3 <- map.world.3[lat %b% c(-90, 0)]
 ```
 
 ```{r leo_speedy}
-# Leo speedy y hago anomalías mensuales
-m_speedy <- fread("SPEEDY/todo_m_speedy.csv")
-m_speedy[, month := factor(month, levels = month.abb)]
-
-vars <- c("gh", "u", "v", "psi", "temp")
-avars <- paste0("a", vars)
-allvars <- c(vars, avars)
-# Anomalías mensuales 
-m_speedy[, c(avars) := lapply(.SD, FUN = anom), 
-         by = .(lat, lev, month),
-         .SDcols = vars]
-setcolorder(m_speedy, c("lon", "lat", "lev", "month", allvars))
+invisible({
+    # Leo speedy y hago anomalías mensuales
+    load("DATA/SPEEDY/speedy.Rda")
+    vars <- c("gh", "u", "v", "psi", "t")
+    speedy.mean <- speedy[, c(vars = lapply(.SD, FUN = mean)),
+                          by = .(lat, lon, lev, month(date))]
+    vars.z <- paste0(vars, ".z")
+    allvars <- c(vars, vars.z)
+    speedy.mean[, c(vars.z) := lapply(.SD, FUN = Anomaly), 
+                by = .(lat, lev, month),
+                .SDcols = vars]
+    
+    setcolorder(speedy.mean, c("lon", "lat", "lev", "month", allvars))
+})
 ```
 
-
-```{r qs_speedy}
-
-qs <- data.table()
-m_speedy.long <- melt(m_speedy, id.vars = c("lon", "lat", "lev", "month"))
-m_q <- m_speedy.long[variable %in% c("au", "apsi")]
-# QS 1 a 3
-for (n in 1:3){
-    t <- m_q[, qs_fit_m(value, lon, n), by = .(month, lat, lev, variable)]
-    t[, n := n]
-    qs <- rbind(qs, t)
-}
-
-```
 
 # Analizando datos speedy
 
@@ -54,37 +45,36 @@ Análisis de la corrida control de Speedy. Resolución t30, con topografía comp
 
 
 ```{r meses300-gha_ua, fig.height=7}
-g_data <- m_speedy[lev == 300]
-ggplot(aes(lon, lat), data = g_data, region = "") +
-  geom_tile(aes(fill = gha)) +
-  geom_contour(aes(z = ua, linetype = factor(-sign(ua))), color = "black", 
-               binwidth = 2.5)  +
-  facet_wrap(~month, ncol = 4) +
-  geom_polygon(data = map_data("world"), 
-               aes(long + 180, lat, group=group), color="gray46", alpha=0, inherit.aes=F) +
-  coord_map("stereographic", orientation = c(-90,0, -120), 
-            ylim = c(-90, -20)) +
-  theme_tufte() + 
-  guides(linetype = FALSE) +
-  scale_fill_distiller(type = "div", palette = "RdBu", name = "Anom. HG") + 
-  theme(legend.position = "bottom", legend.key.height = unit(5, "points"),
-        axis.title = element_blank(), axis.text = element_blank()) +
-  ggtitle("Anomalía zonal de altura geopotencial y de viento zonal \n en 300hPa - Speedy")
+gdata <- speedy.mean[lev == 300]
+g <- ggplot(gdata, aes(lon, lat)) +
+    geom_tile(aes(fill = gh.z)) +
+    geom_contour(aes(z = u.z, linetype = factor(-sign(u.z))), color = "black", 
+                 binwidth = 2.5)  +
+    facet_wrap(~month, ncol = 4) +
+    geom_map2(map.SH.3) + 
+    coord_map("stereographic", orientation = c(-90,0, -120)) +
+    # coord_polar() + 
+    theme_tufte() + 
+    guides(linetype = FALSE) +
+    scale_fill_distiller(type = "div", palette = "RdBu", name = "Anom. HG") + 
+    theme(legend.position = "bottom", legend.key.height = unit(5, "points"),
+          axis.title = element_blank(), axis.text = element_blank()) +
+    ggtitle("Anomalía zonal de altura geopotencial y de viento zonal \n en 300hPa - Speedy")
 ```
 
 En la figura se ve el campo medio de anomalía zonal de altura geopotencial en 300hpa. El máximo de anomalías se registra en abril-mayo. En enero, éstas se debilitan y los máximos de la onda 1 se dividen en 2. 
 En los meses de invierno, los máximos de anomalías tienen un máximo en la costa antártica, mientras que éstos migran a menores latitudes durante el verano.
 
 ```{r amplitud_por_lat_mes}
-ggplot(m_speedy[, .(sd_agh = sd(agh)), by = .(lat, lev, month)][lev == 300], 
-       aes(as.numeric(month), lat, z = sd_agh)) + 
-  geom_contour(aes(color = ..level..), binwidth = 10) +
-  # coord_polar() + 
-  scale_color_viridis(option = "C", name = "SD") +
-  scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes", minor_breaks = NULL) +
-  scale_y_continuous(breaks = seq(-20,-90, by = -10), limits = c(-90,-20)) +
-  theme_bw() + theme(panel.border = element_blank()) +
-  ggtitle("Desvío estandar de anomalía zonal de geopotencial \n en 300hPa por circulo de latitud ")
+ggplot(speedy.mean[, .(sd.gh.z = sd(gh.z)), by = .(lat, lev, month)][lev == 300], 
+       aes(as.numeric(month), lat, z = sd.gh.z)) + 
+    geom_contour(aes(color = ..level..), binwidth = 10) +
+    # coord_polar() + 
+    scale_color_viridis(option = "C", name = "SD") +
+    scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes", minor_breaks = NULL) +
+    scale_y_continuous(breaks = seq(-20,-90, by = -10), limits = c(-90,-20)) +
+    theme_bw() + theme(panel.border = element_blank()) +
+    ggtitle("Desvío estandar de anomalía zonal de geopotencial \n en 300hPa por circulo de latitud ")
 
 ```
 
@@ -94,15 +84,20 @@ Existe también un máximo secundario al rededor de -40º entre julio y septiemb
 Para analizar la estructura espacia, se puede calcular la varianza explicada por cada una de las ondas estacionarias. 
 
 ```{r ondasr}
-ggplot(qs[n == 1 & variable == "au"], aes(as.numeric(month), lat)) + 
-  geom_contour(aes(z = rsqr, color = ..level..), binwidth = .15) + 
-  facet_wrap(~lev, ncol = 4) + 
-  # coord_polar() + 
-  scale_color_viridis(option = "C", name = "R^2") + 
-  scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes", minor_breaks = NULL) +
-  scale_y_continuous(breaks = seq(0,-90, by = -10), limits = c(-90,0)) +
-  theme_bw() + theme(panel.border = element_blank()) +
-  ggtitle("R^2 para cada onda estacionaria \n en 300hPa por circulo de latitud ")
+speedy.mean.l <- melt(speedy.mean, id.vars =  c("lon", "lat", "lev", "month"))
+qs <- speedy.mean.l[!stringr::str_detect(variable, ".z"), 
+                    FitQsWave(value, 1:4), by = .(month, lat, lev, variable)]
+
+ggplot(qs[variable == "gh"], aes(as.numeric(month), lat)) + 
+    geom_contour(aes(z = r2, color = ..level..), binwidth = .15) + 
+    facet_grid(k~lev) + 
+    # coord_polar() + 
+    scale_color_viridis(option = "C", name = "R^2") + 
+    scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes", minor_breaks = NULL) +
+    scale_y_continuous(breaks = seq(0,-90, by = -10), limits = c(-90,0)) +
+    theme_bw() + theme(panel.border = element_blank()) +
+    ggtitle("R^2 para cada onda estacionaria \n en 300hPa por circulo de latitud ") +
+    theme_elio
 
 ```
 
@@ -114,59 +109,22 @@ La onda 4 no explica gran parte de la varianza salvo un pequeño máximo en -40�
 La estructura vertical de la amplitud:
 
 ```{r ondas, fig.width=11, fig.height=7}
-ggplot(qs[QS == "qs_amp1"], aes(lat, lev, z = ampl)) +
-  geom_contour(aes(color = ..level..), binwidth = 50) +
-  facet_grid(~month, scales = "free_y") +
-  scale_color_viridis(option = "C", name = "Amplitud", trans = "log10") +
-  # scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes", minor_breaks = NULL) +
-  theme_bw() + theme(panel.border = element_blank(), legend.position = "bottom") +
-  scale_y_continuous(trans = "reverselog") +
-  ggtitle("Amplitud para cada onda por nivel")
+ggplot(qs[variable == "gh"], aes(lat, lev, z = amplitude)) +
+    geom_contour(aes(color = ..level..), binwidth = 50) +
+    facet_grid(k~month, scales = "free_y") +
+    scale_color_viridis(option = "C", name = "Amplitud", trans = "log10") +
+    # scale_x_continuous(breaks = 1:12, labels = month.abb, name = "Mes", minor_breaks = NULL) +
+    theme_bw() + theme(panel.border = element_blank(), legend.position = "bottom") +
+    scale_y_continuous(trans = "reverselog") +
+    ggtitle("Amplitud para cada onda por nivel")
 
 ```
 
 ```{r}
 
-ggplot(qsampl[var == "ua"], aes(lat, lev)) + 
-  geom_contour(aes(z = ampl, color = ..level..), binwidth = 1) +
-  facet_grid(month~QS) + 
-  scale_y_continuous(trans=reverselog_trans(10))
-
-```
-
-
-```{r}
-g <- o3[month == "Ene" & lat <= 0 & lat > -90]
-ggplot(g, aes(lon, lat)) + 
-  stat_contour(aes(z = Ozono, fill = ..level..), geom = "polygon") +
-  stat_contour(aes(z = Ozono), geom = "path")
-# < 4seg
-
-ggplot(g, aes(lon, lat)) + 
-  geom_tile(aes(fill = Ozono)) +
-  coord_map("stereographic", orientation = c(-90,0, -120), 
-            ylim = c(-90, -20))
-# > 2min
-  
-ggplot(g, aes(lon, lat)) + 
-  geom_tile(aes(fill = Ozono)) +
-  coord_polar()
-# > 2mins
-
-
-ggplot(g, aes(lon, lat)) + 
-  geom_point(aes(fill = Ozono, color = Ozono)) +
-  coord_polar()
-# ~ 4-10segs
-
-
-ggplot(g, aes(lon, lat)) + 
-  geom_point(aes(color = cut_interval(Ozono, 8), size = cos(lat/180*pi))) +
-  geom_contour(aes(z = Ozono), binwidth = 8) +
-  coord_map("stereographic", orientation = c(-90,0, -120), 
-            ylim = c(-90, -20)) 
-  
-
-
+ggplot(qs[variable == "u"], aes(lat, lev)) + 
+    geom_contour(aes(z = amplitude, color = ..level..), binwidth = 1) +
+    facet_grid(month~k) + 
+    scale_y_continuous(trans=reverselog_trans(10))
 
 ```
