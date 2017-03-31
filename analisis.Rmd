@@ -6,7 +6,13 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}
-knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE,
+	cache.path = "cache/"
+)
 library(reshape2)
 library(ncdf4)
 library(ggplot2)
