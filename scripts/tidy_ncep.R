@@ -4,213 +4,137 @@ library(lubridate)
 library(fields)
 library(ncdf4)
 library(compiler)
+library(magrittr)
 # library(akima)
 source("scripts/helperfun.R")
 enableJIT(3)
 
-# Lee .nc
-file <- "DATA/NCEP/hgt.mon.mean_sub.nc"
-gh <- ReadNetCDF(file, "hgt")
-setnames(gh, "time", "date")
-gh[, date := ymd_hms("1800-01-01 00:00:00") + hours(date)]
-gh <- gh[lat <= 0 & year(date) > 1984 & year(date) < 2016]
 
-ncfile <- nc_open(file)
-lev <- ncvar_get(ncfile, "level")
-lat <- ncvar_get(ncfile, "lat")
-lon <- ncvar_get(ncfile, "lon")
-date <- ncvar_get(ncfile, "time")
-date <-
-# sp_levs <- ncvar_get(nc_open("attm.nc"), "lev")
-
-# Quedarnos con 1985-2015 (no hace falta, en realidad)
-gh <- ncvar_get(ncfile, "hgt")
-nc_close(ncfile)
-dimnames(gh) <- list(lon, lat, lev, as.character(date))
-hgt <- hgt[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
-
-ncfile <- nc_open("DATA/NCEP/air.mon.mean_sub.nc")
-temp <- ncvar_get(ncfile)
-date <- ncvar_get(ncfile, "time")
-date <- ymd_hms("1800-01-01 00:00:00") + hours(date)
-nc_close(ncfile)
-dimnames(temp) <- list(lon, lat, lev, as.character(date))
-temp <- temp[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
-
-ncfile <- nc_open("DATA/NCEP/uwnd.mon.mean_sub.nc")
-U <- ncvar_get(ncfile, "uwnd")
-date <- ncvar_get(ncfile, "time")
-date <- ymd_hms("1800-01-01 00:00:00") + hours(date)
-nc_close(ncfile)
-dimnames(U) <- list(lon, lat, lev, as.character(date))
-U <- U[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
-
-ncfile <- nc_open("DATA/NCEP/vwnd.mon.mean_sub.nc")
-V <- ncvar_get(ncfile, "vwnd")
-date <- ncvar_get(ncfile, "time")
-date <- ymd_hms("1800-01-01 00:00:00") + hours(date)
-nc_close(ncfile)
-dimnames(V) <- list(lon, lat, lev, as.character(date))
-V <- V[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
-
-time <- time[year(time) > 1984 & year(time) < 2016]
-# lev <- lev[lev %in% sp_levs]
-lat <- lat[lat <= 0]
-
-# bajo resolución a 1 grado
-sp_lon <- ncvar_get(nc_open("attm.nc"), "lon")
-sp_lat <- ncvar_get(nc_open("attm.nc"), "lat")
-sp_lat <- sp_lat[sp_lat <= 0]
-grid = list(x = sp_lon, y = sp_lat)
-
-hgt_small <- array(dim = c(length(sp_lon), length(sp_lat), length(lev), length(time)))
-for (t in 1:length(time)) {
-    for (l in 1:length(lev)) {
-        int <- interp.surface.grid(list(x = lon, y = lat, z = hgt[, , l, t]), grid)
-        hgt_small[, , l, t] <- int$z
+# Defino funciones de ayuda
+ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
+    # Lee archivos nc de NCEP y guarda todo en un array con las dimensiones
+    # bien puestas.
+    # Entra:
+    #   file: ruta del archivo
+    #   var: nombre de la variable a leer (al pedo, en realidad, porque estos
+    #        archivos sólo tienen una variable)
+    #   levs: ¿la variable tiene varios niveles?
+    #   date.fun: la función para modificar el date.
+    # Sale:
+    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas y en período
+    #   de tiempo necesario.
+    ncfile <- nc_open(file)
+    temp <- ncvar_get(ncfile, var)
+    lat <- ncvar_get(ncfile, "lat")
+    lon <- ncvar_get(ncfile, "lon")
+    date <- ncvar_get(ncfile, "time")
+    date.fun <- match.fun(date.fun)
+    date <- ymd_hms("1800-01-01 00:00:00") + date.fun(date)
+    nc_close(ncfile)
+    if (levs) {
+        lev <- ncvar_get(ncfile, "level")
+        dimnames(temp) <- list(lon = lon, lat = lat, lev = lev, date = as.character(date))
+        temp <- temp[, , , year(date) > 1984 & year(date) < 2016]
+    } else {
+        dimnames(temp) <- list(lon = lon, lat = lat, date = as.character(date))
+        temp <- temp[, , year(date) > 1984 & year(date) < 2016]
     }
-    # message(paste0("Terminado tiempo ", as.character(t), " de ", as.character(length(time))))
+    return(temp)
 }
 
-dimnames(hgt_small) <- list(sp_lon, sp_lat, lev, as.character(time))
-# remove(hgt)
+InterpolateNCEP <- function(field, lon, lat, verbose = F) {
+    # Interpolación bilineal.
+    # Entra:
+    #   fiel: un campo como sale de ReadNCEP
+    #   lon: grilla de longitud
+    #   lat: grilla de latitud
+    #   verbose: ¿te lleno de mensajes para demostrar que no estoy tildado?
+    # Sale:
+    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas
+    grid <- list(x = lon, y = lat)
+    lev <- dimnames(field)$lev
+    date <- dimnames(field)$date
+    progress.bar <- txtProgressBar(min = 0, max = length(date),
+                                   style = 3)
 
-temp_small <- array(dim = c(length(sp_lon), length(sp_lat), length(lev), length(time)))
-for (t in 1:length(time)) {
-    for (l in 1:length(lev)) {
-        int <- interp.surface.grid(list(x = lon, y = lat, z = temp[, , l, t]), grid)
-        temp_small[, , l, t] <- int$z
+    # Array "allocated" (¿re loca?) donde guardar el campo interpolado
+    field.small <- array(dim = c(length(lon), length(lat), length(lev),
+                                 length(date)))
+    # Hago la interpolación para cada fecha y cada nivel.
+    # Nota: esto tarda bastante y podría paralelizarse, pero hacerlo es un
+    # bolonqui y no vale la pena para algo que se corre 1 o 2 veces.
+    for (t in 1:length(date)) {
+        for (l in 1:length(lev)) {
+            int <- interp.surface.grid(list(x = lon, y = lat,
+                                            z = field[, , l, t]), grid)
+            field.small[, , l, t] <- int$z
+        }
+        if (verbose) {
+            setTxtProgressBar(progress.bar, t)
+        }
     }
-    # message(paste0("Terminado tiempo ", as.character(t), " de ", as.character(length(time))))
+    close(progress.bar)
+    dimnames(field.small) <- list(lon = lon, lat = lat, lev = lev,
+                                  date = as.character(date))
+    return(field.small)
 }
-dimnames(temp_small) <- list(sp_lon, sp_lat, lev, as.character(time))
-# remove(temp)
 
-U_small <- array(dim = c(length(sp_lon), length(sp_lat), length(lev), length(time)))
-for (t in 1:length(time)) {
-    for (l in 1:length(lev)) {
-        int <- interp.surface.grid(list(x = lon, y = lat, z = U[, , l, t]), grid)
-        U_small[, , l, t] <- int$z
+
+# Listado de variables, sus nombres y los archivos.
+# (variables atmosféricas)
+variables      <- c("hgt", "air", "uwnd", "vwnd", "olr")
+variables.name <- c("gh", "t", "u", "v", "olr")
+basedir        <- "DATA/NCEP/"
+files          <- c("hgt.mon.mean_sub.nc",
+                    "air.mon.mean_sub.nc",
+                    "uwnd.mon.mean_sub.nc",
+                    "vwnd.mon.mean_sub.nc") %>%
+    paste0(basedir, .)
+
+# Grilla para interpolar.
+lon.sp         <- ncvar_get(nc_open("DATA/SPEEDY/attm.nc"), "lon")
+lat.sp         <- ncvar_get(nc_open("DATA/SPEEDY/attm.nc"), "lat")
+lat.sp         <- lat.sp[lat.sp <= 0]
+
+# Hacemos las cosas para cada archivo.
+for (i in seq_along(files)) {
+    message(paste0("Variable: ", variables.name[i]))
+    # Leo el campo
+    file <- files[i]
+    field <- ReadNCEP(files[i], variables[i])
+
+    # Interpolo a resolución speedy.
+    field.small <- InterpolateNCEP(field, lon.sp, lat.sp, verbose = T)
+
+    # Paso a formato long. Si es el primero, uso melt, sino, simplemente lo
+    # pongo como vector (es más rápido).
+    if (i == 1) {
+        ncep <- as.data.table(melt(field.small, value.name = variables.name[i]))
+    } else {
+        ncep[, (variables.name[i]) := c(field.small)]
     }
-    # message(paste0("Terminado tiempo ", as.character(t), " de ", as.character(length(time))))
 }
-dimnames(U_small) <- list(sp_lon, sp_lat, lev, as.character(time))
-# remove(U)
 
-V_small <- array(dim = c(length(sp_lon), length(sp_lat), length(lev), length(time)))
-for (t in 1:length(time)) {
-    for (l in 1:length(lev)) {
-        int <- interp.surface.grid(list(x = lon, y = lat, z = V[, , l, t]), grid)
-        V_small[, , l, t] <- int$z
-    }
-    # message(paste0("Terminado tiempo ", as.character(t), " de ", as.character(length(time))))
-}
-dimnames(V_small) <- list(sp_lon, sp_lat, lev, as.character(time))
-# remove(V)
+# Guardo todo.
+saveRDS(ncep, file = paste0(basedir, "ncep.Rds"), compress = "gzip")
+remove(ncep)
+# Antes calculaba la media climatológica mensual y lo guardaba, pero eso mejor
+# lo dejo para después.
 
-# pasa a formato long
-
-hgt <- as.data.table(melt(hgt_small, value.name = "gh",
-                          varnames = c("lon", "lat", "lev", "time")))
-# temp <- as.data.table(melt(temp_small, value.name = "temp",
-# varnames = c("lon", "lat", "lev", "time")))
-# U <- as.data.table(melt(U_small, value.name = "U",
-#varnames = c("lon", "lat", "lev", "time")))
-hgt[, temp := c(temp_small)]
-hgt[, u := c(U_small)]
-hgt[, v := c(V_small)]
-
-# guardo en disco
-# fwrite(hgt, "DATA/NCEP/hgt_ncep.csv")
-# fwrite(temp, "DATA/NCEP/temp_ncep.csv")
-# fwrite(U, "DATA/NCEP/U_ncep.csv")
-# hgt <- fread("DATA/NCEP/todo_ncep.csv")
-# hgt2 <- fread("DATA/NCEP/todo_ncep.csv")
-
-hgt[, year := stringi::stri_sub(time, from = 1, to = 4)]
-hgt[, month := stringi::stri_sub(time, from = 6, to = 7)]
-ncep <- hgt
-fwrite(hgt, "DATA/NCEP/todo_ncep.csv")
-save(ncep, file = "DATA/NCEP/todo_ncep.rda")
-
-ncep_vars <- c("gh", "temp", "u", "v")
-m_ncep <- hgt[, lapply(.SD, FUN = mean), by = .(lon, lat, lev, month),
-              .SDcols = ncep_vars]
-m_ncep[, month := as.numeric(month)]
-m_ncep[, month := month.abb[month]]
-fwrite(m_ncep, "DATA/NCEP/todo_m_ncep.csv")
-save(m_ncep, file = "DATA/NCEP/todo_m_ncep.rda")
-
-remove(hgt, temp, u, htg_small, temp_small, U_small, V_small, m_ncep)
 
 ###  Otras variables
 
-
 # OLR
-file <- "DATA/NCEP/olr.mon.mean_sub.nc"
-ncfile <- nc_open(file)
-lat <- ncvar_get(ncfile, "lat")
-lon <- ncvar_get(ncfile, "lon")
-time <- ncvar_get(ncfile, "time")
-time <- ymd_hms("1800-01-01 00:00:00") + hours(time)
-olr <- ncvar_get(ncfile, "olr")
-nc_close(ncfile)
-dimnames(olr) <- list(lon, lat, as.character(time))
-
-
-# bajo resolución a 1 grado
-sp_lon <- ncvar_get(nc_open("attm.nc"), "lon")
-sp_lat <- ncvar_get(nc_open("attm.nc"), "lat")
-# sp_lat <- sp_lat[sp_lat <= 0]
-grid = list(x = sp_lon, y = sp_lat)
-
-olr_small <- array(dim = c(length(sp_lon), length(sp_lat), length(time)))
-for (t in 1:length(time)) {
-    int <- interp.surface.grid(list(x = lon, y = lat, z = olr[, ,t]), grid)
-    olr_small[, ,t] <- int$z
-  # message(paste0("Terminado tiempo ", as.character(t), " de ", as.character(length(time))))
-}
-
-dimnames(olr_small) <- list(sp_lon, sp_lat, as.character(time))
-
-olr <- setDT(melt(olr_small, value.name = "olr",
-                          varnames = c("lon", "lat", "time")))
-save(olr, file = "DATA/NCEP/olr_todo.rda")
-fwrite(olr, file = "DATA/NCEP/olr_todo.csv")
-
-remove(olr, olr_small)
+file <- paste0(basedir, "olr.mon.mean_sub.nc")
+olr <- ReadNCEP(file, "olr", levs = F) %>%
+    melt(value.name = "olr") %>%
+    setDT()
+saveRDS(olr, file = paste0(basedir, "olr.Rds"))
+remove(olr)
 
 # SST
-
-file <- "DATA/NCEP/sst_sub.nc"
-ncfile <- nc_open(file)
-lat <- ncvar_get(ncfile, "lat")
-lon <- ncvar_get(ncfile, "lon")
-time <- ncvar_get(ncfile, "time")
-time <- ymd_hms("1800-01-01 00:00:00") + days(time)
-sst <- ncvar_get(ncfile, "sst")
-nc_close(ncfile)
-dimnames(sst) <- list(lon, lat, as.character(time))
-
-
-# bajo resolución a 1 grado
-sp_lon <- ncvar_get(nc_open("attm.nc"), "lon")
-sp_lat <- ncvar_get(nc_open("attm.nc"), "lat")
-# sp_lat <- sp_lat[sp_lat <= 0]
-grid = list(x = sp_lon, y = sp_lat)
-
-sst_small <- array(dim = c(length(sp_lon), length(sp_lat), length(time)))
-for (t in 1:length(time)) {
-  int <- interp.surface.grid(list(x = lon, y = lat, z = sst[, ,t]), grid)
-  sst_small[, ,t] <- int$z
-  # message(paste0("Terminado tiempo ", as.character(t), " de ", as.character(length(time))))
-}
-
-dimnames(sst_small) <- list(sp_lon, sp_lat, as.character(time))
-
-sst <- setDT(melt(sst_small, value.name = "sst",
-                  varnames = c("lon", "lat", "time")))
-save(sst, file = "DATA/NCEP/sst_todo.rda")
-fwrite(sst, file = "DATA/NCEP/sst_todo.csv")
-
-remove(sst, sst_small)
+file <- paste0(basedir, "sst_sub.nc")
+sst <- ReadNCEP(file, "sst", levs = F, date.fun = "days") %>%
+    melt(value.name = "sst") %>%
+    setDT()
+saveRDS(olr, file = paste0(basedir, "sst.Rds"))

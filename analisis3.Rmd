@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 	warning = FALSE,
 	cache = TRUE
 )
-source("helperfun.R")
+source("scripts/helperfun.R")
 
 theme_elio <- theme_minimal() + 
   theme(legend.position = "bottom")
