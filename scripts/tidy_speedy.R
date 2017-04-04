@@ -8,7 +8,6 @@ source("scripts/helperfun.R")
 
 # Valores medios.
 file <- "DATA/SPEEDY/attm.nc"
-ncfile <- nc_open(file)
 vars <- c("gh", "u", "v", "psi", "temp")
 speedy <- ReadNetCDF(file, vars)
 

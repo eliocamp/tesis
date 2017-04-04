@@ -68,8 +68,8 @@ BuildMap <- function(res = 1, smooth = 1, pm = 180,
 geom_map2 <- function(map) {
     # Un geom_path con defaults copados para agregar mapas
     g <- geom_path(data = map, aes(long, lat, group = group),
-               color = "black",
-               inherit.aes = F, size = 0.2)
+                   color = "black",
+                   inherit.aes = F, size = 0.2)
     return(g)
 }
 
@@ -124,19 +124,27 @@ ReadNetCDF <- function(file, vars) {
     ncfile <- nc_open(file)
 
     # Leo las dimensiones
+    dims <- names(ncfile$dim)
+    ids <- vector()
     dimensions <- list()
     for (i in seq_along(dims)) {
         dimensions[[dims[i]]] <- ncvar_get(ncfile, dims[i])
+        ids[i] <- ncfile$dim[[i]]$id
     }
+    names(dims) <- ids
+
 
     # Leo la primera variable para luego hacer melt y obtener el data.table
     # al que luego le agrego las otras variables
     var1 <- ncvar_get(ncfile, vars[1])
+    order <- ncfile$var[[vars[1]]]$dimids
+    dimensions <- dimensions[dims[as.character(order)]]
     dimnames(var1) <- dimensions
     nc <- melt(var1, varnames = names(dimensions), value.name = vars[1])
     setDT(nc)
-    nc[, c(vars[-1]) := lapply(vars[-1], ncvar_get, nc = ncfile)]    # otras variables
-
+    if (length(vars) > 1) {
+        nc[, c(vars[-1]) := lapply(vars[-1], ncvar_get, nc = ncfile)]    # otras variables
+    }
     # Dejemos todo prolijo antes de cerrar.
     nc_close(ncfile)
     return(nc)

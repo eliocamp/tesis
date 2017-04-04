@@ -5,50 +5,53 @@ library(fields)
 library(ncdf4)
 library(compiler)
 # library(akima)
-source("helperfun.R")
+source("scripts/helperfun.R")
 enableJIT(3)
-month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
-               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
 
 # Lee .nc
 file <- "DATA/NCEP/hgt.mon.mean_sub.nc"
+gh <- ReadNetCDF(file, "hgt")
+setnames(gh, "time", "date")
+gh[, date := ymd_hms("1800-01-01 00:00:00") + hours(date)]
+gh <- gh[lat <= 0 & year(date) > 1984 & year(date) < 2016]
+
 ncfile <- nc_open(file)
 lev <- ncvar_get(ncfile, "level")
 lat <- ncvar_get(ncfile, "lat")
 lon <- ncvar_get(ncfile, "lon")
-time <- ncvar_get(ncfile, "time")
-time <- ymd_hms("1800-01-01 00:00:00") + hours(time)
+date <- ncvar_get(ncfile, "time")
+date <-
 # sp_levs <- ncvar_get(nc_open("attm.nc"), "lev")
 
 # Quedarnos con 1985-2015 (no hace falta, en realidad)
-hgt <- ncvar_get(ncfile, "hgt")
+gh <- ncvar_get(ncfile, "hgt")
 nc_close(ncfile)
-dimnames(hgt) <- list(lon, lat, lev, as.character(time))
-hgt <- hgt[, lat <= 0, , year(time) > 1984 & year(time) < 2016]
+dimnames(gh) <- list(lon, lat, lev, as.character(date))
+hgt <- hgt[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
 
 ncfile <- nc_open("DATA/NCEP/air.mon.mean_sub.nc")
 temp <- ncvar_get(ncfile)
-time <- ncvar_get(ncfile, "time")
-time <- ymd_hms("1800-01-01 00:00:00") + hours(time)
+date <- ncvar_get(ncfile, "time")
+date <- ymd_hms("1800-01-01 00:00:00") + hours(date)
 nc_close(ncfile)
-dimnames(temp) <- list(lon, lat, lev, as.character(time))
-temp <- temp[, lat <= 0, , year(time) > 1984 & year(time) < 2016]
+dimnames(temp) <- list(lon, lat, lev, as.character(date))
+temp <- temp[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
 
 ncfile <- nc_open("DATA/NCEP/uwnd.mon.mean_sub.nc")
 U <- ncvar_get(ncfile, "uwnd")
-time <- ncvar_get(ncfile, "time")
-time <- ymd_hms("1800-01-01 00:00:00") + hours(time)
+date <- ncvar_get(ncfile, "time")
+date <- ymd_hms("1800-01-01 00:00:00") + hours(date)
 nc_close(ncfile)
-dimnames(U) <- list(lon, lat, lev, as.character(time))
-U <- U[, lat <= 0, , year(time) > 1984 & year(time) < 2016]
+dimnames(U) <- list(lon, lat, lev, as.character(date))
+U <- U[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
 
 ncfile <- nc_open("DATA/NCEP/vwnd.mon.mean_sub.nc")
 V <- ncvar_get(ncfile, "vwnd")
-time <- ncvar_get(ncfile, "time")
-time <- ymd_hms("1800-01-01 00:00:00") + hours(time)
+date <- ncvar_get(ncfile, "time")
+date <- ymd_hms("1800-01-01 00:00:00") + hours(date)
 nc_close(ncfile)
-dimnames(V) <- list(lon, lat, lev, as.character(time))
-V <- V[, lat <= 0, , year(time) > 1984 & year(time) < 2016]
+dimnames(V) <- list(lon, lat, lev, as.character(date))
+V <- V[, lat <= 0, , year(date) > 1984 & year(date) < 2016]
 
 time <- time[year(time) > 1984 & year(time) < 2016]
 # lev <- lev[lev %in% sp_levs]

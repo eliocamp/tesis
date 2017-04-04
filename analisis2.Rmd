@@ -25,7 +25,6 @@ map.SH.3 <- map.world.3[lat %b% c(-90, 0)]
 # Analizando datos speedy 
 (luego de la reunión del 5 de agosto de 2016)
 
-
 Cambiando, decidimos dejar un poco de lado el geopotencial y ver más función corriente, u y T.
 
 Variables: geop, streamf, T, U, V. 
@@ -45,25 +44,25 @@ NCEP no brinda información de función corriente, para comparar uso geopotencia
 
 ```{r leo_speedy}
 # Leo speedy y hago anomalías mensuales
+invisible({
+# Leo speedy y hago anomalías mensuales
+load("DATA/SPEEDY/speedy.Rda")
+vars <- c("gh", "u", "v", "psi", "t")
+speedy.mean <- speedy[, c(vars = lapply(.SD, FUN = mean)),
+                      by = .(lat, lon, lev, month(date))]
+vars.z <- paste0(vars, ".z")
+allvars <- c(vars, vars.z)
+speedy.mean[, c(vars.z) := lapply(.SD, FUN = Anomaly), 
+            by = .(lat, lev, month),
+            .SDcols = vars]
 
-m_speedy <- fread("SPEEDY/todo_m_speedy.csv")
-m_speedy[, month := factor(month, levels = month.abb)]
-
-# setindex(speedy, lon, lat, lev, month, year)
-
-vars <- c("gh", "u", "v", "psi", "temp")
-avars <- paste0("a", vars)
-allvars <- c(vars, avars)
-sp_levs <- m_speedy[, unique(lev)]
-# Anomalías mensuales 
-m_speedy[, c(avars) := lapply(.SD, FUN = anom), 
-         by = .(lat, lev, month),
-         .SDcols = vars]
-setcolorder(m_speedy, c("lon", "lat", "lev", "month", allvars))
-setorder(m_speedy, month, -lev, lat, lon)
+setcolorder(speedy.mean, c("lon", "lat", "lev", "month", allvars))
+})
 ```
 
 ```{r leo_ncep}
+load("DATA/NCEP/ncep.rda")
+
 m_ncep <- fread("NCEP/todo_m_ncep.csv")
 m_ncep <- m_ncep[lat <= 0]
 m_ncep[, month := factor(month, levels = month.abb)]
