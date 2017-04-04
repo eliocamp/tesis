@@ -30,7 +30,7 @@ ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
     date <- ncvar_get(ncfile, "time")
     date.fun <- match.fun(date.fun)
     date <- ymd_hms("1800-01-01 00:00:00") + date.fun(date)
-    nc_close(ncfile)
+
     if (levs) {
         lev <- ncvar_get(ncfile, "level")
         dimnames(temp) <- list(lon = lon, lat = lat, lev = lev, date = as.character(date))
@@ -39,6 +39,7 @@ ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
         dimnames(temp) <- list(lon = lon, lat = lat, date = as.character(date))
         temp <- temp[, , year(date) > 1984 & year(date) < 2016]
     }
+    nc_close(ncfile)
     return(temp)
 }
 
