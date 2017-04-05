@@ -43,7 +43,7 @@ ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
     return(temp)
 }
 
-InterpolateNCEP <- function(field, lon, lat, verbose = F) {
+InterpolateNCEP <- function(field, lon, lat, cores = 4) {
     # Interpolación bilineal.
     # Entra:
     #   fiel: un campo como sale de ReadNCEP
@@ -55,26 +55,21 @@ InterpolateNCEP <- function(field, lon, lat, verbose = F) {
     grid <- list(x = lon, y = lat)
     lev <- dimnames(field)$lev
     date <- dimnames(field)$date
-    progress.bar <- txtProgressBar(min = 0, max = length(date),
-                                   style = 3)
 
-    # Array "allocated" (¿re loca?) donde guardar el campo interpolado
-    field.small <- array(dim = c(length(lon), length(lat), length(lev),
-                                 length(date)))
     # Hago la interpolación para cada fecha y cada nivel.
-    # Nota: esto tarda bastante y podría paralelizarse, pero hacerlo es un
-    # bolonqui y no vale la pena para algo que se corre 1 o 2 veces.
-    for (t in 1:length(date)) {
-        for (l in 1:length(lev)) {
-            int <- interp.surface.grid(list(x = lon, y = lat,
-                                            z = field[, , l, t]), grid)
-            field.small[, , l, t] <- int$z
+    # Nota: perdí más tiempo para averiguar cómo paralelizarlo que el que
+    # ahorré con el aumento de velocidad.
+
+    # for (t in 1:length(date)) {
+    library(doParallel)
+    registerDoParallel(cores)
+    field.small <- foreach(l = seq_along(lev), .combine = "cbind") %:%
+        foreach(t = seq_along(date), .combine = "c") %dopar% {
+            int <- c(interp.surface.grid(list(x = lon, y = lat,
+                                              z = field[, , l, t]), grid)$z)
         }
-        if (verbose) {
-            setTxtProgressBar(progress.bar, t)
-        }
-    }
-    close(progress.bar)
+    dim(field.small) <- c(length(lon), length(lat), length(lev), length(date))
+    stopImplicitCluster()
     dimnames(field.small) <- list(lon = lon, lat = lat, lev = lev,
                                   date = as.character(date))
     return(field.small)
@@ -105,7 +100,7 @@ for (i in seq_along(files)) {
     field <- ReadNCEP(files[i], variables[i])
 
     # Interpolo a resolución speedy.
-    field.small <- InterpolateNCEP(field, lon.sp, lat.sp, verbose = T)
+    field.small <- InterpolateNCEP(field, lon.sp, lat.sp)
 
     # Paso a formato long. Si es el primero, uso melt, sino, simplemente lo
     # pongo como vector (es más rápido).
@@ -117,7 +112,7 @@ for (i in seq_along(files)) {
 }
 
 # Guardo todo.
-saveRDS(ncep, file = paste0(basedir, "ncep.Rds"), compress = "gzip")
+saveRDS(ncep, file = paste0(basedir, "ncep_par.Rds"), compress = "gzip")
 remove(ncep)
 # Antes calculaba la media climatológica mensual y lo guardaba, pero eso mejor
 # lo dejo para después.
@@ -138,4 +133,4 @@ file <- paste0(basedir, "sst_sub.nc")
 sst <- ReadNCEP(file, "sst", levs = F, date.fun = "days") %>%
     melt(value.name = "sst") %>%
     setDT()
-saveRDS(olr, file = paste0(basedir, "sst.Rds"))
+saveRDS(sst, file = paste0(basedir, "sst.Rds"))
