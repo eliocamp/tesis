@@ -3,11 +3,11 @@ title: "Untitled"
 author: "Elio Campitelli"
 date: "April 4, 2017"
 output:
-    ioslides_presentation: 
-        fig_height: 5
-        fig_width: 9
-        smaller: yes
-        widescreen: yes
+  ioslides_presentation: 
+    fig_height: 5
+    fig_width: 9
+    smaller: yes
+    widescreen: yes
 ---
 
 ```{r, include = FALSE}
@@ -16,12 +16,13 @@ knitr::opts_chunk$set(
     message = FALSE,
     warning = FALSE,
     cache = TRUE,
-    cache.path = "cache/"
+    cache.path = "cache/",
+    cache.lazy = FALSE
 )
 library(ncdf4)
 source("scripts/helperfun.R")
-month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep",
-               "Oct", "Nov", "Dic")
+month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun", 
+               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
 names(month.abb) <- as.character(1:12)
 
 theme_elio <- theme_minimal() + 
@@ -54,12 +55,6 @@ gh <- ReadNCEP("DATA/NCEP/hgt.mon.mean.nc", var = "hgt") %>%
 qs <- gh[, FitQsWave(gh, 3), by = .(lat, lev, date)]
 qs.mean <- qs[, lapply(.SD, mean), by = .(lat, lev, month(date), k)]
 
-qs.int <- qs.mean[, Interpolate.DT(amplitude, lat, lev, yo = interp.levs), 
-                  by = .(month, k)]
-qs.int[, r2 := qs.mean[, Interpolate.DT(r2, lat, lev, yo = interp.levs), 
-                       by = .(month, k)][, r2]]
-qs.int[, phase := qs.mean[, Interpolate.DT(phase, lat, lev, yo = interp.levs), 
-                          by = .(month, k)][, phase]]
 levs.sp <- ncvar_get(nc_open("DATA/SPEEDY/attm.nc"), "lev")
 levs.index <- c(700, 300, 100)
 ```
@@ -129,9 +124,9 @@ Tercile <- function(x) {
   names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
   r
 } 
-qs_index[, quantile := ecdf(amplitude)(amplitude), by = month(date)]
+qs_index[, quantile.ampl := ecdf(amplitude)(amplitude), by = month(date)]
 ggplot(qs_index, aes(month(date), amplitude, group = month(date))) +
-    geom_point(data = qs_index[quantile >= 0.975 | quantile <= 0.025]) +
+    geom_point(data = qs_index[quantile.ampl >= 0.975 | quantile.ampl <= 0.025]) +
     stat_summary(fun.data = Tercile, geom = "boxplot", position = "dodge") +
     scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
     ylab("Amplitud") +
@@ -180,11 +175,11 @@ ggplot(qs_index, aes(r2, amplitude)) +
 
 ```{r}
 gh <- gh[qs_index, on = "date"]
-gh.composition <- gh[, .(gh = mean(gh[quantile >= 2/3]) - mean(gh)), 
+gh.composition <- gh[, .(gh = mean(gh[quantile.ampl >= 2/3]) - mean(gh)), 
                      by = .(lon, lat, lev, month(date))]
 ```
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=6, fig.width=10}
 PlotTemp <- function(lev.plot) {
     ggplot(gh.composition[lev == lev.plot], aes(lon, lat)) +
         geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
@@ -201,13 +196,13 @@ PlotTemp(100)
  
 ----
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=6, fig.width=10}
 PlotTemp(300)
 ```
 
 ----
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=6, fig.width=10}
 PlotTemp(700)
 ```
 
@@ -219,7 +214,9 @@ gh.composition.r2 <- gh[, .(gh = mean(gh[quantile.r2 >= 2/3]) - mean(gh)),
                      by = .(lon, lat, lev, month(date))]
 ```
 
-```{r, fig.height=7, fig.width=10}
+----
+
+```{r, fig.height=6, fig.width=10}
 PlotTemp <- function(lev.plot) {
     ggplot(gh.composition.r2[lev == lev.plot], aes(lon, lat)) +
         geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
@@ -236,12 +233,12 @@ PlotTemp(100)
  
 ----
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=6, fig.width=10}
 PlotTemp(300)
 ```
 
 ----
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=6, fig.width=10}
 PlotTemp(700)
 ```
