@@ -40,8 +40,8 @@ ppNcepSpeedy    # ¡no usar CamelCase ni camelCase!
 
 Para ser consistente entre distintas partes del código, estos son algunos nombres de variables que **tienen** que respetarse so pena de quilombo en el código y tener que acordarse muchos más nombres. 
 
-* Latitud y Longitud son `lat` y `lon`. No usar ` long`. La longitud **siempre** va de -180 a 180.  
-* La fecha es ` date`. No usar ` time` ni otra similar. El formato **siempre** debe ser YYYY-MM-DD HH:MM:SS. Siempre codificarlo como una clase ` date` en caso de fechas sin hora y ` POSIXct` en caso de fechas con hora.
+* Latitud y Longitud son `lat` y `lon`. No usar ` long` como un troglodita (aunque técnicamente "long" significa largo, que no está tan lejos de "longitud"). La longitud **siempre** va de -180 a 180 (puede cambiar a 0 a 360 según vea lo más conveniente).
+* La fecha es `date`. No usar `time` ni otra similar. El formato **siempre** debe ser YYYY-MM-DD HH:MM:SS. Siempre codificarlo como una clase `date` en caso de fechas sin hora y ` POSIXct` en caso de fechas con hora.
 * Los meses **siempre** se codifican el 1 al 12 y como `factor` ordenado. Todavía no decido si conviene tener diciembre o enero como el primer mes. 
 * Variables meteorológicas:
   
@@ -65,18 +65,18 @@ Para ser consistente entre distintas partes del código, estos son algunos nombr
     * **z**: anomalía zonal
     * **int**: interpolado
 
-Como aclaración, es importante asegurarse de que todo dato leído de fuentes externas tenga siga estas líneas. 
+Como aclaración, es importante modificar todo dato leído de fuentes externas para que se ajuste a estos criterios. No hace ni siquiera una conversión de unidades antes de tener los datos prolijos. 
 
-Si es neceario guardar datos en el disco (como resutlados de computaciones largas) el nombre de archivo **siempre** debe ser igual al nombre de la variable con la extensión ".Rda". 
+Si es neceario guardar datos en el disco (como resutlados de computaciones largas) usar siempre `saveRDS()` en vez de `save()` y la extensión es ".Rds". 
 
 ```{r}
 # Bien.
 regr.sst_gh <- lm(...)
-save(regr.sst_gh, file = "regr.sst_gh.Rda")
+saveRDS(regr.sst_gh, file = "regr.sst_gh.Rds")
 
 # Mal.
 regr.sst_gh <- lm(...)
-save(regr.sst_gh, file = "regresion.rda")
+saveRDS(regr.sst_gh, file = "regresion.rds")
 ```
 
 
@@ -86,7 +86,7 @@ Los nombres de **funciones** van con CamelCase y sin puntos. Deben ser descripti
 
 * Las funciones que convierten de un tipo de variable a otro se esciben en minúscula con el formato "[entrada]2[salida]"
 
-A menos que sea demasiado obvio qué es lo que hace la función, agregar una descripción del funcionamiento, argumentos de entrada, salida y aclaraciones pertinentes sobre limitaciones y errores. Esta documentación debe estar en la primera línea de la función. El orden de los argumentos debe ser razonable y siempre tratanod de que el primero sea el "dato" que uno quiere manipular de manera que sea compatible con el *pipe* (%>%). El nombre de los argumentos tiene que ser descriptivo. Explicitar el valor devuelto con ` return()` a menos que la función sea un *wrapper* de otra función con argumentos por default que se usan seguido. 
+A menos que sea demasiado obvio qué es lo que hace la función, agregar una descripción del funcionamiento, argumentos de entrada, salida y aclaraciones pertinentes sobre limitaciones y errores. Esta documentación debe estar en la primera línea de la función. El orden de los argumentos debe ser razonable y siempre tratando de que el primero sea el "dato" que uno quiere manipular de manera que sea compatible con el *pipe* (`%>%`). El nombre de los argumentos tiene que ser descriptivo. Explicitar el valor devuelto con ` return()` a menos que la función sea un *wrapper* de otra función con argumentos por default que se usan seguido. 
 
 ```{r}
 # Bien.
@@ -170,9 +170,9 @@ if (i == 5)
 
 Usar ` <-` para asignación (esto es lo más controversial de la guía ya que hubiera preferido aprender R usando ` =`; pero lo hecho hecho está y el código usando ` =` me resulta feo). Tratar de no usar nunca la asignación ` ->`. 
 
-Respetar la identación usando 4 espacios. Se puede poner espaciado extra para alinear asignación de varias variables o la asiganción de muchos argumentos en una función. Acá está bien ser flexible si el código termina con demasiado espaciado innecesario. Algunos ejempos donde puede obviarse es al usar ` invisible()` para arreglar los problemas enter data.table y knitr o código muy largo dentro del *j* de un data.table. 
+Respetar la identación usando 4 espacios. Se puede poner espaciado extra para alinear asignación de varias variables o la asiganción de muchos argumentos en una función. Acá está bien ser flexible si el código termina con demasiado espaciado innecesario. Algunos ejempos donde puede obviarse es al usar ` invisible()` para arreglar los problemas entre data.table y knitr o código muy largo dentro del *j* de un data.table. 
 
-Usar nuevas líneas para estructurar el código. Tratar el código como si fuera texto y separarlo en párrafos con una temática consistente. Por ejemplo, líneas donde se lee y prepara una fuente de datos, por ejemplo, van todos juntos pero separados de otro bloque donde se leen otros datos.
+Usar nuevas líneas para estructurar el código. Tratar el código como si fuera texto y separarlo en párrafos con una temática consistente. Por ejemplo, líneas donde se lee y prepara una fuente de datos, por ejemplo, van todos juntos, pero separados de otro bloque donde se leen otros datos.
 
 Los **comentarios** pueden ir en su propia línea o en una línea de código. En el primer caso, empiezan con sólo un "#" y un espacio y se escriben en mayúscula y terminando con un punto (como si fuera una oración normal de toda la vida). En el segundo caso, se separan del código con 4 espacios y un "#" y van en minúscula y sin punto final. 
 

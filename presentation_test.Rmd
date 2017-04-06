@@ -1,9 +1,0 @@
----
-title: "Untitled"
-author: "Elio Campitelli"
-date: "April 4, 2017"
-output:
-  ioslides_presentation: 
-    smaller: yes
-    widescreen: yes
----
