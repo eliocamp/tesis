@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
     cache = TRUE,
     cache.path = "cache/"
 )
+library(ncdf4)
 source("scripts/helperfun.R")
 month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep",
                "Oct", "Nov", "Dic")
@@ -45,7 +46,9 @@ gh <- ReadNCEP("DATA/NCEP/hgt.mon.mean.nc", var = "hgt") %>%
     melt(value.name = "gh") %>%
     setDT() %>%
     .[lat <= 20 & lat != -90] %>%
-    .[, date := as.Date(date[1], format = "%Y-%m-%d"), by = .(date)]
+    .[, date1 := as.Date(date[1], format = "%Y-%m-%d"), by = .(date)] %>%
+    .[, date := NULL] %>%
+    setnames("date1", "date")
 
 # Calculo la onda 3
 qs <- gh[, FitQsWave(gh, 3), by = .(lat, lev, date)]
@@ -99,11 +102,12 @@ g + facet_grid_paginate(month~., page = 4, ncol = 1, nrow = 3, labeller = labell
 Para construir el índice tomo --por ahora-- el promedio de la amplitud de la onda 3 en los niveles 700, 300 y 100 entre 65º y 40ºS (línea punteada anterior).
 
 ```{r}
-
 lats <- unique(qs$lat)
 lats.index <- lats[lats <= -40 & lats >= -65]
 qs_index <- qs[lev %in% levs.index & lat %in% lats.index, 
-               .(amplitude = mean(amplitude)), 
+               .(amplitude = mean(amplitude),
+                 r2 = mean(r2),
+                 phase = mean(phase)), 
                by = date]
 ```
 
@@ -125,6 +129,7 @@ Tercile <- function(x) {
   names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
   r
 } 
+qs_index[, quantile := ecdf(amplitude)(amplitude), by = month(date)]
 ggplot(qs_index, aes(month(date), amplitude, group = month(date))) +
     geom_point(data = qs_index[quantile >= 0.975 | quantile <= 0.025]) +
     stat_summary(fun.data = Tercile, geom = "boxplot", position = "dodge") +
@@ -135,16 +140,51 @@ ggplot(qs_index, aes(month(date), amplitude, group = month(date))) +
 ```
 
 
-## Composición de Geopotencial (lineas = 15 mgp)
+## Usando R2 como índice
 
 ```{r}
-qs_index[, quantile := ecdf(amplitude)(amplitude), by = month(date)]
+g <- ggplot(qs_index, aes(date, r2)) +
+    geom_line() +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+    ylab("Amplitud") + xlab("Fecha")
+
+DivideTimeseries(g, n = 3, qs_index$date, ylab = "R2", xlab = "Fecha")
+```
+
+## Ciclo anual de R^2
+
+```{r}
+qs_index[, quantile.r2 := ecdf(r2)(r2), by = month(date)]
+ggplot(qs_index, aes(month(date), r2, group = month(date))) +
+    geom_point(data = qs_index[quantile.r2 >= 0.975 | quantile.r2 <= 0.025]) +
+    stat_summary(fun.data = Tercile, geom = "boxplot", position = "dodge") +
+    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
+    ylab("R2") +
+    labs(caption = "líneas: 95%\ncajas: terciles")
+
+```
+
+## Amplitud vs. R^2
+
+```{r}
+ggplot(qs_index, aes(r2, amplitude)) + 
+    geom_point(alpha = 0.3) + 
+    geom_smooth(method = "lm", se = F, linetype = 2, color = "black")  +
+    xlab("R^2") + ylab("Amplitud")
+```
+
+
+# Composición de Geopotencial usando percentil 66 de la amplitud (lineas = 15 mgp)
+
+----
+
+```{r}
 gh <- gh[qs_index, on = "date"]
 gh.composition <- gh[, .(gh = mean(gh[quantile >= 2/3]) - mean(gh)), 
                      by = .(lon, lat, lev, month(date))]
 ```
 
-```{r}
+```{r, fig.height=7, fig.width=10}
 PlotTemp <- function(lev.plot) {
     ggplot(gh.composition[lev == lev.plot], aes(lon, lat)) +
         geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
@@ -158,15 +198,50 @@ PlotTemp <- function(lev.plot) {
 
 PlotTemp(100)
 ```
+ 
+----
 
-## Composición de Geopotencial (lineas = 15 mgp)
-
-```{r}
+```{r, fig.height=7, fig.width=10}
 PlotTemp(300)
 ```
 
-## Composición de Geopotencial (lineas = 15 mgp)
+----
+
+```{r, fig.height=7, fig.width=10}
+PlotTemp(700)
+```
+
+# Composición de Geopotencial usando percentil 66 de R^2 (lineas = 15 mgp)
+
 
 ```{r}
+gh.composition.r2 <- gh[, .(gh = mean(gh[quantile.r2 >= 2/3]) - mean(gh)), 
+                     by = .(lon, lat, lev, month(date))]
+```
+
+```{r, fig.height=7, fig.width=10}
+PlotTemp <- function(lev.plot) {
+    ggplot(gh.composition.r2[lev == lev.plot], aes(lon, lat)) +
+        geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
+                     color = "black", binwidth = 15) +
+        coord_map_polar + 
+        facet_wrap(~month, nrow = 3, labeller = labeller(month = month.abb)) +
+        map.SH.3 +
+        scale_linetype(guide = FALSE) +
+        labs(subtitle = paste0("nivel = ", lev.plot))
+}
+
+PlotTemp(100)
+```
+ 
+----
+
+```{r, fig.height=7, fig.width=10}
+PlotTemp(300)
+```
+
+----
+
+```{r, fig.height=7, fig.width=10}
 PlotTemp(700)
 ```
