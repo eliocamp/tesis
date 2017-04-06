@@ -5,6 +5,7 @@ library(ggplot2)
 library(ggforce)
 library(stringi)
 library(ggthemes)
+library(magrittr)
 library(data.table)
 library(viridis)
 library(lubridate)
@@ -81,14 +82,10 @@ RepeatLon <- function(x) {
     rbind(x, border)
 }
 
-# lm2 <- function(...) {
-#   lm(...)
-# }
-# lm_m <- memoise(lm2)
-# Función para calcular onda estacionaria y su amplitud
+
 FitQsWave <- function(x, n = 1) {
     # Calcula los parámetros de números de onda. Se lleva bien con n vector
-    # y data.table
+    # y data.table.
     # Entra:
     #   x: vector de entrada
     #   n: vector con los números de onda a calcular
@@ -203,11 +200,15 @@ Anomaly <- function(x) {
 }
 
 # Para interpolación en data table
-interp.dt <- function(...){
-    int <- interp(...)
+Interpolate.DT <- function(z, x, y, yo = unique(y), xo = unique(x), ...){
+    int <- akima::interp(x = x, y = y, z = z, yo = yo, xo = xo, ...)
+    names <- c(deparse(substitute(x)),
+               deparse(substitute(y)),
+               deparse(substitute(z)))    # muy feo, sí
     r <- with(int, {
         grid <- expand.grid(x, y)
         r <- list(grid[,1], grid[, 2], c(z))
+        names(r) <- names
         return(r)
     })
 }
@@ -321,6 +322,10 @@ date_month2factor <- function(x) {
     factor(as.numeric(stringi::stri_sub(x, 6, 7)), levels = c(12, 1:11), ordered = T)
 }
 
+date2month <- function(x) {
+    as.integer(stringr::str_sub(x, 6, 7))
+}
+
 # genera coeficiente y error estandar de regresión lineal. Para uso en data.table
 lmcoef <- function(formula) {
     a <- summary(fastLm(formula = formula))
@@ -330,7 +335,21 @@ lmcoef <- function(formula) {
 
 
 
-panel_timeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
+DivideTimeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
+    # Función que agarra un plot de timeseries de ggplot  y lo divide en paneles
+    # respetando que todos tengan la misma escala y comportándose bien con los
+    # estadísticos generados.
+    # Entra:
+    #   g: un ggplot
+    #   x: el rango del eje x  (este es un hack medio feo, estaría bueno sacarlo
+    #      automáticamente del plot)
+    #   n: el número de paneles
+    #   xlab: el nombre del eje x
+    #   ylab: el nombre del eje y (de nuevo, estaría bueno sacarlo del plot)
+    # Sale:
+    #   un plot.
+    # Por ahora (y posiblemente no cambie en el futuro cercano) no es muy
+    # versatiil y seguramente no funcione con plots medianamente complejos.
     M <- max(x)
     m <- min(x)
     step <- (M - m)/n
@@ -343,17 +362,85 @@ panel_timeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
         if (i == 1) {
             pl <- ggplot_gtable(ggplot_build(g))
             leg <- which(sapply(pl$grobs, function(x) x$name) == "guide-box")
-            legend <- pl$grobs[[leg]]
+            try(legend.new <- pl$grobs[[leg]])
         }
         pl <- g + coord_cartesian(xlim = as.Date(c(m + step*(i-1), m + i*step))) +
             theme(axis.title = element_blank()) + guides(color = FALSE)
         pl <- ggplot_gtable(ggplot_build(pl))
         plots[[i]] <- pl
     }
-    plots[[n + 1]] <- legend
+    if (exists("legend.new")) {
+        plots[[n + 1]] <- leg
+    }
     grid.arrange(grobs = plots, ncol = 1, heights = c(rep(10, n), 2), bottom = xlab, left = ylab)
 }
 
 
 theme_elio <- theme_minimal() +
     theme(legend.position = "bottom")
+
+
+ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
+    # Lee archivos nc de NCEP y guarda todo en un array con las dimensiones
+    # bien puestas.
+    # Entra:
+    #   file: ruta del archivo
+    #   var: nombre de la variable a leer (al pedo, en realidad, porque estos
+    #        archivos sólo tienen una variable)
+    #   levs: ¿la variable tiene varios niveles?
+    #   date.fun: la función para modificar el date.
+    # Sale:
+    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas y en período
+    #   de tiempo necesario.
+    library(ncdf4)
+    ncfile   <- nc_open(file)
+    temp     <- ncvar_get(ncfile, var)
+    lat      <- ncvar_get(ncfile, "lat")
+    lon      <- ncvar_get(ncfile, "lon")
+    date     <- ncvar_get(ncfile, "time")
+    date.fun <- match.fun(date.fun)
+    date     <- ymd_hms("1800-01-01 00:00:00") + date.fun(date)
+
+    if (levs) {
+        lev <- ncvar_get(ncfile, "level")
+        dimnames(temp) <- list(lon = lon, lat = lat, lev = lev, date = as.character(date))
+        temp <- temp[, , , year(date) > 1984 & year(date) < 2016]
+    } else {
+        dimnames(temp) <- list(lon = lon, lat = lat, date = as.character(date))
+        temp <- temp[, , year(date) > 1984 & year(date) < 2016]
+    }
+    nc_close(ncfile)
+    return(temp)
+}
+
+InterpolateNCEP <- function(field, lon, lat, cores = 4) {
+    # Interpolación bilineal.
+    # Entra:
+    #   fiel: un campo como sale de ReadNCEP
+    #   lon: grilla de longitud
+    #   lat: grilla de latitud
+    #   cores: cantidad de núcleos para usar la paralelización
+    # Sale:
+    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas
+    grid <- list(x = lon, y = lat)
+    lev  <- dimnames(field)$lev
+    date <- dimnames(field)$date
+
+    # Hago la interpolación para cada fecha y cada nivel.
+    # Nota: perdí más tiempo para averiguar cómo paralelizarlo que el que
+    # ahorré con el aumento de velocidad.
+
+    # for (t in 1:length(date)) {
+    library(doParallel)
+    registerDoParallel(cores)
+    field.small <- foreach(l = seq_along(lev), .combine = "cbind") %:%
+        foreach(t = seq_along(date), .combine = "c") %dopar% {
+            int <- c(interp.surface.grid(list(x = lon, y = lat,
+                                              z = field[, , l, t]), grid)$z)
+        }
+    dim(field.small) <- c(length(lon), length(lat), length(lev), length(date))
+    stopImplicitCluster()
+    dimnames(field.small) <- list(lon = lon, lat = lat, lev = lev,
+                                  date = as.character(date))
+    return(field.small)
+}
