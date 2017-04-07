@@ -1,7 +1,7 @@
 ---
-title: "Untitled"
+title: "Composición de campos"
 author: "Elio Campitelli"
-date: "April 4, 2017"
+date: "April 26, 2017"
 output:
   ioslides_presentation: 
     fig_height: 5
@@ -42,7 +42,6 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 
 ```{r}
 # Leo datos de geopotencial de NCEP.
-
 gh <- ReadNCEP("DATA/NCEP/hgt.mon.mean.nc", var = "hgt") %>%
     melt(value.name = "gh") %>%
     setDT() %>%
@@ -242,3 +241,53 @@ PlotTemp(300)
 ```{r, fig.height=6, fig.width=10}
 PlotTemp(700)
 ```
+
+# Composición usando 1 desvío estandar (lineas = 20 mgp)
+
+----
+
+```{r}
+qs_index[, amplitude.norm := (amplitude - mean(amplitude))/sd(amplitude), by = month(date)]
+
+ggplot(qs_index, aes(month(date), amplitude.norm, group = month(date))) +
+    geom_boxplot() +
+    ylab("Amplitud normalizada") + scale_x_continuous(breaks = 1:12, labels = month.abb)
+
+```
+
+---- 
+
+```{r}
+gh <- gh[qs_index[, .(date, amplitude.norm)], on = "date"]
+gh.composition <- gh[, .(gh = mean(gh[amplitude.norm >= 1]) - mean(gh)), 
+                     by = .(lon, lat, lev, month(date))]
+```
+
+
+```{r}
+PlotTemp <- function(lev.plot) {
+    ggplot(gh.composition[lev == lev.plot], aes(lon, lat)) +
+        geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
+                     color = "black", binwidth = 20) +
+        coord_map_polar + 
+        facet_wrap(~month, nrow = 3, labeller = labeller(month = month.abb)) +
+        map.SH.3 +
+        scale_linetype(guide = FALSE) +
+        labs(subtitle = paste0("nivel = ", lev.plot))
+}
+
+PlotTemp(100)
+```
+
+----
+
+```{r}
+PlotTemp(300)
+```
+
+----
+
+```{r}
+PlotTemp(700)
+```
+
