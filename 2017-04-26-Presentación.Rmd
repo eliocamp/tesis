@@ -14,11 +14,8 @@ output:
 knitr::opts_chunk$set(
     echo = FALSE,
     message = FALSE,
-    warning = FALSE,
-    cache = TRUE,
-    cache.path = "cache/",
-    cache.lazy = FALSE
-)
+    warning = FALSE)
+setwd("/home/elio/Documents/Tesis/")
 library(ncdf4)
 source("scripts/helperfun.R")
 month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun", 
@@ -291,3 +288,86 @@ PlotTemp(300)
 PlotTemp(700)
 ```
 
+# Composición de OLR y SST
+
+----
+
+```{r}
+olr <- readRDS("DATA/NCEP/olr.Rds") %>%
+    .[, date1 := as.Date(date[1]), by = date] %>%
+    .[, date := NULL] %>%
+    setnames("date1", "date")
+
+olr.comp <- olr[qs_index[, .(date, quantile.ampl)], on = "date"]
+olr.comp <- olr.comp[, 
+                     .(olr = mean(olr[quantile.ampl >= 2/3]) - mean(olr)),
+                     by = .(lat, lon, month(date))]
+```
+
+```{r}
+ggplot(olr.comp, aes(lon, lat)) +
+    geom_tile(aes(fill = olr)) +
+    scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+    coord_quickmap() +
+    map.world.3 +
+    facet_wrap(~month, labeller = labeller(month = month.abb))
+```
+
+---- 
+
+```{r}
+ggplot(olr.comp[abs(olr) >= 5], aes(lon, lat)) +
+    geom_tile(aes(fill = olr)) +
+    scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+    coord_quickmap() +
+    map.world.3 +
+    facet_wrap(~month, labeller = labeller(month = month.abb)) +
+    labs(caption = "sólo anomalías mayores a +-5")
+```
+
+
+----
+
+```{r}
+sst <- readRDS("DATA/NCEP/sst.Rds") %>%
+    .[, date1 := as.Date(date[1]), by = date] %>%
+    .[, date := NULL] %>%
+    setnames("date1", "date")
+
+## Agrego máscara de océanos (esto debería hacerse en el tidy_ncep.R)
+library(maptools)
+library(maps)
+
+make_mask <- function(lat, lon) {
+  seamask <- map("world2", fill=TRUE, col = "transparent", plot = F)
+  IDs <- sapply(strsplit(seamask$names, ":"), function(x) x[1])
+  seamask <- map2SpatialPolygons(seamask, IDs = IDs,
+                                 proj4string = CRS("+proj=longlat +datum=WGS84"))
+  
+  points <- SpatialPoints(expand.grid(lon, lat), 
+                          proj4string = CRS(proj4string(seamask)))
+  sea <-  is.na(over(points, seamask))
+  return(sea)
+}
+
+lat <- unique(sst$lat)
+lon <- unique(sst$lon)
+sea <- make_mask(lat, lon)
+sst[, sea := sea]
+
+sst.comp <- sst[qs_index[, .(date, quantile.ampl)], on = "date"]
+sst.comp <- sst.comp[sea == T, .(sst = mean(sst[quantile.ampl >= 2/3]) - mean(sst)),
+                     by = .(lat, lon, month(date))]
+
+```
+
+```{r}
+ggplot(sst.comp, aes(lon, lat)) +
+    geom_tile(aes(fill = sst)) +
+    scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+    coord_quickmap() +
+    map.world.3 +
+    facet_wrap(~month, labeller = labeller(month = month.abb))
+```
+
+----
