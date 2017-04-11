@@ -40,7 +40,7 @@ ppNcepSpeedy    # ¡no usar CamelCase ni camelCase!
 
 Para ser consistente entre distintas partes del código, estos son algunos nombres de variables que **tienen** que respetarse so pena de quilombo en el código y tener que acordarse muchos más nombres. 
 
-* Latitud y Longitud son `lat` y `lon`. No usar ` long` como un troglodita (aunque técnicamente "long" significa largo, que no está tan lejos de "longitud"). La longitud **siempre** va de -180 a 180. 
+* Latitud y Longitud son `lat` y `lon`. No usar ` long` como un troglodita (aunque técnicamente "long" significa largo, que no está tan lejos de "longitud"). La longitud va de 0 a 360 (para que sea más fácil proyectar con pacífico central) pero se la grafica en -180:180 (para eso, usar `scale_x_longitude()` y `scale_y_longitude()`).
 * La fecha es `date`. No usar `time` ni otra similar. El formato **siempre** debe ser YYYY-MM-DD HH:MM:SS. Siempre codificarlo como una clase `date` en caso de fechas sin hora y ` POSIXct` en caso de fechas con hora.
 * Los meses **siempre** se codifican el 1 al 12 y como `factor` ordenado. Todavía no decido si conviene tener diciembre o enero como el primer mes. 
 * Variables meteorológicas:
