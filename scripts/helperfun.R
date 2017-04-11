@@ -77,7 +77,7 @@ geom_map2 <- function(map) {
 
 scale_x_longitude <- function(ticks = 60, ...) {
     scale_x_continuous(breaks = seq(0, 360, by = ticks),
-                       labels = c(seq(0, 180, by = ticks), seq(-180 + 60, 0, by = ticks)),
+                       labels = c(seq(0, 180, by = ticks), seq(-180 + ticks, 0, by = ticks)),
                        ...)
 }
 
