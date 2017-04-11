@@ -75,6 +75,19 @@ geom_map2 <- function(map) {
 }
 
 
+scale_x_longitude <- function(ticks = 60, ...) {
+    scale_x_continuous(breaks = seq(0, 360, by = ticks),
+                       labels = c(seq(0, 180, by = ticks), seq(-180 + 60, 0, by = ticks)),
+                       ...)
+}
+
+
+scale_y_longitude <- function(ticks = 60, ...) {
+    scale_y_continuous(breaks = seq(0, 360, by = ticks),
+                       labels = c(seq(0, 180, by = ticks), seq(-180 + 60, 0, by = ticks)),
+                       ...)
+}
+
 RepeatLon <- function(x) {
     # Repite la longitud, para cerrar los contornos en un plot polar
     border <- x[lon == min(lon), ]
@@ -180,6 +193,7 @@ reverselog_trans <- function(base = 10) {
               log_breaks(base = base),
               domain = c(1e-100, Inf))
 }
+
 
 # Nombres de los meses en español
 month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
@@ -443,4 +457,23 @@ InterpolateNCEP <- function(field, lon, lat, cores = 4) {
     dimnames(field.small) <- list(lon = lon, lat = lat, lev = lev,
                                   date = as.character(date))
     return(field.small)
+}
+
+
+ConvertLongitude <- function(lon, from = 180) {
+    # Pasa la longitud entre convenciones.
+    # Entra:
+    #   lon: un vector de longitudes
+    #   from: la convención desde la cual se convierte
+    #   (360 = 0:360, 180 = -180:180)
+    # Sale:
+    #   un vector con la longitud convertida a la otra convención.
+    # Ojo que no hay ningún chequeo de los argumentos. Si se pasa un vector
+    # en convención 0:360 y se le dice que está en -180:180, lo "convierte"
+    # igual y tira cualquier batata.
+    if (from == 360) {
+        lon <- ifelse(lon <= 180, lon, 180*(180 - lon)/(360 - 180))
+    } else if (from == 180) {
+        lon <- ifelse(lon <= 180 & lon >= 0, lon, 180 - lon*(360 - 180)/180)
+    }
 }
