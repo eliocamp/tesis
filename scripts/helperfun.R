@@ -88,6 +88,9 @@ scale_y_longitude <- function(ticks = 60, ...) {
                        ...)
 }
 
+coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
+                             ylim = c(-90, -20))
+
 RepeatLon <- function(x) {
     # Repite la longitud, para cerrar los contornos en un plot polar
     border <- x[lon == min(lon), ]
@@ -460,7 +463,7 @@ InterpolateNCEP <- function(field, lon, lat, cores = 4) {
 }
 
 
-ConvertLongitude <- function(lon, from = 180) {
+ConvertLongitude <- function(lon, from = 360) {
     # Pasa la longitud entre convenciones.
     # Entra:
     #   lon: un vector de longitudes
@@ -472,8 +475,9 @@ ConvertLongitude <- function(lon, from = 180) {
     # en convención 0:360 y se le dice que está en -180:180, lo "convierte"
     # igual y tira cualquier batata.
     if (from == 360) {
-        lon <- ifelse(lon <= 180, lon, 180*(180 - lon)/(360 - 180))
+        lon <- ifelse(lon <= 180, lon, lon - 360)
     } else if (from == 180) {
-        lon <- ifelse(lon <= 180 & lon >= 0, lon, 180 - lon*(360 - 180)/180)
+        lon <- ifelse(lon <= 180 & lon >= 0, lon, lon + 360)
     }
 }
+

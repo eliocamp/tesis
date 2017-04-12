@@ -25,11 +25,10 @@ names(month.abb) <- as.character(1:12)
 theme_elio <- theme_minimal() + 
     theme(legend.position = "bottom")
 theme_set(theme_elio)
-coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
-                             ylim = c(-90, -20))
 
-map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
-map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 0)])
+
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 0)
+map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
 map.world.3 <- geom_map2(map.world.3)
 interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 ```
@@ -104,7 +103,8 @@ qs_index <- qs[lev %in% levs.index & lat %in% lats.index,
 
 ```{r}
 g <- ggplot(qs_index, aes(date, amplitude)) +
-    geom_line() +
+    geom_line() + 
+    geom_hline(aes(yintercept = mean(amplitude)), linetype = 3, color = "gray45") +
     scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
     ylab("Amplitud") + xlab("Fecha")
 
@@ -136,6 +136,7 @@ ggplot(qs_index, aes(month(date), amplitude, group = month(date))) +
 ```{r}
 g <- ggplot(qs_index, aes(date, r2)) +
     geom_line() +
+    geom_hline(aes(yintercept = mean(r2)), linetype = 3, color = "gray45") +
     scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
     ylab("Amplitud") + xlab("Fecha")
 
