@@ -27,7 +27,7 @@ theme_elio <- theme_minimal() +
 theme_set(theme_elio)
 
 
-map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 0)
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
 map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
 map.world.3 <- geom_map2(map.world.3)
 interp.levs <- exp(seq(log(925), log(30), length.out = 40))
@@ -38,13 +38,7 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 
 ```{r}
 # Leo datos de geopotencial de NCEP.
-gh <- ReadNCEP("DATA/NCEP/hgt.mon.mean.nc", var = "hgt") %>%
-    melt(value.name = "gh") %>%
-    setDT() %>%
-    .[lat <= 20 & lat != -90] %>%
-    .[, date1 := as.Date(date[1], format = "%Y-%m-%d"), by = .(date)] %>%
-    .[, date := NULL] %>%
-    setnames("date1", "date")
+gh <- readRDS("DATA/NCEP/ncep.Rds")[lat <= 20, .(lat, lon, lev, date, gh)]
 
 # Calculo la onda 3
 qs <- gh[, FitQsWave(gh, 3), by = .(lat, lev, date)]
@@ -57,7 +51,8 @@ levs.index <- c(700, 300, 100)
 ```{r}
 g <- ggplot(qs.mean[k == 3], aes(lat, lev)) +
     geom_contour(aes(z = amplitude), binwidth = 15, color = "black") +
-    scale_x_reverse() + scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
+    scale_x_reverse(limits = c(0, -90)) + 
+    scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
     directlabels::geom_dl(aes(z = amplitude, label = ..level..), 
                           stat = "contour", color = "black", 
                           binwidth = 15, method = "top.pieces") +
@@ -161,7 +156,7 @@ ggplot(qs_index, aes(month(date), r2, group = month(date))) +
 ```{r}
 ggplot(qs_index, aes(r2, amplitude)) + 
     geom_point(alpha = 0.3) + 
-    geom_smooth(method = "lm", se = F, linetype = 2, color = "black")  +
+    geom_smooth(method = "lm", se = F, linetype = 1, size = 0.3, color = "black")  +
     xlab("R^2") + ylab("Amplitud")
 ```
 
@@ -177,30 +172,33 @@ gh.composition <- gh[, .(gh = mean(gh[quantile.ampl >= 2/3]) - mean(gh)),
 ```
 
 ```{r, fig.height=6, fig.width=10}
-PlotTemp <- function(lev.plot) {
-    ggplot(gh.composition[lev == lev.plot], aes(lon, lat)) +
+PlotComposition <- function(data, lev.plot) {
+    ggplot(RepeatLon(data[lev == lev.plot]), aes(lon, lat)) +
         geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
                      color = "black", binwidth = 15) +
-        coord_map_polar + 
+        # coord_map_polar +
+        coord_polar() +
+        scale_x_longitude() +
+        ylim(c(-90, 0)) +
         facet_wrap(~month, nrow = 3, labeller = labeller(month = month.abb)) +
         map.SH.3 +
         scale_linetype(guide = FALSE) +
         labs(subtitle = paste0("nivel = ", lev.plot))
 }
 
-PlotTemp(100)
+PlotComposition(gh.composition, 100)
 ```
  
 ----
 
 ```{r, fig.height=6, fig.width=10}
-PlotTemp(300)
+PlotComposition(gh.composition, 300)
 ```
 
 ----
 
 ```{r, fig.height=6, fig.width=10}
-PlotTemp(700)
+PlotComposition(gh.composition, 700)
 ```
 
 # Composición de Geopotencial usando percentil 66 de R^2 (lineas = 15 mgp)
@@ -214,30 +212,19 @@ gh.composition.r2 <- gh[, .(gh = mean(gh[quantile.r2 >= 2/3]) - mean(gh)),
 ----
 
 ```{r, fig.height=6, fig.width=10}
-PlotTemp <- function(lev.plot) {
-    ggplot(gh.composition.r2[lev == lev.plot], aes(lon, lat)) +
-        geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
-                     color = "black", binwidth = 15) +
-        coord_map_polar + 
-        facet_wrap(~month, nrow = 3, labeller = labeller(month = month.abb)) +
-        map.SH.3 +
-        scale_linetype(guide = FALSE) +
-        labs(subtitle = paste0("nivel = ", lev.plot))
-}
-
-PlotTemp(100)
+PlotComposition(gh.composition.r2, 100)
 ```
  
 ----
 
 ```{r, fig.height=6, fig.width=10}
-PlotTemp(300)
+PlotComposition(gh.composition.r2, 300)
 ```
 
 ----
 
 ```{r, fig.height=6, fig.width=10}
-PlotTemp(700)
+PlotComposition(gh.composition.r2, 700)
 ```
 
 # Composición usando 1 desvío estandar (lineas = 20 mgp)
@@ -249,7 +236,8 @@ qs_index[, amplitude.norm := (amplitude - mean(amplitude))/sd(amplitude), by = m
 
 ggplot(qs_index, aes(month(date), amplitude.norm, group = month(date))) +
     geom_boxplot() +
-    ylab("Amplitud normalizada") + scale_x_continuous(breaks = 1:12, labels = month.abb)
+    ylab("Amplitud normalizada") + 
+    scale_x_continuous(breaks = 1:12, labels = month.abb)
 
 ```
 
@@ -257,47 +245,33 @@ ggplot(qs_index, aes(month(date), amplitude.norm, group = month(date))) +
 
 ```{r}
 gh <- gh[qs_index[, .(date, amplitude.norm)], on = "date"]
-gh.composition <- gh[, .(gh = mean(gh[amplitude.norm >= 1]) - mean(gh)), 
+gh.composition.sd <- gh[, .(gh = mean(gh[amplitude.norm >= 1]) - mean(gh)), 
                      by = .(lon, lat, lev, month(date))]
 ```
 
 
-```{r}
-PlotTemp <- function(lev.plot) {
-    ggplot(gh.composition[lev == lev.plot], aes(lon, lat)) +
-        geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
-                     color = "black", binwidth = 20) +
-        coord_map_polar + 
-        facet_wrap(~month, nrow = 3, labeller = labeller(month = month.abb)) +
-        map.SH.3 +
-        scale_linetype(guide = FALSE) +
-        labs(subtitle = paste0("nivel = ", lev.plot))
-}
-
-PlotTemp(100)
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sd, 100)
 ```
 
 ----
 
-```{r}
-PlotTemp(300)
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sd, 300)
 ```
 
 ----
 
-```{r}
-PlotTemp(700)
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sd, 700)
 ```
 
-# Composición de OLR y SST
+# Composición de OLR y SST (percentil 66 de amplitud)
 
 ----
 
 ```{r}
-olr <- readRDS("DATA/NCEP/olr.Rds") %>%
-    .[, date1 := as.Date(date[1]), by = date] %>%
-    .[, date := NULL] %>%
-    setnames("date1", "date")
+olr <- readRDS("DATA/NCEP/olr.Rds")
 
 olr.comp <- olr[qs_index[, .(date, quantile.ampl)], on = "date"]
 olr.comp <- olr.comp[, 
@@ -309,6 +283,7 @@ olr.comp <- olr.comp[,
 ggplot(olr.comp, aes(lon, lat)) +
     geom_tile(aes(fill = olr)) +
     scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+    scale_x_longitude() +
     coord_quickmap() +
     map.world.3 +
     facet_wrap(~month, labeller = labeller(month = month.abb))
@@ -320,6 +295,7 @@ ggplot(olr.comp, aes(lon, lat)) +
 ggplot(olr.comp[abs(olr) >= 5], aes(lon, lat)) +
     geom_tile(aes(fill = olr)) +
     scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+    scale_x_longitude() +
     coord_quickmap() +
     map.world.3 +
     facet_wrap(~month, labeller = labeller(month = month.abb)) +
@@ -330,31 +306,7 @@ ggplot(olr.comp[abs(olr) >= 5], aes(lon, lat)) +
 ----
 
 ```{r}
-sst <- readRDS("DATA/NCEP/sst.Rds") %>%
-    .[, date1 := as.Date(date[1]), by = date] %>%
-    .[, date := NULL] %>%
-    setnames("date1", "date")
-
-## Agrego máscara de océanos (esto debería hacerse en el tidy_ncep.R)
-library(maptools)
-library(maps)
-
-make_mask <- function(lat, lon) {
-  seamask <- map("world2", fill=TRUE, col = "transparent", plot = F)
-  IDs <- sapply(strsplit(seamask$names, ":"), function(x) x[1])
-  seamask <- map2SpatialPolygons(seamask, IDs = IDs,
-                                 proj4string = CRS("+proj=longlat +datum=WGS84"))
-  
-  points <- SpatialPoints(expand.grid(lon, lat), 
-                          proj4string = CRS(proj4string(seamask)))
-  sea <-  is.na(over(points, seamask))
-  return(sea)
-}
-
-lat <- unique(sst$lat)
-lon <- unique(sst$lon)
-sea <- make_mask(lat, lon)
-sst[, sea := sea]
+sst <- readRDS("DATA/NCEP/sst.Rds")
 
 sst.comp <- sst[qs_index[, .(date, quantile.ampl)], on = "date"]
 sst.comp <- sst.comp[sea == T, .(sst = mean(sst[quantile.ampl >= 2/3]) - mean(sst)),
@@ -366,6 +318,7 @@ sst.comp <- sst.comp[sea == T, .(sst = mean(sst[quantile.ampl >= 2/3]) - mean(ss
 ggplot(sst.comp, aes(lon, lat)) +
     geom_tile(aes(fill = sst)) +
     scale_fill_gradient2(low = muted("blue"), high = muted("red")) +
+    scale_x_longitude() +
     coord_quickmap() +
     map.world.3 +
     facet_wrap(~month, labeller = labeller(month = month.abb))
