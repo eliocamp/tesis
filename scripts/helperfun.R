@@ -430,7 +430,7 @@ ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
     return(temp)
 }
 
-InterpolateNCEP <- function(field, lon, lat, cores = 4) {
+InterpolateNCEP <- function(field, lon, lat, cores = 3) {
     # Interpolación bilineal.
     # Entra:
     #   fiel: un campo como sale de ReadNCEP
@@ -439,23 +439,32 @@ InterpolateNCEP <- function(field, lon, lat, cores = 4) {
     #   cores: cantidad de núcleos para usar la paralelización
     # Sale:
     #   un array de 4 dimensiones (lon, lat, lev, date) nombradas
-    grid <- list(x = lon, y = lat)
-    lev  <- dimnames(field)$lev
-    date <- dimnames(field)$date
+    lon.original <- as.numeric(dimnames(field)$lon)
+    lat.original <- as.numeric(dimnames(field)$lat)
+    grid         <- list(x = lon, y = lat)
+    lev          <- dimnames(field)$lev
+    date         <- dimnames(field)$date
 
     # Hago la interpolación para cada fecha y cada nivel.
     # Nota: perdí más tiempo para averiguar cómo paralelizarlo que el que
     # ahorré con el aumento de velocidad.
-
-    # for (t in 1:length(date)) {
     library(doParallel)
+    library(abind)
     registerDoParallel(cores)
-    field.small <- foreach(l = seq_along(lev), .combine = "cbind") %:%
-        foreach(t = seq_along(date), .combine = "c") %dopar% {
-            int <- c(interp.surface.grid(list(x = lon, y = lat,
-                                              z = field[, , l, t]), grid)$z)
+    datebind <- function(...) {
+        abind(..., along = 4)
+    }
+
+    levbind <- function(...) {
+        abind(..., along = 3)
+    }
+
+    field.small <- foreach(t = seq_along(date), .combine = "datebind") %:%
+        foreach(l = seq_along(lev), .combine = "levbind") %dopar% {
+            int <- fields::interp.surface.grid(list(x = lon.original, y = lat.original,
+                                                      z = field[, , l, t]), grid)$z
+
         }
-    dim(field.small) <- c(length(lon), length(lat), length(lev), length(date))
     stopImplicitCluster()
     dimnames(field.small) <- list(lon = lon, lat = lat, lev = lev,
                                   date = as.character(date))
