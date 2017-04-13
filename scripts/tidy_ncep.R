@@ -47,6 +47,10 @@ for (i in seq_along(files)) {
     }
 }
 
+ncep[, date1 := as.Date(date[1], format = "%Y-%m-%d"), by = .(date)] %>%
+    .[, date := NULL] %>%
+    setnames("date1", "date")
+
 # Guardo todo.
 saveRDS(ncep, file = paste0(basedir, "ncep.Rds"), compress = "gzip")
 remove(ncep)
@@ -60,7 +64,10 @@ remove(ncep)
 file <- paste0(basedir, "olr.mon.mean_sub.nc")
 olr  <- ReadNCEP(file, "olr", levs = F) %>%
     melt(value.name = "olr") %>%
-    setDT()
+    setDT() %>%
+    .[, date1 := as.Date(date[1]), by = date] %>%
+    .[, date := NULL] %>%
+    setnames("date1", "date")
 saveRDS(olr, file = paste0(basedir, "olr.Rds"))
 remove(olr)
 
@@ -68,5 +75,30 @@ remove(olr)
 file <- paste0(basedir, "sst_sub.nc")
 sst  <- ReadNCEP(file, "sst", levs = F, date.fun = "days") %>%
     melt(value.name = "sst") %>%
-    setDT()
+    setDT() %>%
+    .[, date1 := as.Date(date[1]), by = date] %>%
+    .[, date := NULL] %>%
+    setnames("date1", "date")
+
+## Agrego máscara de océanos (esto debería hacerse en el tidy_ncep.R)
+library(maptools)
+library(maps)
+
+make_mask <- function(lat, lon) {
+    seamask <- map("world2", fill=TRUE, col = "transparent", plot = F)
+    IDs <- sapply(strsplit(seamask$names, ":"), function(x) x[1])
+    seamask <- map2SpatialPolygons(seamask, IDs = IDs,
+                                   proj4string = CRS("+proj=longlat +datum=WGS84"))
+
+    points <- SpatialPoints(expand.grid(lon, lat),
+                            proj4string = CRS(proj4string(seamask)))
+    sea <-  is.na(over(points, seamask))
+    return(sea)
+}
+lat <- unique(sst$lat)
+lon <- unique(sst$lon)
+sea <- make_mask(lat, lon)
+sst[, sea := sea]
+
 saveRDS(sst, file = paste0(basedir, "sst.Rds"))
+remove(sst)
