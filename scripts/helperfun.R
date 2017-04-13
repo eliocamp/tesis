@@ -76,14 +76,14 @@ geom_map2 <- function(map) {
 
 
 scale_x_longitude <- function(ticks = 60, ...) {
-    scale_x_continuous(breaks = seq(0, 360, by = ticks),
-                       labels = c(seq(0, 180, by = ticks), seq(-180 + ticks, 0, by = ticks)),
+    scale_x_continuous(breaks = seq(0, 360 - ticks, by = ticks),
+                       labels = c(seq(0, 180, by = ticks), seq(-180 + ticks, 0 - ticks, by = ticks)),
                        ...)
 }
 
 
 scale_y_longitude <- function(ticks = 60, ...) {
-    scale_y_continuous(breaks = seq(0, 360, by = ticks),
+    scale_y_continuous(breaks = seq(0, 360 - ticks, by = ticks),
                        labels = c(seq(0, 180, by = ticks), seq(-180 + 60, 0, by = ticks)),
                        ...)
 }
@@ -93,8 +93,13 @@ coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
 
 RepeatLon <- function(x) {
     # Repite la longitud, para cerrar los contornos en un plot polar
+    # Entra:
+    #   x: un data.table con datos espaciales. La longitud tiene que
+    #      estar en convención 0:360 y llamarse 'lon'.
+    # Sale:
+    #   un data.table igual que x
     border <- x[lon == min(lon), ]
-    border$lon <- 360
+    border$lon <- 360 + min(x$lon)
     rbind(x, border)
 }
 
