@@ -3,11 +3,11 @@ title: "Composición de campos"
 author: "Elio Campitelli"
 date: "April 26, 2017"
 output:
-  ioslides_presentation: 
-    fig_height: 5
-    fig_width: 9
-    smaller: yes
-    widescreen: yes
+    ioslides_presentation: 
+        fig_height: 5
+        fig_width: 9
+        smaller: yes
+        widescreen: yes
 ---
 
 ```{r, include = FALSE}
@@ -111,9 +111,9 @@ DivideTimeseries(g, n = 3, qs_index$date, ylab = "Amplitud", xlab = "Fecha")
 
 ```{r}
 Tercile <- function(x) {
-  r <- quantile(x, probs = c(0.025, 1/3, 0.5, 2/3, 0.975))
-  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
-  r
+    r <- quantile(x, probs = c(0.025, 1/3, 0.5, 2/3, 0.975))
+    names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
+    r
 } 
 qs_index[, quantile.ampl := ecdf(amplitude)(amplitude), by = month(date)]
 ggplot(qs_index, aes(month(date), amplitude, group = month(date))) +
@@ -154,10 +154,13 @@ ggplot(qs_index, aes(month(date), r2, group = month(date))) +
 ## Amplitud vs. R^2
 
 ```{r}
-ggplot(qs_index, aes(r2, amplitude)) + 
+gdata <- qs_index
+gdata[, month := month(date)]
+ggplot(gdata, aes(r2, amplitude)) + 
     geom_point(alpha = 0.3) + 
-    geom_smooth(method = "lm", se = F, linetype = 1, size = 0.3, color = "black")  +
-    xlab("R^2") + ylab("Amplitud")
+    geom_smooth(se = F, linetype = 1, size = 0.3, color = "black")  +
+    xlab("R^2") + ylab("Amplitud") +
+    facet_wrap(~month, ncol = 3, labeller = labeller(month = month.abb))
 ```
 
 
@@ -172,10 +175,10 @@ gh.composition <- gh[, .(gh = mean(gh[quantile.ampl >= 2/3]) - mean(gh)),
 ```
 
 ```{r, fig.height=6, fig.width=10}
-PlotComposition <- function(data, lev.plot) {
+PlotComposition <- function(data, lev.plot, binwidth = 15) {
     ggplot(RepeatLon(data[lev == lev.plot]), aes(lon, lat)) +
         geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))), 
-                     color = "black", binwidth = 15) +
+                     color = "black", binwidth = binwidth) +
         # coord_map_polar +
         coord_polar() +
         scale_x_longitude() +
@@ -188,7 +191,7 @@ PlotComposition <- function(data, lev.plot) {
 
 PlotComposition(gh.composition, 100)
 ```
- 
+
 ----
 
 ```{r, fig.height=6, fig.width=10}
@@ -206,7 +209,7 @@ PlotComposition(gh.composition, 700)
 
 ```{r}
 gh.composition.r2 <- gh[, .(gh = mean(gh[quantile.r2 >= 2/3]) - mean(gh)), 
-                     by = .(lon, lat, lev, month(date))]
+                        by = .(lon, lat, lev, month(date))]
 ```
 
 ----
@@ -214,7 +217,7 @@ gh.composition.r2 <- gh[, .(gh = mean(gh[quantile.r2 >= 2/3]) - mean(gh)),
 ```{r, fig.height=6, fig.width=10}
 PlotComposition(gh.composition.r2, 100)
 ```
- 
+
 ----
 
 ```{r, fig.height=6, fig.width=10}
@@ -246,7 +249,7 @@ ggplot(qs_index, aes(month(date), amplitude.norm, group = month(date))) +
 ```{r}
 gh <- gh[qs_index[, .(date, amplitude.norm)], on = "date"]
 gh.composition.sd <- gh[, .(gh = mean(gh[amplitude.norm >= 1]) - mean(gh)), 
-                     by = .(lon, lat, lev, month(date))]
+                        by = .(lon, lat, lev, month(date))]
 ```
 
 
@@ -324,4 +327,168 @@ ggplot(sst.comp, aes(lon, lat)) +
     facet_wrap(~month, labeller = labeller(month = month.abb))
 ```
 
+
+# Speedy: corrida control vs. sst climatológica
+
+
+```{r}
+# Leo datos de geopotencial de NCEP.
+gh.sp <- readRDS("DATA/SPEEDY/speedy.Rds")[, .(lat, lon, lev, date, gh)][, run := "control"]
+gh.sp.clim <- readRDS("DATA/SPEEDY/speedy.clim.Rds")[, .(lat, lon, lev, date, gh)][, run := "climatological"]
+
+gh.sp <- rbind(gh.sp, gh.sp.clim)
+remove(gh.sp.clim)
+# Calculo la onda 3
+qs.sp <- gh.sp[, FitQsWave(gh, 3), by = .(lat, lev, date, run)]
+qs.sp.mean <- qs.sp[, lapply(.SD, mean), by = .(lat, lev, month(date), run)]
+
+levs.index <- c(700, 300, 100)
+```
+
+
+```{r}
+PlotQS <- function(page) {
+    g <- ggplot(qs.sp.mean, aes(lat, lev)) +
+        geom_contour(aes(z = amplitude), binwidth = 15, color = "black") +
+        scale_x_reverse(limits = c(0, -90)) + 
+        scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
+        directlabels::geom_dl(aes(z = amplitude, label = ..level..), 
+                              stat = "contour", color = "black", 
+                              binwidth = 15, method = "top.pieces") +
+        scale_fill_distiller(direction = 1) +
+        ylab("Nivel") + xlab("Latitud") +
+        annotate(geom = "segment", x = rep(-40, 3), xend = rep(-65, 3), 
+                 y = levs.index, yend = levs.index, color = "gray45", linetype = 2)
+    
+    
+    g + facet_grid_paginate(month~run, page = page, ncol = 2, nrow = 3, 
+                            labeller = labeller(month = month.abb, 
+                                                run = c(control = "Control",
+                                                        climatological = "SST Climatológica")))
+}
+PlotQS(1)
+```
+
 ----
+```{r}
+PlotQS(2)
+```
+
+----
+```{r}
+PlotQS(3)
+```
+
+----
+```{r}
+PlotQS(4)
+```
+
+## Diferencia (control - sst climatológica)
+
+```{r}
+gdata <- qs.sp.mean[, 
+                    .(dif = amplitude[run == "control"] - amplitude[run == "climatological"]),
+                 by = .(lat, lev, month)]
+                     
+ggplot(gdata, aes(lat, lev)) +
+    geom_contour(aes(z = dif, linetype = as.factor(-sign(..level..))), 
+                 binwidth = 2.5, color = "black") +
+    scale_x_reverse(limits = c(0, -90)) + 
+    scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
+    directlabels::geom_dl(aes(z = dif, label = ..level..), 
+                          stat = "contour", color = "black", 
+                          binwidth = 2.5, method = "top.pieces") +
+    scale_fill_distiller(direction = 1) +
+    ylab("Nivel") + xlab("Latitud") +
+    annotate(geom = "segment", x = rep(-40, 3), xend = rep(-65, 3), 
+             y = levs.index, yend = levs.index, color = "gray45", linetype = 2) +
+    facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) +
+    guides(linetype = "none")
+```
+----
+
+```{r}
+lats <- unique(qs$lat)
+lats.index <- lats[lats <= -40 & lats >= -65]
+qs_index.sp <- qs.sp[lev %in% levs.index & lat %in% lats.index, 
+               .(amplitude = mean(amplitude),
+                 r2 = mean(r2),
+                 phase = mean(phase)), 
+               by = .(date, run)]
+```
+
+```{r}
+g <- ggplot(qs_index.sp, aes(date, amplitude, color = run)) +
+    geom_line() + 
+    geom_hline(aes(yintercept = mean(amplitude)), 
+               linetype = 3, color = "gray45") +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+    ylab("Amplitud") + xlab("Fecha") +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = c(climatological = "SST Climatológica", 
+                                  control = "Control"))
+
+DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud", xlab = "Fecha")
+```
+
+----
+
+```{r}
+g <- ggplot(qs_index.sp, aes(date, phase, color = run)) + 
+    geom_line() +
+    geom_smooth() +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = c(climatological = "SST Climatológica", 
+                                  control = "Control"))
+    
+DivideTimeseries(g, n = 3, x = qs_index.sp$date, xlab = "Fecha", ylab = "Fase")
+```
+
+# Composiciónes SPEEDY
+
+```{r}
+
+qs_index.sp[, quantile.ampl := ecdf(amplitude)(amplitude), by = .(month(date), run)]
+
+gh.sp <- gh.sp[qs_index.sp[, .(date, run, quantile.ampl)], on = c("date", "run")]
+gh.composition.sp <- gh.sp[, .(gh = mean(gh[quantile.ampl >= .66]) - mean(gh)), 
+                        by = .(lon, lat, lev, month(date), run)]
+
+```
+
+
+## Control
+
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sp[run == "control"], 100)
+```
+
+## Climatológica
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sp[run == "climatological"], 100)
+```
+
+
+## Control
+
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sp[run == "control"], 300)
+```
+
+## Climatológica
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sp[run == "climatological"], 300)
+```
+
+
+## Control
+
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sp[run == "control"], 700)
+```
+
+## Climatológica
+```{r, fig.height=6, fig.width=10}
+PlotComposition(gh.composition.sp[run == "climatological"], 700)
+```

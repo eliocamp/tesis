@@ -9,10 +9,6 @@ library(magrittr)
 source("scripts/helperfun.R")    # para ReadNCEP() y InterpolateNCEP()
 enableJIT(3)
 
-# IMPORTANTE.
-# El script como está no guarda bien los valores!!!!! ARREGLAR!!!
-
-
 # Listado de variables, sus nombres y los archivos.
 # (variables atmosféricas)
 variables      <- c("hgt", "air", "uwnd", "vwnd", "olr")
