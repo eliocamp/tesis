@@ -18,16 +18,15 @@ enableJIT(3)
 variables      <- c("hgt", "air", "uwnd", "vwnd", "olr")
 variables.name <- c("gh", "t", "u", "v", "olr")
 basedir        <- "DATA/NCEP/"
-files          <- c("hgt.mon.mean_sub.nc",
-                    "air.mon.mean_sub.nc",
-                    "uwnd.mon.mean_sub.nc",
-                    "vwnd.mon.mean_sub.nc") %>%
+files          <- c("hgt.mon.mean.nc",
+                    "air.mon.mean.nc",
+                    "uwnd.mon.mean.nc",
+                    "vwnd.mon.mean.nc") %>%
     paste0(basedir, .)
 
 # Grilla para interpolar.
 lon.sp <- ncvar_get(nc_open("DATA/SPEEDY/attm.nc"), "lon")
 lat.sp <- ncvar_get(nc_open("DATA/SPEEDY/attm.nc"), "lat")
-lat.sp <- lat.sp[lat.sp <= 0]
 
 # Hacemos las cosas para cada archivo.
 for (i in seq_along(files)) {
