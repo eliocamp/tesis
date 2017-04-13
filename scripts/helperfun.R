@@ -371,7 +371,7 @@ DivideTimeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
     # Sale:
     #   un plot.
     # Por ahora (y posiblemente no cambie en el futuro cercano) no es muy
-    # versatiil y seguramente no funcione con plots medianamente complejos.
+    # versatil y seguramente no funcione con plots medianamente complejos.
     M <- max(x)
     m <- min(x)
     step <- (M - m)/n
@@ -392,7 +392,7 @@ DivideTimeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
         plots[[i]] <- pl
     }
     if (exists("legend.new")) {
-        plots[[n + 1]] <- leg
+        plots[[n + 1]] <- legend.new
     }
     grid.arrange(grobs = plots, ncol = 1, heights = c(rep(10, n), 2), bottom = xlab, left = ylab)
 }
@@ -402,7 +402,7 @@ theme_elio <- theme_minimal() +
     theme(legend.position = "bottom")
 
 
-ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
+ReadNCEP <- function(file, var, levs = T, date.fun = "hours", since = "1800-01-01 00:00:00") {
     # Lee archivos nc de NCEP y guarda todo en un array con las dimensiones
     # bien puestas.
     # Entra:
@@ -421,7 +421,7 @@ ReadNCEP <- function(file, var, levs = T, date.fun = "hours") {
     lon      <- ncvar_get(ncfile, "lon")
     date     <- ncvar_get(ncfile, "time")
     date.fun <- match.fun(date.fun)
-    date     <- ymd_hms("1800-01-01 00:00:00") + date.fun(date)
+    date     <- ymd_hms(since) + date.fun(date)
 
     if (levs) {
         lev <- ncvar_get(ncfile, "level")
@@ -476,6 +476,39 @@ InterpolateNCEP <- function(field, lon, lat, cores = 3) {
     return(field.small)
 }
 
+ReadERA <- function(file, var, levs = T, date.fun = "hours", since = "1800-01-01 00:00:00") {
+    # Lee archivos nc de NCEP y guarda todo en un array con las dimensiones
+    # bien puestas.
+    # Entra:
+    #   file: ruta del archivo
+    #   var: nombre de la variable a leer (al pedo, en realidad, porque estos
+    #        archivos sólo tienen una variable)
+    #   levs: ¿la variable tiene varios niveles?
+    #   date.fun: la función para modificar el date.
+    # Sale:
+    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas y en período
+    #   de tiempo necesario.
+    library(ncdf4)
+    ncfile   <- nc_open(file)
+    temp     <- ncvar_get(ncfile, var)
+    lat      <- ncvar_get(ncfile, "latitude")
+    lon      <- ncvar_get(ncfile, "longitude")
+    date     <- ncvar_get(ncfile, "time")
+    date.fun <- match.fun(date.fun)
+    date     <- ymd_hms(since) + date.fun(date)
+    years    <- year(date)
+
+    if (levs) {
+        lev <- ncvar_get(ncfile, "level")
+        dimnames(temp) <- list(lon = lon, lat = lat, lev = lev, date = as.character(date))
+        temp <- temp[, , , years > 1984 & years < 2016]
+    } else {
+        dimnames(temp) <- list(lon = lon, lat = lat, date = as.character(date))
+        temp <- temp[, , years > 1984 & years < 2016]
+    }
+    nc_close(ncfile)
+    return(temp)
+}
 
 ConvertLongitude <- function(lon, from = 360) {
     # Pasa la longitud entre convenciones.
