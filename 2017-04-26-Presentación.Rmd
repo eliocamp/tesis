@@ -333,7 +333,7 @@ ggplot(sst.comp, aes(lon, lat)) +
 ----
 
 ```{r}
-# Leo datos de geopotencial de NCEP.
+# Leo datos de geopotencial de SPEEDY.
 gh.sp <- readRDS("DATA/SPEEDY/speedy.Rds")[, .(lat, lon, lev, date, gh)][, run := "control"]
 gh.sp.clim <- readRDS("DATA/SPEEDY/speedy.clim.Rds")[, .(lat, lon, lev, date, gh)][, run := "climatological"]
 
@@ -387,6 +387,7 @@ PlotQS(3)
 ```{r}
 PlotQS(4)
 ```
+
 
 ## Diferencia (control - sst climatológica)
 
@@ -450,12 +451,27 @@ g <- ggplot(qs_index.sp, aes(date, phase, color = run)) +
 DivideTimeseries(g, n = 3, x = qs_index.sp$date, xlab = "Fecha", ylab = "Fase")
 ```
 
+## Ciclo anual
+
+```{r}
+qs_index.sp[, quantile.ampl := ecdf(amplitude)(amplitude), by = .(run, month(date))]
+ggplot(qs_index.sp, aes(month(date), amplitude, 
+                        color = run, group = interaction(month(date), run))) +
+    geom_point(data = qs_index.sp[quantile.ampl >= 0.975 | quantile.ampl <= 0.025]) +
+    stat_summary(fun.data = Tercile, geom = "boxplot", position = "dodge") +
+    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
+        scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = c(climatological = "SST Climatológica", 
+                                  control = "Control")) +
+    ylab("Amplitud") +
+    labs(caption = "líneas: 95%\ncajas: terciles")
+
+```
+
+
 # Composiciones SPEEDY
 
 ```{r}
-
-qs_index.sp[, quantile.ampl := ecdf(amplitude)(amplitude), by = .(month(date), run)]
-
 gh.sp <- gh.sp[qs_index.sp[, .(date, run, quantile.ampl)], on = c("date", "run")]
 gh.composition.sp <- gh.sp[, .(gh = mean(gh[quantile.ampl >= .66]) - mean(gh)), 
                         by = .(lon, lat, lev, month(date), run)]
