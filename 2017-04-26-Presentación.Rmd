@@ -330,6 +330,7 @@ ggplot(sst.comp, aes(lon, lat)) +
 
 # Speedy: corrida control vs. sst climatológica
 
+----
 
 ```{r}
 # Leo datos de geopotencial de NCEP.
@@ -370,16 +371,19 @@ PlotQS(1)
 ```
 
 ----
+
 ```{r}
 PlotQS(2)
 ```
 
 ----
+
 ```{r}
 PlotQS(3)
 ```
 
 ----
+
 ```{r}
 PlotQS(4)
 ```
@@ -406,6 +410,7 @@ ggplot(gdata, aes(lat, lev)) +
     facet_wrap(~month, labeller = labeller(month = month.abb), ncol = 3) +
     guides(linetype = "none")
 ```
+
 ----
 
 ```{r}
@@ -445,7 +450,7 @@ g <- ggplot(qs_index.sp, aes(date, phase, color = run)) +
 DivideTimeseries(g, n = 3, x = qs_index.sp$date, xlab = "Fecha", ylab = "Fase")
 ```
 
-# Composiciónes SPEEDY
+# Composiciones SPEEDY
 
 ```{r}
 
@@ -465,6 +470,7 @@ PlotComposition(gh.composition.sp[run == "control"], 100)
 ```
 
 ## Climatológica
+
 ```{r, fig.height=6, fig.width=10}
 PlotComposition(gh.composition.sp[run == "climatological"], 100)
 ```
