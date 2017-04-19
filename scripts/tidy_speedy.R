@@ -31,3 +31,14 @@ setnames(speedy.clim, "time", "date")
 setnames(speedy.clim, "temp", "t")
 setindex(speedy.clim, lon, lat, lev, date)
 saveRDS(speedy.clim, file = "DATA/SPEEDY/speedy.clim.Rds")
+
+
+file <- "DATA/SPEEDY/attmzon.nc"
+vars <- c("gh", "u", "v", "psi", "temp")
+speedy.clim <- ReadNetCDF(file, vars)
+speedy.clim <- speedy.clim[lat < 20]
+speedy.clim[, time := as.Date("1985-01-01 00:00:00") + time/24]
+setnames(speedy.clim, "time", "date")
+setnames(speedy.clim, "temp", "t")
+setindex(speedy.clim, lon, lat, lev, date)
+saveRDS(speedy.clim, file = "DATA/SPEEDY/speedy.zonal.Rds")
