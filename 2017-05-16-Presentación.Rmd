@@ -1,0 +1,74 @@
+---
+title: ""
+author: "Elio Campitelli"
+output:
+    ioslides_presentation:
+        fig_height: 5
+        fig_width: 9
+        smaller: yes
+        widescreen: yes
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    echo = FALSE,
+    message = FALSE,
+    warning = FALSE,
+    cache = TRUE)
+setwd("/home/elio/Documents/Tesis/")
+library(ncdf4)
+source("scripts/helperfun.R")
+month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
+               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+names(month.abb) <- as.character(1:12)
+
+theme_elio <- theme_minimal() +
+    theme(legend.position = "bottom")
+theme_set(theme_elio)
+
+
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
+map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
+map.world.3 <- geom_map2(map.world.3)
+interp.levs <- exp(seq(log(925), log(30), length.out = 40))
+```
+
+# Entendiendo la fase
+
+```{r}
+# Leo datos de geopotencial de NCEP.
+gh <- readRDS("DATA/NCEP/ncep.Rds")[lat <= 20, .(lat, lon, lev, date, gh)]
+
+# Calculo la onda 3
+qs <- gh[, FitQsWave(gh, 3), by = .(lat, lev, date)]
+qs.mean <- qs[, lapply(.SD, mean), by = .(lat, lev, month(date), k)]
+
+levs.sp <- ncvar_get(nc_open("DATA/SPEEDY/attm.nc"), "lev")
+levs.index <- c(700, 300, 100)
+
+lats <- unique(qs$lat)
+lats.index <- lats[lats <= -40 & lats >= -65]
+qs_index <- qs[lev %in% levs.index & lat %in% lats.index, 
+               .(amplitude = mean(amplitude),
+                 r2 = mean(r2),
+                 phase = mean(phase)), 
+               by = date]
+
+```
+
+La fase como la estaba calculando anteriormente era ininterpretable. Ahora modifiqué la función para que de en el intervalo entre 0 y 2*pi/k (donde k es el número de onda zonal); es decir, que la fase indica dónde está el primer máximo. 
+
+De todas formas, me parece que es más interpretable para nosotros calcular la posición del tercer máximo ya que es el que afecta a Sudamérica. 
+
+----
+
+```{r}
+ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
+    geom_boxplot() +
+    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
+    ylab("Fase")
+    # scale_y_continuous(breaks = seq(-180, 180, by = 60), limits = c(-180, 180))
+```
+
+
+

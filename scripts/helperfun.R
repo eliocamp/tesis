@@ -116,7 +116,12 @@ FitQsWave <- function(x, n = 1) {
     f <- fft(x)
     f <- f/length(f)
     amp <- Mod(f)*2
-    fase <- Arg(f)
+    fase <- -Arg(f)
+
+    # Hago que la fase esté entre 0 y 2/n*pi
+    fase[fase < 0] <- fase[fase < 0] + 2*pi
+    fase <- fase/(seq_along(fase) - 1)
+
     r <- amp^2/(2*sd(x)^2)
     n <- n + 1
 
