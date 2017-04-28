@@ -3,8 +3,8 @@ title: ""
 author: "Elio Campitelli"
 output:
     ioslides_presentation:
-        fig_height: 5
-        fig_width: 9
+        fig_height: 5.5
+        fig_width: 10.5
         smaller: yes
         widescreen: yes
 ---
@@ -56,6 +56,8 @@ qs_index <- qs[lev %in% levs.index & lat %in% lats.index,
 
 ```
 
+----
+
 La fase como la estaba calculando anteriormente era ininterpretable. Ahora modifiqué la función para que de en el intervalo entre 0 y 2*pi/k (donde k es el número de onda zonal); es decir, que la fase indica dónde está el primer máximo. 
 
 De todas formas, me parece que es más interpretable para nosotros calcular la posición del tercer máximo ya que es el que afecta a Sudamérica. 
@@ -72,7 +74,7 @@ ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
 
 ---- 
 
-```{r}
+```{r, fig.height=6, fig.width=10}
 ggplot(qs_index) +
     ggstance::geom_boxploth(aes(phase*180/pi + 240, (-month(date) + 6)*3 - 45, group = as.factor(month(date)))) +
     annotate(geom = "text", x = rep(240, 12), y = (-(1:12) + 6)*3 - 45, 
@@ -96,6 +98,8 @@ DivideTimeseries(g, n = 3, qs_index$date, ylab = "Fase", xlab = "Fecha")
 ```
 
 # Tabla de composiciones
+
+----
 
 ```{r}
 qs_index[, `:=`(select.amplitude = ecdf(amplitude)(amplitude) > 0.66,
@@ -124,4 +128,37 @@ ggplot(gdata, aes(year(date), as.factor(month(date)))) +
                                   select.r2  = "R2\nPerc 66", 
                                   select.amplitude_norm = "Amplitud\n1SD"))
 ```
+
+
+# Otras cosas de la amplitud
+
+----
+
+```{r}
+ggplot(qs_index, aes(year(date), amplitude)) +
+    geom_line() +
+    geom_smooth() + 
+    facet_wrap(~month(date), scales = "free")
+```
+
+
+```{r}
+cor.month <- cor(dcast(qs_index, year(date) ~ month(date), 
+                       value.var = "amplitude")[, -"date", with = FALSE]) %>%
+    as.data.table()
+colnames(cor.month) <- as.character(1:12)
+cor.month[, month := 1:12]
+
+gdata <- melt(cor.month, id.vars = "month", variable.name = "month2", value.name = "correlation") %>%
+    .[correlation == 1, correlation := NA]
+
+ggplot(gdata, aes(month, as.numeric(month2))) +
+    geom_point(aes(size = abs(correlation), color = correlation)) +
+    geom_text(aes(label = round(correlation, 1)*10), size = 2, color = "white") +
+    scale_size(range = c(1, 6)) +
+    scale_x_continuous(limits = c(1, 12), breaks = 1:12, labels = month.abb) +
+    scale_y_reverse(limits = c(12, 1), breaks = 12:1, labels = month.abb[12:1]) +
+    scale_color_gradient2(low = muted("blue"), high = muted("red"))
+```
+
 
