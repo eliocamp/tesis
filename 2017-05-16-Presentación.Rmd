@@ -72,3 +72,20 @@ ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
 
 
 
+```{r}
+g <- ggplot(qs_index, aes(date, phase*180/pi - 120)) +
+    geom_line() + 
+    geom_hline(aes(yintercept = mean(phase*180/pi - 120)), linetype = 3, color = "gray45") +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+    ylab("Amplitud") + xlab("Fecha") 
+
+DivideTimeseries(g, n = 3, qs_index$date, ylab = "Fase", xlab = "Fecha")
+```
+
+```{r}
+ggplot(qs_index, aes(phase*180/pi + 240, y = (month(date) - 6)*2 - 50, 
+                     color = as.factor(month(date)))) +
+    geom_violin() +
+    map.SH.3
+```
+

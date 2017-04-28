@@ -1,3 +1,8 @@
 *
 !*/
+<<<<<<< HEAD
 !.gitignore
+=======
+!.gitignore
+!*.Rds
+>>>>>>> 19cadfc38dc16ceaf2a8473a78e07211ee3eb591
