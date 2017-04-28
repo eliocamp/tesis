@@ -74,8 +74,9 @@ ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
 
 ```{r}
 ggplot(qs_index) +
-    ggstance::geom_boxploth(aes(phase*180/pi + 240, (-month(date) + 6)*5 - 45, group = as.factor(month(date)))) +
-    annotate(geom = "text", x = rep(240, 12), y = (-(1:12) + 6)*5 - 45, label = month.abb) +
+    ggstance::geom_boxploth(aes(phase*180/pi + 240, (-month(date) + 6)*3 - 45, group = as.factor(month(date)))) +
+    annotate(geom = "text", x = rep(240, 12), y = (-(1:12) + 6)*3 - 45, 
+             label = month.abb, size = 3) +
     map.SH.3 +
     scale_x_longitude(ticks = 20, name = "lon") +
     ylab("lat") +
@@ -93,3 +94,34 @@ g <- ggplot(qs_index, aes(date, phase*180/pi - 120)) +
 
 DivideTimeseries(g, n = 3, qs_index$date, ylab = "Fase", xlab = "Fecha")
 ```
+
+# Tabla de composiciones
+
+```{r}
+qs_index[, `:=`(select.amplitude = ecdf(amplitude)(amplitude) > 0.66,
+                select.r2 = ecdf(r2)(r2) > 0.66,
+                select.amplitude_norm = scale(amplitude) > 1)]
+
+qs_index[, select.amplitude := ecdf(amplitude)(amplitude) > 0.66, by = month(date)]
+qs_index[, select.r2 := ecdf(r2)(r2) > 0.66, by = month(date)]
+qs_index[, select.amplitude_norm := scale(amplitude) > 1, by = month(date)]
+
+gdata <- melt(qs_index[select.amplitude | select.r2 | select.amplitude_norm],
+              id.vars = c("date", "phase", "amplitude"), measure.vars = c("select.amplitude", "select.r2", "select.amplitude_norm"), variable.name = "select")
+gdata <- gdata[value == T]
+
+library(ggstance)
+ggplot(gdata, aes(year(date), as.factor(month(date)))) +
+           geom_point(aes(color = select),
+                      position = position_dodgev(height = 0.6)) +
+    geom_spoke(aes(angle = phase, radius = amplitude/150), alpha = 0.6,
+               data = unique(gdata[, .(date, amplitude, phase)])) +
+    scale_y_discrete(label = month.abb, name = "Mes") +
+    scale_x_continuous(minor_breaks = 1985:2015, breaks = seq(1985, 2015, by = 5), 
+                       name = "Año") +
+    scale_color_brewer(palette = "Set1", name = "Selección según:", 
+                       labels = c(select.amplitude = "Amplitud\nPerc 66", 
+                                  select.r2  = "R2\nPerc 66", 
+                                  select.amplitude_norm = "Amplitud\n1SD"))
+```
+
