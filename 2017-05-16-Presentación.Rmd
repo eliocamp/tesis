@@ -60,7 +60,7 @@ La fase como la estaba calculando anteriormente era ininterpretable. Ahora modif
 
 De todas formas, me parece que es más interpretable para nosotros calcular la posición del tercer máximo ya que es el que afecta a Sudamérica. 
 
-----
+## Ciclo Anual
 
 ```{r}
 ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
@@ -70,7 +70,19 @@ ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
     # scale_y_continuous(breaks = seq(-180, 180, by = 60), limits = c(-180, 180))
 ```
 
+---- 
 
+```{r}
+ggplot(qs_index) +
+    ggstance::geom_boxploth(aes(phase*180/pi + 240, (-month(date) + 6)*5 - 45, group = as.factor(month(date)))) +
+    annotate(geom = "text", x = rep(240, 12), y = (-(1:12) + 6)*5 - 45, label = month.abb) +
+    map.SH.3 +
+    scale_x_longitude(ticks = 20, name = "lon") +
+    ylab("lat") +
+    coord_quickmap(xlim = c(220, 360), ylim = c(-90, 0))
+```
+
+---- 
 
 ```{r}
 g <- ggplot(qs_index, aes(date, phase*180/pi - 120)) +
@@ -81,11 +93,3 @@ g <- ggplot(qs_index, aes(date, phase*180/pi - 120)) +
 
 DivideTimeseries(g, n = 3, qs_index$date, ylab = "Fase", xlab = "Fecha")
 ```
-
-```{r}
-ggplot(qs_index, aes(phase*180/pi + 240, y = (month(date) - 6)*2 - 50, 
-                     color = as.factor(month(date)))) +
-    geom_violin() +
-    map.SH.3
-```
-
