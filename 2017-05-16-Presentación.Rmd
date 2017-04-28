@@ -13,8 +13,7 @@ output:
 knitr::opts_chunk$set(
     echo = FALSE,
     message = FALSE,
-    warning = FALSE,
-    cache = TRUE)
+    warning = FALSE)
 setwd("/home/elio/Documents/Tesis/")
 library(ncdf4)
 source("scripts/helperfun.R")
@@ -110,24 +109,70 @@ qs_index[, select.amplitude := ecdf(amplitude)(amplitude) > 0.66, by = month(dat
 qs_index[, select.r2 := ecdf(r2)(r2) > 0.66, by = month(date)]
 qs_index[, select.amplitude_norm := scale(amplitude) > 1, by = month(date)]
 
-gdata <- melt(qs_index[select.amplitude | select.r2 | select.amplitude_norm],
+selected <- melt(qs_index[select.amplitude | select.r2 | select.amplitude_norm],
               id.vars = c("date", "phase", "amplitude"), measure.vars = c("select.amplitude", "select.r2", "select.amplitude_norm"), variable.name = "select")
-gdata <- gdata[value == T]
+selected <- selected[value == T]
 
-library(ggstance)
-ggplot(gdata, aes(year(date), as.factor(month(date)))) +
-           geom_point(aes(color = select),
-                      position = position_dodgev(height = 0.6)) +
-    geom_spoke(aes(angle = phase, radius = amplitude/150), alpha = 0.6,
-               data = unique(gdata[, .(date, amplitude, phase)])) +
-    scale_y_discrete(label = month.abb, name = "Mes") +
-    scale_x_continuous(minor_breaks = 1985:2015, breaks = seq(1985, 2015, by = 5), 
-                       name = "Año") +
-    scale_color_brewer(palette = "Set1", name = "Selección según:", 
+scale_color_selection <- scale_color_brewer(palette = "Set1", name = "Selección según:", 
                        labels = c(select.amplitude = "Amplitud\nPerc 66", 
                                   select.r2  = "R2\nPerc 66", 
                                   select.amplitude_norm = "Amplitud\n1SD"))
+library(ggstance)
+ggplot(selected, aes(year(date), as.factor(month(date)))) +
+           geom_point(aes(color = select),
+                      position = position_dodgev(height = 0.6)) +
+    geom_spoke(aes(angle = phase, radius = amplitude/150), alpha = 0.6,
+               data = unique(selected[, .(date, amplitude, phase)])) +
+    scale_y_discrete(label = month.abb, name = "Mes") +
+    scale_x_continuous(minor_breaks = 1985:2015, breaks = seq(1985, 2015, by = 5), 
+                       name = "Año") +
+    scale_color_selection
 ```
+
+----
+
+```{r, fig.height=6}
+ggplot(selected, aes(phase*180/pi - 120, amplitude, color = select)) +
+    geom_point(alpha = 0.5, position = position_jitter(height = 5, width = 5)) +
+    facet_wrap(~month(date), labeller = labeller(date = month.abb)) +
+    xlab("Fase") + ylab("Amplitud") + 
+    scale_color_selection
+```
+
+
+# Ondas teóricas
+
+----
+
+```{r}
+lon <- seq(0, 360, by = 3.75)
+qs_field <- CJ(date = unique(qs$date), lev = unique(qs$lev), 
+                lat = unique(qs$lat), lon = lon)
+qs_field <- qs_field[qs[, .(date, lev, lat, amplitude, phase)], 
+                          on = c("date", "lev", "lat")][lev == 300]
+qs_field[, gh := amplitude*cos((lon*pi/180 - phase)*3)]
+qs_field <- qs_field[
+    qs_index[, .(date, select.amplitude, select.r2, select.amplitude_norm)],
+    on = "date"]
+```
+
+## Amplitud66, Enero
+
+```{r}
+qs_field[, year := year(date)]
+qs_field[, month := month(date)]
+
+ggplot(qs_field[month(date) == 1 & select.amplitude], 
+       aes(lon, lat)) +
+    geom_contour(aes(z = gh, linetype = as.factor(-sign(..level..))),
+                 color = "black", binwidth = 20) +
+    map.SH.3 +
+    facet_wrap(~year, ncol = 6) +
+    scale_x_longitude() +
+    scale_linetype(guide = "none") +
+    coord_polar() + ylim(c(-90, -10))
+```
+
 
 
 # Otras cosas de la amplitud
@@ -141,6 +186,7 @@ ggplot(qs_index, aes(year(date), amplitude)) +
     facet_wrap(~month(date), scales = "free")
 ```
 
+----
 
 ```{r}
 cor.month <- cor(dcast(qs_index, year(date) ~ month(date), 
