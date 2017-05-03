@@ -2,11 +2,11 @@
 title: ""
 author: "Elio Campitelli"
 output:
-    ioslides_presentation:
-        fig_height: 5.5
-        fig_width: 10.5
-        smaller: yes
-        widescreen: yes
+ioslides_presentation:
+fig_height: 5.5
+fig_width: 10.5
+smaller: yes
+widescreen: yes
 ---
 
 ```{r, include = FALSE}
@@ -167,12 +167,9 @@ gdata <- qs_index[, .N, by = .(month(date), interaction(select.amplitude, select
 Se grafican la onda 3 de la altura geopotencial para cada año seleccionado según cada criterio. Luego se compara el promedio de esos campos con la composición utilizando campos reales. 
 
 ```{r}
-lon <- seq(0, 360, by = 3.75)
-qs_field <- CJ(date = unique(qs$date), lev = unique(qs$lev), 
-               lat = unique(qs$lat), lon = lon)
-qs_field <- qs_field[qs[, .(date, lev, lat, amplitude, phase)], 
-                     on = c("date", "lev", "lat")][lev == 300]
-qs_field[, gh := amplitude*cos((lon*pi/180 - phase)*3)]
+qs_field <- qs[lev == 300, .(lon = lon, 
+                             gh = BuildQsField(lon*pi/180, amplitude, phase, k)), 
+               by = .(date, lat)]
 qs_field <- qs_field[
     qs_index[, .(date, select.amplitude, select.r2, select.amplitude_norm)],
     on = "date"]
@@ -206,18 +203,18 @@ PlotQsWaves(qs_field[month(date) == 1 & select.amplitude])
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar <- function(data, binwidth = 15) {
     ggplot(data, aes(lon, lat)) +
-    geom_contour(aes(z = gh, 
-                     linetype = as.factor(-sign(..level..))),
-                 color = "black", binwidth = binwidth) +
+        geom_contour(aes(z = gh, 
+                         linetype = as.factor(-sign(..level..))),
+                     color = "black", binwidth = binwidth) +
         scale_linetype(guide = "none") +
         labs(caption = paste0("lineas = ", binwidth)) +
         map.SH.3 +
         scale_x_longitude() +
         coord_polar() + ylim(c(-90, -10))
-
+    
 }
 PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
-                by = .(lon, lat, lev)])
+                          by = .(lon, lat)])
 
 ```
 
@@ -245,18 +242,18 @@ PlotQsWaves(qs_field[month(date) == 9 & select.amplitude], binwidth = 40)
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar <- function(data, binwidth = 15) {
     ggplot(data, aes(lon, lat)) +
-    geom_contour(aes(z = gh, 
-                     linetype = as.factor(-sign(..level..))),
-                 color = "black", binwidth = binwidth) +
+        geom_contour(aes(z = gh, 
+                         linetype = as.factor(-sign(..level..))),
+                     color = "black", binwidth = binwidth) +
         scale_linetype(guide = "none") +
         labs(caption = paste0("lineas = ", binwidth)) +
         map.SH.3 +
         scale_x_longitude() +
         coord_polar() + ylim(c(-90, -10))
-
+    
 }
 PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
-                by = .(lon, lat, lev)])
+                          by = .(lon, lat, lev)])
 
 ```
 
@@ -280,14 +277,14 @@ PlotQsWaves(qs_field[month(date) == 1 & select.r2], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                by = .(lon, lat, lev)])
+                          by = .(lon, lat, lev)])
 
 ```
 
 
 ```{r, fig.width=5, fig.height=5}
 gh.composition.r2 <- gh[, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                     by = .(lon, lat, lev, month(date))]
+                        by = .(lon, lat, lev, month(date))]
 
 PlotContourPolar(RepeatLon(gh.composition.r2[month == 1 & lev == 300]))
 ```
@@ -307,7 +304,7 @@ PlotQsWaves(qs_field[month(date) == 9 & select.r2], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                by = .(lon, lat, lev)])
+                          by = .(lon, lat, lev)])
 ```
 
 
@@ -331,14 +328,14 @@ PlotQsWaves(qs_field[month(date) == 1 & select.amplitude_norm], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
-                by = .(lon, lat, lev)])
+                          by = .(lon, lat, lev)])
 
 ```
 
 
 ```{r, fig.width=5, fig.height=5}
 gh.composition.ampl_norm <- gh[, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                     by = .(lon, lat, lev, month(date))]
+                               by = .(lon, lat, lev, month(date))]
 
 PlotContourPolar(RepeatLon(gh.composition.ampl_norm[month == 1 & lev == 300]))
 ```
@@ -359,7 +356,7 @@ PlotQsWaves(qs_field[month(date) == 9 & select.amplitude_norm], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
-                by = .(lon, lat, lev)])
+                          by = .(lon, lat, lev)])
 
 ```
 
@@ -369,6 +366,73 @@ PlotContourPolar(RepeatLon(gh.composition.ampl_norm[month == 9 & lev == 300]))
 ```
 </div>
 
+# Regresiones
+
+
+```{r}
+regression.gh <- gh[lev == 300, 
+                    setNames(ExtractLm(
+                        RcppArmadillo::fastLm(cbind(1, amplitude, phase), gh)),
+                        c("regressor", "estimate", "se")), 
+                    by = .(lat, lon, lev, month(date))] %>%
+    .[, t := abs(estimate)/se]
+```
+```{r}
+ggplot(RepeatLon(regression.gh[regressor == "amplitude"]), aes(lon, lat)) +
+    geom_contour(aes(z = estimate, linetype = as.factor(-sign(..level..))), 
+                 color = "black", binwidth = 0.5) +
+    map.SH.3 +
+    guides(linetype = "none") +
+    coord_polar() + ylim(c(-90, -20)) +
+    scale_x_longitude() +
+    facet_wrap(~month, labeller = labeller(month = month.abb)) +
+    labs(title = "Regresión en Amplitud", caption = "lineas = 0.5")
+```
+<div class="notes">
+La regresión de la altura geopotencial en función de la amplitud muestra patrones muy similares a las composiciones a partir del percentil 66 de la amplitud.
+La regresión no tiene unidades, porque es unidades de geopotencial en función de unidades de geopotencial. Lo que es raro es ver valores de regresión tanto mayores a 1. Uno esperaría que como mucho 1 unidad de amplitud de onda esté relacionado con 1 unidad de geopotencial. 
+</div>
+
+----
+
+```{r}
+ggplot(RepeatLon(regression.gh[regressor == "phase"]), aes(lon, lat)) +
+    geom_contour(aes(z = estimate/180*pi, linetype = as.factor(-sign(..level..))), 
+                 color = "black", binwidth = 1) +
+    map.SH.3 +
+    guides(linetype = "none") +
+    coord_polar() + ylim(c(-90, -20)) +
+    scale_x_longitude() +
+    facet_wrap(~month, labeller = labeller(month = month.abb)) +
+    labs(title = "Regresión en Fase", caption = "lineas = 1")
+```
+
+<div class="notes">
+Es interesante que la regresión con la fase muestre patrones tan claros, pero luego resulta obvio. El defasaje de la onda hace que puntos de grilla al este de los anticiclones tengan mayor geopotencial y viceversa. La regresión entonces va a ser máxima y mínima al este y oeste de los anticiclones respectivamente y su magnitud va a ser proporcional la diferencia de altura geopotencial entre los centros adyacentes. 
+
+(Las unidades son de mgp/grados)
+</div>
+
+
+```{r}
+gdata <- RepeatLon(copy(regression.gh[regressor != "intercept"]))
+gdata[regressor == "phase", estimate := estimate*pi/180]
+ggplot(gdata, aes(lon, lat)) +
+    geom_tile(data = gdata[regressor == "amplitude"],
+              aes(fill = estimate)) +
+    geom_contour(data = gdata[regressor == "phase"], 
+                 aes(z = estimate, color = as.factor(regressor), 
+                     linetype = as.factor(-sign(..level..))), binwidth = 1, 
+                 color = "black") +
+    map.SH.3 +
+    guides(linetype = "none") +
+    scale_fill_gradient2(low = muted("blue"), high = muted("red"), 
+                         name = "Regresión en Amplitud") +
+    coord_polar() + ylim(c(-90, -20)) +
+    scale_x_longitude() +
+    facet_wrap(~month, labeller = labeller(month = month.abb)) +
+    labs(subtitle = "Regresión en Amplitud (color) y Fase (líneas)", caption = "lineas = 1")
+```
 
 # Otras cosas de la amplitud
 

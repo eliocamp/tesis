@@ -131,7 +131,9 @@ FitQsWave <- function(x, n = 1) {
     return(ret)
 }
 
-# qs_fit_m <- memoise(qs_fit)
+BuildQsField <- function(x, amplitude, phase, k) {
+    amplitude*cos((x - phase)*k)
+}
 
 
 ReadNetCDF <- function(file, vars) {
@@ -353,13 +355,21 @@ date2month <- function(x) {
     as.integer(stringr::str_sub(x, 6, 7))
 }
 
-# genera coeficiente y error estandar de regresión lineal. Para uso en data.table
-lmcoef <- function(formula) {
-    a <- summary(fastLm(formula = formula))
-    list(estimate  = a$coefficients[2, 1],
-         se        = a$coefficients[2, 2])
+ExtractLm <- function(model) {
+    # Extrae el estimador y el error estándar de cada regressor para un modelo
+    # lineal (¿o cualquier modelo?).
+    # Entra:
+    #   model: un modelo lineal (o no)
+    # Sale:
+    #   una lista con 3 vectores: el nombre de los elementos, los estimadores y
+    #   el error estándar.
+    a <- summary(model)
+    regressor = rownames(a$coefficients)
+    regressor[regressor == ""] <- "intercept"
+    return(list(regressor,
+                unname(a$coefficients[, 1]),
+                unname(a$coefficients[, 2])))
 }
-
 
 
 DivideTimeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
