@@ -2,25 +2,26 @@
 title: ""
 author: "Elio Campitelli"
 output:
-ioslides_presentation:
-fig_height: 5.5
-fig_width: 10.5
-smaller: yes
-widescreen: yes
+    ioslides_presentation:
+        fig_height: 5.5
+        fig_width: 10.5
+        smaller: yes
+        widescreen: yes
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
     echo = FALSE,
     message = FALSE,
-    warning = FALSE)
+    warning = FALSE, 
+    cache.path = "cache/")
 setwd("/home/elio/Documents/Tesis/")
 library(ncdf4)
 source("scripts/helperfun.R")
 month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
                "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
 names(month.abb) <- as.character(1:12)
-
+library(RcppArmadillo)
 theme_elio <- theme_minimal() +
     theme(legend.position = "bottom")
 theme_set(theme_elio)
@@ -34,7 +35,7 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 
 # Entendiendo la fase
 
-```{r}
+```{r, cache = TRUE}
 # Leo datos de geopotencial de NCEP.
 gh <- readRDS("DATA/NCEP/ncep.Rds")[lat <= 20, .(lat, lon, lev, date, gh)]
 
@@ -52,7 +53,6 @@ qs_index <- qs[lev %in% levs.index & lat %in% lats.index,
                  r2 = mean(r2),
                  phase = mean(phase)), 
                by = date]
-
 ```
 
 ----
@@ -167,6 +167,7 @@ gdata <- qs_index[, .N, by = .(month(date), interaction(select.amplitude, select
 Se grafican la onda 3 de la altura geopotencial para cada año seleccionado según cada criterio. Luego se compara el promedio de esos campos con la composición utilizando campos reales. 
 
 ```{r}
+lon <- unique(gh[date == date[1] & lat == lat[1] & lev == lev[1], lon])
 qs_field <- qs[lev == 300, .(lon = lon, 
                              gh = BuildQsField(lon*pi/180, amplitude, phase, k)), 
                by = .(date, lat)]
@@ -228,7 +229,6 @@ PlotContourPolar(RepeatLon(gh.composition[month == 1 & lev == 300]))
 ```
 </div>
 
-----
 
 ## Amplitud66, septiembre
 
@@ -253,7 +253,7 @@ PlotContourPolar <- function(data, binwidth = 15) {
     
 }
 PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
-                          by = .(lon, lat, lev)])
+                          by = .(lon, lat)])
 
 ```
 
@@ -277,7 +277,7 @@ PlotQsWaves(qs_field[month(date) == 1 & select.r2], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                          by = .(lon, lat, lev)])
+                          by = .(lon, lat)])
 
 ```
 
@@ -304,7 +304,7 @@ PlotQsWaves(qs_field[month(date) == 9 & select.r2], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                          by = .(lon, lat, lev)])
+                          by = .(lon, lat)])
 ```
 
 
@@ -328,7 +328,7 @@ PlotQsWaves(qs_field[month(date) == 1 & select.amplitude_norm], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
-                          by = .(lon, lat, lev)])
+                          by = .(lon, lat)])
 
 ```
 
@@ -356,7 +356,7 @@ PlotQsWaves(qs_field[month(date) == 9 & select.amplitude_norm], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
-                          by = .(lon, lat, lev)])
+                          by = .(lon, lat)])
 
 ```
 
@@ -368,12 +368,12 @@ PlotContourPolar(RepeatLon(gh.composition.ampl_norm[month == 9 & lev == 300]))
 
 # Regresiones
 
+----
 
-```{r}
+```{r, cache.vars="regression.gh", cache = TRUE}
 regression.gh <- gh[lev == 300, 
-                    setNames(ExtractLm(
-                        RcppArmadillo::fastLm(cbind(1, amplitude, phase), gh)),
-                        c("regressor", "estimate", "se")), 
+                    setNames(ExtractLm(fastLm(cbind(1, amplitude, phase), gh)),
+                             c("regressor", "estimate", "se")), 
                     by = .(lat, lon, lev, month(date))] %>%
     .[, t := abs(estimate)/se]
 ```
@@ -414,7 +414,7 @@ Es interesante que la regresión con la fase muestre patrones tan claros, pero l
 </div>
 
 
-```{r}
+```{r, cache = TRUE}
 gdata <- RepeatLon(copy(regression.gh[regressor != "intercept"]))
 gdata[regressor == "phase", estimate := estimate*pi/180]
 ggplot(gdata, aes(lon, lat)) +
@@ -434,18 +434,115 @@ ggplot(gdata, aes(lon, lat)) +
     labs(subtitle = "Regresión en Amplitud (color) y Fase (líneas)", caption = "lineas = 1")
 ```
 
-# Otras cosas de la amplitud
+
+# OLR
+
+----
+
+```{r, cache.vars="regression.olr", cache = TRUE}
+olr <- readRDS("DATA/NCEP/olr.Rds")
+olr <- olr[qs_index[, .(date, amplitude, r2, phase)], on = "date"][!is.na(olr)]
+regression.olr <- olr[, ExtractLm(fastLm(cbind(1, amplitude, phase), olr)), 
+                      by = .(lon, lat, month(date))]
+```
+
+```{r}
+ggplot(regression.olr[regressor == "amplitude"], aes(lon, lat)) +
+    geom_tile(aes(fill = estimate)) +
+    geom_point(shape = 46, size = 0.1, alpha = 0.2,
+               data = regression.olr[regressor == "amplitude" & abs(estimate)/se > 2]) +
+    map.world.3 +
+    scale_fill_gradient2(name = "Regresión con amplitud") +
+    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb)) +
+    coord_quickmap()
+```
 
 ----
 
 ```{r}
-ggplot(qs_index, aes(year(date), amplitude)) +
-    geom_line() +
-    geom_smooth() + 
-    facet_wrap(~month(date), scales = "free")
+ggplot(regression.olr[regressor == "phase"], aes(lon, lat)) +
+    geom_tile(aes(fill = estimate*pi/180)) +
+    geom_point(shape = 46, size = 0.1, alpha = 0.2,
+               data = regression.olr[regressor == "phase" & abs(estimate)/se > 2]) +
+    map.world.3 +
+    scale_fill_gradient2(name = "Regresión con fase") +
+    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb)) +
+    coord_quickmap()
 ```
 
 ----
+
+```{r, cache = TRUE, cache.vars="regression.olr.lag"}
+regression.olr.lag <- olr[, .(olr = shift(olr, 1), date, amplitude, phase), 
+                          by = .(lon, lat)][
+    !is.na(olr), 
+    ExtractLm(fastLm(cbind(intercept = 1, amplitude, phase), olr)),
+    by = .(lon, lat, month(date))]
+```
+```{r}
+ggplot(regression.olr.lag[regressor == "amplitude"], aes(lon, lat)) +
+    geom_tile(aes(fill = estimate)) +
+    geom_point(shape = 46, size = 0.1, alpha = 0.2,
+               data = regression.olr.lag[regressor == "amplitude" & abs(estimate)/se > 2]) +
+    map.world.3 +
+    scale_fill_gradient2(name = "Regresión con amplitud\n(lag 1)") +
+    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb)) +
+    coord_quickmap()
+```
+
+----
+
+```{r}
+ggplot(regression.olr.lag[regressor == "phase"], aes(lon, lat)) +
+    geom_tile(aes(fill = estimate)) +
+    geom_point(shape = 46, size = 0.1, alpha = 0.2,
+               data = regression.olr.lag[regressor == "phase" & abs(estimate)/se > 2]) +
+    map.world.3 +
+    scale_fill_gradient2(name = "Regresión con fase\n(lag 1)") +
+    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb)) +
+    coord_quickmap()
+```
+
+
+
+# SST
+
+```{r, cache = TRUE, cache.vars = "regression.sst"}
+sst <- readRDS("DATA/NCEP/sst.Rds")[sea == TRUE]
+sst <- sst[qs_index[, .(date, amplitude, phase, r2)], on = "date"]
+sst[, sd := sd(sst), by = .(lon, lat, month(date))]
+
+regression.sst <- sst[sd != 0, ExtractLm(fastLm(cbind(1, amplitude, phase), sst)), 
+                      by = .(lon, lat, month(date))]
+```
+
+----
+
+```{r}
+ggplot(regression.sst[regressor == "amplitude"], aes(lon, lat)) +
+    geom_tile(aes(fill = estimate)) +
+    geom_point(shape = 46, size = 0.1, alpha = 0.2,
+               data = regression.olr[regressor == "amplitude" & abs(estimate)/se > 2]) +
+    map.world.3 +
+    scale_fill_gradient2() +
+    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb)) +
+    coord_quickmap()
+```
+
+
+# Otras cosas de la amplitud
+
+## Tendencia por mes
+
+```{r}
+ggplot(qs_index, aes(year(date), amplitude)) +
+    geom_line() +
+    geom_smooth() +
+    ylab("Amplitud") + xlab("Año") +
+    facet_wrap(~month(date), scales = "free", labeller = as_labeller(setNames(month.abb, 1:12)))
+```
+
+## Correlacion entre meses
 
 ```{r}
 cor.month <- cor(dcast(qs_index, year(date) ~ month(date), 
@@ -460,10 +557,10 @@ gdata <- melt(cor.month, id.vars = "month", variable.name = "month2", value.name
 ggplot(gdata, aes(month, as.numeric(month2))) +
     geom_point(aes(size = abs(correlation), color = correlation)) +
     geom_text(aes(label = round(correlation, 1)*10), size = 2, color = "white") +
-    scale_size(range = c(1, 6)) +
-    scale_x_continuous(limits = c(1, 12), breaks = 1:12, labels = month.abb) +
-    scale_y_reverse(limits = c(12, 1), breaks = 12:1, labels = month.abb[12:1]) +
-    scale_color_gradient2(low = muted("blue"), high = muted("red"))
+    scale_size(range = c(1, 6), guide = "none") +
+    scale_x_continuous(limits = c(1, 12), breaks = 1:12, labels = month.abb, name = "Mes") +
+    scale_y_reverse(limits = c(12, 1), breaks = 12:1, labels = month.abb[12:1], name = "Mes") +
+    scale_color_gradient2(low = muted("blue"), high = muted("red"), name = "Correlación")
 ```
 
 

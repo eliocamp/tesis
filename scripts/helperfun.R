@@ -364,11 +364,9 @@ ExtractLm <- function(model) {
     #   una lista con 3 vectores: el nombre de los elementos, los estimadores y
     #   el error estándar.
     a <- summary(model)
-    regressor = rownames(a$coefficients)
-    regressor[regressor == ""] <- "intercept"
-    return(list(regressor,
-                unname(a$coefficients[, 1]),
-                unname(a$coefficients[, 2])))
+    return(list(regressor = rownames(a$coefficients),
+                estimate  = unname(a$coefficients[, 1]),
+                se        = unname(a$coefficients[, 2])))
 }
 
 
