@@ -71,20 +71,25 @@ geom_map2 <- function(map) {
     g <- geom_path(data = map, aes(long, lat, group = group),
                    color = "black",
                    inherit.aes = F, size = 0.2)
+
     return(g)
 }
 
 
-scale_x_longitude <- function(ticks = 60, ...) {
-    scale_x_continuous(breaks = seq(0, 360 - ticks, by = ticks),
-                       labels = c(seq(0, 180, by = ticks), seq(-180 + ticks, 0 - ticks, by = ticks)),
+scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
+    scale_x_continuous(name = name,
+                       breaks = seq(0, 360 - ticks, by = ticks),
+                       labels = c(seq(0, 180, by = ticks),
+                                  seq(-180 + ticks, 0 - ticks, by = ticks)),
                        ...)
 }
 
 
-scale_y_longitude <- function(ticks = 60, ...) {
-    scale_y_continuous(breaks = seq(0, 360 - ticks, by = ticks),
-                       labels = c(seq(0, 180, by = ticks), seq(-180 + ticks, 0 - ticks, by = ticks)),
+scale_y_longitude <- function(ticks = 60, name = "lon", ...) {
+    scale_y_continuous(name = name,
+                       breaks = seq(0, 360 - ticks, by = ticks),
+                       labels = c(seq(0, 180, by = ticks),
+                                  seq(-180 + ticks, 0 - ticks, by = ticks)),
                        ...)
 }
 

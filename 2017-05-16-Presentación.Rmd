@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "ay"
 author: "Elio Campitelli"
 output:
     ioslides_presentation:
@@ -30,6 +30,7 @@ theme_set(theme_elio)
 map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
 map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
 map.world.3 <- geom_map2(map.world.3)
+map.SH.countries <- geom_map2(BuildMap(countries = T, res = 8))
 interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 ```
 
@@ -61,7 +62,17 @@ La fase como la estaba calculando anteriormente era ininterpretable. Ahora modif
 
 De todas formas, me parece que es más interpretable para nosotros calcular la posición del tercer máximo ya que es el que afecta a Sudamérica. 
 
-## Ciclo Anual
+----
+
+```{r}
+g <- ggplot(qs_index, aes(date, phase*180/pi - 120)) +
+    geom_line() + 
+    geom_hline(aes(yintercept = mean(phase*180/pi - 120)), linetype = 3, color = "gray45") +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+    ylab("Amplitud") + xlab("Fecha") 
+
+DivideTimeseries(g, n = 3, qs_index$date, ylab = "Fase", xlab = "Fecha")
+```
 
 ```{r}
 ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
@@ -75,7 +86,7 @@ ggplot(qs_index, aes(month(date), (phase)*180/pi - 120, group = month(date))) +
 
 ```{r, fig.height=6, fig.width=10}
 ggplot(qs_index) +
-    geom_map2(BuildMap(countries = T)) +
+    map.SH.countries + 
     ggstance::geom_boxploth(aes(phase*180/pi + 240, (-month(date) + 6)*2 - 45, group = as.factor(month(date)))) +
     annotate(geom = "text", x = rep(240, 12), y = (-(1:12) + 6)*2 - 45, 
              label = month.abb, size = 3) +
@@ -88,17 +99,59 @@ ggplot(qs_index) +
 
 </div>
 
----- 
+
+## Centros del anticiclón
 
 ```{r}
-g <- ggplot(qs_index, aes(date, phase*180/pi - 120)) +
-    geom_line() + 
-    geom_hline(aes(yintercept = mean(phase*180/pi - 120)), linetype = 3, color = "gray45") +
-    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-    ylab("Amplitud") + xlab("Fecha") 
-
-DivideTimeseries(g, n = 3, qs_index$date, ylab = "Fase", xlab = "Fecha")
+qs.max <- copy(qs)[lat < -25]
+qs.max[, amplitude.max := max(amplitude), by = .(date, lev)]
+qs.max <- qs.max[amplitude == amplitude.max]
+qs.max[, month := month(date)]
 ```
+
+```{r}
+ggplot(qs.max[lev == 300], aes(phase*180/pi + 240, lat)) +
+    map.SH.countries +
+    geom_density2d(color = "black", size = 0.1, binwidth = 0.0005) +
+    geom_point(alpha = 0.5, size = 0.5) +
+    facet_wrap(~month, labeller = labeller(month = month.abb)) +
+    scale_x_longitude(ticks = 30) +
+    coord_quickmap(xlim = c(230, 360), ylim = c(-70, -20))
+```
+<div class = "notes">
+Para cada mes, tomo la latitud donde la amplitud de la onda 3 es máxima y su fase (que indica la latitud del máximo). 
+
+La variabilidad de verano es menor que en invierno tanto para la longitud (que se veía en los gráficos anteriores) y en la latitud. Hay casos que no aparecen en el boxplot por tomar una fase promedio en todas las latitudes. Quizás la fase promedio no es una buena medida para formar el índice. En enero, por ejemplo, hay dos casos donde el centro del anticiclón está cerca de -120 que no se ven en el boxplot. Esto seguro que tiene que ver con hacer el promedio de lo que pasa en otras latitudes. Quizás el índice relevante es la amplitud y la fase de la onda en la latitud donde tiene amplitud máxima. 
+</div>
+
+---- 
+
+Puedo hacer un índice utilizando el máximo de la amplitud en vez del promedio y la fase y la latitud correspondientes al mismo.  
+
+Como se muestra después, no hay mucha diferencia en la variabilidad más allá de la obvia diferencia en la magnitud de la amplitud. El beneficio de hacerlo así es que obtengo la **posición** de los anticiclones. 
+
+----
+```{r}
+qs.both <- rbind(qs.max[lev == 300, .(date, type = "max", amplitude, phase)],
+                 qs_index[, .(date, type = "mean", amplitude, phase)])
+
+g <- ggplot(qs.both, aes(date, amplitude)) +
+    geom_line(aes(color = type)) +
+    scale_color_brewer(palette = "Set1", name = "Índice", 
+                       labels = c(max = "Máximo", mean = "Promedio"))
+DivideTimeseries(g, qs.both$date, n = 3, xlab = "Fecha", ylab = "Amplitud")
+```
+
+----
+
+```{r}
+g <- ggplot(qs.both, aes(date, phase)) +
+    geom_line(aes(color = type)) +
+    scale_color_brewer(palette = "Set1", name = "Índice", 
+                       labels = c(max = "Máximo", mean = "Promedio"))
+DivideTimeseries(g, qs.both$date, n = 3, xlab = "Fecha", ylab = "Fase")
+```
+
 
 # Tabla de composiciones
 
@@ -156,8 +209,6 @@ ggplot(selected, aes(phase*180/pi - 120, amplitude, color = select)) +
 gdata <- qs_index[, .N, by = .(month(date), interaction(select.amplitude, select.r2, select.amplitude_norm))] %>%
     .[, c("amplitude", "r2", "amplitude.norm") := tstrsplit(interaction, split = "\\.")] %>%
     .[, interaction := NULL]
-
-
 ```
 
 # Ondas teóricas
@@ -168,20 +219,26 @@ Se grafican la onda 3 de la altura geopotencial para cada año seleccionado seg�
 
 ```{r}
 lon <- unique(gh[date == date[1] & lat == lat[1] & lev == lev[1], lon])
-qs_field <- qs[lev == 300, .(lon = lon, 
+qs.field <- qs[lev == 300, .(lon = lon, 
                              gh = BuildQsField(lon*pi/180, amplitude, phase, k)), 
                by = .(date, lat)]
-qs_field <- qs_field[
+qs.field <- qs.field[
     qs_index[, .(date, select.amplitude, select.r2, select.amplitude_norm)],
-    on = "date"]
+    on = "date"] %>%
+    .[, field := "qs"]
+gh <- gh[qs_index, on = "date"]
+gh.field <- copy(gh)[lev == 300] %>%
+    .[, gh.mean := mean(gh), by = .(lon, lat, month(date))] %>%
+    .[, gh := gh - mean(gh), by = .(lon, lat, month(date))] %>%
+    .[, field := "ncep"]
+
+field <- rbind(qs.field, gh.field[, colnames(qs.field), with = FALSE]) %>%
+    .[, c("month", "year") := list(month(date), year(date))]
 ```
 
 ## Amplitud66, Enero
 
 ```{r}
-qs_field[, year := year(date)]
-qs_field[, month := month(date)]
-
 PlotQsWaves <- function(data, binwidth = 20, ncol = 6) {
     ggplot(data, 
            aes(lon, lat)) +
@@ -195,11 +252,17 @@ PlotQsWaves <- function(data, binwidth = 20, ncol = 6) {
         coord_polar() + ylim(c(-90, -10))
 }
 
-PlotQsWaves(qs_field[month(date) == 1 & select.amplitude])
+PlotQsWaves(field[field == "qs" & month(date) == 1 & select.amplitude])
 ```
 
 ----
 
+```{r}
+PlotQsWaves(RepeatLon(field[field == "ncep" & select.amplitude == TRUE & 
+                                    month(date) == 1]))
+```
+
+----
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar <- function(data, binwidth = 15) {
@@ -214,14 +277,13 @@ PlotContourPolar <- function(data, binwidth = 15) {
         coord_polar() + ylim(c(-90, -10))
     
 }
-PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
+PlotContourPolar(field[field == "qs" & month == 1, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
                           by = .(lon, lat)])
 
 ```
 
 
 ```{r, fig.width=5, fig.height=5}
-gh <- gh[qs_index, on = "date"]
 gh.composition <- gh[, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
                      by = .(lon, lat, lev, month(date))]
 
@@ -233,7 +295,14 @@ PlotContourPolar(RepeatLon(gh.composition[month == 1 & lev == 300]))
 ## Amplitud66, septiembre
 
 ```{r}
-PlotQsWaves(qs_field[month(date) == 9 & select.amplitude], binwidth = 40)
+PlotQsWaves(field[field == "qs" & month(date) == 9 & select.amplitude], binwidth = 40)
+```
+
+----
+
+```{r}
+PlotQsWaves(RepeatLon(field[field == "ncep" & select.amplitude == TRUE & 
+                                    month(date) == 9]), binwidth = 40)
 ```
 
 ----
@@ -252,7 +321,7 @@ PlotContourPolar <- function(data, binwidth = 15) {
         coord_polar() + ylim(c(-90, -10))
     
 }
-PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
+PlotContourPolar(field[field == "qs" & month == 9, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
                           by = .(lon, lat)])
 
 ```
@@ -263,11 +332,42 @@ PlotContourPolar(RepeatLon(gh.composition[month == 9 & lev == 300]))
 ```
 </div>
 
+# Correlación entre campos reales y teóricos
+
+
+```{r}
+gdata <- field[, .(correlation = cor(gh[field == "qs"], gh[field == "ncep"])), 
+               by = .(year(date), month(date))]
+gdata2 <-  field[,
+                 .(correlation = cor(gh[field == "qs"], gh[field == "ncep"])), 
+                 by = .(month(date))] %>%
+    .[, year := 2018]
+
+ggplot(gdata, aes(year, as.factor(month), size = correlation, color = correlation)) +
+    geom_point() + 
+    geom_point(data = qs_index[select.amplitude == T, 
+                               .(year = year(date), month = month(date))],
+               inherit.aes = F, aes(year, as.factor(month)), 
+               fill = NA, color = "black", shape = 21, size = 6) +
+    scale_color_viridis(name = "Correlación\nentre campos") +
+    scale_size_area(guide = "none") +
+    scale_y_discrete(label = month.abb, name = "Mes") +
+    scale_x_continuous(minor_breaks = 1985:2015, 
+                       breaks = seq(1985, 2015, by = 5) ,
+                       name = "Año")
+```
+
+<div class="notes">
+Claramente a pesar de que enero tiene una señal en promedio bastante más clara que septiembre, ésto se debe a que la menor variabilidad en fase. Los años particulares son más "puros" en septiembre que en el caso de enero. 
+Una forma de ver esto es hacer la correlación entre los campos para cada caso.
+</div>
+
+----
 
 ## R2, enero
 
 ```{r}
-PlotQsWaves(qs_field[month(date) == 1 & select.r2], binwidth = 30)
+PlotQsWaves(field[field == "qs" & month(date) == 1 & select.r2], binwidth = 30)
 ```
 
 
@@ -276,7 +376,7 @@ PlotQsWaves(qs_field[month(date) == 1 & select.r2], binwidth = 30)
 
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
-PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.r2]) - mean(gh)), 
+PlotContourPolar(field[field == "qs" &month == 1, .(gh = mean(gh[select.r2]) - mean(gh)), 
                           by = .(lon, lat)])
 
 ```
@@ -294,7 +394,7 @@ PlotContourPolar(RepeatLon(gh.composition.r2[month == 1 & lev == 300]))
 ## R2, septiembre
 
 ```{r}
-PlotQsWaves(qs_field[month(date) == 9 & select.r2], binwidth = 30)
+PlotQsWaves(field[field == "qs" &month(date) == 9 & select.r2], binwidth = 30)
 ```
 
 
@@ -303,7 +403,7 @@ PlotQsWaves(qs_field[month(date) == 9 & select.r2], binwidth = 30)
 
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
-PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.r2]) - mean(gh)), 
+PlotContourPolar(field[field == "qs" &month == 9, .(gh = mean(gh[select.r2]) - mean(gh)), 
                           by = .(lon, lat)])
 ```
 
@@ -317,9 +417,16 @@ PlotContourPolar(RepeatLon(gh.composition.r2[month == 9 & lev == 300]))
 
 ## AmplitudSD, enero
 
+<div class="columns-2">
 ```{r}
-PlotQsWaves(qs_field[month(date) == 1 & select.amplitude_norm], binwidth = 30)
+PlotQsWaves(field[field == "qs" &month(date) == 1 & select.amplitude_norm], 
+            binwidth = 30, ncol = 2)
 ```
+```{r}
+PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE & 
+                                    month(date) == 1]), binwidth = 30, ncol = 2)
+```
+</div>
 
 
 
@@ -327,7 +434,7 @@ PlotQsWaves(qs_field[month(date) == 1 & select.amplitude_norm], binwidth = 30)
 
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
-PlotContourPolar(qs_field[month == 1, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
+PlotContourPolar(field[field == "qs" &month == 1, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
                           by = .(lon, lat)])
 
 ```
@@ -345,17 +452,23 @@ PlotContourPolar(RepeatLon(gh.composition.ampl_norm[month == 1 & lev == 300]))
 
 ## R2, septiembre
 
+<div class="columns-2">
 ```{r}
-PlotQsWaves(qs_field[month(date) == 9 & select.amplitude_norm], binwidth = 30)
+PlotQsWaves(field[field == "qs" &month(date) == 9 & select.amplitude_norm], binwidth = 30,
+            ncol = 2)
 ```
 
-
+```{r}
+PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE & 
+                                    month(date) == 9]), binwidth = 30, ncol = 2)
+```
+</div>
 
 ----
 
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
-PlotContourPolar(qs_field[month == 9, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
+PlotContourPolar(field[field == "qs" &month == 9, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
                           by = .(lon, lat)])
 
 ```
@@ -415,23 +528,23 @@ Es interesante que la regresión con la fase muestre patrones tan claros, pero l
 
 
 ```{r, cache = TRUE}
-gdata <- RepeatLon(copy(regression.gh[regressor != "intercept"]))
-gdata[regressor == "phase", estimate := estimate*pi/180]
-ggplot(gdata, aes(lon, lat)) +
-    geom_tile(data = gdata[regressor == "amplitude"],
-              aes(fill = estimate)) +
-    geom_contour(data = gdata[regressor == "phase"], 
-                 aes(z = estimate, color = as.factor(regressor), 
-                     linetype = as.factor(-sign(..level..))), binwidth = 1, 
-                 color = "black") +
-    map.SH.3 +
-    guides(linetype = "none") +
-    scale_fill_gradient2(low = muted("blue"), high = muted("red"), 
-                         name = "Regresión en Amplitud") +
-    coord_polar() + ylim(c(-90, -20)) +
-    scale_x_longitude() +
-    facet_wrap(~month, labeller = labeller(month = month.abb)) +
-    labs(subtitle = "Regresión en Amplitud (color) y Fase (líneas)", caption = "lineas = 1")
+# gdata <- RepeatLon(copy(regression.gh[regressor != "intercept"]))
+# gdata[regressor == "phase", estimate := estimate*pi/180]
+# ggplot(gdata, aes(lon, lat)) +
+#     geom_tile(data = gdata[regressor == "amplitude"],
+#               aes(fill = estimate)) +
+#     geom_contour(data = gdata[regressor == "phase"], 
+#                  aes(z = estimate, color = as.factor(regressor), 
+#                      linetype = as.factor(-sign(..level..))), binwidth = 1, 
+#                  color = "black") +
+#     map.SH.3 +
+#     guides(linetype = "none") +
+#     scale_fill_gradient2(low = muted("blue"), high = muted("red"), 
+#                          name = "Regresión en Amplitud") +
+#     coord_polar() + ylim(c(-90, -20)) +
+#     scale_x_longitude() +
+#     facet_wrap(~month, labeller = labeller(month = month.abb)) +
+#     labs(subtitle = "Regresión en Amplitud (color) y Fase (líneas)", caption = "lineas = 1")
 ```
 
 
@@ -475,9 +588,9 @@ ggplot(regression.olr[regressor == "phase"], aes(lon, lat)) +
 ```{r, cache = TRUE, cache.vars="regression.olr.lag"}
 regression.olr.lag <- olr[, .(olr = shift(olr, 1), date, amplitude, phase), 
                           by = .(lon, lat)][
-    !is.na(olr), 
-    ExtractLm(fastLm(cbind(intercept = 1, amplitude, phase), olr)),
-    by = .(lon, lat, month(date))]
+                              !is.na(olr), 
+                              ExtractLm(fastLm(cbind(intercept = 1, amplitude, phase), olr)),
+                              by = .(lon, lat, month(date))]
 ```
 ```{r}
 ggplot(regression.olr.lag[regressor == "amplitude"], aes(lon, lat)) +
