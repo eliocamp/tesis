@@ -131,6 +131,7 @@ Puedo hacer un índice utilizando el máximo de la amplitud en vez del promedio 
 Como se muestra después, no hay mucha diferencia en la variabilidad más allá de la obvia diferencia en la magnitud de la amplitud. El beneficio de hacerlo así es que obtengo la **posición** de los anticiclones. 
 
 ----
+
 ```{r}
 qs.both <- rbind(qs.max[lev == 300, .(date, type = "max", amplitude, phase)],
                  qs_index[, .(date, type = "mean", amplitude, phase)])
@@ -236,7 +237,7 @@ field <- rbind(qs.field, gh.field[, colnames(qs.field), with = FALSE]) %>%
     .[, c("month", "year") := list(month(date), year(date))]
 ```
 
-## Amplitud66, Enero
+## Amplitud66, Enero. Campo teórico.
 
 ```{r}
 PlotQsWaves <- function(data, binwidth = 20, ncol = 6) {
@@ -255,7 +256,7 @@ PlotQsWaves <- function(data, binwidth = 20, ncol = 6) {
 PlotQsWaves(field[field == "qs" & month(date) == 1 & select.amplitude])
 ```
 
-----
+## Amplitud66, Enero. Campo observado.
 
 ```{r}
 PlotQsWaves(RepeatLon(field[field == "ncep" & select.amplitude == TRUE & 
@@ -292,13 +293,13 @@ PlotContourPolar(RepeatLon(gh.composition[month == 1 & lev == 300]))
 </div>
 
 
-## Amplitud66, septiembre
+## Amplitud66, septiembre. Campo teórico.
 
 ```{r}
 PlotQsWaves(field[field == "qs" & month(date) == 9 & select.amplitude], binwidth = 40)
 ```
 
-----
+## Amplitud66, septiembre. Campo observado. 
 
 ```{r}
 PlotQsWaves(RepeatLon(field[field == "ncep" & select.amplitude == TRUE & 
@@ -335,28 +336,6 @@ PlotContourPolar(RepeatLon(gh.composition[month == 9 & lev == 300]))
 # Correlación entre campos reales y teóricos
 
 
-```{r}
-gdata <- field[, .(correlation = cor(gh[field == "qs"], gh[field == "ncep"])), 
-               by = .(year(date), month(date))]
-gdata2 <-  field[,
-                 .(correlation = cor(gh[field == "qs"], gh[field == "ncep"])), 
-                 by = .(month(date))] %>%
-    .[, year := 2018]
-
-ggplot(gdata, aes(year, as.factor(month), size = correlation, color = correlation)) +
-    geom_point() + 
-    geom_point(data = qs_index[select.amplitude == T, 
-                               .(year = year(date), month = month(date))],
-               inherit.aes = F, aes(year, as.factor(month)), 
-               fill = NA, color = "black", shape = 21, size = 6) +
-    scale_color_viridis(name = "Correlación\nentre campos") +
-    scale_size_area(guide = "none") +
-    scale_y_discrete(label = month.abb, name = "Mes") +
-    scale_x_continuous(minor_breaks = 1985:2015, 
-                       breaks = seq(1985, 2015, by = 5) ,
-                       name = "Año")
-```
-
 <div class="notes">
 Claramente a pesar de que enero tiene una señal en promedio bastante más clara que septiembre, ésto se debe a que la menor variabilidad en fase. Los años particulares son más "puros" en septiembre que en el caso de enero. 
 Una forma de ver esto es hacer la correlación entre los campos para cada caso.
@@ -364,13 +343,50 @@ Una forma de ver esto es hacer la correlación entre los campos para cada caso.
 
 ----
 
-## R2, enero
+```{r}
+qs_index <- qs_index[field[, .(correlation = cor(gh[field == "qs"], gh[field == "ncep"])), 
+               by = .(date)], on = "date"]
+qs_index[, rank.correlation := frank(-correlation), by = month(date)]
+
+ggplot(qs_index, aes(year(date), as.factor(month(date)))) +
+    geom_point(aes(size = correlation, color = correlation)) + 
+    geom_point(aes(x = ifelse(select.amplitude == TRUE, year(date), NA)),
+               fill = NA, color = "black", shape = 21, size = 6) +
+    geom_point(aes(x = ifelse(rank.correlation <= 11, year(date), NA)), 
+               fill = NA, color = "black", size = 1) +
+    geom_text(data = qs_index[, 
+                      .(coincidence = 
+                            sum(rank.correlation <= 11 & select.amplitude == TRUE)),
+                      by = month(date)], 
+              aes(y = as.factor(month), label = coincidence, x = 2017), hjust = 1) +
+    scale_color_viridis(name = "Correlación\nentre campos") +
+    scale_size_area(guide = "none") +
+    scale_y_discrete(label = month.abb, name = "Mes") +
+    scale_x_continuous(minor_breaks = 1985:2015, 
+                       breaks = seq(1985, 2015, by = 5),
+                       limits = c(1985, 2017), 
+                       name = "Año")
+```
+<div class="notes">
+Este gráfico requiere explicación. 
+Para cada mes y año se grafica la correlación entre el campo teórico y el campo observado. Además, para cada mes se indica con círculos grandes los 11 años seleccionados según el criterio del percentil 66 de la amplitud y con puntos negros los 11 años con mayor correlación. El número a la derecha es la candidad de años en donde ambos criterios coinciden. 
+Lo que se ve es que si bien en muchos casos coinciden, algunos meses tienen hasta 4 casos sin coincidencia. Los números son parecidos para el caso de selección con $r^2$.
+</div>
+
+----
+
+## R2, enero. Campo teórico.
 
 ```{r}
 PlotQsWaves(field[field == "qs" & month(date) == 1 & select.r2], binwidth = 30)
 ```
 
+## R2, enero. Campo observado.
 
+
+```{r}
+PlotQsWaves(field[field == "ncep" & month(date) == 1 & select.r2], binwidth = 30)
+```
 
 ----
 
@@ -391,12 +407,18 @@ PlotContourPolar(RepeatLon(gh.composition.r2[month == 1 & lev == 300]))
 </div>
 
 
-## R2, septiembre
+## R2, septiembre. Campo teórico.
 
 ```{r}
 PlotQsWaves(field[field == "qs" &month(date) == 9 & select.r2], binwidth = 30)
 ```
 
+
+## R2, septiembre. Campo observado.
+
+```{r}
+PlotQsWaves(field[field == "ncep" &month(date) == 9 & select.r2], binwidth = 30)
+```
 
 
 ----
@@ -415,14 +437,15 @@ PlotContourPolar(RepeatLon(gh.composition.r2[month == 9 & lev == 300]))
 
 
 
-## AmplitudSD, enero
+## AmplitudSD, enero. Campo teórico y observado.
 
 <div class="columns-2">
-```{r}
+```{r, fig.width=5, fig.height=5}
 PlotQsWaves(field[field == "qs" &month(date) == 1 & select.amplitude_norm], 
             binwidth = 30, ncol = 2)
 ```
-```{r}
+
+```{r, fig.width=5, fig.height=5}
 PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE & 
                                     month(date) == 1]), binwidth = 30, ncol = 2)
 ```
@@ -450,15 +473,15 @@ PlotContourPolar(RepeatLon(gh.composition.ampl_norm[month == 1 & lev == 300]))
 
 
 
-## R2, septiembre
+## R2, septiembre. Campo teórico y observado.
 
 <div class="columns-2">
-```{r}
+```{r, fig.width=5, fig.height=5}
 PlotQsWaves(field[field == "qs" &month(date) == 9 & select.amplitude_norm], binwidth = 30,
             ncol = 2)
 ```
 
-```{r}
+```{r, fig.width=5, fig.height=5}
 PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE & 
                                     month(date) == 9]), binwidth = 30, ncol = 2)
 ```
