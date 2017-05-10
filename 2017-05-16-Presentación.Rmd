@@ -357,7 +357,7 @@ PlotContourPolar(RepeatLon(gh.composition[month == 9 & lev == 300]))
 ```
 </div>
 
-# Correlación entre campos reales y teóricos
+# Correlación entre campos reales y teóricos (disgresión)
 
 
 <div class="notes">
@@ -397,6 +397,45 @@ Para cada mes y año se grafica la correlación entre el campo teórico y el cam
 Lo que se ve es que si bien en muchos casos coinciden, algunos meses tienen hasta 4 casos sin coincidencia. Los números son parecidos para el caso de selección con $r^2$.
 </div>
 
+----
+
+
+```{r}
+cor.field <- field[, .(cor = cor(gh[field == "qs"], gh[field == "ncep"])), 
+                   by = .(lat, lon, month(date))]
+
+ggplot(RepeatLon(cor.field), aes(lon, lat)) + 
+    map.SH.3 +
+    geom_contour(aes(z = cor, color = ..level..),
+                 binwidth = 0.25, size = 0.3) +
+    facet_wrap(~month, labeller = labeller(month = month.abb)) +
+    coord_polar() + ylim(c(-90, -20)) +
+    scale_x_longitude() +
+    scale_color_gradient2(name = "Correlación", low = muted("blue"), high = muted("red")) +
+    labs(caption = "líneas = 0.25")
+```
+
+<div class = "notes">
+Este es la correlación entre el campo observado y el teórico de la onda 3. Como es lógico, se ve que la mayor correlación se da en una franja de latitudes acotadas, pero también que se ve que para la mayoría de los meses, también es mayor en el hemisferio este. 
+En ciertos meses, la influencia de la onda 3 está muy localizada en ciertas longitudes. Agosto, por ejemplo, es mucho más zonal que septiembre.
+
+Curiosamente, en muy altas latitudes la correlación es negativa. 
+</div>
+----
+
+```{r}
+field[,  .(cor = cor(gh[field == "qs"], gh[field == "ncep"])), 
+                 by = .(lat, lon)] %>%
+    RepeatLon() %>%
+ggplot(aes(lon, lat)) +
+    geom_contour(aes(z = cor, color = ..level..), binwidth = 0.15) +
+    # geom_tile(aes(fill = cor)) +
+    map.SH.3 +
+    scale_color_gradient2(name = "Correlación", low = muted("blue"), high = muted("red")) +
+    labs(caption = "líneas = 0.25") +
+    coord_polar() + ylim(c(-90, -20)) +
+    scale_x_longitude()
+```
 
 ## R2, enero. Campo teórico.
 
@@ -525,6 +564,15 @@ PlotContourPolar(RepeatLon(gh.composition.ampl_norm[month == 9 & lev == 300]))
 ```
 </div>
 
+# Conclusiones
+
+----
+
+* La fase es una variable **fundamental** para el diangóstico de la onda 3. No solo "molesta" en las composiciones, lo cual agrega dificultades a la hora de encontrar posibles forzantes, sino que también importa mucho a la hora de analizar las consecuencias. En particular, los efectos en nuestra región van a ser dramáticamente distintos si el centro del anticiclón está al este o al oeste de nuestro país. 
+
+* L
+
+
 # Regresiones
 
 ----
@@ -536,6 +584,8 @@ regression.gh <- gh[lev == 300,
                     by = .(lat, lon, lev, month(date))] %>%
     .[, t := abs(estimate)/se]
 ```
+
+
 ```{r}
 ggplot(RepeatLon(regression.gh[regressor == "amplitude"]), aes(lon, lat)) +
     geom_contour(aes(z = estimate, linetype = as.factor(-sign(..level..))), 
