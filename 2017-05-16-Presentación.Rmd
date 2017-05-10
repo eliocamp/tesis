@@ -1,5 +1,5 @@
 ---
-title: "ay"
+title: ""
 author: "Elio Campitelli"
 output:
     ioslides_presentation:
@@ -142,7 +142,9 @@ g <- ggplot(qs.both, aes(date, amplitude)) +
                        labels = c(max = "Máximo", mean = "Promedio"))
 DivideTimeseries(g, qs.both$date, n = 3, xlab = "Fecha", ylab = "Amplitud")
 ```
-
+<div class="notes">
+Mh... no hay mucha diferencia. Más allá del obvio cambio en la magnitud (el máximo siempre tiene que ser mayor que el promedio), se siguen bastante bien. 
+</div>
 ----
 
 ```{r}
@@ -197,6 +199,34 @@ Se observa que en enero casi todos los casos seleccionados tienen una fase simil
 
 ----
 
+```{r}
+gdata <- qs_index[, .N, by = .(month(date), interaction(select.amplitude, select.r2, select.amplitude_norm))] %>%
+    .[, c("amplitude", "r2", "amplitude.norm") := tstrsplit(interaction, split = "\\.")] %>%
+    .[, interaction := NULL]
+
+labels.truefalse <- c("TRUE" = "Sí", "FALSE" = "No")
+
+ggplot(gdata, aes(amplitude, r2, color = amplitude.norm)) +
+        geom_text(aes(label = N, 
+                      vjust = ifelse(amplitude.norm, -0.3, 1.2))) +
+    facet_wrap(~month, labeller = labeller(month = month.abb))  +
+    scale_color_brewer(palette = "Set1", name = "Amplitud 1SD", 
+                       labels = labels.truefalse) +
+    scale_y_discrete(name = "R^2 66", labels = labels.truefalse) +
+    scale_x_discrete(name = "Amplitud 66", labels = labels.truefalse)
+```
+
+<div class="notes">
+La cantidad de años seleccionados para cada mes según cada criterio. En el eje horizontal y vertival, según el percentil 66 de la amplitud y de r^2, respectivamente. En color (y posición dentro de cada celda) según 1 desvío estándar de la amplitud.
+En general coinciden bastante bien. con la gran mayoría de los años en la esquina superior derecha (seleccionados por los tres criterios) e inferior izquierda (no seleccionado por ningún criterio).
+(En realidad, en algunos meses hay más años seleccinoados sólo por el r^2 66 y amplitud 66, pero eso es esperable porque amplitud sd es mucho más restrictivo)
+
+Hilando fino, marzo es un mes extraño con más meses sin concordancia que con (8 contra 7). Junio y julio tienen ambos 1 año seleccioado por amplitud sd pero no por R2. 
+</div>
+
+----
+
+
 ```{r, fig.height=6}
 ggplot(selected, aes(phase*180/pi - 120, amplitude, color = select)) +
     geom_point(alpha = 0.5, position = position_jitter(height = 5, width = 5)) +
@@ -205,12 +235,6 @@ ggplot(selected, aes(phase*180/pi - 120, amplitude, color = select)) +
     scale_color_selection
 ```
 
-
-```{r}
-gdata <- qs_index[, .N, by = .(month(date), interaction(select.amplitude, select.r2, select.amplitude_norm))] %>%
-    .[, c("amplitude", "r2", "amplitude.norm") := tstrsplit(interaction, split = "\\.")] %>%
-    .[, interaction := NULL]
-```
 
 # Ondas teóricas
 
@@ -373,7 +397,6 @@ Para cada mes y año se grafica la correlación entre el campo teórico y el cam
 Lo que se ve es que si bien en muchos casos coinciden, algunos meses tienen hasta 4 casos sin coincidencia. Los números son parecidos para el caso de selección con $r^2$.
 </div>
 
-----
 
 ## R2, enero. Campo teórico.
 
