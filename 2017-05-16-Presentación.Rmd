@@ -942,6 +942,9 @@ DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud", xlab = "Fech
 
 <div class = "notes">
 Mirando el gráfico de nuevo, me da la impresión de que la supuesta coincidencia entre las corridas no se da tanto porque coincidan en los picos sino que es una cuestión de que todas tienen un ciclo anual similar. 
+
+Con tantas corridas juntas este gráfico (y el de la fase) es un spaghetti inentendible. 
+
 </div>
 ----
 
@@ -1022,6 +1025,7 @@ ggplot(qs_index.sp, aes(month(date), phase*180/pi + 240,
                        labels = label.runs) +
     scale_y_longitude(name = "Fase", ticks = 20)
 ```
+
 
 
 
