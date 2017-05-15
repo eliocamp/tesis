@@ -2,11 +2,11 @@
 title: ""
 author: "Elio Campitelli"
 output:
-    ioslides_presentation:
-        fig_height: 5.5
-        fig_width: 10.5
-        smaller: yes
-        widescreen: yes
+ioslides_presentation:
+fig_height: 5.5
+fig_width: 10.5
+smaller: yes
+widescreen: yes
 ---
 
 ```{r, include = FALSE}
@@ -207,8 +207,8 @@ gdata <- qs_index[, .N, by = .(month(date), interaction(select.amplitude, select
 labels.truefalse <- c("TRUE" = "Sí", "FALSE" = "No")
 
 ggplot(gdata, aes(amplitude, r2, color = amplitude.norm)) +
-        geom_text(aes(label = N, 
-                      vjust = ifelse(amplitude.norm, -0.3, 1.2))) +
+    geom_text(aes(label = N, 
+                  vjust = ifelse(amplitude.norm, -0.3, 1.2))) +
     facet_wrap(~month, labeller = labeller(month = month.abb))  +
     scale_color_brewer(palette = "Set1", name = "Amplitud 1SD", 
                        labels = labels.truefalse) +
@@ -284,7 +284,7 @@ PlotQsWaves(field[field == "qs" & month(date) == 1 & select.amplitude])
 
 ```{r}
 PlotQsWaves(RepeatLon(field[field == "ncep" & select.amplitude == TRUE & 
-                                    month(date) == 1]))
+                                month(date) == 1]))
 ```
 
 ----
@@ -303,7 +303,7 @@ PlotContourPolar <- function(data, binwidth = 15) {
     
 }
 PlotContourPolar(field[field == "qs" & month == 1, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
-                          by = .(lon, lat)])
+                       by = .(lon, lat)])
 
 ```
 
@@ -327,7 +327,7 @@ PlotQsWaves(field[field == "qs" & month(date) == 9 & select.amplitude], binwidth
 
 ```{r}
 PlotQsWaves(RepeatLon(field[field == "ncep" & select.amplitude == TRUE & 
-                                    month(date) == 9]), binwidth = 40)
+                                month(date) == 9]), binwidth = 40)
 ```
 
 ----
@@ -347,7 +347,7 @@ PlotContourPolar <- function(data, binwidth = 15) {
     
 }
 PlotContourPolar(field[field == "qs" & month == 9, .(gh = mean(gh[select.amplitude]) - mean(gh)), 
-                          by = .(lon, lat)])
+                       by = .(lon, lat)])
 
 ```
 
@@ -375,7 +375,7 @@ PlotQsWaves(field[field == "ncep" & month(date) == 1 & select.r2], binwidth = 30
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(field[field == "qs" &month == 1, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                          by = .(lon, lat)])
+                       by = .(lon, lat)])
 
 ```
 
@@ -408,7 +408,7 @@ PlotQsWaves(field[field == "ncep" &month(date) == 9 & select.r2], binwidth = 30)
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(field[field == "qs" &month == 9, .(gh = mean(gh[select.r2]) - mean(gh)), 
-                          by = .(lon, lat)])
+                       by = .(lon, lat)])
 ```
 
 
@@ -429,7 +429,7 @@ PlotQsWaves(field[field == "qs" &month(date) == 1 & select.amplitude_norm],
 
 ```{r, fig.width=5, fig.height=5}
 PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE & 
-                                    month(date) == 1]), binwidth = 30, ncol = 2)
+                                month(date) == 1]), binwidth = 30, ncol = 2)
 ```
 </div>
 
@@ -440,7 +440,7 @@ PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE &
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(field[field == "qs" &month == 1, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
-                          by = .(lon, lat)])
+                       by = .(lon, lat)])
 
 ```
 
@@ -465,7 +465,7 @@ PlotQsWaves(field[field == "qs" &month(date) == 9 & select.amplitude_norm], binw
 
 ```{r, fig.width=5, fig.height=5}
 PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE & 
-                                    month(date) == 9]), binwidth = 30, ncol = 2)
+                                month(date) == 9]), binwidth = 30, ncol = 2)
 ```
 </div>
 
@@ -474,7 +474,7 @@ PlotQsWaves(RepeatLon(field[field == "ncep" &select.amplitude_norm == TRUE &
 <div class="columns-2">
 ```{r, fig.width=5, fig.height=5}
 PlotContourPolar(field[field == "qs" &month == 9, .(gh = mean(gh[select.amplitude_norm]) - mean(gh)), 
-                          by = .(lon, lat)])
+                       by = .(lon, lat)])
 
 ```
 
@@ -497,7 +497,7 @@ Una forma de ver esto es hacer la correlación entre los campos para cada caso.
 
 ```{r}
 qs_index <- qs_index[field[, .(correlation = cor(gh[field == "qs"], gh[field == "ncep"])), 
-               by = .(date)], on = "date"]
+                           by = .(date)], on = "date"]
 qs_index[, rank.correlation := frank(-correlation), by = month(date)]
 
 ggplot(qs_index, aes(year(date), as.factor(month(date)))) +
@@ -507,9 +507,9 @@ ggplot(qs_index, aes(year(date), as.factor(month(date)))) +
     geom_point(aes(x = ifelse(rank.correlation <= 11, year(date), NA)), 
                fill = NA, color = "black", size = 1) +
     geom_text(data = qs_index[, 
-                      .(coincidence = 
-                            sum(rank.correlation <= 11 & select.amplitude == TRUE)),
-                      by = month(date)], 
+                              .(coincidence = 
+                                    sum(rank.correlation <= 11 & select.amplitude == TRUE)),
+                              by = month(date)], 
               aes(y = as.factor(month), label = coincidence, x = 2017), hjust = 1) +
     scale_color_viridis(name = "Correlación\nentre campos") +
     scale_size_area(guide = "none") +
@@ -553,9 +553,9 @@ Curiosamente, en muy altas latitudes la correlación es negativa.
 
 ```{r}
 field[,  .(cor = cor(gh[field == "qs"], gh[field == "ncep"])), 
-                 by = .(lat, lon)] %>%
+      by = .(lat, lon)] %>%
     RepeatLon() %>%
-ggplot(aes(lon, lat)) +
+    ggplot(aes(lon, lat)) +
     geom_contour(aes(z = cor, color = ..level..), binwidth = 0.15) +
     # geom_tile(aes(fill = cor)) +
     map.SH.3 +
@@ -782,9 +782,10 @@ ggplot(gdata, aes(month, as.numeric(month2))) +
 gh.sp <- readRDS("DATA/SPEEDY/speedy.Rds")[, .(lat, lon, lev, date, gh)][, run := "control"]
 gh.sp.clim <- readRDS("DATA/SPEEDY/speedy.clim.Rds")[, .(lat, lon, lev, date, gh)][, run := "climatological"]
 gh.sp.noice <- readRDS("DATA/SPEEDY/speedy.noice.Rds")[, .(lat, lon, lev, date, gh)][, run := "noice"]
+gh.sp.noland <- readRDS("DATA/SPEEDY/speedy.noland.Rds")[, .(lat, lon, lev, date, gh)][, run := "noland"]
 
-gh.sp <- rbind(gh.sp, gh.sp.clim, gh.sp.noice)
-remove(gh.sp.clim, gh.sp.noice)
+gh.sp <- rbind(gh.sp, gh.sp.clim, gh.sp.noice, gh.sp.noland)
+remove(gh.sp.clim, gh.sp.noice, gh.sp.noland)
 # Calculo la onda 3
 qs.sp <- gh.sp[, FitQsWave(gh, 3), by = .(lat, lev, date, run)]
 qs.sp.mean <- qs.sp[, lapply(.SD, mean), by = .(lat, lev, month(date), run)]
@@ -808,11 +809,12 @@ PlotQS <- function(page) {
                  y = levs.index, yend = levs.index, color = "gray45", linetype = 2)
     
     
-    g + facet_grid_paginate(month~run, page = page, ncol = 3, nrow = 3, 
+    g + facet_grid_paginate(month~run, page = page, ncol = 4, nrow = 3, 
                             labeller = labeller(month = month.abb, 
                                                 run = c(control = "Control",
                                                         climatological = "SSTCLIM",
-                                                        noice = "NOICE")))
+                                                        noice = "NOICE", 
+                                                        noland = "NOLAND")))
 }
 PlotQS(1)
 ```
@@ -845,6 +847,8 @@ gdata <- qs.sp.mean[,
                     .(control = amplitude[run == "control"] - 
                           amplitude[run == "climatological"],
                       noice = amplitude[run == "noice"] - 
+                          amplitude[run == "climatological"],
+                      noland = amplitude[run == "noland"] - 
                           amplitude[run == "climatological"]),
                     by = .(lat, lev, month)]
 
@@ -886,6 +890,27 @@ ggplot(gdata, aes(lat, lev)) +
     guides(linetype = "none")
 ```
 
+## Diferencia noland
+
+```{r}
+ggplot(gdata, aes(lat, lev)) +
+    geom_contour(aes(z = noland, linetype = as.factor(-sign(..level..))), 
+                 binwidth = 2.5, color = "black") +
+    scale_x_reverse(limits = c(0, -90)) + 
+    scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
+    directlabels::geom_dl(aes(z = control, label = ..level..), 
+                          stat = "contour", color = "black", 
+                          binwidth = 2.5, method = "top.pieces") +
+    scale_fill_distiller(direction = 1) +
+    ylab("Nivel") + xlab("Latitud") +
+    annotate(geom = "segment", x = rep(-40, 3), xend = rep(-65, 3), 
+             y = levs.index, yend = levs.index, color = "gray45", linetype = 2) +
+    facet_wrap(~month, ncol = 3, 
+               labeller = labeller(month = month.abb)) +
+    guides(linetype = "none")
+```
+
+
 ```{r}
 lats <- unique(qs$lat)
 lats.index <- lats[lats <= -40 & lats >= -65]
@@ -898,6 +923,10 @@ qs_index.sp <- qs.sp[lev %in% levs.index & lat %in% lats.index,
 
 
 ```{r}
+label.runs <- c(climatological = "SSTCLIM", 
+                control = "Control",
+                noice = "NOICE", 
+                noland = "NOLAND")
 g <- ggplot(qs_index.sp, aes(date, amplitude, color = run)) +
     geom_line() +
     # geom_smooth(span = 10/30) +
@@ -906,9 +935,7 @@ g <- ggplot(qs_index.sp, aes(date, amplitude, color = run)) +
     scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
     ylab("Amplitud") + xlab("Fecha") +
     scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = c(climatological = "SSTCLIM", 
-                                  control = "Control",
-                                  noice = "NOICE"))
+                       labels = label.runs)
 
 DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud", xlab = "Fecha")
 ```
@@ -920,15 +947,13 @@ Mirando el gráfico de nuevo, me da la impresión de que la supuesta coincidenci
 
 ```{r}
 qs_index.sp[run != "control"][,
-    control := qs_index.sp[run == "control", amplitude]] %>%
+                              control := qs_index.sp[run == "control", amplitude]] %>%
     ggplot(aes(control, amplitude, color = run)) + 
-    geom_point(size = 0.4) + geom_smooth(method = "lm", size = 0.4) +
+    geom_point(size = 0.4) + geom_smooth(method = "lm", size = 0.4, se = F) +
     facet_wrap(~month(date), ncol = 3, labeller = as_labeller(month.abb),
                scales = "free") +
     scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = c(climatological = "SSTCLIM", 
-                                  control = "Control",
-                                  noice = "NOICE"))
+                       labels = label.runs)
 ```
 
 <div class="notes">
@@ -946,9 +971,7 @@ g <- ggplot(qs_index.sp, aes(date, amplitude.anom, color = run)) +
     scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
     ylab("Amplitud") + xlab("Fecha") +
     scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = c(climatological = "SSTCLIM", 
-                                  control = "Control",
-                                  noice = "NOICE"))
+                       labels = label.runs)
 
 DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud (anomalía mensual)", xlab = "Fecha")
 ```
@@ -968,9 +991,7 @@ g <- ggplot(qs_index.sp, aes(date, phase, color = run)) +
     scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
     ylab("Amplitud") + xlab("Fecha") +
     scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = c(climatological = "SSTCLIM", 
-                                  control = "Control",
-                                  noice = "NOICE"))
+                       labels = label.runs)
 
 DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Fase", xlab = "Fecha")
 ```
@@ -985,8 +1006,7 @@ ggplot(qs_index.sp, aes(month(date), amplitude,
     geom_boxplot() + 
     scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
     scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = c(climatological = "SSTCLIM", 
-                                  control = "Control")) +
+                       labels = label.runs) +
     scale_y_continuous(limits = c(0, 150), name = "Amplitud")
 ```
 
@@ -999,8 +1019,7 @@ ggplot(qs_index.sp, aes(month(date), phase*180/pi + 240,
     geom_boxplot() + 
     scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
     scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = c(climatological = "SSTCLIM", 
-                                  control = "Control")) +
+                       labels = label.runs) +
     scale_y_longitude(name = "Fase", ticks = 20)
 ```
 
