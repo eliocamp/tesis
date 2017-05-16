@@ -1,12 +1,13 @@
 ---
-title: ""
+title: "Mayo"
 author: "Elio Campitelli"
 output:
-ioslides_presentation:
-fig_height: 5.5
-fig_width: 10.5
-smaller: yes
-widescreen: yes
+    ioslides_presentation:
+        fig_height: 5.5
+        fig_width: 10.5
+        smaller: yes
+        widescreen: yes
+        cache: yes
 ---
 
 ```{r, include = FALSE}
@@ -485,7 +486,7 @@ PlotContourPolar(RepeatLon(gh.composition.ampl_norm[month == 9 & lev == 300]))
 </div>
 
 
-# Correlación entre campos reales y teóricos (disgresión)
+# Correlación entre campos reales y teóricos (digresión)
 
 
 <div class="notes">
@@ -910,6 +911,7 @@ ggplot(gdata, aes(lat, lev)) +
     guides(linetype = "none")
 ```
 
+----
 
 ```{r}
 lats <- unique(qs$lat)
@@ -999,8 +1001,9 @@ g <- ggplot(qs_index.sp, aes(date, phase, color = run)) +
 DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Fase", xlab = "Fecha")
 ```
 
-
 # Ciclo anual
+
+----
 
 ```{r}
 
@@ -1025,7 +1028,4 @@ ggplot(qs_index.sp, aes(month(date), phase*180/pi + 240,
                        labels = label.runs) +
     scale_y_longitude(name = "Fase", ticks = 20)
 ```
-
-
-
 
