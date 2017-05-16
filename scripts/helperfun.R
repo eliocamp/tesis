@@ -546,3 +546,27 @@ ConvertLongitude <- function(lon, from = 360) {
     }
 }
 
+
+Derivate <- function(x, y, order = 1, bc = "cyclic") {
+    # Calcula derivada centrada 1da o 2da
+    # Entra:
+    #  x: la variable a derivar
+    #  y: la variable que deriva
+    #  order: orden de la derivada (1 o 2)
+    #  bc: condiciones de borde (por ahora, sólo impliementadas cíclicas o nada)
+    # Sale:
+    #  un vector de la misma longitud que x e y con la derivada
+    # ¡Asume que la grilla es uniforme!
+    library(data.table)
+    N <- length(x)
+    x1 = shift(x, fill = ifelse(bc == "cyclic", x[1], NA), type = "lead")
+    x2 = shift(x, fill = ifelse(bc == "cyclic", x[N], NA), type = "lag")
+
+    d <- y[2] - y[1]
+
+    if (order == 1) {
+        dxdy <- (x1 - x2)/(2*d)
+    } else if (order == 2) {
+        dxdy <- (x1 + x2 - 2*x)/d^2
+    }
+}

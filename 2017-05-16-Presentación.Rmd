@@ -847,10 +847,10 @@ PlotQS(4)
 gdata <- qs.sp.mean[, 
                     .(control = amplitude[run == "control"] - 
                           amplitude[run == "climatological"],
-                      noice = amplitude[run == "noice"] - 
-                          amplitude[run == "climatological"],
-                      noland = amplitude[run == "noland"] - 
-                          amplitude[run == "climatological"]),
+                      noice = amplitude[run == "control"] - 
+                          amplitude[run == "noice"],
+                      noland = amplitude[run == "control"] - 
+                          amplitude[run == "noland"]),
                     by = .(lat, lev, month)]
 
 
