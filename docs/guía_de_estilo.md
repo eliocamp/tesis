@@ -65,6 +65,8 @@ Para ser consistente entre distintas partes del código, estos son algunos nombr
     * **z**: anomalía zonal
     * **int**: interpolado
 
+* Las derivadas se nombran agregando el sufijo `dx` al final de la variable. Derivadas de mayor orden se nombran repitiendo la coordenada que deriva (ej. `gh.dxx`). Las derivadas cruzadas se escriben siempre en orden x, y, z, t (ej. es `gh.dxy` en vez de `gh.dyx`).
+
 Como aclaración, es importante modificar todo dato leído de fuentes externas para que se ajuste a estos criterios. No hace ni siquiera una conversión de unidades antes de tener los datos prolijos. 
 
 Si es neceario guardar datos en el disco (como resutlados de computaciones largas) usar siempre `saveRDS()` en vez de `save()` y la extensión es ".Rds". 
