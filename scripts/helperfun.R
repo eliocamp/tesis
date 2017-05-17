@@ -75,6 +75,33 @@ geom_map2 <- function(map) {
     return(g)
 }
 
+geom_arrow <- function(aes, direction = 1, start = 0, ...) {
+    # geom para graficar flechas más fácilmente.
+    # aes requeridos :
+    #  * mag (magnitud) y angle (ángulo en radianes)
+    #  * vx (velocidad en dirección x) y vy (velocidad en dirección y)
+    #
+    # Otros parámetros:
+    #   direction: dirección del ángulo. 1 para antihorario, -1 para horario
+    #   start: ángulo de inicio. 0 para empezar desde el eje x, -1/4*pi para
+    #   el ángulo meteorológico
+    #   ... : otros parámetros para geom_text
+    if (!is.null(aes$angle) & !is.null(aes$mag)) {
+        angle <- deparse(aes$angle)
+        aes.angle <- paste0(start,  "+", direction, "*", angle)
+        geom_text(aes_string(size = aes$mag,
+                             angle = aes.angle,
+                             color = aes$colour),
+                  label = "\u27f6", ...)
+    } else if (!is.null(aes$vy) & !is.null(aes$vx)) {
+        aes.angle <- paste0("atan2(", aes$vy, ", ", aes$vx, ")*180/pi")
+        aes.size <- paste0("sqrt(", aes$vx, "^2 + ", aes$vy, "^2)")
+        geom_text(aes_string(size = aes.size, angle = aes.angle,
+                             color = aes$colour), label = "\u27f6", ...)
+    } else {
+        stop("geom_arrow needs either angle and mag or vx and vy")
+    }
+}
 
 scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
     scale_x_continuous(name = name,
@@ -337,11 +364,16 @@ minvar <- function (x, y){
 }
 
 make_labels <- function(g, step = 2) {
-    tmp3 <- as.data.table(ggplot_build(g)$data[[1]])
-    tmp3[, var := minvar(x, y), by = group]
+    d <- ggplot_build(g)$data
+
+    contour <- sapply(d, function(x) sum(grepl("level", colnames(x))))
+    i <- which.max(contour)
+    tmp3 <- as.data.table(ggplot_build(g)$data[[i]])
+    tmp3[, var := minvar(x, y), by = .(PANEL, group)]
     return(tmp3[var == T][seq(1, .N, by = step)])
 }
 
+# names(h$layout$facet_params$cols)
 
 factor2cols <- function(x, column, factors) {
     column <- deparse(substitute(column))
@@ -569,4 +601,58 @@ Derivate <- function(x, y, order = 1, bc = "cyclic") {
     } else if (order == 2) {
         dxdy <- (x1 + x2 - 2*x)/d^2
     }
+}
+
+
+WaveFlux <- function(gh, u, v, lon, lat, lev) {
+    # Flujos de actividad de onda. Adaptado de
+    # https://github.com/marisolosman/Reunion_Clima/blob/master/WAF/Calculo_WAF.ipynb y
+    # Takata y Nakamura 2001
+    # Entra:
+    #   gh: campo de altura geopotencial (anomalía zonal)
+    #   u: velocidad zonal
+    #   v: velocidad meridional
+    #   lon: longitudes
+    #   lat: latitudes
+    #   lev: nivel
+    # Sale:
+    #   una lista con longitud, latitud, y las componentes zonales y
+    #   meridionales del flujo de actividad de onda.
+    g  <- 9.81
+    a <- 6371000
+    p0 <- 100000    # normalizo a 100hPa
+
+    # Todo en una data.table para que sea más cómodo.
+    dt <- data.table(lon = lon, lat = lat, gh = gh, u = u, v = v)
+    setkey(dt, lat, lon)
+    dt[, f := 2*pi/(3600*24)*sin(lat*pi/180)]
+    dt[, `:=`(psi    = g/f*gh,
+              u.mean = mean(u),
+              v.mean = mean(v))]
+
+    # Derivadas
+    dt[, `:=`(psi.dx  = Derivate(psi, lon),
+              psi.dxx = Derivate(psi, lon, 2)), by = lat]
+    dt[, `:=`(psi.dy  = Derivate(psi, lat, bc = "none"),
+              psi.dyy = Derivate(psi, lat, 2, bc = "none"),
+              psi.dxy = Derivate(psi.dx, lat, bc = "none")), by = lon]
+
+    # Cálculo del flujo (al fin!)
+    flux <- dt[, {
+        wind <- sqrt(u.mean^2 + v.mean^2)
+
+        xu <- psi.dx^2      - psi*psi.dxx
+        xv <- psi.dx*psi.dy - psi*psi.dxy
+        yv <- psi.dy^2      - psi*psi.dyy
+
+        coslat <- cos(lat*pi/180)
+        coeff <- lev*100/p0/(2*wind*a^2)
+
+        w.x <- coeff*(u.mean/coslat*xu + v.mean*xv)
+        w.y <- coeff*(u.mean*xv + v.mean*coslat*yv)
+
+        list(lon = lon, lat = lat,
+             w.x = w.x, w.y = w.y)}
+        ]
+    return(flux)
 }
