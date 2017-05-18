@@ -75,34 +75,6 @@ geom_map2 <- function(map) {
     return(g)
 }
 
-geom_arrow <- function(aes, direction = 1, start = 0, ...) {
-    # geom para graficar flechas más fácilmente.
-    # aes requeridos :
-    #  * mag (magnitud) y angle (ángulo en radianes)
-    #  * vx (velocidad en dirección x) y vy (velocidad en dirección y)
-    #
-    # Otros parámetros:
-    #   direction: dirección del ángulo. 1 para antihorario, -1 para horario
-    #   start: ángulo de inicio. 0 para empezar desde el eje x, -1/4*pi para
-    #   el ángulo meteorológico
-    #   ... : otros parámetros para geom_text
-    if (!is.null(aes$angle) & !is.null(aes$mag)) {
-        angle <- deparse(aes$angle)
-        aes.angle <- paste0(start,  "+", direction, "*", angle)
-        geom_text(aes_string(size = aes$mag,
-                             angle = aes.angle,
-                             color = aes$colour),
-                  label = "\u27f6", ...)
-    } else if (!is.null(aes$vy) & !is.null(aes$vx)) {
-        aes.angle <- paste0("atan2(", aes$vy, ", ", aes$vx, ")*180/pi")
-        aes.size <- paste0("sqrt(", aes$vx, "^2 + ", aes$vy, "^2)")
-        geom_text(aes_string(size = aes.size, angle = aes.angle,
-                             color = aes$colour), label = "\u27f6", ...)
-    } else {
-        stop("geom_arrow needs either angle and mag or vx and vy")
-    }
-}
-
 scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
     scale_x_continuous(name = name,
                        breaks = seq(0, 360 - ticks, by = ticks),
@@ -118,6 +90,12 @@ scale_y_longitude <- function(ticks = 60, name = "lon", ...) {
                        labels = c(seq(0, 180, by = ticks),
                                   seq(-180 + ticks, 0 - ticks, by = ticks)),
                        ...)
+}
+
+
+
+scale_color_divergent <- function(low = muted("blue"), high = muted("red"), ...) {
+    scale_color_gradient2(low = low, high = high, ...)
 }
 
 coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
@@ -222,8 +200,18 @@ ReadNetCDF <- function(file, vars) {
 
 
 # Salteado
-jumpby <- function(vector, by) {
-    vector[seq(1, length(vector), by = by)]
+JumpBy <- function(x, by, fill = c("skip", NA)) {
+    if (is.na(fill[1])) {
+        x[-seq(1, length(x), by = by)] <- NA
+    } else {
+        x <- x[seq(1, length(x), by = by)]
+    }
+    return(x)
+}
+
+# Para compatibilidad de código viejo.
+jumpby <- function(...) {
+    JumpBy(...)
 }
 
 # Repetir vector en negativo
@@ -351,6 +339,16 @@ as.dt <- function(...) {
 # Función para agregar etiquetas a contornos
 # Uso: primero crear un objeto ggplot con todo el plot
 # luego agregar un geom_text con data = make_labels(g)
+
+LabelContours <- function(plot, step = 2, ...) {
+    g <- make_labels(plot, step = step)
+    return(plot +
+               geom_label(data = g, aes(x, y, label = level),
+                          fill = "white", label.r = unit(0, "lines"),
+                          label.padding = unit(0.01, "lines"), color = NA, ...) +
+               geom_text(data = g, aes(x, y, label = level), ...))
+}
+
 
 minvar <- function (x, y){
     counts = length(x)
@@ -623,19 +621,19 @@ WaveFlux <- function(gh, u, v, lon, lat, lev) {
     p0 <- 100000    # normalizo a 100hPa
 
     # Todo en una data.table para que sea más cómodo.
-    dt <- data.table(lon = lon, lat = lat, gh = gh, u = u, v = v)
+    dt <- data.table(lon = lon, lat = lat,
+                     lonrad = lon*pi/180, latrad = lat*pi/180,
+                     gh = gh, u.mean = u, v.mean = v)
     setkey(dt, lat, lon)
-    dt[, f := 2*pi/(3600*24)*sin(lat*pi/180)]
-    dt[, `:=`(psi    = g/f*gh,
-              u.mean = mean(u),
-              v.mean = mean(v))]
+    dt[, f := 2*pi/(3600*24)*sin(latrad)]
+    dt[, psi := g/f*gh]
 
     # Derivadas
-    dt[, `:=`(psi.dx  = Derivate(psi, lon),
-              psi.dxx = Derivate(psi, lon, 2)), by = lat]
-    dt[, `:=`(psi.dy  = Derivate(psi, lat, bc = "none"),
-              psi.dyy = Derivate(psi, lat, 2, bc = "none"),
-              psi.dxy = Derivate(psi.dx, lat, bc = "none")), by = lon]
+    dt[, `:=`(psi.dx  = Derivate(psi, lonrad),
+              psi.dxx = Derivate(psi, lonrad, 2)), by = lat]
+    dt[, `:=`(psi.dy  = Derivate(psi, latrad, bc = "none"),
+              psi.dyy = Derivate(psi, latrad, 2, bc = "none"),
+              psi.dxy = Derivate(psi.dx, latrad, bc = "none")), by = lon]
 
     # Cálculo del flujo (al fin!)
     flux <- dt[, {
@@ -645,7 +643,7 @@ WaveFlux <- function(gh, u, v, lon, lat, lev) {
         xv <- psi.dx*psi.dy - psi*psi.dxy
         yv <- psi.dy^2      - psi*psi.dyy
 
-        coslat <- cos(lat*pi/180)
+        coslat <- cos(latrad)
         coeff <- lev*100/p0/(2*wind*a^2)
 
         w.x <- coeff*(u.mean/coslat*xu + v.mean*xv)
@@ -655,4 +653,13 @@ WaveFlux <- function(gh, u, v, lon, lat, lev) {
              w.x = w.x, w.y = w.y)}
         ]
     return(flux)
+}
+
+
+Percentile <- function(x) {
+    ecdf(x)(x)
+}
+
+Mag <- function(x, y) {
+    sqrt(x^2 + y^2)
 }
