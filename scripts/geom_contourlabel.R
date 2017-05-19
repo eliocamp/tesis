@@ -19,7 +19,7 @@ StatContourLabel <- ggproto("StatContourLabel", Stat,
 
                        compute_group = function(data, scales, bins = NULL, binwidth = NULL,
                                                 breaks = NULL, complete = FALSE, na.rm = FALSE,
-                                                step = 2) {
+                                                step = 2, exclude = NA) {
                            # If no parameters set, use pretty bins
                            if (is.null(bins) && is.null(binwidth) && is.null(breaks)) {
                                breaks <- pretty(range(data$z), 10)
@@ -34,6 +34,7 @@ StatContourLabel <- ggproto("StatContourLabel", Stat,
                            }
 
                            breaks.keep <- breaks[seq(1, length(breaks), by = step)]
+                           breaks.keep <- breaks.keep[!(breaks.keep %in% exclude)]
 
                            contours <- ggplot2:::contour_lines(data, breaks, complete = complete)
                            contours.dt <- as.data.table(contours)
@@ -65,8 +66,7 @@ stat_contourlabel <- function(mapping = NULL, data = NULL,
 }
 
 geom_contourlabel <- function(...) {
-    list(stat_contourlabel(..., geom = "label", fill = "white", label.r = unit(0, "lines"),
-                      label.padding = unit(0.02, "lines"), color = NA),
+    list(stat_contourlabel(geom = "label", fill = "white", label.r = unit(0, "lines"),
+                      label.padding = unit(0.02, "lines"), color = NA, ...),
         stat_contourlabel(...))
 }
-

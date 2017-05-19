@@ -42,7 +42,7 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 ncep <- melt(ReadNCEP("DATA/NCEP/hgt.mon.mean.nc", var = "hgt"), value.name = "gh")
 setDT(ncep)
 ncep[, u := c(ReadNCEP("DATA/NCEP/uwnd.mon.mean.nc", "uwnd"))][
-     , v := c(ReadNCEP("DATA/NCEP/vwnd.mon.mean.nc", "vwnd"))]
+    , v := c(ReadNCEP("DATA/NCEP/vwnd.mon.mean.nc", "vwnd"))]
 
 ncep <- ncep[lat < 0 & lev == 300]
 ncep[, gh.t := Anomaly(gh), by = .(lon, lat, lev, month(date))]
@@ -83,35 +83,38 @@ composition <- ncep[month(date) == 1,
 Antes de eso, veamos qué sucede en un mes en particular, enero de 1985.
 
 ```{r, fig.width = 9, fig.height=5, fig.fullwidth = TRUE, fig.cap="Anomalía de geopotencial (contornos, líneas = 20) y flujo de actividad de onda (flechas) para enero de 1985."}
+
+
 s <- .2
 flux.path <- rbind(data.table(lon = c(160, 215, 250, 310, 360-3.76),
-                        lat = -c(45, 55, 46, 60, 45), 
-                        path = 1), 
-                    data.table(lon = c(3.76, 20, 70),
-                        lat = -c(45, 35, 45),
-                        path = 2))
+                              lat = -c(45, 55, 46, 60, 45), 
+                              path = 1), 
+                   data.table(lon = c(3.76, 20, 70),
+                              lat = -c(45, 35, 45),
+                              path = 2))
 
 ggplot(ncep[lat < -10 & lev == 300 & date == date[1]], aes(lon, lat)) +
     geom_contour(aes(z = gh.t, linetype = as.factor(-sign(..level..)),
                      color = ..level..),
-                 size = 0.3, binwidth = 20) +
+                 size = 0.4, binwidth = 20) +
+    geom_contourlabel(aes(z = gh.t), binwidth = 20, step = 2, exclude = 0, 
+                      color = "gray27", size = 2.5) +
     map.SH.3  +
-    geom_segment(size = 0.2, 
-                 aes(xend = ifelse(Mag(w.x, w.y) > 5 & lon > min(lon), lon + w.x*s, NA),
-                     yend = JumpBy(lat + w.y*s, by = 2, fill = NA)),
-                 arrow = arrow(angle = 12, length = unit(0.2, "lines"))) +
-    ggalt::geom_xspline(data = flux.path, spline_shape = 0.5, color = "purple",
-                        alpha = .8, linetype = 2, aes(group = path)) +
-    scale_color_divergent(name = "Anomalía de geopotencial") +
-    # coord_quickmap() +
-    coord_map() +
+    ggalt::geom_xspline(data = flux.path, aes(group = path), spline_shape = 0.5,
+                        color = "purple", alpha = .8, linetype = 2,  size = 1.2) +
+    geom_arrow(aes(vx = w.x, vy = w.y), scale = s,
+               size = 0.15, step = 2, min = 5) +
+    scale_color_divergent(name = "Anomalía de geopotencial", binwidth = 20) +
+    theme(legend.key.width = unit(3, "lines")) +
+    coord_quickmap() +
+    scale_size_continuous(range = c(0, 0.4)) +
+    # coord_equal() +
     scale_y_continuous(limits = c(-75, -10), breaks = seq(-90, 0, by = 20)) +
     scale_x_longitude() +
-    # scale_x_continuous(breaks = seq(0, 360, by = 20)) +
     scale_linetype(guide = "none")
 ```
 
-Se ve como hay un importante flujo que va desde la baja al este de Australia hacia el sudeste. Parte de este sigue hacia el sur hasta \~-70°S donde hay una convergencia del flujo. Otra pequeña proporción sigue hacia el este y oscila entre los -45°S y -60°S hasta llegar al sur del Índico. 
+Se ve como hay un importante flujo que va desde la baja al este de Australia hacia el sudeste. Parte de este sigue hacia el sur hasta \~-70°S donde hay una convergencia del flujo. Otra pequeña proporción sigue hacia el este y oscila entre los -45°S y -60°S hasta llegar al sur del Índico. Este no es el principal sentido del flujo. 
 
 
 ```{r, fig.width = 9, fig.height = 7, fig.fullwidth = TRUE}
@@ -128,7 +131,7 @@ g <- ggplot(gdata, aes(lon, lat)) +
                      yend = JumpBy(lat + w.y*s, by = 2, fill = NA)),
                  arrow = arrow(angle = 12, length = unit(0.2, "lines"))) +
     # ggalt::geom_xspline(data = flux.path, spline_shape = 0.5, color = "purple",
-                        # alpha = .8, linetype = 2, aes(group = path)) +
+    # alpha = .8, linetype = 2, aes(group = path)) +
     scale_color_divergent(name = "Anomalía de geopotencial") +
     # coord_quickmap() +
     coord_map() +
@@ -157,7 +160,7 @@ ggplot(composition[lat < -20 & lev == 300], aes(lon, lat)) +
                      yend = JumpBy(lat + w.y*s, by = 2, fill = NA)),
                  arrow = arrow(angle = 12, length = unit(0.2, "lines"))) +
     # ggalt::geom_xspline(data = flux.path, spline_shape = 0.5, color = "purple",
-                        # alpha = .8, linetype = 2, aes(group = path)) +
+    # alpha = .8, linetype = 2, aes(group = path)) +
     scale_color_divergent(name = "Anomalía de geopotencial") +
     # coord_quickmap() +
     coord_map() +
