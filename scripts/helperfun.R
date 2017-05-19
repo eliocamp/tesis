@@ -135,10 +135,10 @@ scale_color_divergent <- function(low = muted("blue"), high = muted("red"), binw
         breaks <- function(x){
             c(seq(x[1], 0 - binwidth, by = binwidth), seq(0, x[2], by = binwidth))
         }
+        return(scale_color_gradient2(low = low, high = high, breaks = breaks, ...))
     } else {
-        breaks <- waiver()
+        return(scale_color_gradient2(low = low, high = high, ...))
     }
-    scale_color_gradient2(low = low, high = high, breaks = breaks, ...)
 }
 
 coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
@@ -378,43 +378,7 @@ as.dt <- function(...) {
 }
 
 
-
-# Función para agregar etiquetas a contornos
-# Uso: primero crear un objeto ggplot con todo el plot
-# luego agregar un geom_text con data = make_labels(g)
-
-LabelContours <- function(plot, step = 2, ...) {
-    g <- make_labels(plot, step = step)
-    return(plot +
-               geom_label(data = g, aes(x, y, label = level),
-                          fill = "white", label.r = unit(0, "lines"),
-                          label.padding = unit(0.01, "lines"), color = NA, ...) +
-               geom_text(data = g, aes(x, y, label = level), ...))
-}
-
-
-minvar <- function (x, y){
-    counts = length(x)
-    xdiffs = diff(x)
-    ydiffs = diff(y)
-    avgGradient = ydiffs/xdiffs
-    squareSum = avgGradient * avgGradient
-    variance = (squareSum - (avgGradient * avgGradient) / counts / counts)
-    variance = c(9999999, variance) #99999 pads this so the length is same as original and the first values are not selected
-    return(variance == min(variance))
-}
-
-make_labels <- function(g, step = 2) {
-    d <- ggplot_build(g)$data
-
-    contour <- sapply(d, function(x) sum(grepl("level", colnames(x))))
-    i <- which.max(contour)
-    tmp3 <- as.data.table(ggplot_build(g)$data[[i]])
-    tmp3[, var := minvar(x, y), by = .(PANEL, group)]
-    return(tmp3[var == T][seq(1, .N, by = step)])
-}
-
-# names(h$layout$facet_params$cols)
+source("scripts/geom_contourlabel.R")
 
 factor2cols <- function(x, column, factors) {
     column <- deparse(substitute(column))
