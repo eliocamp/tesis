@@ -39,7 +39,11 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 
 
 ```{r}
-ncep <- readRDS("DATA/NCEP/ncep.Rds")
+ncep <- melt(ReadNCEP("DATA/NCEP/hgt.mon.mean.nc", var = "hgt"), value.name = "gh")
+setDT(ncep)
+ncep[, u := c(ReadNCEP("DATA/NCEP/uwnd.mon.mean.nc", "uwnd"))][
+     , v := c(ReadNCEP("DATA/NCEP/vwnd.mon.mean.nc", "vwnd"))]
+
 ncep <- ncep[lat < 0 & lev == 300]
 ncep[, gh.t := Anomaly(gh), by = .(lon, lat, lev, month(date))]
 ncep[, c("u.mean", "v.mean") := lapply(.SD, mean), 
