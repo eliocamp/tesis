@@ -76,7 +76,35 @@ geom_map2 <- function(map) {
 }
 
 
-geom_arrow <- function(mapping, arrow.size = 0.25, arrow.angle = 12, ...) {
+geom_arrow <- function(mapping, scale, step = 1, min = 0, arrow.size = 0.25, arrow.angle = 12, ...) {
+    # Geom para graficar flechas.
+    # Entra:
+    #   aes requeridos: vx y vy, la velocidad en x e y respectivamente
+    #   scale: escala
+    #   step: para no mostra todas
+    #   min: mínima magnitud a mostrar
+    #   arrow.size: tamaño de la flecha
+    #   arrow.angle: ángulo de la flecha
+    # Sale:
+    #   un geom_spoke
+    v <- deparse(mapping$vy)
+    u <- deparse(mapping$vx)
+    angle.string <- paste0("atan2(", v, ", ", u, ")")
+    # step
+    angle.string <- paste0("JumpBy(", angle.string, ", ", step, ", NA)")
+    # min
+    angle.string <- paste0("ifelse(sqrt(", v, "^2 + ", u, "^2) >", min, ", ", angle.string,
+                           ", NA)")
+
+    radius.string <- paste0("sqrt(", v, "^2 + ", u, "^2)*", scale)
+
+    aes.temp <- aes_string(angle = angle.string, radius = radius.string)
+
+    mapping$radius <- aes.temp$radius
+    mapping$angle <- aes.temp$angle
+    mapping$vy <- NULL
+    mapping$vx <- NULL
+
     geom_spoke(mapping = mapping,
                arrow = arrow(angle = arrow.angle, length = unit(arrow.size, "lines")),
                ...)
