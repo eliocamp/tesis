@@ -75,6 +75,13 @@ geom_map2 <- function(map) {
     return(g)
 }
 
+
+geom_arrow <- function(mapping, arrow.size = 0.25, arrow.angle = 12, ...) {
+    geom_spoke(mapping = mapping,
+               arrow = arrow(angle = arrow.angle, length = unit(arrow.size, "lines")),
+               ...)
+}
+
 scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
     scale_x_continuous(name = name,
                        breaks = seq(0, 360 - ticks, by = ticks),
@@ -667,3 +674,4 @@ Percentile <- function(x) {
 Mag <- function(x, y) {
     sqrt(x^2 + y^2)
 }
+
