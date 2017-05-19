@@ -589,16 +589,20 @@ Derivate <- function(x, y, order = 1, bc = "cyclic") {
     # ¡Asume que la grilla es uniforme!
     library(data.table)
     N <- length(x)
-    x1 = shift(x, fill = ifelse(bc == "cyclic", x[1], NA), type = "lead")
-    x2 = shift(x, fill = ifelse(bc == "cyclic", x[N], NA), type = "lag")
 
     d <- y[2] - y[1]
 
     if (order == 1) {
-        dxdy <- (x1 - x2)/(2*d)
+        dxdy <- (x[c(2:N, 1)] - x[c(N, 1:(N-1))])/(2*d)
+
     } else if (order == 2) {
-        dxdy <- (x1 + x2 - 2*x)/d^2
+        dxdy <- (x[c(2:N, 1)] + x[c(N, 1:(N-1))] - 2*x)/d^2
     }
+    if (bc != "cyclic") {
+        dxdy[c(1, N)] <- NA
+    }
+
+    return(dxdy)
 }
 
 
