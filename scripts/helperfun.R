@@ -129,8 +129,16 @@ scale_y_longitude <- function(ticks = 60, name = "lon", ...) {
 
 
 
-scale_color_divergent <- function(low = muted("blue"), high = muted("red"), ...) {
-    scale_color_gradient2(low = low, high = high, ...)
+scale_color_divergent <- function(low = muted("blue"), high = muted("red"), binwidth = NA, ...) {
+    # Escala divergente con defaults más razonables.
+    if (!is.na(binwidth)) {
+        breaks <- function(x){
+            c(seq(x[1], 0 - binwidth, by = binwidth), seq(0, x[2], by = binwidth))
+        }
+    } else {
+        breaks <- waiver()
+    }
+    scale_color_gradient2(low = low, high = high, breaks = breaks, ...)
 }
 
 coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
@@ -550,7 +558,7 @@ InterpolateNCEP <- function(field, lon, lat, cores = 3) {
     field.small <- foreach(t = seq_along(date), .combine = "datebind") %:%
         foreach(l = seq_along(lev), .combine = "levbind") %dopar% {
             int <- fields::interp.surface.grid(list(x = lon.original, y = lat.original,
-                                                      z = field[, , l, t]), grid)$z
+                                                    z = field[, , l, t]), grid)$z
 
         }
     stopImplicitCluster()
