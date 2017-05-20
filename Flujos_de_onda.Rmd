@@ -83,8 +83,6 @@ composition <- ncep[month(date) == 1,
 Antes de eso, veamos qué sucede en un mes en particular, enero de 1985.
 
 ```{r, fig.width = 9, fig.height=5, fig.fullwidth = TRUE, fig.cap="Anomalía de geopotencial (contornos, líneas = 20) y flujo de actividad de onda (flechas) para enero de 1985."}
-
-
 s <- .2
 flux.path <- rbind(data.table(lon = c(160, 215, 250, 310, 360-3.76),
                               lat = -c(45, 55, 46, 60, 45), 
