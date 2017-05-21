@@ -52,7 +52,7 @@ BuildMap <- function(res = 1, smooth = 1, pm = 180,
     # Suavizo.
     cut <- max(smooth, res)
     notsmooth <- m[, .N, by = group][N < cut + 4, group]
-    m <- m[!(group %in% notsmooth)]   # saco los grupos muy chicos
+    m <- m[!(group %in% notsmooth)]    # saco los grupos muy chicos
     m[, MO := max(order), by = group]
     m[order != 1 & order != MO,
       `:=`(long = zoo::rollmean(long, smooth, fill = "extend"),
@@ -71,12 +71,11 @@ geom_map2 <- function(map) {
     g <- geom_path(data = map, aes(long, lat, group = group),
                    color = "black",
                    inherit.aes = F, size = 0.2)
-
     return(g)
 }
 
 
-geom_arrow <- function(mapping, scale, step = 1, min = 0, arrow.size = 0.25, arrow.angle = 12, ...) {
+geom_arrow <- function(mapping, scale, step = 1, min = 0, arrow.size = 0.2, arrow.angle = 14, ...) {
     # Geom para graficar flechas.
     # Entra:
     #   aes requeridos: vx y vy, la velocidad en x e y respectivamente
@@ -140,6 +139,19 @@ scale_color_divergent <- function(low = muted("blue"), high = muted("red"), binw
         return(scale_color_gradient2(low = low, high = high, ...))
     }
 }
+
+scale_fill_divergent <- function(low = muted("blue"), high = muted("red"), binwidth = NA, ...) {
+    # Escala divergente con defaults más razonables.
+    if (!is.na(binwidth)) {
+        breaks <- function(x){
+            c(seq(x[1], 0 - binwidth, by = binwidth), seq(0, x[2], by = binwidth))
+        }
+        return(scale_fill_gradient2(low = low, high = high, breaks = breaks, ...))
+    } else {
+        return(scale_fill_gradient2(low = low, high = high, ...))
+    }
+}
+
 
 coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
                              ylim = c(-90, -20))

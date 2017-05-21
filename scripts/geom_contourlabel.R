@@ -9,7 +9,7 @@ minvar <- function (x, y){
     squareSum = avgGradient * avgGradient
     variance = (squareSum - (avgGradient * avgGradient) / counts / counts)
     variance = c(9999999, variance) #99999 pads this so the length is same as original and the first values are not selected
-    return(variance == min(variance))
+    return(variance == min(variance, na.rm = T))
 }
 
 
@@ -36,12 +36,13 @@ StatContourLabel <- ggproto("StatContourLabel", Stat,
                            breaks.keep <- breaks[seq(1, length(breaks), by = step)]
                            breaks.keep <- breaks.keep[!(breaks.keep %in% exclude)]
                            breaks.keep <- c(breaks.keep, include)
+                           breaks.keep <- breaks.keep[!is.na(breaks.keep)]
 
                            contours <- ggplot2:::contour_lines(data, breaks.keep, complete = complete)
                            contours.dt <- as.data.table(contours)
-                           contours.dt[, var := minvar(x, y), by = group]
+                           contours.dt[, var := minvar(x, y), by = .(group)]
 
-                           as.data.frame(contours.dt[var == T])
+                           as.data.frame(contours.dt[var == T][, head(.SD, 1), by = group])
                        }
 )
 
