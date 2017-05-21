@@ -25,7 +25,7 @@ stat_fill_contour <- function(mapping = NULL, data = NULL,
 #' @export
 StatFillContour <- ggproto("StatFillContour", Stat,
                            required_aes = c("x", "y", "z"),
-                           default_aes = aes(fill = ..level..),
+                           default_aes = aes(fill = ..levelc..),
 
                            compute_group = function(data, scales, bins = NULL, binwidth = NULL,
                                                     breaks = NULL, complete = FALSE, na.rm = FALSE) {
@@ -69,23 +69,25 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                data2 <- rbind(data, extra)
                                # f <<- data2
                                cont <- contour_lines(data2, breaks, complete = complete)
-                               # h <<- cont
 
-                               cont$x[cont$x > range.data$x[2]] <- range.data$x[2]
-                               cont$x[cont$x < range.data$x[1]] <- range.data$x[1]
-                               cont$y[cont$y < range.data$y[1]] <- range.data$y[1]
-                               cont$y[cont$y > range.data$y[2]] <- range.data$y[2]
+
 
                                setDT(cont)
+
                                areas <- cont[, .(area = abs(area(x, y))), by = .(piece)][
                                    , rank := frank(-area, ties.method = "dense")]
                                areas <- areas[, head(.SD, 1), by = piece]
                                cont <-cont[areas, on = "piece"]
                                cont[, piece := rank]
                                cont[, group := factor(paste(cur.group,
-                                                     sprintf("%03d", piece), sep = "-"))]
-
+                                                            sprintf("%03d", piece), sep = "-"))]
+                               h <<- cont
                                cont <- CorrectFilll(cont)
+
+                               cont$x[cont$x > range.data$x[2]] <- range.data$x[2]
+                               cont$x[cont$x < range.data$x[1]] <- range.data$x[1]
+                               cont$y[cont$y < range.data$y[1]] <- range.data$y[1]
+                               cont$y[cont$y > range.data$y[2]] <- range.data$y[2]
 
                                cont
                            }
@@ -162,20 +164,19 @@ CorrectFilll <- function(cont) {
         # Possible adjacent pieces (based on adjcent levels).
         # Select only one point
         close.pieces <- cont[level %in% levels[c(i-1, i+1)]]
-        close.pieces <-
 
-            # Check if points are inside current piece
-            # Mejorar chequeando sólo en el chull de los pieces
-            close.pieces[, inside := IsInside(x, y, cur.piece$x, cur.piece$y), by = .(x, y, piece)]
-        inside.pieces <- close.pieces[, .(area = area[1],
-                                          level = level[1],
-                                          inside = (sum(inside) == .N)), by = piece]
+        # Check if points are inside current piece
+        # Mejorar chequeando sólo en el chull de los pieces
+
+        close.pieces <- close.pieces[, head(.SD, 1), by = piece]
+        close.pieces[, inside := IsInside(x, y, cur.piece$x, cur.piece$y), by = .(piece)]
+        inside.pieces <- close.pieces[inside == TRUE]
 
 
-        if (sum(inside.pieces$inside) == 0 ){
+        if (nrow(inside.pieces) == 0 ){
             cur.piece <- cur.piece[1]
-            previous.level <- cont[piece %in% close.pieces$piece][
-                , inside := IsInside(cur.piece$x, cur.piece$y, x, y), by = piece][
+            close.pieces <- cont[piece %in% close.pieces$piece]
+            close.pieces[, inside := IsInside(cur.piece$x, cur.piece$y, x, y), by = piece][
                     inside == TRUE, ][
                         area == min(area), level][1]
 
@@ -193,17 +194,17 @@ CorrectFilll <- function(cont) {
 }
 
 IsInside <- function(xp, yp, x, y) {
-    identical(chull(x, y), chull(c(x, xp), c(y, yp)))
+    !(sp::point.in.polygon(xp, yp, x, y) == 0)
 }
 
-# v3d <- reshape2::melt(volcano)
-# names(v3d) <- c("x", "y", "z")
-#
-# ggplot(v3d, aes(x, y, z = z)) + scale_color_brewer(type = "qual", palette = 3)+
-#     stat_fill_contour(color = "gray45", binwidth = 15, aes(fill = ..levelc..)) +
-#     # stat_fill_contour(color = "gray45", binwidth = 15, aes(label = ..levelc..), geom = "text") +
-#     # stat_fill_contour(breaks = 165) +
-#     stat_contour(binwidth = 15) +
-#     stat_contourlabel(binwidth = 15, step = 1)
-#     # scale_color_brewer(type = "qual", palette = 3) +
+v3d <- reshape2::melt(volcano)
+names(v3d) <- c("x", "y", "z")
+
+ggplot(v3d, aes(x, y, z = z)) + scale_color_brewer(type = "qual", palette = 3)+
+    stat_fill_contour(color = "gray45", binwidth = 15, aes(fill = ..levelc..))
+    # stat_fill_contour(color = "gray45", binwidth = 15, aes(label = ..levelc..), geom = "text") +
+    # stat_fill_contour(breaks = 165) +
+    stat_contour(binwidth = 15) +
+    stat_contourlabel(binwidth = 15, step = 1)
+    # scale_color_brewer(type = "qual", palette = 3) +
 
