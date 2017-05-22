@@ -83,8 +83,9 @@ Antes de eso, veamos qué sucede en un mes en particular, enero de 1985.
 FluxPlot <- function(gdata, s = 0.2, min = 5, binwidth = 20) {
     g <- ggplot(gdata, aes(lon, lat)) +
         geom_contour(aes(z = gh.t, linetype = as.factor(-sign(..level..)),
-                         color = ..level..),
-                     size = 0.4, binwidth = binwidth) +
+        color = ..level..),
+        size = 0.4, binwidth = binwidth) +
+        # stat_fill_contour(binwidth = binwidth) +
         geom_contourlabel(aes(z = gh.t), binwidth = binwidth, step = 2, exclude = 0, 
                           color = "gray27", size = 2.5) +
         map.SH.3  +
@@ -118,7 +119,7 @@ a <- 6371000
 
 FluxPlot(gdata) + 
     ggalt::geom_xspline(data = flux.path, aes(group = path), spline_shape = 0.5,
-                            color = "purple", alpha = .8, linetype = 2,  size = 1.2) 
+                        color = "purple", alpha = .8, linetype = 2,  size = 1.2) 
 ```
 
 Se ve como hay un importante flujo que va desde la baja al este de Australia hacia el sudeste. Parte de este sigue hacia el sur hasta \~-70°S donde hay una convergencia del flujo. Otra pequeña proporción sigue hacia el este y oscila entre los -45°S y -60°S hasta llegar al sur del Índico. Este no es el principal sentido del flujo. 
