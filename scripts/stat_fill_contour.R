@@ -25,7 +25,7 @@ stat_fill_contour <- function(mapping = NULL, data = NULL,
 #' @export
 StatFillContour <- ggproto("StatFillContour", Stat,
                            required_aes = c("x", "y", "z"),
-                           default_aes = aes(fill = ..levelc..),
+                           default_aes = aes(fill = ..int.level..),
 
                            compute_group = function(data, scales, bins = NULL, binwidth = NULL,
                                                     breaks = NULL, complete = FALSE, na.rm = FALSE) {
@@ -61,16 +61,14 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                )
 
                                # Y le doy un valor muy bajo.
-                               extra$z <- range.data$z[1] - 1.5*binwidth
+                               extra$z <- range.data$z[1] - 1*binwidth
                                extra$PANEL <- data$PANEL[1]
                                cur.group <- data$group[1]
                                extra$group <- data$group[1]
 
                                data2 <- rbind(data, extra)
-                               # f <<- data2
-                               cont <- contour_lines(data2, breaks, complete = complete)
 
-
+                               cont <- ggplot2:::contour_lines(data2, breaks, complete = complete)
 
                                setDT(cont)
 
@@ -81,8 +79,9 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                cont[, piece := rank]
                                cont[, group := factor(paste(cur.group,
                                                             sprintf("%03d", piece), sep = "-"))]
-                               h <<- cont
-                               cont <- CorrectFilll(cont)
+                               # co <<- copy(cont)
+                               # data3 <<- data2
+                               cont <- CorrectFill(cont, data2)
 
                                cont$x[cont$x > range.data$x[2]] <- range.data$x[2]
                                cont$x[cont$x < range.data$x[1]] <- range.data$x[1]
@@ -95,65 +94,34 @@ StatFillContour <- ggproto("StatFillContour", Stat,
 )
 
 
-# v3d <- reshape2::melt(volcano)
-# names(v3d) <- c("x", "y", "z")
-#
-# breaks <- seq(95, 195, length.out = 10)
-# contours <- contourLines(v3d, breaks)
-# ggplot(contours, aes(x, y)) +
-#   geom_path() +
-#   facet_wrap(~piece)
-contour_lines <- function(data, breaks, complete = FALSE) {
-    z <- tapply(data$z, data[c("x", "y")], identity)
-
-    if (is.list(z)) {
-        stop("Contour requires single `z` at each combination of `x` and `y`.",
-             call. = FALSE)
-    }
-
-    cl <- grDevices::contourLines(
-        x = sort(unique(data$x)), y = sort(unique(data$y)), z = z,
-        levels = breaks)
-
-    if (length(cl) == 0) {
-        warning("Not possible to generate contour data", call. = FALSE)
-        return(data.frame())
-    }
-
-    # Convert list of lists into single data frame
-    lengths <- vapply(cl, function(x) length(x$x), integer(1))
-    levels <- vapply(cl, "[[", "level", FUN.VALUE = double(1))
-    xs <- unlist(lapply(cl, "[[", "x"), use.names = FALSE)
-    ys <- unlist(lapply(cl, "[[", "y"), use.names = FALSE)
-    pieces <- rep(seq_along(cl), lengths)
-    # Add leading zeros so that groups can be properly sorted later
-    groups <- paste(data$group[1], sprintf("%03d", pieces), sep = "-")
-
-    data.frame(
-        level = rep(levels, lengths),
-        x = xs,
-        y = ys,
-        piece = pieces,
-        group = groups
-    )
-}
-
 # From https://stat.ethz.ch/pipermail/r-help/2004-December/063046.html
-#
-area<-function(x, y){
+area <- function(x, y){
     X <- matrix(c(x, y), ncol = 2)
-    X<-rbind(X,X[1,])
-    x<-X[,1]; y<-X[,2]; lx<-length(x)
-    -sum((x[2:lx]-x[1:lx-1])*(y[2:lx]+y[1:lx-1]))/2
+    X <- rbind(X,X[1,])
+    x <- X[,1]
+    y <- X[,2]
+    lx <- length(x)
+    -sum((x[2:lx] - x[1:lx-1])*(y[2:lx] + y[1:lx-1]))/2
 }
 
 
-CorrectFilll <- function(cont) {
-    levels <- c(NA, unique(cont$level), NA)
-    m.level <- min(levels)
-    M.level <- max(levels)
+CorrectFill <- function(cont, data) {
+    levels <- unique(cont$level)
+    m.level <- -levels[2] + 2*levels[1]
+    M.level <- 2*levels[length(levels)] - levels[length(levels) - 1]
+    levels <- c(m.level, levels, M.level)
     cont[, levelc := 0]
     pieces <- unique(cont$piece)
+
+    data <- as.data.table(data)
+    x.data <- unique(data$x)
+    x.data <- x.data[order(x.data)]
+    x.N <- length(x.data)
+    # range.x <- range(data$x)
+    y.data <- unique(data$y)
+    y.data <- y.data[order(y.data)]
+    y.N <- length(y.data)
+    # range.y <- range(data$y)
 
     for (p in pieces) {
         level <- cont[piece == p, level[1]]
@@ -161,50 +129,73 @@ CorrectFilll <- function(cont) {
         i <- which(levels == level)
         cur.piece <- cont[piece == p]
 
-        # Possible adjacent pieces (based on adjcent levels).
-        # Select only one point
-        close.pieces <- cont[level %in% levels[c(i-1, i+1)]]
-
-        # Check if points are inside current piece
-        # Mejorar chequeando sólo en el chull de los pieces
-
-        close.pieces <- close.pieces[, head(.SD, 1), by = piece]
-        close.pieces[, inside := IsInside(x, y, cur.piece$x, cur.piece$y), by = .(piece)]
-        inside.pieces <- close.pieces[inside == TRUE]
-
-
-        if (nrow(inside.pieces) == 0 ){
-            cur.piece <- cur.piece[1]
-            close.pieces <- cont[piece %in% close.pieces$piece]
-            close.pieces[, inside := IsInside(cur.piece$x, cur.piece$y, x, y), by = piece][
-                    inside == TRUE, ][
-                        area == min(area), level][1]
-
-            correction <- (level - previous.level)/2
-
+        p0 <- cur.piece[x >= x.data[2] & x <= x.data[x.N-1]
+                        & y >= y.data[2] & y <= y.data[y.N-1]][1]
+        if (nrow(p0[!is.na(x)]) == 0) {
+            inside.z <- level
         } else {
-            # Choose the biggest
-            next.level <- inside.pieces[inside == TRUE, ][area == max(area), level]
-            correction <- (next.level - level)/2
+            if (p0$x %in% x.data) {
+                p1 <- data[x == p0$x & y %~% p0$y][1]
+                p2 <- data[x == p0$x & y != p1$y, ][y %~% p0$y, ][1]
+            } else {
+                p1 <- data[y == p0$y & x %~% p0$x]
+                p2 <- data[y == p0$y & x != p1$x, ][x %~% p0$x, ][1]
+            }
+
+            if (IsInside(p1$x, p1$y, cur.piece$x, cur.piece$y)) {
+                inside.z <- p1$z
+            } else {
+                inside.z <- p2$z
+            }
         }
 
-        cont[piece == p, levelc := level + correction]
+        correction <- (levels[i + sign(inside.z - level)] - level)/2
+
+        cont[piece == p, int.level := level + correction]
     }
     return(cont)
+}
+
+# "Similar"
+`%~%` <- function(x, target) {
+    x <- abs(x - target)
+    return(x == suppressWarnings(min(x)))
 }
 
 IsInside <- function(xp, yp, x, y) {
     !(sp::point.in.polygon(xp, yp, x, y) == 0)
 }
 
-v3d <- reshape2::melt(volcano)
-names(v3d) <- c("x", "y", "z")
+# v3d <- reshape2::melt(volcano)
+# names(v3d) <- c("x", "y", "z")
+#
+# ggplot(v3d, aes(x, y, z = z)) + scale_color_brewer(type = "qual", palette = 3)+
+#     stat_fill_contour(color = "black", size = 0.2, binwidth = 10)
 
-ggplot(v3d, aes(x, y, z = z)) + scale_color_brewer(type = "qual", palette = 3)+
-    stat_fill_contour(color = "gray45", binwidth = 15, aes(fill = ..levelc..))
-    # stat_fill_contour(color = "gray45", binwidth = 15, aes(label = ..levelc..), geom = "text") +
-    # stat_fill_contour(breaks = 165) +
-    stat_contour(binwidth = 15) +
-    stat_contourlabel(binwidth = 15, step = 1)
-    # scale_color_brewer(type = "qual", palette = 3) +
 
+# dates <- unique(ncep$date)
+# ggplot(RepeatLon(ncep[date %in% dates[6]]), aes(lon, lat, z = gh.t)) +
+#     stat_fill_contour() +
+#     map.SH.3 +
+#     geom_contour(color = "black", size = 0.2) +
+#     stat_contourlabel(step = 1, size = 2.5, geom = "label",
+#                       label.padding = unit(0.1, "lines"),
+#                       label.r = unit(0, "lines")) +
+#     # coord_map(projection = "stereographic", orientation = c(-90, 0, 0)) +
+#     coord_polar() +
+#     scale_x_longitude() +
+#     ylim(c(-90, -10)) +
+#     facet_wrap(~date) +
+#     # scale_fill_viridis()
+#     scale_fill_divergent(name = "Geopotential Height Anomalies") +
+#     guides(fill = guide_colorbar(title.position = "top")) +
+#     ggtitle("Filled Contours and easy \ncontour labels in ggplot2")
+# # stat_fill_contour(aes(fill = ..levelc.., label = ..rank..), geom = "text",
+# # size = 3)
+# # xlim(c(0, 50)) + ylim(c(0, 90))
+
+
+# ggplot(h, aes(x, y)) +
+#     geom_path(aes(group = group)) +
+#     geom_point(color = "red") +
+#     geom_point(data = f)
