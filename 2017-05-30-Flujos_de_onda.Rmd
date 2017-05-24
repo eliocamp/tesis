@@ -1,0 +1,276 @@
+---
+title: "Flujos de onda"
+author: "Elio Campitelli"
+output:
+ioslides_presentation:
+fig_height: 5.5
+fig_width: 10.5
+smaller: yes
+widescreen: yes
+cache: yes
+---
+
+```{r setup, include=FALSE}
+# library(tufte)
+# invalidate cache when the tufte version changes
+# knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+# options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(
+    echo = FALSE,
+    message = FALSE,
+    warning = FALSE,
+    cache.path = "cache-flujos/")
+setwd("/home/elio/Documents/Tesis/")
+library(ncdf4)
+source("scripts/helperfun.R")
+month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
+               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+names(month.abb) <- as.character(1:12)
+library(RcppArmadillo)
+theme_elio <- theme_minimal() +
+    theme(legend.position = "bottom")
+theme_set(theme_elio)
+
+
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
+map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
+map.world.3 <- geom_map2(map.world.3)
+map.SH.countries <- geom_map2(BuildMap(countries = T, res = 8))
+interp.levs <- exp(seq(log(925), log(30), length.out = 40))
+```
+
+
+```{r}
+ncep <- melt(ReadNCEP("DATA/NCEP/hgt.mon.mean.nc", var = "hgt"), value.name = "gh")
+setDT(ncep)
+ncep[, u := c(ReadNCEP("DATA/NCEP/uwnd.mon.mean.nc", "uwnd"))][
+    , v := c(ReadNCEP("DATA/NCEP/vwnd.mon.mean.nc", "vwnd"))]
+
+ncep <- ncep[lev == 300]
+ncep[, gh.t := Anomaly(gh), by = .(lon, lat, lev, month(date))]
+ncep[, c("u.mean", "v.mean") := lapply(.SD, mean),
+     by = .(lon, lat, lev, month(date)),
+     .SDcols = c("u", "v")]
+
+# Flujos de actividad de onda
+flux <- ncep[, WaveFlux(gh.t, u.mean, v.mean, lon, lat, lev), by = .(lev, date)]
+
+# Onda estacionaria 3
+qs <- ncep[, FitQsWave(gh, 3), by = .(lat, lev, date)]
+qs.mean <- qs[, lapply(.SD, mean), by = .(lat, lev, month(date), k)]
+
+# Índice
+levs.index <- c(300)
+lats.index <- qs[lat <= -40 & lat >= -65, unique(lat)]
+qs_index <- qs[lev %in% levs.index & lat %in% lats.index,
+               .(amplitude = mean(amplitude),
+                 r2 = mean(r2),
+                 phase = mean(phase)),
+               by = date]
+qs_index[, percentile := Percentile(amplitude), by = .(month(date))]
+
+ncep <- ncep[qs_index[, .(date, amplitude, percentile)], on = "date"]
+ncep <- ncep[flux, on = c("lon", "lat", "lev", "date")]
+```
+
+## Enero de 1985 (prueba)
+
+Vamos a hacer una prueba con los Flujos de actividad de onda. A modo de ejemplo, voy a tomar enero y hacer la composición de altura geopotencial y de flujos de actividad de onda para los meses con amplitud mayor al percentil 66.
+
+Antes de eso, veamos qué sucede en un mes en particular, enero de 1985.
+
+----
+
+
+```{r}
+
+FluxPlot <- function(gdata, s = 0.2, min = 5, binwidth = 20, step = 2) {
+    g <- ggplot(gdata, aes(lon, lat)) +
+        # geom_contour(aes(z = gh.t, linetype = as.factor(-sign(..level..)), color = ..level..),
+        #              size = 0.4, binwidth = binwidth) +
+        stat_fill_contour(aes(z = gh.t), binwidth = binwidth) +
+        geom_contourlabel(aes(z = gh.t), binwidth = binwidth, step = 2, exclude = 0,
+                          color = "gray27", size = 2.2) +
+        map.SH.3  +
+        geom_arrow(aes(vx = w.x, vy = w.y), scale = s,
+                   size = 0.15, step = step, min = min) +
+        scale_fill_divergent(name = "Anomalía de geopotencial", binwidth = binwidth) +
+        theme(legend.key.width = unit(4, "lines")) +
+        guides(fill = guide_colorbar(title.position = "top", keywidth = unit(4, "lines"),
+                                     title.hjust = 0.5)) +
+        coord_quickmap() +
+        scale_size_continuous(range = c(0, 0.4)) +
+        # coord_equal() +
+        scale_y_continuous(breaks = seq(-90, 90, by = 20), limits = c(-90, -15)) +
+        scale_x_longitude() +
+        scale_linetype(guide = "none")
+    g
+}
+
+
+s <- .2
+flux.path <- rbind(data.table(lon = c(160, 215, 250, 310, 360-3.76),
+                              lat = -c(45, 55, 46, 60, 45),
+                              path = 1),
+                   data.table(lon = c(3.76, 20, 70),
+                              lat = -c(45, 35, 45),
+                              path = 2))
+gdata <- ncep[lat < -10 & lev == 300 & date == date[1]]
+
+FluxPlot(gdata) +
+    ggalt::geom_xspline(data = flux.path, aes(group = path), spline_shape = 0.5,
+                        color = "purple", alpha = .8, linetype = 2,  size = 1.2)
+```
+
+<div class="notes">
+Se ve como hay un importante flujo que va desde la baja al este de Australia hacia el sudeste. Parte de este sigue hacia el sur hasta \~-70°S donde hay una convergencia del flujo. Otra pequeña proporción sigue hacia el este y oscila entre los -45°S y -60°S hasta llegar al sur del Índico. Este no es el principal sentido del flujo.
+
+</div>
+
+
+# Climatología
+
+----
+
+```{r}
+ncep[, gh.z := Anomaly(gh), by = .(lat, lev, date)]
+
+gdata <- ncep[lat < -10, lapply(.SD, FUN = mean, na.rm = T), 
+              by = .(lon, lat, lev, month(date)),
+              .SDcols = c("w.x", "w.y", "gh.z")]
+setnames(gdata, "gh.z", "gh.t")
+
+FluxPlot(gdata, step = 4, min = 10, s = 0.5) + 
+    facet_wrap(~month, labeller = labeller(month = month.abb))
+
+```
+
+## Enero: Años seleccionados con amplitud 66
+
+```{r}
+s <- 0.2
+gdata <- ncep[lat < -10 & lev == 300 & percentile > 0.66 & month(date) == 1]
+gdata[, year := year(date)]
+
+g <- FluxPlot(gdata)
+
+g + facet_wrap_paginate(~year, ncol = 2, nrow = 2, page = 1)
+```
+
+## Enero: Años seleccionados con amplitud 66
+
+```{r}
+g + facet_wrap_paginate(~year, ncol = 2, nrow = 2, page = 2)
+```
+
+## Enero: Años seleccionados con amplitud 66
+
+```{r}
+g + facet_wrap_paginate(~year, ncol = 2, nrow = 2, page = 3)
+```
+
+## Septiembre: Años seleccionados con amplitud 66
+
+```{r}
+s <- 0.1
+gdata <- ncep[lat < -10 & lev == 300 & percentile > 0.66 & month(date) == 9]
+gdata[, year := year(date)]
+
+g <- FluxPlot(gdata, s = 0.1, min = 10)
+g + facet_wrap_paginate(~year, ncol = 2, nrow = 2, page = 1) 
+```
+
+## Septiembre: Años seleccionados con amplitud 66
+
+```{r}
+
+path.sep <- rbind(
+    data.table(year = 2005, 
+               path = 1,
+               lon = c(50, 100, 140, 190, 360 - 90, 359),
+               lat = c(-35, -45, -60, -65, -70, -65)),
+    data.table(year = 2003,
+               path = 1, 
+               lon = c(360-30, 359),
+               lat = c(-60, -63)),
+    data.table(year = 2003,
+               path = 2, 
+               lon = c(1, 20, 70, 145, 160, 220, 360-90),
+               lat = c(-63, -63, -50, -25, -50, -60, -50)),
+    data.table(year = 2001,
+               path = 1, 
+               lon = c(75, 110, 165, 360-110, 360-90, 360-80),
+               lat = c(-45, -55, -45, -70, -55, -30)),
+        data.table(year = 2001,
+               path = 2, 
+               lon = c(165, 190, 360-115, 360-80),
+               lat = c(-45, -30, -35, -30))
+    )
+
+g + facet_wrap_paginate(~year, ncol = 2, nrow = 2, page = 2) +
+    ggalt::geom_xspline(data = path.sep, aes(group = path), spline_shape = 0.5,
+                        color = "purple", alpha = .8, linetype = 2,  size = 1.2)
+```
+
+## Septiembre: Años seleccionados con amplitud 66
+
+```{r}
+g + facet_wrap_paginate(~year, ncol = 2, nrow = 2, page = 3)
+```
+
+
+
+## Composición 
+
+```{r}
+composition <- ncep[ ,lapply(.SD, function(x) mean(x[percentile > 0.66]) - mean(x)),
+                     by = .(lon, lat, lev, month(date)), .SDcols = c("gh.t", "w.x", "w.y")]
+```
+
+
+```{r}
+g <- FluxPlot(composition[lat < -10], s = 0.5, binwidth = 10)
+
+g + facet_wrap_paginate(~month, ncol = 2, nrow = 2, page = 1, 
+                        labeller = labeller(month = month.abb))
+```
+
+
+## Composición
+
+```{r}
+g + facet_wrap_paginate(~month, ncol = 2, nrow = 2, page = 2, 
+                        labeller = labeller(month = month.abb))
+```
+
+
+## Composición
+
+```{r}
+g + facet_wrap_paginate(~month, ncol = 2, nrow = 2, page = 3, 
+                        labeller = labeller(month = month.abb))
+```
+
+----
+
+```{r}
+gdata <- ncep[lat < -10, {
+    M <- sqrt(w.x^2 + w.y^2)
+    list(M = mean(M[percentile > 0.66]) - mean(M))}, 
+    by = .(lon, lat, lev, month(date))]
+
+ggplot(gdata, aes(lon, lat, z = M)) + 
+    stat_fill_contour(binwidth = 5) +
+    map.SH.3 +
+    # geom_contour() +
+    scale_x_longitude() +
+    scale_y_continuous(expand = c(0, 0), limits = c(-90, -10)) +
+    coord_quickmap() +
+    scale_fill_divergent(name = "Anomalía del flujo de Plum", binwidth = 5) +
+    guides(fill = guide_colorbar(title.position = "top", keywidth = unit(16, "lines"),
+                                 title.hjust = 0.5)) +
+    facet_wrap(~month, labeller = labeller(month = month.abb))
+```
+
+

@@ -69,6 +69,6 @@ stat_contourlabel <- function(mapping = NULL, data = NULL,
 
 geom_contourlabel <- function(...) {
     list(stat_contourlabel(geom = "label", fill = "white", label.r = unit(0, "lines"),
-                      label.padding = unit(0.02, "lines"), color = NA, ...),
+                      label.padding = unit(0.04, "lines"), color = NA, ...),
         stat_contourlabel(...))
 }

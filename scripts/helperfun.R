@@ -110,7 +110,7 @@ geom_arrow <- function(mapping, scale, step = 1, min = 0, arrow.size = 0.2, arro
 }
 
 scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
-    scale_x_continuous(name = name,
+    scale_x_continuous(name = name, expand = c(0, 0),
                        breaks = seq(0, 360 - ticks, by = ticks),
                        labels = c(seq(0, 180, by = ticks),
                                   seq(-180 + ticks, 0 - ticks, by = ticks)),
@@ -119,7 +119,7 @@ scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
 
 
 scale_y_longitude <- function(ticks = 60, name = "lon", ...) {
-    scale_y_continuous(name = name,
+    scale_y_continuous(name = name, expand = c(0, 0),
                        breaks = seq(0, 360 - ticks, by = ticks),
                        labels = c(seq(0, 180, by = ticks),
                                   seq(-180 + ticks, 0 - ticks, by = ticks)),
@@ -391,6 +391,7 @@ as.dt <- function(...) {
 
 
 source("scripts/geom_contourlabel.R")
+source("scripts/stat_fill_contour.R")
 
 factor2cols <- function(x, column, factors) {
     column <- deparse(substitute(column))
