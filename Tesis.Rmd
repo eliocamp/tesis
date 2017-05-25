@@ -1,0 +1,95 @@
+---
+title: "Tesis"
+author: "Elio Campitelli"
+date: ""
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Por ahora esto es un outline y no mucho más. 
+
+
+# Introducción
+
+## Motivación
+
+Algo más substancioso que "me interesa la gran escala y el clima de altas latitudes" :P 
+
+* Efectos en nuestra región. 
+* Analogía con estudios en el hemisferio norte. 
+
+## Conceptos básicos
+
+* Ondas cuasiestacionarias
+* Fluos de activdiad de onda
+ 
+## Antecedentes
+
+* Quintanar y Mechoso, Raphael, et. al. 
+
+## Hipótesis
+
+¿Tengo una?
+
+## Métodos
+
+Descripción de los experimentos. 
+
+### Fuentes de datos
+
+### Modelo SPEEDY
+
+# Climatología observada
+
+## Campos medios y anomalías. 
+
+## Ondas Quasiestacionarias
+
+* Onda 1 a 4. 
+* Amplitud, r2, etc...
+* Fase. 
+
+### Creación del índice
+
+#### Antecedentes
+
+Breve comentario sobre los índices usados en otros lados. Discutir ventajas y debilidades.
+
+#### Índice propio
+
+* Niveles elegidos
+* Promedio vs. máximo
+* Composiciones de campos y flujos.
+* Decisión del índice. 
+
+## Forzantes
+
+Campos de correlación con SST y OLR, principalmente
+¿Discusión de otros forzantes?
+
+# Experimentos
+
+## Validación SPEEDY
+
+* Comparación campos medios. 
+* Validación de las corridas experimentales (mostrar que es constante lo que tiene que ser consante)
+
+## Comparación 
+
+Comparación entre corridas y ncep.
+
+## Cosas inesperadas...
+
+* ?? 
+* protif!
+
+# Conclusiones
+
+# Agradecimientos
+
+# Referencias
+
+
