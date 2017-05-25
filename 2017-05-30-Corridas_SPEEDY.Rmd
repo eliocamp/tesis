@@ -1,0 +1,274 @@
+---
+title: "Corridas SPEEDY"
+author: "Elio Campitelli"
+output:
+ioslides_presentation:
+fig_height: 5.5
+fig_width: 10.5
+smaller: yes
+widescreen: yes
+cache: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    echo = FALSE,
+    message = FALSE,
+    warning = FALSE,
+    cache.path = "cache-flujos/")
+setwd("/home/elio/Documents/Tesis/")
+library(ncdf4)
+source("scripts/helperfun.R")
+month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
+               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+names(month.abb) <- as.character(1:12)
+library(RcppArmadillo)
+theme_elio <- theme_minimal() +
+    theme(legend.position = "bottom")
+theme_set(theme_elio)
+
+
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
+map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
+map.world.3 <- geom_map2(map.world.3)
+map.SH.countries <- geom_map2(BuildMap(countries = T, res = 8))
+interp.levs <- exp(seq(log(925), log(30), length.out = 40))
+```
+
+
+
+```{r}
+sp <- readRDS("DATA/SPEEDY/speedy.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "control"]
+sp.clim <- readRDS("DATA/SPEEDY/speedy.clim.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "climatological"]
+sp.noice <- readRDS("DATA/SPEEDY/speedy.noice.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "noice"]
+sp.noland <- readRDS("DATA/SPEEDY/speedy.noland.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "noland"]
+
+sp <- rbind(sp, sp.clim, sp.noice, sp.noland)
+sp[, run := factor(run, levels = c("control", "climatological", "noice", "noland"))]
+remove(sp.clim, sp.noice, sp.noland)
+# Calculo la onda 3
+qs.sp <- sp[, FitQsWave(gh, 3), by = .(lat, lev, date, run)]
+qs.sp.mean <- qs.sp[, lapply(.SD, mean), by = .(lat, lev, month(date), run)]
+
+levs.index <- c(700, 300, 100)
+```
+
+```{r}
+PlotQS <- function(page) {
+    g <- ggplot(qs.sp.mean, aes(lat, lev)) +
+        geom_contour(aes(z = amplitude), binwidth = 15, color = "black") +
+        geom_contourlabel(aes(z = amplitude), binwidth = 15, step = 1) +
+        scale_x_reverse(limits = c(0, -90)) + 
+        scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
+        
+        # directlabels::geom_dl(aes(z = amplitude, label = ..level..), 
+        #                       stat = "contour", color = "black", 
+        #                       binwidth = 15, method = "top.pieces") +
+        scale_fill_distiller(direction = 1) +
+        ylab("Nivel") + xlab("Latitud") +
+        annotate(geom = "segment", x = rep(-40, 3), xend = rep(-65, 3), 
+                 y = levs.index, yend = levs.index, color = "gray45", linetype = 2)
+    
+    g + facet_grid_paginate(month~run, page = page, ncol = 4, nrow = 3, 
+                            labeller = labeller(month = month.abb, 
+                                                run = c(control = "Control",
+                                                        climatological = "SSTCLIM",
+                                                        noice = "NOICE", 
+                                                        noland = "NOLAND")))
+}
+PlotQS(1)
+```
+
+----
+
+```{r}
+PlotQS(2)
+```
+
+
+----
+
+```{r}
+PlotQS(3)
+```
+
+
+----
+
+```{r}
+PlotQS(4)
+```
+
+
+## Diferencia control
+
+```{r}
+gdata <- qs.sp.mean[, 
+                    .(control = amplitude[run == "control"] - 
+                          amplitude[run == "climatological"],
+                      noice = amplitude[run == "control"] - 
+                          amplitude[run == "noice"],
+                      noland = amplitude[run == "control"] - 
+                          amplitude[run == "noland"]),
+                    by = .(lat, lev, month)]
+
+
+DifPlot <- function(var) {
+    breaks <- seq(-12.5, 12.5, by = 2.5)
+    breaks <- breaks[breaks != 0]
+    ggplot(gdata, aes(lat, lev)) +
+        geom_contour(aes_string(z = var, linetype = "as.factor(-sign(..level..))"), 
+                     breaks = breaks, color = "black") +
+        # stat_fill_contour(aes_string(z = var), binwidth = 2.5, exclude = 0) +
+        # geom_contourlabel(binwidth = 2.5, aes(z = control)) +
+        scale_x_reverse(limits = c(0, -90)) + 
+        scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
+        directlabels::geom_dl(aes(z = control, label = ..level..),
+                              stat = "contour", color = "black",
+                              breaks = breaks, method = "top.pieces") +
+        scale_fill_divergent(name = "Diferencia amplitud QS3") +
+        guides(fill = guide_colorbar(title.position = "top", keywidth = unit(16, "lines"),
+                                     title.hjust = 0.5)) +
+        ylab("Nivel") + xlab("Latitud") +
+        annotate(geom = "segment", x = rep(-40, 3), xend = rep(-65, 3), 
+                 y = levs.index, yend = levs.index, color = "gray45", linetype = 2) +
+        facet_wrap(~month, ncol = 3, 
+                   labeller = labeller(month = month.abb)) +
+        guides(linetype = "none")
+}
+
+DifPlot("control")
+```
+
+## Diferencia noice
+
+```{r}
+DifPlot("noice")
+```
+
+## Diferencia noland
+
+```{r}
+DifPlot("noland")
+```
+
+
+---- 
+
+```{r}
+
+lats <- unique(qs$lat)
+lats.index <- lats[lats <= -40 & lats >= -65]
+qs_index.sp <- qs.sp[lev %in% levs.index & lat %in% lats.index, 
+                     .(amplitude = mean(amplitude),
+                       r2 = mean(r2),
+                       phase = mean(phase)), 
+                     by = .(date, run)]
+```
+
+
+```{r}
+label.runs <- c(climatological = "SSTCLIM", 
+                control = "Control",
+                noice = "NOICE", 
+                noland = "NOLAND")
+g <- ggplot(qs_index.sp, aes(date, amplitude, color = run)) +
+    geom_line() +
+    # geom_smooth(span = 10/30) +
+    geom_hline(aes(yintercept = mean(amplitude)), 
+               linetype = 3, color = "gray45") +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+    ylab("Amplitud") + xlab("Fecha") +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = label.runs)
+
+DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud", xlab = "Fecha")
+```
+
+<div class = "notes">
+Mirando el gráfico de nuevo, me da la impresión de que la supuesta coincidencia entre las corridas no se da tanto porque coincidan en los picos sino que es una cuestión de que todas tienen un ciclo anual similar. 
+
+Con tantas corridas juntas este gráfico (y el de la fase) es un spaghetti inentendible. 
+
+</div>
+----
+
+```{r}
+qs_index.sp[run != "control"][,
+                              control := qs_index.sp[run == "control", amplitude]] %>%
+    ggplot(aes(control, amplitude, color = run)) + 
+    geom_point(size = 0.4) + geom_smooth(method = "lm", size = 0.4, se = F) +
+    facet_wrap(~month(date), ncol = 3, labeller = as_labeller(month.abb),
+               scales = "free") +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = label.runs)
+```
+
+<div class="notes">
+En efecto, no parece haber relación alguna entre la amplitud en la corrida control y las otras. Esto da una idea de que en realidad no coinciden temporalmente.  
+</div>
+
+----
+
+```{r}
+qs_index.sp[, amplitude.anom := Anomaly(amplitude), by = .(run, month(date))]
+
+g <- ggplot(qs_index.sp, aes(date, amplitude.anom, color = run)) +
+    geom_line() +
+    # geom_smooth(span = 10/30) +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+    ylab("Amplitud") + xlab("Fecha") +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = label.runs)
+
+DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud (anomalía mensual)", xlab = "Fecha")
+```
+
+<div class="notes">
+Graficando las anomalías mensuales en vez de los valores crudos se pierde bastante la impresión de coincidencia. Hay un pico sospechoso en 2000, pero puede ser 
+</div>
+
+----
+
+```{r}
+g <- ggplot(qs_index.sp, aes(date, phase, color = run)) +
+    geom_line() +
+    # geom_smooth(span = 10/30) +
+    geom_hline(aes(yintercept = mean(phase)), 
+               linetype = 3, color = "gray45") +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
+    ylab("Amplitud") + xlab("Fecha") +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = label.runs)
+
+DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Fase", xlab = "Fecha")
+```
+
+# Ciclo anual
+
+----
+
+```{r}
+
+ggplot(qs_index.sp, aes(month(date), amplitude, 
+                        color = run, group = interaction(month(date), run))) +
+    geom_boxplot() + 
+    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = label.runs) +
+    scale_y_continuous(limits = c(0, 150), name = "Amplitud")
+```
+
+----
+
+```{r}
+
+ggplot(qs_index.sp, aes(month(date), phase*180/pi + 240, 
+                        color = run, group = interaction(month(date), run))) +
+    geom_boxplot() + 
+    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
+    scale_color_brewer(palette = "Set1", name = "Corrida", 
+                       labels = label.runs) +
+    scale_y_longitude(name = "Fase", ticks = 20)
+```
+

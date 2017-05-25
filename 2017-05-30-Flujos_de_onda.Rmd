@@ -2,12 +2,12 @@
 title: "Flujos de onda"
 author: "Elio Campitelli"
 output:
-ioslides_presentation:
-fig_height: 5.5
-fig_width: 10.5
-smaller: yes
-widescreen: yes
-cache: yes
+    ioslides_presentation:
+        fig_height: 5.5
+        fig_width: 10.5
+        smaller: yes
+        widescreen: yes
+        cache: yes
 ---
 
 ```{r setup, include=FALSE}

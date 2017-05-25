@@ -28,7 +28,8 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                            default_aes = aes(fill = ..int.level..),
 
                            compute_group = function(data, scales, bins = NULL, binwidth = NULL,
-                                                    breaks = NULL, complete = FALSE, na.rm = FALSE) {
+                                                    breaks = NULL, complete = FALSE, na.rm = FALSE,
+                                                    exclude = NA) {
                                # If no parameters set, use pretty bins
                                if (is.null(bins) && is.null(binwidth) && is.null(breaks)) {
                                    breaks <- pretty(range(data$z), 10)
@@ -46,7 +47,8 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                    binwidth <- diff(range(data$z)) / length(breaks)
                                }
 
-                               f <<- data
+                               breaks.keep <- breaks[!(breaks %in% exclude)]
+                               f <<- data    # debug
                                dx <- abs(diff(subset(data, y == data$y[1])$x)[1])
                                dy <- abs(diff(subset(data, x == data$x[1])$y)[1])
 
@@ -61,16 +63,37 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                )
 
                                # Y le doy un valor muy bajo.
-                               extra$z <- range.data$z[1] - 1*binwidth
+                               # extra$z <- range.data$z[1] - 3*binwidth
+                               mean.z <- mean(data$z)
+                               extra$z <- mean.z
                                extra$PANEL <- data$PANEL[1]
                                cur.group <- data$group[1]
                                extra$group <- data$group[1]
 
                                data2 <- rbind(data, extra)
 
-                               cont <- ggplot2:::contour_lines(data2, breaks, complete = complete)
+                               cont <- ggplot2:::contour_lines(data2, breaks.keep, complete = complete)
+
+
 
                                setDT(cont)
+
+
+                               co <<- copy(cont)    # debug
+                               data3 <<- data2    # debug
+                               cont <- CorrectFill(cont, data2, breaks)
+
+                               mean.level <- breaks[breaks %~% mean.z]
+
+                               mean.cont  <- data.frame(
+                                   level = mean.level,
+                                   x = c(rep(range.data$x[1], 2), rep(range.data$x[2], 2)),
+                                   y = c(range.data$y[1], rep(range.data$y[2], 2), range.data$y[1]),
+                                   piece = max(cont$piece) + 1,
+                                   int.level = mean.level)
+
+                               mean.cont$group <- factor(paste(cur.group, sprintf("%03d", mean.cont$piece), sep = "-"))
+                               cont <- rbind(cont, mean.cont)
 
                                areas <- cont[, .(area = abs(area(x, y))), by = .(piece)][
                                    , rank := frank(-area, ties.method = "dense")]
@@ -79,9 +102,6 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                cont[, piece := rank]
                                cont[, group := factor(paste(cur.group,
                                                             sprintf("%03d", piece), sep = "-"))]
-                               # co <<- copy(cont)
-                               # data3 <<- data2
-                               cont <- CorrectFill(cont, data2)
 
                                cont$x[cont$x > range.data$x[2]] <- range.data$x[2]
                                cont$x[cont$x < range.data$x[1]] <- range.data$x[1]
@@ -105,12 +125,12 @@ area <- function(x, y){
 }
 
 
-CorrectFill <- function(cont, data) {
-    levels <- unique(cont$level)
+CorrectFill <- function(cont, data, breaks) {
+    levels <- breaks
     m.level <- -levels[2] + 2*levels[1]
     M.level <- 2*levels[length(levels)] - levels[length(levels) - 1]
     levels <- c(m.level, levels, M.level)
-    cont[, levelc := 0]
+    cont[, int.level := 0]
     pieces <- unique(cont$piece)
 
     data <- as.data.table(data)
@@ -135,11 +155,19 @@ CorrectFill <- function(cont, data) {
             inside.z <- level
         } else {
             if (p0$x %in% x.data) {
-                p1 <- data[x == p0$x & y %~% p0$y][1]
-                p2 <- data[x == p0$x & y != p1$y, ][y %~% p0$y, ][1]
+                tmp <- y.data - p0$y
+                y1 <- min(tmp[tmp>0]) + p0$y
+                y2 <- max(tmp[tmp<0]) + p0$y
+
+                p1 <- data[x == p0$x & y == y1]
+                p2 <- data[x == p0$x & y == y2]
             } else {
-                p1 <- data[y == p0$y & x %~% p0$x]
-                p2 <- data[y == p0$y & x != p1$x, ][x %~% p0$x, ][1]
+                tmp <- x.data - p0$x
+                x1 <- min(tmp[tmp>0]) + p0$x
+                x2 <- max(tmp[tmp<0]) + p0$x
+
+                p1 <- data[x == x1 & y == p0$y]
+                p2 <- data[x == x2 & y == p0$y]
             }
 
             if (IsInside(p1$x, p1$y, cur.piece$x, cur.piece$y)) {

@@ -40,9 +40,9 @@ StatContourLabel <- ggproto("StatContourLabel", Stat,
 
                            contours <- ggplot2:::contour_lines(data, breaks.keep, complete = complete)
                            contours.dt <- as.data.table(contours)
-                           contours.dt[, var := minvar(x, y), by = .(group)]
+                           contours.dt[, var := minvar(x, y), by = .(piece)]
 
-                           as.data.frame(contours.dt[var == T][, head(.SD, 1), by = group])
+                           as.data.frame(contours.dt[var == T][, head(.SD, 1), by = piece])
                        }
 )
 
