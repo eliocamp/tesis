@@ -114,19 +114,20 @@ gdata <- qs.sp.mean[,
 
 
 DifPlot <- function(var) {
-    breaks <- seq(-12.5, 12.5, by = 2.5)
-    breaks <- breaks[breaks != 0]
+    # breaks <- seq(-12.5, 12.5, by = 2.5)
+    # breaks <- breaks[breaks != 0]
     ggplot(gdata, aes(lat, lev)) +
-        geom_contour(aes_string(z = var, linetype = "as.factor(-sign(..level..))"), 
-                     breaks = breaks, color = "black") +
-        # stat_fill_contour(aes_string(z = var), binwidth = 2.5, exclude = 0) +
+        stat_fill_contour(aes_string(z = var), binwidth = 2.5) +
+        geom_contour(aes_string(z = var, linetype = "as.factor(-sign(..level..))"),
+                     binwidth = 2.5, color = "black") +
         # geom_contourlabel(binwidth = 2.5, aes(z = control)) +
-        scale_x_reverse(limits = c(0, -90)) + 
-        scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
+        scale_x_reverse(limits = c(0, -90), expand = c(0, 0)) + 
+        scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL, 
+                           expand = c(0, 0)) +
         directlabels::geom_dl(aes(z = control, label = ..level..),
                               stat = "contour", color = "black",
-                              breaks = breaks, method = "top.pieces") +
-        scale_fill_divergent(name = "Diferencia amplitud QS3") +
+                              binwidth = 2.5, method = "top.pieces") +
+        scale_fill_divergent(name = "Diferencia amplitud QS3", binwidth = 2.5) +
         guides(fill = guide_colorbar(title.position = "top", keywidth = unit(16, "lines"),
                                      title.hjust = 0.5)) +
         ylab("Nivel") + xlab("Latitud") +
