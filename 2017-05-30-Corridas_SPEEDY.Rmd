@@ -54,6 +54,7 @@ levs.index <- c(700, 300, 100)
 ```
 
 ```{r}
+library(ggrepel)
 PlotQS <- function(page) {
     g <- ggplot(qs.sp.mean, aes(lat, lev)) +
         geom_contour(aes(z = amplitude), binwidth = 15, color = "black") +
@@ -154,122 +155,98 @@ DifPlot("noland")
 ```
 
 
----- 
+# Regresiones
+
+----
 
 ```{r}
-
-lats <- unique(qs$lat)
+levs.index <- c(700, 300, 100)
+lats <- unique(qs.sp$lat)
 lats.index <- lats[lats <= -40 & lats >= -65]
 qs_index.sp <- qs.sp[lev %in% levs.index & lat %in% lats.index, 
-                     .(amplitude = mean(amplitude),
-                       r2 = mean(r2),
-                       phase = mean(phase)), 
-                     by = .(date, run)]
-```
+               .(amplitude = mean(amplitude),
+                 r2 = mean(r2),
+                 phase = mean(phase)), 
+               by = .(date, run)]
 
-
-```{r}
 label.runs <- c(climatological = "SSTCLIM", 
                 control = "Control",
                 noice = "NOICE", 
                 noland = "NOLAND")
-g <- ggplot(qs_index.sp, aes(date, amplitude, color = run)) +
-    geom_line() +
-    # geom_smooth(span = 10/30) +
-    geom_hline(aes(yintercept = mean(amplitude)), 
-               linetype = 3, color = "gray45") +
-    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-    ylab("Amplitud") + xlab("Fecha") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
 
-DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud", xlab = "Fecha")
 ```
 
-<div class = "notes">
-Mirando el gráfico de nuevo, me da la impresión de que la supuesta coincidencia entre las corridas no se da tanto porque coincidan en los picos sino que es una cuestión de que todas tienen un ciclo anual similar. 
-
-Con tantas corridas juntas este gráfico (y el de la fase) es un spaghetti inentendible. 
-
-</div>
-----
 
 ```{r}
-qs_index.sp[run != "control"][,
-                              control := qs_index.sp[run == "control", amplitude]] %>%
-    ggplot(aes(control, amplitude, color = run)) + 
-    geom_point(size = 0.4) + geom_smooth(method = "lm", size = 0.4, se = F) +
-    facet_wrap(~month(date), ncol = 3, labeller = as_labeller(month.abb),
-               scales = "free") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
+# Regresiones. 
+sp <- sp[qs_index.sp, on = c("date", "run")]
+
+regression.sp <- sp[lev == 300, {
+    ampl.norm <- as.numeric(scale(amplitude))
+    phase.norm <- as.numeric(scale(phase))
+    ExtractLm(fastLm(cbind(intercept = 1, amplitude = ampl.norm, phase = phase.norm), gh))},
+    by = .(lat, lon, lev, month(date), run)]
+
 ```
+
+```{r}
+gdata <- regression.sp[regressor == "amplitude"] 
+g <- ggplot(RepeatLon(gdata), aes(lon, lat, z = estimate)) +
+    stat_fill_contour(binwidth = 15) +
+    geom_contour(binwidth = 15, color = "gray27", size = 0.1) +
+    map.SH.3 +
+    scale_x_longitude() +
+    scale_y_continuous(expand = c(0,0), limits = c(-90, -10)) +
+    # geom_contour() +
+    # geom_tile(aes(fill = estimate)) +
+    scale_fill_divergent(name =  "Regresión", 
+                             binwidth = 15) +
+    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(15, "lines"),
+                                     title.hjust = 0.5)) +
+    coord_polar()
+
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 1,
+                        labeller = labeller(month = month.abb, run = label.runs))
+```
+
 
 <div class="notes">
-En efecto, no parece haber relación alguna entre la amplitud en la corrida control y las otras. Esto da una idea de que en realidad no coinciden temporalmente.  
+La regressión con la amplitud sugiere que Speedy no logra 
 </div>
-
 ----
 
+
 ```{r}
-qs_index.sp[, amplitude.anom := Anomaly(amplitude), by = .(run, month(date))]
-
-g <- ggplot(qs_index.sp, aes(date, amplitude.anom, color = run)) +
-    geom_line() +
-    # geom_smooth(span = 10/30) +
-    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-    ylab("Amplitud") + xlab("Fecha") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
-
-DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud (anomalía mensual)", xlab = "Fecha")
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 2,
+                        labeller = labeller(month = month.abb, run = label.runs))
 ```
 
-<div class="notes">
-Graficando las anomalías mensuales en vez de los valores crudos se pierde bastante la impresión de coincidencia. Hay un pico sospechoso en 2000, pero puede ser 
-</div>
 
 ----
 
 ```{r}
-g <- ggplot(qs_index.sp, aes(date, phase, color = run)) +
-    geom_line() +
-    # geom_smooth(span = 10/30) +
-    geom_hline(aes(yintercept = mean(phase)), 
-               linetype = 3, color = "gray45") +
-    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-    ylab("Amplitud") + xlab("Fecha") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
+gdata <- regression.sp[regressor == "phase"] 
+g <- ggplot(RepeatLon(gdata), aes(lon, lat, z = estimate)) +
+    stat_fill_contour(binwidth = 15) +
+    geom_contour(binwidth = 15, color = "gray27", size = 0.1) +
+    map.SH.3 +
+    scale_x_longitude() +
+    scale_y_continuous(expand = c(0,0), limits = c(-90, -10)) +
+    # geom_contour() +
+    # geom_tile(aes(fill = estimate)) +
+    scale_fill_divergent(name =  "Regresión", 
+                             binwidth = 15) +
+    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(15, "lines"),
+                                     title.hjust = 0.5)) +
+    coord_polar()
 
-DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Fase", xlab = "Fecha")
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 1,
+                        labeller = labeller(month = month.abb, run = label.runs))
 ```
 
-# Ciclo anual
-
-----
-
 ```{r}
 
-ggplot(qs_index.sp, aes(month(date), amplitude, 
-                        color = run, group = interaction(month(date), run))) +
-    geom_boxplot() + 
-    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs) +
-    scale_y_continuous(limits = c(0, 150), name = "Amplitud")
-```
-
-----
-
-```{r}
-
-ggplot(qs_index.sp, aes(month(date), phase*180/pi + 240, 
-                        color = run, group = interaction(month(date), run))) +
-    geom_boxplot() + 
-    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs) +
-    scale_y_longitude(name = "Fase", ticks = 20)
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 2,
+                        labeller = labeller(month = month.abb, run = label.runs))
 ```
 
