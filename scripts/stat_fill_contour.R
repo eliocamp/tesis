@@ -80,8 +80,8 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                setDT(cont)
 
 
-                               # co <<- copy(cont)    # debug
-                               # data3 <<- data2    # debug
+                               co <<- copy(cont)    # debug
+                               data3 <<- data2    # debug
                                cont <- CorrectFill(cont, data2, breaks)
 
 
@@ -97,7 +97,7 @@ StatFillContour <- ggproto("StatFillContour", Stat,
 
                                mean.cont$group <- factor(paste(cur.group, sprintf("%03d", mean.cont$piece), sep = "-"))
                                cont <- rbind(cont, mean.cont)
-                               # co.2 <<- copy(cont)    # debug
+                               co.2 <<- copy(cont)    # debug
 
                                areas <- cont[, .(area = abs(area(x, y))), by = .(piece)][
                                    , rank := frank(-area, ties.method = "dense")]
@@ -159,16 +159,13 @@ CorrectFill <- function(cont, data, breaks) {
             inside.z <- level
         } else {
             if (p0$x %in% x.data) {
-                tmp <- y.data - p0$y
-                y1 <- min(tmp[tmp>0]) + p0$y
-                y2 <- max(tmp[tmp<0]) + p0$y
-
+                y1 <- Closest(y.data, p0$y, sign = 1)
+                y2 <- Closest(y.data, p0$y, sign = -1)
                 p1 <- data[x == p0$x & y == y1]
                 p2 <- data[x == p0$x & y == y2]
             } else {
-                tmp <- x.data - p0$x
-                x1 <- min(tmp[tmp>0]) + p0$x
-                x2 <- max(tmp[tmp<0]) + p0$x
+                x1 <- Closest(x.data, p0$x, sign = 1)
+                x2 <- Closest(x.data, p0$x, sign = -1)
 
                 p1 <- data[x == x1 & y == p0$y]
                 p2 <- data[x == x2 & y == p0$y]
@@ -192,6 +189,12 @@ CorrectFill <- function(cont, data, breaks) {
 `%~%` <- function(x, target) {
     x <- abs(x - target)
     return(x == suppressWarnings(min(x)))
+}
+
+Closest <- function(x, target, sign = c(1, -1)) {
+    tmp <- (x - target)*sign[1]
+    tmp[tmp<0] <- NA
+    x[which.min(abs(tmp))]
 }
 
 IsInside <- function(xp, yp, x, y) {
