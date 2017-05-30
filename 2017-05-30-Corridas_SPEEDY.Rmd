@@ -2,12 +2,12 @@
 title: "Corridas SPEEDY"
 author: "Elio Campitelli"
 output:
-ioslides_presentation:
-fig_height: 5.5
-fig_width: 10.5
-smaller: yes
-widescreen: yes
-cache: yes
+    ioslides_presentation:
+        fig_height: 5.5
+        fig_width: 10.5
+        smaller: yes
+        widescreen: yes
+        cache: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
     echo = FALSE,
     message = FALSE,
     warning = FALSE,
-    cache.path = "cache-flujos/")
+    cache.path = "cache-corridas/")
 setwd("/home/elio/Documents/Tesis/")
 library(ncdf4)
 source("scripts/helperfun.R")
@@ -50,10 +50,14 @@ remove(sp.clim, sp.noice, sp.noland)
 qs.sp <- sp[, FitQsWave(gh, 3), by = .(lat, lev, date, run)]
 qs.sp.mean <- qs.sp[, lapply(.SD, mean), by = .(lat, lev, month(date), run)]
 
+levs.sp <- unique(qs.sp.mean$lev)
 levs.index <- c(700, 300, 100)
 ```
 
+----
+
 ```{r}
+library(ggrepel)
 PlotQS <- function(page) {
     g <- ggplot(qs.sp.mean, aes(lat, lev)) +
         geom_contour(aes(z = amplitude), binwidth = 15, color = "black") +
@@ -114,19 +118,20 @@ gdata <- qs.sp.mean[,
 
 
 DifPlot <- function(var) {
-    breaks <- seq(-12.5, 12.5, by = 2.5)
-    breaks <- breaks[breaks != 0]
+    # breaks <- seq(-12.5, 12.5, by = 2.5)
+    # breaks <- breaks[breaks != 0]
     ggplot(gdata, aes(lat, lev)) +
-        geom_contour(aes_string(z = var, linetype = "as.factor(-sign(..level..))"), 
-                     breaks = breaks, color = "black") +
-        # stat_fill_contour(aes_string(z = var), binwidth = 2.5, exclude = 0) +
+        stat_fill_contour(aes_string(z = var), binwidth = 2.5) +
+        geom_contour(aes_string(z = var, linetype = "as.factor(-sign(..level..))"),
+                     binwidth = 2.5, color = "black") +
         # geom_contourlabel(binwidth = 2.5, aes(z = control)) +
-        scale_x_reverse(limits = c(0, -90)) + 
-        scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL) +
-        directlabels::geom_dl(aes(z = control, label = ..level..),
-                              stat = "contour", color = "black",
-                              breaks = breaks, method = "top.pieces") +
-        scale_fill_divergent(name = "Diferencia amplitud QS3") +
+        scale_x_reverse(limits = c(0, -90), expand = c(0, 0)) + 
+        scale_y_continuous(trans = "reverselog", breaks = levs.sp, minor_breaks = NULL, 
+                           expand = c(0, 0)) +
+        # directlabels::geom_dl(aes(z = control, label = ..level..),
+                              # stat = "contour", color = "black",
+                              # binwidth = 2.5, method = "top.pieces") +
+        scale_fill_divergent(name = "Diferencia amplitud QS3", binwidth = 2.5) +
         guides(fill = guide_colorbar(title.position = "top", keywidth = unit(16, "lines"),
                                      title.hjust = 0.5)) +
         ylab("Nivel") + xlab("Latitud") +
@@ -153,122 +158,229 @@ DifPlot("noland")
 ```
 
 
----- 
+# Regresiones
 
 ```{r}
-
-lats <- unique(qs$lat)
+levs.index <- c(700, 300, 100)
+lats <- unique(qs.sp$lat)
 lats.index <- lats[lats <= -40 & lats >= -65]
 qs_index.sp <- qs.sp[lev %in% levs.index & lat %in% lats.index, 
                      .(amplitude = mean(amplitude),
                        r2 = mean(r2),
                        phase = mean(phase)), 
                      by = .(date, run)]
-```
 
-
-```{r}
 label.runs <- c(climatological = "SSTCLIM", 
                 control = "Control",
                 noice = "NOICE", 
                 noland = "NOLAND")
-g <- ggplot(qs_index.sp, aes(date, amplitude, color = run)) +
-    geom_line() +
-    # geom_smooth(span = 10/30) +
-    geom_hline(aes(yintercept = mean(amplitude)), 
-               linetype = 3, color = "gray45") +
-    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-    ylab("Amplitud") + xlab("Fecha") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
 
-DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud", xlab = "Fecha")
 ```
 
-<div class = "notes">
-Mirando el gráfico de nuevo, me da la impresión de que la supuesta coincidencia entre las corridas no se da tanto porque coincidan en los picos sino que es una cuestión de que todas tienen un ciclo anual similar. 
 
-Con tantas corridas juntas este gráfico (y el de la fase) es un spaghetti inentendible. 
+```{r}
+# Regresiones. 
+sp <- sp[qs_index.sp, on = c("date", "run")]
 
+# regression.sp <- sp[lev == 300, {
+#     ampl.norm <- as.numeric(scale(amplitude))
+#     phase.norm <- as.numeric(scale(phase))
+#     ExtractLm(fastLm(cbind(intercept = 1, amplitude = ampl.norm, phase = phase.norm), gh))},
+#     by = .(lat, lon, lev, month(date), run)]
+# 
+# 
+# regression.ampl.sp <- sp[lev == 300, {
+#     ampl.norm <- as.numeric(scale(amplitude))
+#     ExtractLm(fastLm(cbind(intercept = 1, amplitude = ampl.norm), gh))},
+#     by = .(lat, lon, lev, month(date), run)] 
+# 
+# regression.phase.sp <- sp[lev == 300, {
+#     phase.norm <- as.numeric(scale(phase))
+#     ExtractLm(fastLm(cbind(intercept = 1, phase = phase.norm), gh))},
+#     by = .(lat, lon, lev, month(date), run)]
+# 
+# regression.sp.simple <- rbind(regression.phase.sp[regressor != "intercept"], regression.ampl.sp[regressor != "intercept"])
+# saveRDS(regression.sp, "cache-corridas/regression.sp.Rds")
+# saveRDS(regression.sp.simple, "cache-corridas/regression.sp.simple.Rds")
+
+regression.sp <- readRDS("cache-corridas/regression.sp.Rds")
+regression.sp.simple <- readRDS("cache-corridas/regression.sp.simple.Rds")
+```
+
+## Regresión simple vs. múltiple (corrida control)
+
+```{r}
+g <- rbind(regression.sp[run == "control" & regressor == "amplitude"][, regression := "multiple"],
+           regression.sp.simple[run == "control" & regressor == "amplitude"][, regression := "single"]) %>%
+    RepeatLon() %>% 
+    ggplot(aes(lon, lat, z = estimate)) + 
+    stat_fill_contour(binwidth = 10) +
+    map.SH.3 +
+    scale_fill_divergent(name = "Regrsión en amplitud", binwidth = 10) +
+    scale_x_longitude() +
+    scale_y_continuous(expand = c(0, 0), name = "", limits = c(-90, -10)) +
+    coord_polar() +
+    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(15, "lines"),
+                                 title.hjust = 0.5)) 
+g + facet_grid_paginate(regression~month, 
+                        labeller = labeller(month = month.abb, 
+                                            regression = c(single = "simple", 
+                                                           multiple = "multiple")), 
+                        ncol = 4, nrow = 2, page = 1)
+```
+
+## Regresión simple vs. múltiple (corrida control)
+
+```{r}
+g + facet_grid_paginate(regression~month, 
+                        labeller = labeller(month = month.abb, 
+                                            regression = c(single = "simple", 
+                                                           multiple = "multiple")), 
+                        ncol = 4, nrow = 2, page = 2)
+```
+
+## Regresión simple vs. múltiple (corrida control)
+
+```{r}
+g + facet_grid_paginate(regression~month, 
+                        labeller = labeller(month = month.abb, 
+                                            regression = c(single = "simple", 
+                                                           multiple = "multiple")), 
+                        ncol = 4, nrow = 2, page = 3)
+```
+
+
+## Regresión simple vs. múltiple (corrida control)
+
+```{r}
+g <- rbind(regression.sp[run == "control" & regressor == "phase"][, regression := "multiple"],
+           regression.sp.simple[run == "control" & regressor == "phase"][, regression := "single"]) %>%
+    RepeatLon() %>% 
+    ggplot(aes(lon, lat, z = estimate)) + 
+    stat_fill_contour(binwidth = 10) +
+    map.SH.3 +
+    scale_fill_divergent(name = "Regrsión en fase", binwidth = 10) +
+    scale_x_longitude() +
+    scale_y_continuous(expand = c(0, 0), name = "", limits = c(-90, -10)) +
+    coord_polar() +
+    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(15, "lines"),
+                                 title.hjust = 0.5)) 
+g + facet_grid_paginate(regression~month, 
+                        labeller = labeller(month = month.abb, 
+                                            regression = c(single = "simple", 
+                                                           multiple = "multiple")), 
+                        ncol = 4, nrow = 2, page = 1)
+```
+
+## Regresión simple vs. múltiple (corrida control)
+
+```{r}
+g + facet_grid_paginate(regression~month, 
+                        labeller = labeller(month = month.abb, 
+                                            regression = c(single = "simple", 
+                                                           multiple = "multiple")), 
+                        ncol = 4, nrow = 2, page = 2)
+```
+
+## Regresión simple vs. múltiple (corrida control)
+
+```{r}
+g + facet_grid_paginate(regression~month, 
+                        labeller = labeller(month = month.abb, 
+                                            regression = c(single = "simple", 
+                                                           multiple = "multiple")), 
+                        ncol = 4, nrow = 2, page = 3)
+```
+
+<div class ="notes"> 
+Hay muy poca diferencia en los campos de regresiones hechos por correlación simple o múltiple. Voy a decidir seguir con la múltiple porque:
+1. Es más "elegante" y fácil de hacer.
+2. Me permite, en el futuro, predecir un campo de geopotencial a partir de la amplitud y la fase. 
 </div>
+
 ----
 
 ```{r}
-qs_index.sp[run != "control"][,
-                              control := qs_index.sp[run == "control", amplitude]] %>%
-    ggplot(aes(control, amplitude, color = run)) + 
-    geom_point(size = 0.4) + geom_smooth(method = "lm", size = 0.4, se = F) +
-    facet_wrap(~month(date), ncol = 3, labeller = as_labeller(month.abb),
-               scales = "free") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
+gdata <- regression.sp[regressor == "amplitude"] 
+g <- ggplot(RepeatLon(gdata), aes(lon, lat, z = estimate)) +
+    stat_fill_contour(binwidth = 15) +
+    geom_contour(binwidth = 15, color = "gray27", size = 0.1) +
+    map.SH.3 +
+    scale_x_longitude() +
+    scale_y_continuous(expand = c(0,0), limits = c(-90, -10)) +
+    # geom_contour() +
+    # geom_tile(aes(fill = estimate)) +
+    scale_fill_divergent(name =  "Regresión", 
+                         binwidth = 15) +
+    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(15, "lines"),
+                                 title.hjust = 0.5)) +
+    coord_polar()
+    # coord_map()
+
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 1,
+                        labeller = labeller(month = month.abb, run = label.runs))
 ```
+
 
 <div class="notes">
-En efecto, no parece haber relación alguna entre la amplitud en la corrida control y las otras. Esto da una idea de que en realidad no coinciden temporalmente.  
+La regressión con la amplitud sugiere que Speedy no logra 
 </div>
-
 ----
 
+
 ```{r}
-qs_index.sp[, amplitude.anom := Anomaly(amplitude), by = .(run, month(date))]
-
-g <- ggplot(qs_index.sp, aes(date, amplitude.anom, color = run)) +
-    geom_line() +
-    # geom_smooth(span = 10/30) +
-    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-    ylab("Amplitud") + xlab("Fecha") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
-
-DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Amplitud (anomalía mensual)", xlab = "Fecha")
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 2,
+                        labeller = labeller(month = month.abb, run = label.runs))
 ```
 
-<div class="notes">
-Graficando las anomalías mensuales en vez de los valores crudos se pierde bastante la impresión de coincidencia. Hay un pico sospechoso en 2000, pero puede ser 
-</div>
 
 ----
 
 ```{r}
-g <- ggplot(qs_index.sp, aes(date, phase, color = run)) +
-    geom_line() +
-    # geom_smooth(span = 10/30) +
-    geom_hline(aes(yintercept = mean(phase)), 
-               linetype = 3, color = "gray45") +
-    scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
-    ylab("Amplitud") + xlab("Fecha") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs)
+gdata <- regression.sp[regressor == "phase"] 
+g <- ggplot(RepeatLon(gdata), aes(lon, lat, z = estimate)) +
+    stat_fill_contour(binwidth = 15) +
+    geom_contour(binwidth = 15, color = "gray27", size = 0.1) +
+    map.SH.3 +
+    scale_x_longitude() +
+    scale_y_continuous(expand = c(0,0), limits = c(-90, -10)) +
+    # geom_contour() +
+    # geom_tile(aes(fill = estimate)) +
+    scale_fill_divergent(name =  "Regresión", 
+                         binwidth = 15) +
+    guides(fill = guide_colorbar(title.position = "top", barwidth = unit(15, "lines"),
+                                 title.hjust = 0.5)) +
+    coord_polar()
 
-DivideTimeseries(g, n = 3, x = qs_index.sp$date, ylab = "Fase", xlab = "Fecha")
-```
-
-# Ciclo anual
-
-----
-
-```{r}
-
-ggplot(qs_index.sp, aes(month(date), amplitude, 
-                        color = run, group = interaction(month(date), run))) +
-    geom_boxplot() + 
-    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs) +
-    scale_y_continuous(limits = c(0, 150), name = "Amplitud")
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 1,
+                        labeller = labeller(month = month.abb, run = label.runs))
 ```
 
 ----
 
 ```{r}
 
-ggplot(qs_index.sp, aes(month(date), phase*180/pi + 240, 
-                        color = run, group = interaction(month(date), run))) +
-    geom_boxplot() + 
-    scale_x_continuous(labels = month.abb, breaks = 1:12, name = "Mes") +
-    scale_color_brewer(palette = "Set1", name = "Corrida", 
-                       labels = label.runs) +
-    scale_y_longitude(name = "Fase", ticks = 20)
+g + facet_grid_paginate(run~month, ncol = 6, nrow = 4, page = 2,
+                        labeller = labeller(month = month.abb, run = label.runs))
 ```
 
+# Relación Fase-Amplitud (NCEP)
+
+----
+
+Algo que tendría que haber hecho hace tiempo!!
+
+----
+
+```{r}
+qs_index <- readRDS("DATA/NCEP/qs_index.Rds")
+qs_index %>% 
+    .[, run := "ncep"] %>% 
+    rbind(qs_index.sp[run == "control", ]) %>% 
+ggplot(aes(phase, amplitude, color = run)) +
+    geom_point(size = 0.3) + geom_smooth(se = F, size = 0.5) +
+    scale_x_continuous(name = "Fase") +
+    scale_y_continuous(name = "Amplitud") +
+    scale_color_brewer(palette = "Set1", labels = c(ncep = "NCEP", control = "SPEEDY")) +
+    facet_wrap(~month(date), scales = "free", labeller = labeller(month = month.abb))
+```

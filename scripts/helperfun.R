@@ -109,7 +109,7 @@ geom_arrow <- function(mapping, scale, step = 1, min = 0, arrow.size = 0.2, arro
                ...)
 }
 
-scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
+scale_x_longitude <- function(ticks = 60, name = "", ...) {
     scale_x_continuous(name = name, expand = c(0, 0),
                        breaks = seq(0, 360 - ticks, by = ticks),
                        labels = c(seq(0, 180, by = ticks),
@@ -118,7 +118,7 @@ scale_x_longitude <- function(ticks = 60, name = "lon", ...) {
 }
 
 
-scale_y_longitude <- function(ticks = 60, name = "lon", ...) {
+scale_y_longitude <- function(ticks = 60, name = "", ...) {
     scale_y_continuous(name = name, expand = c(0, 0),
                        breaks = seq(0, 360 - ticks, by = ticks),
                        labels = c(seq(0, 180, by = ticks),
@@ -689,3 +689,33 @@ Mag <- function(x, y) {
     sqrt(x^2 + y^2)
 }
 
+
+
+EOF <- function(z, lon, lat, date, n = 1, return = c("index", "field")) {
+    # Calcula EOF del campo z.
+    # Entra:
+    #   z: campo (en vector)
+    #   lon: vector de longitudes
+    #   lat: vector de latitudes
+    #   date: vector de fechas
+    #   n: número de valores principales a calcular
+    #   return: devolver el índice o el campo
+    # Sale:
+    #   un data.table con el campo o el índice.
+
+    field <- data.table(lon, lat, date, z)
+    field[, z.w := z*sqrt(cos(lat*pi/180))]    # peso.
+
+    g <- dcast(field, lon + lat ~ date, value.var = "z.w")
+    eof <- svd::propack.svd(as.matrix(g[,-(1:2)]), neig = n)
+
+    if (return[1] == "index") {
+        eof <- as.data.table(eof$v)
+        eof <- cbind(eof, data.table(date = colnames(g[, -c(1, 2)])))
+    } else {
+        eof <- as.data.table(eof$u)
+        eof <- cbind(eof, g[, c(1, 2)])
+    }
+
+    return(eof)
+}

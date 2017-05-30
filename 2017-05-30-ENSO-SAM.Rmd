@@ -1,0 +1,199 @@
+---
+title: "Relación entre ondas"
+author: "Elio Campitelli"
+date: "May 29, 2017"
+output:
+    ioslides_presentation:
+        fig_height: 5.5
+        fig_width: 10.5
+        smaller: yes
+        widescreen: yes
+        cache: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    echo = FALSE,
+    message = FALSE,
+    warning = FALSE,
+    cache = TRUE,
+    cache.path = "cache-ondas/")
+setwd("/home/elio/Documents/Tesis/")
+library(ncdf4)
+source("scripts/helperfun.R")
+month.abb <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
+               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+names(month.abb) <- as.character(1:12)
+library(RcppArmadillo)
+theme_elio <- theme_minimal() +
+    theme(legend.position = "bottom")
+theme_set(theme_elio)
+
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
+map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
+map.world.3 <- geom_map2(map.world.3)
+map.SH.countries <- geom_map2(BuildMap(countries = T, res = 8))
+interp.levs <- exp(seq(log(925), log(30), length.out = 40))
+```
+
+
+```{r}
+# Sacado de https://www.esrl.noaa.gov/psd/gcos_wgsp/Timeseries/Nino34/
+enso <- fread("DATA/NCEP/nino34.long.data") %>% 
+    melt(id.vars = "year", variable.name = "month", value.name = "enso34") %>% 
+    .[, date := ymd(paste0(year, " ", month, " 01"))] %>% 
+    .[year > 1984 & year < 2016] %>% 
+    .[, year := NULL] %>% 
+    .[, month := NULL]
+
+
+# Leo datos de geopotencial de NCEP.
+gh <- readRDS("DATA/NCEP/ncep.Rds")[lat <= 20, .(lat, lon, lev, date, gh)]
+
+# Calculo la onda 3
+qs <- gh[, FitQsWave(gh, 3), by = .(lat, lev, date)]
+qs.mean <- qs[, lapply(.SD, mean), by = .(lat, lev, month(date), k)]
+
+levs.sp <- ncvar_get(nc_open("DATA/SPEEDY/attm.nc"), "lev")
+levs.index <- c(700, 300, 100)
+
+lats <- unique(qs$lat)
+lats.index <- lats[lats <= -40 & lats >= -65]
+qs_index <- qs[lev %in% levs.index & lat %in% lats.index, 
+               .(amplitude = mean(amplitude),
+                 r2 = mean(r2),
+                 phase = mean(phase)), 
+               by = date]
+
+qs_index <- qs_index[enso, on = "date"]
+```
+
+## ENSO - NCEP
+
+```{r}
+qs_index[, enso34.norm := Anomaly(enso34), by = month(date)]
+ggplot(qs_index, aes(amplitude, enso34.norm)) +
+    geom_point() +
+    geom_smooth() +
+    facet_wrap(~month(date))
+```
+
+
+## SAM - NCEP
+
+```{r}
+# http://www.cpc.ncep.noaa.gov/products/precip/CWlink/daily_ao_index/aao/aao.shtml
+sam.url <- "http://www.cpc.ncep.noaa.gov/products/precip/CWlink/daily_ao_index/aao/monthly.aao.index.b79.current.ascii"
+sam <- fread(sam.url) %>% 
+    setnames(c("year", "month", "sam")) %>% 
+    .[year > 1984 & year < 2016] %>% 
+    .[, date := ymd(paste0(year, " ", month, " ", 01))] %>% 
+    .[, `:=`(year = NULL, month = NULL)]
+
+qs_index <- qs_index[sam, on = "date"]
+
+ggplot(qs_index, aes(amplitude, sam)) +
+    geom_point() + geom_smooth(method = "lm") +
+    facet_wrap(~month(date), scales = "free")
+```
+
+## SAM - SPEEDY  
+
+```{r}
+sp <- readRDS("DATA/SPEEDY/speedy.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "control"]
+sp.clim <- readRDS("DATA/SPEEDY/speedy.clim.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "climatological"]
+sp.noice <- readRDS("DATA/SPEEDY/speedy.noice.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "noice"]
+sp.noland <- readRDS("DATA/SPEEDY/speedy.noland.Rds")[, .(lat, lon, lev, date, gh, u, v)][, run := "noland"]
+
+sp <- rbind(sp, sp.clim, sp.noice, sp.noland)
+sp[, run := factor(run, levels = c("control", "climatological", "noice", "noland"))]
+remove(sp.clim, sp.noice, sp.noland)
+# Calculo la onda 3
+qs.sp <- sp[, FitQsWave(gh, 3), by = .(lat, lev, date, run)]
+qs.sp.mean <- qs.sp[, lapply(.SD, mean), by = .(lat, lev, month(date), run)]
+
+levs.sp <- unique(qs.sp.mean$lev)
+levs.index <- c(700, 300, 100)
+```
+
+```{r}
+lats <- unique(qs.sp$lat)
+lats.index <- lats[lats <= -40 & lats >= -65]
+qs_index.sp <- qs.sp[lev %in% levs.index & lat %in% lats.index, 
+                     .(amplitude = mean(amplitude),
+                       r2 = mean(r2),
+                       phase = mean(phase)), 
+                     by = .(date, run)]
+
+label.runs <- c(climatological = "SSTCLIM", 
+                control = "Control",
+                noice = "NOICE", 
+                noland = "NOLAND")
+
+qs_index.sp <- qs_index.sp[sam, on = "date"] %>% 
+    .[!is.na(run)]
+
+## AAO calculada a partir de datos de speedy
+aao <- sp[lev == 700 & lat < -20][
+    , gh.t := Anomaly(gh), 
+    by = .(lon, lat, lev, month(date), run)] 
+
+aao.index <- aao[, EOF(gh.t, lon, lat, date, return = "index"), 
+                 by = .(run)]
+aao.field <- aao[, EOF(gh.t, lon, lat, date, return = "field"), 
+                 by = .(run)]
+```
+
+
+
+```{r}
+ggplot(RepeatLon(aao.field), aes(lon, lat, z = V1)) +
+    stat_fill_contour() +
+    map.SH.3 +
+    scale_fill_divergent(name = "PC1") +
+    scale_x_longitude() +
+    scale_y_continuous(name = "", expand = c(0, 0), limits = c(-90, -20)) +
+    coord_polar() +
+    facet_wrap(~run, labeller = labeller(run = label.runs))
+```
+
+## SAM - SPEEDY
+
+```{r}
+qs_index.sp <- qs_index.sp[aao.index[, date := as.Date(date)], on = c("date", "run")]
+
+qs_index.sp[, month := month(date)]
+g <- ggplot(qs_index.sp, aes(amplitude, V1)) +
+    geom_point() + geom_smooth(method = "lm") +
+    scale_y_continuous(name = "AAO") +
+    scale_x_continuous(name = "Amplitud")
+
+g + facet_wrap_paginate(run~month, scales = "free", ncol = 4, nrow = 3, 
+                        labeller = labeller(month = month.abb,
+                                            run = label.runs), page = 1)
+```
+
+## SAM - SPEEDY
+
+```{r}
+g + facet_wrap_paginate(run~month, scales = "free", ncol = 4, nrow = 3, 
+                        labeller = labeller(month = month.abb,
+                                            run = label.runs), page = 2)
+```
+
+## SAM - SPEEDY
+
+```{r}
+g + facet_wrap_paginate(run~month, scales = "free", ncol = 4, nrow = 3, 
+                        labeller = labeller(month = month.abb,
+                                            run = label.runs), page = 3)
+```
+
+## SAM - SPEEDY
+
+```{r}
+g + facet_wrap_paginate(run~month, scales = "free", ncol = 4, nrow = 3, 
+                        labeller = labeller(month = month.abb,
+                                            run = label.runs), page = 4)
+```
+

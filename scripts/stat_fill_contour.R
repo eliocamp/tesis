@@ -48,7 +48,7 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                }
 
                                breaks.keep <- breaks[!(breaks %in% exclude)]
-                               f <<- data    # debug
+                               # f <<- data    # debug
                                dx <- abs(diff(subset(data, y == data$y[1])$x)[1])
                                dy <- abs(diff(subset(data, x == data$x[1])$y)[1])
 
@@ -65,6 +65,7 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                # Y le doy un valor muy bajo.
                                # extra$z <- range.data$z[1] - 3*binwidth
                                mean.z <- mean(data$z)
+                               mean.level <- breaks.keep[breaks.keep %~% mean.z]
                                extra$z <- mean.z
                                extra$PANEL <- data$PANEL[1]
                                cur.group <- data$group[1]
@@ -83,17 +84,20 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                data3 <<- data2    # debug
                                cont <- CorrectFill(cont, data2, breaks)
 
-                               mean.level <- breaks[breaks %~% mean.z]
 
+                               i <-  which(breaks.keep == mean.level)
+                               correction <- (breaks.keep[i + sign(mean.z - mean.level)] - mean.level)/2
+                               # correction <- 0
                                mean.cont  <- data.frame(
                                    level = mean.level,
                                    x = c(rep(range.data$x[1], 2), rep(range.data$x[2], 2)),
                                    y = c(range.data$y[1], rep(range.data$y[2], 2), range.data$y[1]),
                                    piece = max(cont$piece) + 1,
-                                   int.level = mean.level)
+                                   int.level = mean.level + correction)
 
                                mean.cont$group <- factor(paste(cur.group, sprintf("%03d", mean.cont$piece), sep = "-"))
                                cont <- rbind(cont, mean.cont)
+                               co.2 <<- copy(cont)    # debug
 
                                areas <- cont[, .(area = abs(area(x, y))), by = .(piece)][
                                    , rank := frank(-area, ties.method = "dense")]
@@ -155,16 +159,13 @@ CorrectFill <- function(cont, data, breaks) {
             inside.z <- level
         } else {
             if (p0$x %in% x.data) {
-                tmp <- y.data - p0$y
-                y1 <- min(tmp[tmp>0]) + p0$y
-                y2 <- max(tmp[tmp<0]) + p0$y
-
+                y1 <- Closest(y.data, p0$y, sign = 1)
+                y2 <- Closest(y.data, p0$y, sign = -1)
                 p1 <- data[x == p0$x & y == y1]
                 p2 <- data[x == p0$x & y == y2]
             } else {
-                tmp <- x.data - p0$x
-                x1 <- min(tmp[tmp>0]) + p0$x
-                x2 <- max(tmp[tmp<0]) + p0$x
+                x1 <- Closest(x.data, p0$x, sign = 1)
+                x2 <- Closest(x.data, p0$x, sign = -1)
 
                 p1 <- data[x == x1 & y == p0$y]
                 p2 <- data[x == x2 & y == p0$y]
@@ -188,6 +189,12 @@ CorrectFill <- function(cont, data, breaks) {
 `%~%` <- function(x, target) {
     x <- abs(x - target)
     return(x == suppressWarnings(min(x)))
+}
+
+Closest <- function(x, target, sign = c(1, -1)) {
+    tmp <- (x - target)*sign[1]
+    tmp[tmp<0] <- NA
+    x[which.min(abs(tmp))]
 }
 
 IsInside <- function(xp, yp, x, y) {
