@@ -201,13 +201,17 @@ BuildQsField <- function(x, amplitude, phase, k) {
 }
 
 
-ReadNetCDF <- function(file, vars = NULL) {
+ReadNetCDF <- function(file, vars = NULL, list.vars = F) {
     # Usa la librería netcdf para leer archivos y organiza todo en un data.table
     # Entra:
     #   file: la ruta del archivo
-    #   vars: las variables a leer
+    #   vars: las variables a leer. Si es NULL, lee todas.
+    #   list.vars: leer los datos o sólo listar las variables y dimensiones
     # Sale:
-    #   un elemento de clase data.table con las variables en cada columna
+    #   si list.vars == F, un elemento de clase data.table con las variables
+    #   en cada columna.
+    #   si list.vars == T, una lista con el nombre de las variables y las
+    #   dimensiones.
 
     library(ncdf4)
     library(data.table)
@@ -233,6 +237,11 @@ ReadNetCDF <- function(file, vars = NULL) {
         library(lubridate)
         date.fun <- match.fun(date.unit[1])
         dimensions[["time"]] <- as.character(ymd_hms(date.unit[2]) + date.fun(dimensions[["time"]]))
+    }
+
+    if (list.vars == T) {
+        r <- list(vars = vars, dimensions = dimensions)
+        return(r)
     }
 
     # Leo la primera variable para luego hacer melt y obtener el data.table
