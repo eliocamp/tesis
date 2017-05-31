@@ -201,7 +201,7 @@ BuildQsField <- function(x, amplitude, phase, k) {
 }
 
 
-ReadNetCDF <- function(file, vars) {
+ReadNetCDF <- function(file, vars = NULL) {
     # Usa la librería netcdf para leer archivos y organiza todo en un data.table
     # Entra:
     #   file: la ruta del archivo
@@ -213,6 +213,9 @@ ReadNetCDF <- function(file, vars) {
     library(data.table)
     ncfile <- nc_open(file)
 
+    if (is.null(vars)) {
+        vars <- names(ncfile$var)
+    }
     # Leo las dimensiones
     dims <- names(ncfile$dim)
     ids <- vector()
@@ -224,14 +227,26 @@ ReadNetCDF <- function(file, vars) {
     names(dims) <- ids
 
 
+    if ("time" %in% names(dimensions)) {
+        date.unit <- ncfile$dim$time$units
+        date.unit <- strsplit(date.unit, " since ", fixed = TRUE)[[1]]
+        library(lubridate)
+        date.fun <- match.fun(date.unit[1])
+        dimensions[["time"]] <- as.character(ymd_hms(date.unit[2]) + date.fun(dimensions[["time"]]))
+    }
+
     # Leo la primera variable para luego hacer melt y obtener el data.table
     # al que luego le agrego las otras variables
-    var1 <- ncvar_get(ncfile, vars[1])
+    var1 <- ncvar_get(ncfile, vars[1], collapse_degen = FALSE)
     order <- ncfile$var[[vars[1]]]$dimids
     dimensions <- dimensions[dims[as.character(order)]]
     dimnames(var1) <- dimensions
     nc <- melt(var1, varnames = names(dimensions), value.name = vars[1])
     setDT(nc)
+    if ("time" %in% names(dimensions)) {
+        nc[, date := as.Date(time[1]), by = time]
+        nc[, time := NULL]
+    }
     if (length(vars) > 1) {
         nc[, c(vars[-1]) := lapply(vars[-1], ncvar_get, nc = ncfile)]    # otras variables
     }
@@ -239,6 +254,7 @@ ReadNetCDF <- function(file, vars) {
     nc_close(ncfile)
     return(nc)
 }
+
 
 
 # "Similar"
