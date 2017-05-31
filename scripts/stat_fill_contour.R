@@ -80,8 +80,8 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                setDT(cont)
 
 
-                               co <<- copy(cont)    # debug
-                               data3 <<- data2    # debug
+                               # co <<- copy(cont)    # debug
+                               # data3 <<- data2    # debug
                                cont <- CorrectFill(cont, data2, breaks)
 
 
@@ -97,7 +97,7 @@ StatFillContour <- ggproto("StatFillContour", Stat,
 
                                mean.cont$group <- factor(paste(cur.group, sprintf("%03d", mean.cont$piece), sep = "-"))
                                cont <- rbind(cont, mean.cont)
-                               co.2 <<- copy(cont)    # debug
+                               # co.2 <<- copy(cont)    # debug
 
                                areas <- cont[, .(area = abs(area(x, y))), by = .(piece)][
                                    , rank := frank(-area, ties.method = "dense")]
