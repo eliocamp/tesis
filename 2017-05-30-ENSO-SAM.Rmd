@@ -197,3 +197,13 @@ g + facet_wrap_paginate(run~month, scales = "free", ncol = 4, nrow = 3,
                                             run = label.runs), page = 4)
 ```
 
+## QS1
+
+```{r}
+qs <- sp[, FitQsWave(gh, 1:3), by = .(lat, lev, date, run)]
+dcast(qs[run == "control" & lev == 300], ...~k, value.var = c("amplitude", "phase", "r2")) %>% 
+    ggplot(aes(amplitude_3, amplitude_1)) +
+    geom_point(size = 0.4) +
+    facet_wrap(~month(date))
+```
+

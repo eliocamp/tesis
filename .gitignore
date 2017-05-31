@@ -4,6 +4,7 @@
 .Ruserdata
 Papers
 cache-*
+cache
 *_cache
 *_files
 Burrocracia
@@ -12,3 +13,4 @@ DATA
 Data
 *-figure
 bfg-1.12.15.jar
+backup
