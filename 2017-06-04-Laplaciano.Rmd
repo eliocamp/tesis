@@ -10,7 +10,9 @@ output:
 ```{r setup, include=FALSE}
 library(tufte)
 # invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+knitr::opts_chunk$set(tidy = FALSE, cache = TRUE, 
+                      cache.dir = "cache/laplaciano", 
+                      cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 source("scripts/helperfun.R")
 theme_elio <- theme_minimal() +
@@ -18,6 +20,9 @@ theme_elio <- theme_minimal() +
 theme_set(theme_elio)
 library(ncdf4)
 
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
+map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
+map.world.3 <- geom_map2(map.world.3)
 ```
 
 
@@ -177,6 +182,7 @@ ncep[, gh.lap := gh.dxx + gh.dyy]
 ggplot(ncep[abs(lat) < 75], aes(lon, lat)) +
     stat_fill_contour(aes(z = gh)) +
     geom_contour(aes(color = ..level.., z = gh.lap)) +
+    map.world.3 +
     scale_fill_divergent() +
     scale_color_divergent()
 ```
@@ -189,6 +195,7 @@ ncep[!is.na(gh.lap), gh.inv := InverseLaplacian(gh.lap, lon*pi/180, -lat*pi/180)
 ggplot(ncep[abs(lat) < 80], aes(lon, lat)) +
     stat_fill_contour(aes(z = gh)) +
     geom_contour(aes(y = lat, z = gh.inv, color = ..level..)) +
+    map.world.3 +
     scale_fill_divergent() +
     scale_color_divergent()
 ```
@@ -206,4 +213,122 @@ ggplot(ncep[lat < 0 & lat > -80], aes(lon, lat)) +
     scale_fill_divergent() +
     scale_color_divergent()
 ```
-0
+
+`r newthought("Probemos con SPEEDY")`. Como SPEEDY me tira la función corriente y las compontentes de la velocidad, puedo obtener la función corriente a partir de aplicar el laplaciano inverso a la vorticidad y comparar con la solución correcta. 
+
+Antes de eso, un diagnóstico de que todo esté bien. 
+
+```{r}
+sp <- ReadNetCDF("DATA/SPEEDY/attm.nc",  vars = c("psi", "u", "v"))
+sp <- sp[lev == 300 & date == date[1]]
+
+
+```
+
+```{r, fig.fullwidth = TRUE, fig.cap = "El laplaciano de la función corriente en sombreado y la vorticidad relativa en contornos."}
+
+sp[, v.dx := Derivate(v, lon*pi/180, 1)/(a*cos(lat*pi/180)), by = lat]
+sp[, u.dy := Derivate(u, lat*pi/180, 1, bc = "none")/a, by = lon]
+sp[, zeta := v.dx - u.dy]
+
+sp[, psi.dxx := Derivate(psi, lon*pi/180, 2)/(a*cos(lat*pi/180))^2, by = lat]
+sp[, psi.dyy := Derivate(psi, lat*pi/180, 2, bc = "none")/a^2, by = lon]
+sp[, psi.lap := psi.dxx + psi.dyy]
+
+ggplot(sp, aes(lon, lat)) +
+    stat_fill_contour(aes(z = psi.lap)) + 
+    geom_contour(aes(z = zeta, color = ..level..)) +
+    map.world.3 +
+    scale_fill_divergent() +
+    scale_color_divergent()
+```
+
+Los contornos siguen tan bien al sombreado que prácticamente no se nota la diferencia. Genial. 
+
+```{marginfigure}
+Hay que notar, igual, que hay una enorme diferencia en la magnitud. En particular, me da que $\nabla^2\psi\sim9.8\times10^{-7}\zeta$. Esa constante multiplicativa me indica, me parece, que no estoy haciendo bien las constantes que multiplican a las derivadas.
+
+```
+
+
+```{r, fig.fullwidth = TRUE, fig.cap = "Función corriente original en sombreado, función corriente a partir de invertir el laplaciano en contornos."}
+sp[!is.na(zeta), psi.inv := InverseLaplacian(zeta, lon*pi/180, lat*pi/180)]
+
+ggplot(sp, aes(lon, lat)) +
+    stat_fill_contour(aes(z = psi)) +
+    geom_contour(aes(z = psi.inv, color = ..level..)) +
+    map.world.3 +
+    scale_fill_divergent() +
+    scale_color_divergent()
+```
+
+De nuevo, hay algunas similitudes generales, pero parecería ser una porquería. Aunque veamos... 
+
+`r newthought("Calculo U")` a partir de esta función corriente.
+
+```{r, fig.fullwidth = TRUE, fig.cap = "U derivada a partir de la función corriente real en sombreado, derivada a partir de la función corriente calculada, en contornos."}
+sp[, u.inv := -Derivate(psi.inv, lat*pi/180), by = lon]
+sp[, u.psi := -Derivate(psi, lat*pi/180), by = lon]
+
+ggplot(sp[abs(lat) < 85], aes(lon, lat)) +
+    stat_fill_contour(aes(z = u.psi)) +
+    geom_contour(aes(z = u.inv, color = ..level..)) +
+    map.world.3 +
+    scale_fill_divergent() + 
+    scale_color_divergent()
+```
+
+
+Epa... no está taaaan mal. Dentro de todo^[y, de nuevo, haciendo la vista gorda a que las magnitudes no tienen nada que ver]da algo bastante correcto. 
+
+`r newthought("Un problema")` que tiene el método de Fourier es que mi campo no es periódico en dirección "y". Voy a probar qué pasa si lo hago periódico reflejando el campo. 
+
+```{r}
+InverseLaplacian <- function(v, x, y) {
+    a <- 6371000
+    field <- data.table(x, y, v)
+    dy <- unique(y)[2] - unique(y)[1]
+    field.mirror <- copy(field)
+    field.mirror[, y := -y + 2*max(y) + abs(dy)]
+    field <- rbind(field, field.mirror)
+        
+    field[, c("k", "l", "v.hat") := fft2d(v, x, y)]
+    # field[, lp := l*2*pi/a]
+    # field[, kp := k*2*pi/(a*cos(y*pi/180))]
+
+    field[, v.hat := -v.hat/(k^2 + l^2)]
+    # field[, v.hat := -v.hat/(kp^2 + lp^2)]
+    
+    # El modo de k = l = 0 me queda infinito. Como no es demasiado importante (es una constante),
+    # lo igualo a 0.
+    field[, v.hat := c(0, v.hat[2:.N])]   
+
+    field[, c("k", "l", "v.inv") := fft2d(v.hat, k, l, inverse = TRUE)]
+    return(Re(field$v.inv))
+}
+```
+
+```{r, fig.fullwitdh = TRUE, fig.cap = "Función corriente original en sombreado, función corriente a partir de invertir el laplaciano en contornos."}
+sp[!is.na(zeta), psi.inv := InverseLaplacian(zeta, lon*pi/180, lat*pi/180)]
+
+ggplot(sp, aes(lon, lat)) +
+    stat_fill_contour(aes(z = psi)) +
+    geom_contour(aes(z = psi.inv, color = ..level..)) +
+    map.world.3 +
+    scale_fill_divergent() +
+    scale_color_divergent()
+```
+
+Parece mejor. 
+
+```{r, fig.fullwidth = TRUE, fig.cap = "U derivada a partir de la función corriente real en sombreado, derivada a partir de la función corriente calculada, en contornos."}
+sp[, u.inv := -Derivate(psi.inv, lat*pi/180), by = lon]
+
+ggplot(sp[abs(lat) < 85], aes(lon, lat)) +
+    stat_fill_contour(aes(z = u.psi)) +
+    geom_contour(aes(z = u.inv, color = ..level..)) +
+    map.world.3 +
+    scale_fill_divergent() + 
+    scale_color_divergent()
+```
+
