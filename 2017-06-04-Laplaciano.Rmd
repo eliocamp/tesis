@@ -1,0 +1,209 @@
+---
+title: "Invirtiendo el Laplaciano"
+subtitle: "En R"
+author: "Elio Campitelli"
+date: "`r Sys.Date()`"
+output:
+    tufte::tufte_html: default
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+source("scripts/helperfun.R")
+theme_elio <- theme_minimal() +
+    theme(legend.position = "bottom")
+theme_set(theme_elio)
+library(ncdf4)
+
+```
+
+
+
+`r newthought("Primero hay que")` poder hacer la transformada en 2D. Esta función toma un campo (en forma de vector) y hacer la transformada de Fourier o su inversa. Devuelve una lista con las componentes de Fourier para cada combinación de números de onda en x e y. 
+
+```{r}
+fft2d <- function(v, x, y, inverse = FALSE) {
+    field <- as.matrix(reshape2::dcast(data.table(v, x, y),
+                             x ~ y, value.var = "v"))
+
+    field.fft <- fft(field[, -1], inverse = inverse)
+    dimnames(field.fft) <- list(
+        k = 1:nrow(field.fft) - 1,
+        l = 1:ncol(field.fft) - 1)
+
+    field.fft <- setDT(melt(field.fft, value.name = "f"))
+    return(with(field.fft, list(k, l, f)))
+}
+```
+
+La probamos con una función simple:
+
+```{r, fig.fullwidth = TRUE}
+test.fun <- function(x, y) {
+    sin(x*2) + cos(y)
+}
+
+test.fun.lap <- function(x, y) {
+    -4*sin(x*2) - cos(y)
+}
+
+
+test <- setDT(expand.grid(
+    x = seq(0, 2*pi, length.out = 40),
+    y = seq(0, 2*pi, length.out = 40)
+))
+test[, z := test.fun(x, y)]
+
+ggplot(test, aes(x, y)) + 
+    geom_contour(aes(z = z, color = ..level..)) +
+    scale_color_divergent()
+```
+
+```{r, fig.fullwidth = TRUE}
+test.fft <- test[, setNames(fft2d(z, x, y),
+                            c("k", "l", "z.hat"))]
+
+ggplot(test.fft, aes(k, l)) +
+    geom_tile(aes(fill = Mod(z.hat))) +
+    scale_fill_gradient(low = "white", high = "red")
+```
+
+
+Sale. Las únicas componetnes con amplitud no nula son `k = 4` y `l = 1` y sus correspondientes armónicos. La amplitud es muy alta porque no está normalizada, pero no importa por ahora. 
+
+Vamos a ver que podemos obtener la función original (a menos de algunas constantes que dan vuelta por ahí) invirtiendo la transformada:
+
+```{r, fig.fullwidth = TRUE}
+test[, z.inverse := Re(test.fft[, setNames(fft2d(z.hat, k, l, inverse = TRUE),
+                            c("x", "y", "z"))]$z)]
+
+ggplot(test, aes(x, y)) +
+    geom_contour(aes(z = z)) +
+    geom_contour(aes(z = z.inverse), color = "red")
+```
+
+Esta función anda bien, así que se puede usar para invertir el laplaciano:
+
+`r newthought("Esta función")` toma un campo (de nuevo, en forma de vector) y le aplica la inversa del laplaciano a partir de la transformada de fourier. 
+
+```{r}
+InverseLaplacian <- function(v, x, y) {
+    a <- 6371000
+    field <- data.table(x, y, v)
+
+    field[, c("k", "l", "v.hat") := fft2d(v, x, y)]
+    # field[, lp := l*2*pi/a]
+    # field[, kp := k*2*pi/(a*cos(y*pi/180))]
+
+    field[, v.hat := -v.hat/(k^2 + l^2)]
+    # field[, v.hat := -v.hat/(kp^2 + lp^2)]
+    
+    # El modo de k = l = 0 me queda infinito. Como no es demasiado importante (es una constante),
+    # lo igualo a 0.
+    field[, v.hat := c(0, v.hat[2:.N])]   
+
+    field[, c("k", "l", "v.inv") := fft2d(v.hat, k, l, inverse = TRUE)]
+    return(Re(field$v.inv))
+}
+```
+
+A partir de la misma función de prueba, voy a calcular su laplaciano y luego invertirlo. La función es muy simple y el laplaciano es el -1 por la función. 
+
+```{r, fig.fullwidth = TRUE}
+test[, z.lap := test.fun.lap(x, y)]
+test[, z.inv := InverseLaplacian(z.lap, x, y)]
+
+ggplot(test, aes(x, y)) +
+    geom_contour(aes(z = z)) +
+    geom_contour(aes(z = z.inv), color = "red")
+```
+
+¡Éxito!. A menos de una constante aditiva y una multiplicativa, obtengo el campo original.
+
+`r newthought("Vamos a aplicarlo a un")` campo más realista. La altura geopotencial según NCEP.
+
+```{r}
+ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean.nc", vars = "hgt") 
+setnames(ncep, c("level", "hgt"), c("lev", "gh"))
+ncep <- ncep[lev == 300 & date == date[1]]
+
+ncep[, gh := gh - mean(gh), by = lat]
+```
+
+Para calcular el laplaciano, voy a tener que derivar:
+
+
+```{r}
+Derivate <- function(x, y, order = 1, bc = "cyclic") {
+    # Calcula derivada centrada 1da o 2da
+    # Entra:
+    #  x: la variable a derivar
+    #  y: la variable que deriva
+    #  order: orden de la derivada (1 o 2)
+    #  bc: condiciones de borde (por ahora, sólo impliementadas cíclicas o nada)
+    # Sale:
+    #  un vector de la misma longitud que x e y con la derivada
+    # ¡Asume que la grilla es uniforme!
+    library(data.table)
+    N <- length(x)
+
+    d <- y[2] - y[1]
+
+    if (order == 1) {
+        dxdy <- (x[c(2:N, 1)] - x[c(N, 1:(N-1))])/(2*d)
+
+    } else if (order == 2) {
+        dxdy <- (x[c(2:N, 1)] + x[c(N, 1:(N-1))] - 2*x)/d^2
+    }
+    if (bc != "cyclic") {
+        dxdy[c(1, N)] <- NA
+    }
+
+    return(dxdy)
+}
+```
+
+Listo, ahora a partir del laplaciano del geopotencial:
+
+```{r, fig.cap="Geopotencial en sombreado, laplaciano del geopotencial en contornos.", fig.fullwidth = TRUE}
+a <- 6731000
+ncep[, gh.dxx := Derivate(gh, lon*pi/180, 2)/(a*cos(lat*pi/180))^2, by = lat]
+ncep[, gh.dyy := Derivate(gh, lat*pi/180, 2, bc = "none")/a^2, by = lon]
+ncep[, gh.lap := gh.dxx + gh.dyy]
+
+ggplot(ncep[abs(lat) < 75], aes(lon, lat)) +
+    stat_fill_contour(aes(z = gh)) +
+    geom_contour(aes(color = ..level.., z = gh.lap)) +
+    scale_fill_divergent() +
+    scale_color_divergent()
+```
+
+Puedo intentar obtener el geopotencial original:
+
+```{r, fig.cap="Geopotencial en sombreado, laplaciano invertido en contornos", fig.fullwidth = TRUE}
+ncep[!is.na(gh.lap), gh.inv := InverseLaplacian(gh.lap, lon*pi/180, -lat*pi/180)]
+
+ggplot(ncep[abs(lat) < 80], aes(lon, lat)) +
+    stat_fill_contour(aes(z = gh)) +
+    geom_contour(aes(y = lat, z = gh.inv, color = ..level..)) +
+    scale_fill_divergent() +
+    scale_color_divergent()
+```
+
+Más o menos. Los centros coinciden un poco, pero la verdad es que es un porquería. 
+
+Además, hay un problema adicional. Si no uso los datos globales para calcular invertir el laplaciano, el restulado es distinto:
+
+```{r, fig.fullwidth = TRUE, fig.cap = "Laplaciano invertido usando todo el globo en sombreado, laplaciano invertido usando sólo el hemisferio suro en contornos."}
+ncep[!is.na(gh.lap) & lat < 0, gh.inv.SH := InverseLaplacian(gh.lap, lon*pi/180, -lat*pi/180)]
+
+ggplot(ncep[lat < 0 & lat > -80], aes(lon, lat)) +
+    stat_fill_contour(aes(z = gh.inv)) +
+    geom_contour(aes(y = lat, z = gh.inv.SH, color = ..level..)) +
+    scale_fill_divergent() +
+    scale_color_divergent()
+```
+0
