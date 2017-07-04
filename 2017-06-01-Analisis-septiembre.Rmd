@@ -145,7 +145,6 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 
 ```{r}
 ncep <- readRDS("DATA/NCEP/ncep.september.Rds")
-
 # La PP queda en otro data.table porque tiene otra grilla (más fina)
 ncep.pp <- ReadNetCDF("DATA/NCEP/pprate.mon.mean.nc")[month(date) == 9][
     , year := year(date[1]), by = date][
@@ -161,7 +160,7 @@ ncep.pp <- ReadNetCDF("DATA/NCEP/pprate.mon.mean.nc")[month(date) == 9][
 levels <- unique(ncep$lev)
 dims <- c("lon", "lat", "lev", "year")
 vars <- colnames(ncep)[!(colnames(ncep) %in% dims)]
-ncep[, lev := factor(lev, levels = levels[order(-levels)])]
+# ncep[, lev := factor(lev, levels = levels[order(-levels)])]
 ncep.mean <- ncep[, lapply(.SD, FUN = mean, na.rm = T), by = .(lon, lat, lev), .SDcols = -c("year")][
     , paste0(vars, ".z") := lapply(.SD, FUN = Anomaly), 
     by = .(lat, lev), .SDcols = vars]
@@ -192,12 +191,24 @@ La anomalía zonal de temperatura a 850 hPa tiene máximos de más de $\pm$10 en
 ```{r}
 ggplot(RepeatLon(ncep.mean[lev == 850]), aes(lon, lat)) +
     stat_fill_contour(aes(z = air.z), breaks = seq(-10, 10, by = 2)) +
+    geom_contour(aes(z = v, color = ..level..)) +
     map.SH.3 +
     scale_x_longitude(limits = c(0, 360)) +
     scale_y_continuous(limits = c(-90, 0), name = "") +
     scale_fill_divergent(name = "Anomalía zonal de temperatura") +
+    scale_color_divergent(name = "Viento meridional") +
     coord_polar() +
     facet_wrap(~lev) 
+```
+
+
+```{r}
+ggplot(RepeatLon(ncep.mean[lev == 850 & lat < 0]), aes(lon, lat)) +
+    stat_fill_contour(aes(z = vt.z)) +
+    map.SH.3 +
+    scale_fill_divergent(name = "v't'") + 
+    scale_y_continuous(limits = c(-90, 0)) +
+    coord_polar() 
 ```
 
 En niveles más altos 
@@ -214,18 +225,9 @@ ggplot(RepeatLon(ncep.mean[lev %in% c(300, 500)]), aes(lon, lat)) +
 ```
 
 
-```{r}
-ggplot(RepeatLon(ncep.mean[lev == 850 & lat < 0]), aes(lon, lat)) +
-    stat_fill_contour(aes(z = vt.z)) +
-    map.SH.3 +
-    scale_fill_divergent() + 
-    scale_y_continuous(limits = c(-90, 0)) +
-    coord_polar() 
-```
-
 
 ```{r}
-ggplot(RepeatLon(ncep.mean[lev == 300 & lat < 0 & lat > -87]), aes(lon, lat)) +
+ggplot(RepeatLon(ncep.mean[lev == 300 & lat < 0]), aes(lon, lat)) +
     stat_fill_contour(aes(z = eta.z)) +
     map.SH.3 +
     scale_fill_divergent() +
@@ -236,7 +238,23 @@ ggplot(RepeatLon(ncep.mean[lev == 300 & lat < 0 & lat > -87]), aes(lon, lat)) +
 
 
 
-```{r}
 
+## Onda 3
+
+```{r}
+# En +-90, esto no funciona.
+qs <- ncep[, FitQsWave(gh, n = 1:3), by = .(lat, lev, year)][!is.na(r2)]
+qs.mean <- qs[, lapply(.SD, mean), by = .(lat, lev, k)][, year := NULL]
+```
+
+```{r}
+ggplot(qs.mean[lat < 0], aes(lat, lev)) +
+    stat_fill_contour(aes(z = amplitude)) +
+    geom_contour(aes(z = r2, color = ..level..)) +
+    scale_y_continuous(trans = "reverselog") +
+    scale_x_continuous(trans = "reverse") + 
+    scale_fill_viridis() +
+    scale_color_viridis() +
+    facet_wrap(~k)
 ```
 
