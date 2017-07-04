@@ -4,10 +4,10 @@ subtitle: ""
 author: "Elio Campitelli"
 date: "`r Sys.Date()`"
 output:
-tufte::tufte_html: default
+    tufte::tufte_html: default
 link-citations: yes
 ---
-s
+
 ```{r setup, include=FALSE}
 library(tufte)
 # invalidate cache when the tufte version changes
@@ -43,52 +43,52 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 
 ## Climatología.
 
+
 ```{r}
 # # Valores diarios
 # # Temperatura diaria en 850
 # ncep.d <- ReadNetCDF("DATA/NCEP/air.daily.mean.nc")
-# ncep.d <- ncep.d[, month := month(date[1]), by = date] %>% 
-#     .[month == 9] %>% 
+# ncep.d <- ncep.d[, month := month(date[1]), by = date] %>%
+#     .[month == 9] %>%
 #     .[, month := NULL]
 # 
 # # Viento meridional diario en 850
 # ncep_d.v850 <- ReadNetCDF("DATA/NCEP/vwnd850.daily.mean.nc")
-# ncep_d.v850 <- ncep_d.v850[, month := month(date[1]), by = date] %>% 
-#     .[month == 9] %>% 
-#     .[, month := NULL] %>% 
+# ncep_d.v850 <- ncep_d.v850[, month := month(date[1]), by = date] %>%
+#     .[month == 9] %>%
+#     .[, month := NULL] %>%
 #     .[year(date) < 2016]
 # 
 # joinvars = c("lon", "lat", "level", "date")
 # ncep.d <- ncep.d[ncep_d.v850, on = joinvars]
 # remove(ncep_d.v850)
 # 
-# # v't' 
-# ncep.vt <- ncep.d[, c("t.t", "v.t") := .(Anomaly(air), Anomaly(vwnd)), by = .(lon, lat, level)][
-#     , .(vt = mean(t.t*v.t)), by = .(lon, lat, level, year(date))]
+# # v't'
+# ncep.vt <- ncep.d[, .(vt = cov(air, vwnd)), by = .(lon, lat, level, year(date))]
 # 
-# remove(ncep.d, ncep_d.v850)
+# remove(ncep.d)
 # 
 # # Viento zonal diario en 300
 # ncep_d.u <- ReadNetCDF("DATA/NCEP/uwnd300.daily.mean.nc")
-# ncep_d.u <- ncep_d.u[, month := month(date[1]), by = date] %>% 
-#     .[month == 9] %>% 
+# ncep_d.u <- ncep_d.u[, month := month(date[1]), by = date] %>%
+#     .[month == 9] %>%
 #     .[, month := NULL]
 # 
 # # Viento meridional diario en 300
 # ncep_d.v <- ReadNetCDF("DATA/NCEP/vwnd300.daily.mean.nc")
-# ncep_d.v <- ncep_d.v[, month := month(date[1]), by = date] %>% 
-#     .[month == 9] %>% 
+# ncep_d.v <- ncep_d.v[, month := month(date[1]), by = date] %>%
+#     .[month == 9] %>%
 #     .[, month := NULL]
 # 
 # ncep_d.u[ , vwnd := ncep_d.v$vwnd]
 # 
-# # v'u' 
-# ncep.vu <- ncep_d.u[, c("u.t", "v.t") := .(Anomaly(uwnd), Anomaly(vwnd)), by = .(lon, lat, level)][
-#     , .(vu = mean(u.t*v.t)), by = .(lon, lat, level, year(date))]
+# # v'u'
+# # ncep.vu <- ncep_d.u[, c("u.t", "v.t") := .(Anomaly(uwnd), Anomaly(vwnd)), by = .(lon, lat, level)][
+# #     , .(vu = mean(u.t*v.t)), by = .(lon, lat, level, year(date))]
+# ncep.vu <- ncep_d.u[, .(vu = cov(uwnd, vwnd)), by = .(lon, lat, level, year(date))]
 # 
 # remove(ncep_d.u, ncep_d.v)
 # 
-# setnames(ncep.d, c("level", "vwnd", "uwnd", "air"), c("lev", "v", "u", "t"))
 # 
 # # Valores mensuales
 # low <- as.Date("1984-12-31")
@@ -96,6 +96,11 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 # # Geopotencial mensual en todos los niveles
 # ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean.nc")[date > low & date < high]
 # ncep <- ncep[month(date) == 9]
+# 
+# # Temperatura mensual en todos los niveles
+# ncep.air <- ReadNetCDF("DATA/NCEP/air.mon.mean.nc")[date > low & date < high]
+# ncep.air <- ncep.air[month(date) == 9]
+# ncep <- ncep.air[ncep, on = joinvars]
 # 
 # # Presión a nivel del mar
 # ncep.slp <- ReadNetCDF("DATA/NCEP/slp.mon.mean.nc")[month(date) == 9][, level := 1000]
@@ -107,13 +112,13 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 # remove(ncep.olr)
 # 
 # # Vientos
-# ncep.u <- ReadNetCDF("DATA/NCEP/uwnd.mon.mean.nc") 
+# ncep.u <- ReadNetCDF("DATA/NCEP/uwnd.mon.mean.nc")
 # ncep.u <- ncep.u[, month := month(date[1]), by = date][
 #                  month == 9][
 #                  , month := NULL][
 #                  year(date) > 1984 & year(date) < 2016]
 # 
-# ncep.v <- ReadNetCDF("DATA/NCEP/vwnd.mon.mean.nc") 
+# ncep.v <- ReadNetCDF("DATA/NCEP/vwnd.mon.mean.nc")
 # ncep.v <- ncep.v[, month := month(date[1]), by = date][
 #                  month == 9][
 #                  , month := NULL][
@@ -128,20 +133,24 @@ interp.levs <- exp(seq(log(925), log(30), length.out = 40))
 # setnames(ncep, c("level", "hgt"), c("lev", "gh"))
 # a <- 6371000
 # omega <- 2*pi/(24*3600)
-# ncep[, v.dx := Derivate(v, lon)/(a*cos(lat*pi/180)), by = .(lat, lev, year)][
-#      , u.dy := Derivate(u, lat, bc = "none")/a, by = .(lon, lev, year)][
+# ncep[, v.dx := Derivate(v, lon*pi/180)/(a*cos(lat*pi/180)), by = .(lat, lev, year)][
+#      , u.dy := Derivate(u, lat*pi/180, bc = "none")/a, by = .(lon, lev, year)][
 #      , zeta := v.dx - u.dy][
 #      , eta  := 2*omega*sin(lat*pi/180) + zeta][
 #      , c("v.dx", "u.dy") := NULL]
 # 
 # saveRDS(ncep, "DATA/NCEP/ncep.september.Rds")
 # remove(ncep.slp, ncep.olr, ncep.u, ncep.v, ncep.t, ncep.vu, ncep.vt)
+```
+
+```{r}
 ncep <- readRDS("DATA/NCEP/ncep.september.Rds")
 
 # La PP queda en otro data.table porque tiene otra grilla (más fina)
 ncep.pp <- ReadNetCDF("DATA/NCEP/pprate.mon.mean.nc")[month(date) == 9][
     , year := year(date[1]), by = date][
-        , date := NULL]
+    , date := NULL] %>% 
+    setnames("prate", "pp")
 ```
 
 # Campos medios
@@ -156,9 +165,10 @@ ncep[, lev := factor(lev, levels = levels[order(-levels)])]
 ncep.mean <- ncep[, lapply(.SD, FUN = mean, na.rm = T), by = .(lon, lat, lev), .SDcols = -c("year")][
     , paste0(vars, ".z") := lapply(.SD, FUN = Anomaly), 
     by = .(lat, lev), .SDcols = vars]
+ncep.pp.mean <- ncep.pp[, .(pp = mean(pp)), by = .(lon, lat)]
 ```
 
-```{r}
+```{r, fig.fullwidth = TRUE, fig.cap = ""}
 levels <- c(850, 500, 300)
 arrow.lons <- unique(ncep$lon)
 ggplot(RepeatLon(ncep.mean[lev %in% levels & lat < 0]), aes(lon, lat, z = gh.z)) +
@@ -175,12 +185,40 @@ ggplot(RepeatLon(ncep.mean[lev %in% levels & lat < 0]), aes(lon, lat, z = gh.z))
     coord_polar() 
 ```
 
+La altura geopotencial tiene un patrón principalmente de onda 1 con altas presiones al sur de Sudamérica y bajas presiones al sur del océano Índico. Nada nuevo por acá. 
+
+La anomalía zonal de temperatura a 850 hPa tiene máximos de más de $\pm$10 en el continente antártico y anomalías cálidas en los tres continentes y negativas en los océanos indicando que el suelo se encuentra más cálido que el océano.  
+
+```{r}
+ggplot(RepeatLon(ncep.mean[lev == 850]), aes(lon, lat)) +
+    stat_fill_contour(aes(z = air.z), breaks = seq(-10, 10, by = 2)) +
+    map.SH.3 +
+    scale_x_longitude(limits = c(0, 360)) +
+    scale_y_continuous(limits = c(-90, 0), name = "") +
+    scale_fill_divergent(name = "Anomalía zonal de temperatura") +
+    coord_polar() +
+    facet_wrap(~lev) 
+```
+
+En niveles más altos 
+
+```{r}
+ggplot(RepeatLon(ncep.mean[lev %in% c(300, 500)]), aes(lon, lat)) +
+    stat_fill_contour(aes(z = air.z)) +
+    map.SH.3 +
+    scale_x_longitude(limits = c(0, 360)) +
+    scale_y_continuous(limits = c(-90, 0), name = "") +
+    scale_fill_divergent(name = "Anomalía zonal de temperatura") +
+    coord_polar() +
+    facet_wrap(~lev)
+```
+
 
 ```{r}
 ggplot(RepeatLon(ncep.mean[lev == 850 & lat < 0]), aes(lon, lat)) +
     stat_fill_contour(aes(z = vt.z)) +
     map.SH.3 +
-    scale_fill_divergent() +
+    scale_fill_divergent() + 
     scale_y_continuous(limits = c(-90, 0)) +
     coord_polar() 
 ```

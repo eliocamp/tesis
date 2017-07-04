@@ -43,15 +43,14 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                    breaks <- fullseq(range(data$z), binwidth)
                                }
 
-                               if (is.null(binwidth)) {
-                                   binwidth <- diff(range(data$z)) / length(breaks)
-                               }
+                               # if (is.null(binwidth)) {
+                               #     binwidth <- diff(range(data$z)) / length(breaks)
+                               # }
 
                                breaks.keep <- breaks[!(breaks %in% exclude)]
-                               # f <<- data    # debug
+                               f <<- data    # debug
                                dx <- abs(diff(subset(data, y == data$y[1])$x)[1])
                                dy <- abs(diff(subset(data, x == data$x[1])$y)[1])
-
 
                                range.data <- as.data.frame(sapply(data[c("x", "y", "z")], range))
 
@@ -67,21 +66,20 @@ StatFillContour <- ggproto("StatFillContour", Stat,
                                mean.z <- mean(data$z)
                                mean.level <- breaks.keep[breaks.keep %~% mean.z]
                                extra$z <- mean.z
-                               extra$PANEL <- data$PANEL[1]
+                               # extra$PANEL <- data$PANEL[1]
                                cur.group <- data$group[1]
-                               extra$group <- data$group[1]
+                               # extra$group <- data$group[1]
 
-                               data2 <- rbind(data, extra)
+                               # dbug.data <<- copy(data)
+                               # dbug.extra <<- copy(extra)
+                               data2 <- rbind(data[c("x", "y", "z")], extra)
 
                                cont <- ggplot2:::contour_lines(data2, breaks.keep, complete = complete)
 
-
-
                                setDT(cont)
 
-
-                               # co <<- copy(cont)    # debug
-                               # data3 <<- data2    # debug
+                               co <<- copy(cont)    # debug
+                               data3 <<- data2    # debug
                                cont <- CorrectFill(cont, data2, breaks)
 
 
@@ -97,7 +95,7 @@ StatFillContour <- ggproto("StatFillContour", Stat,
 
                                mean.cont$group <- factor(paste(cur.group, sprintf("%03d", mean.cont$piece), sep = "-"))
                                cont <- rbind(cont, mean.cont)
-                               # co.2 <<- copy(cont)    # debug
+                               co.2 <<- copy(cont)    # debug
 
                                areas <- cont[, .(area = abs(area(x, y))), by = .(piece)][
                                    , rank := frank(-area, ties.method = "dense")]
@@ -171,14 +169,25 @@ CorrectFill <- function(cont, data, breaks) {
                 p2 <- data[x == x2 & y == p0$y]
             }
 
-            if (IsInside(p1$x, p1$y, cur.piece$x, cur.piece$y)) {
-                inside.z <- p1$z
-            } else {
-                inside.z <- p2$z
-            }
+            points <- rbind(p1, p2)
+            # Get one point whose value is NOT equal to the contour level.
+            points[, equal := (z == cur.piece$level[1])]
+            points <- points[equal == FALSE][1]
+
+            points[, inside := IsInside(x, y, cur.piece$x, cur.piece$y)]
+
+            # if (IsInside(p1$x, p1$y, cur.piece$x, cur.piece$y)) {
+            #     inside.z <- p1$z
+            # } else {
+            #     inside.z <- p2$z
+            # }
         }
 
-        correction <- (levels[i + sign(inside.z - level)] - level)/2
+        correction <- (levels[i + sign(points$z - level)] - level)/2
+
+        # Change sign of correction if point is outside.
+        corr.sign <- as.numeric(points$inside)*2 - 1
+        correction <- correction*corr.sign
 
         cont[piece == p, int.level := level + correction]
     }

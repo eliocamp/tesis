@@ -10,8 +10,7 @@ output:
 ```{r setup, include=FALSE}
 library(tufte)
 # invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, cache = TRUE, 
-                      cache.dir = "cache/laplaciano", 
+knitr::opts_chunk$set(tidy = FALSE, cache = TRUE,
                       cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 source("scripts/helperfun.R")
@@ -308,7 +307,7 @@ InverseLaplacian <- function(v, x, y) {
 }
 ```
 
-```{r, fig.fullwitdh = TRUE, fig.cap = "Función corriente original en sombreado, función corriente a partir de invertir el laplaciano en contornos."}
+```{r, fig.fullwidth = TRUE, fig.cap = "Función corriente original en sombreado, función corriente a partir de invertir el laplaciano en contornos."}
 sp[!is.na(zeta), psi.inv := InverseLaplacian(zeta, lon*pi/180, lat*pi/180)]
 
 ggplot(sp, aes(lon, lat)) +
