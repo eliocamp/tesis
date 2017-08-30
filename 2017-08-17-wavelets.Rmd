@@ -1,0 +1,226 @@
+---
+title: "Wavelets"
+author: "Elio Campitelli"
+output:
+    ioslides_presentation:
+        fig_height: 5.5
+        fig_width: 10.5
+        smaller: yes
+        widescreen: yes
+        cache: yes
+---
+
+```{r setup, echo = F, message = FALSE, warning = FALSE}
+library(WaveletComp)
+library(data.table)
+library(ggplot2)
+library(magrittr)
+library(meteoR)
+knitr::opts_chunk$set(
+    cache = T, 
+    echo = F,
+    warning = F,
+    cache.path = "cache/wavelet/")
+theme_elio <- theme_minimal() +
+    theme(legend.position = "bottom")
+theme_set(theme_elio)
+source("scripts/helperfun.R")
+
+map.world.3 <- BuildMap(res = 3, smooth = 3, pm = 180)
+map.SH.3 <- geom_map2(map.world.3[lat %b% c(-90, 20)])
+```
+
+# Análisis con Wavelets | Onda onda, buena onda
+
+----
+
+Este es un testeo de usar Wavelets para detectar el lugar de actividad de la onda 3. Primero, vamos a probar localmente con la transforamción de wavelets en un sólo círculo de latitud para un día determinado. 
+
+----
+
+Por ejemplo, usando datos diarios de NCEP, esta es la altura geopotencial en 300 hPa en septiembre de 2008.
+
+```{r}
+ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean_sub.nc")
+setnames(ncep, c("hgt", "level"), c("gh", "lev"))
+
+ncep[, gh.z := Anomaly(gh), by = .(lat, lev, date)]
+
+ggplot(RepeatLon(ncep[lev == 300 & date == as.Date("2008-09-01")]), 
+       aes(lon, lat)) +
+    stat_contour_fill(aes(z = gh.z)) +
+    map.SH.3 +
+    geom_hline(yintercept = -60, linetype = 3) +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_x_longitude() +
+    scale_fill_divergent(name = "Anomalía zonal de altura geopotencial") +
+    coord_polar()
+```
+
+----
+
+Siguiendo el círculo de latitud en -60° se tiene:
+
+```{r}
+test <- ncep[lev == 300 & date == as.Date("2008-09-01") & lat %~% -60]
+ggplot(test, aes(lon, gh.z)) +
+    geom_line() + 
+    scale_x_longitude()
+```
+
+El patrón de onda 3 es claro, pero también se ve que su intensidad no es constante con la longitud. Un análisis de fouier pierde esta información, la idea de usar wavelets es preservarla. La amplitud de cada wavelet en cada longitud es
+
+----
+
+```{r}
+test.1 <- copy(test)
+test.2 <- copy(test)
+test.1[, lon := lon - 360]
+test.2[, lon := lon + 360]
+test.a <- rbind(test.1, test, test.2)
+
+dlon <- diff(ncep$lon[1:2])
+w <- WaveletTransform(test.a$gh.z, dt = 1, upperPeriod = 360/dlon)
+
+
+ampl <- w$Ampl
+dimnames(ampl) <- list(period = w$Period, lon = test.a$lon)
+ampl <- as.data.table(melt(ampl))
+ampl[, period := period*dlon]
+ampl <- ampl[Between(lon, c(0, 360), include = c(T, F))]
+
+ggplot(ampl, aes(lon, 360/period)) +
+    # geom_tile(aes(fill = value)) +
+    stat_contour_fill(aes(z = value)) +
+    # geom_contour(aes(z = pval), breaks = c(0.001), color = "black") +
+    scale_y_continuous(name = "Número de onda zonal", breaks = 1:10, limits = c(NA, 5), 
+                       expand = c(0, 0)) +
+    scale_x_longitude() +
+    geom_hline(yintercept = 3, linetype = 3, alpha = 0.4) +
+    viridis::scale_fill_viridis(name = "Amplitud")
+
+```
+
+<div class = "notes"> 
+La línea punteada marca la onda 3 que claramente es dominante en todo el círculo de latitud, pero con una mayor amplitud en ~90°O. 
+</div> 
+
+
+```{r}
+PeriodicWavelet <- function(x, k) {
+    period <- length(x)/k
+    x1 <- rep(x, 3)
+    keep <- (length(x)+1):(2*length(x))
+    res <- list()
+    for (p in seq_along(period)) {
+        w <- WaveletComp::WaveletTransform(x1, dt = 1, upperPeriod = period[p], 
+                                           lowerPeriod = period[p])
+        res[[paste0("k", ".", k[p])]] <- w$Ampl[keep]
+        
+    }
+    return(res)
+}
+
+ncep[, k.3 := PeriodicWavelet(gh.z, 3), by = .(lat, lev, date)]
+
+```
+
+## Comparando dos meses:
+
+```{r}
+ggplot(RepeatLon(ncep[date %in% as.Date(c("2008-09-01", "2011-09-01")) & lev == 300]), 
+       aes(lon, lat)) +
+    stat_contour_fill(aes(z = k.3), binwidth = 0.1) +
+    geom_contour(aes(z = gh.z, linetype = factor(-sign(..level..), levels = c(1, -1))), 
+                 binwidth = 50, color = "black", size = 0.3) + 
+    geom_hline(yintercept = -60, linetype = 3) +
+    map.SH.3 +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_x_longitude() +
+    scale_fill_viridis_c(name = "Amplitud de onda 3") +
+    scale_linetype_discrete(name = "Anomalía zonal de geopotencial", drop = T) +
+    coord_polar() +
+    facet_wrap(~date)
+```
+
+## Amplitud media para cada mes:
+
+```{r}
+k3.mean <- ncep[, .(k.3 = mean(k.3)), by = .(lat, lon, lev, month(date))]
+
+ggplot(RepeatLon(k3.mean[lev == 300]), aes(lon, lat)) +
+    stat_contour_fill(aes(z = k.3), binwidth = 0.025) +
+    map.SH.3 +
+    geom_hline(yintercept = c(-55, -35), linetype = 3) +
+    # geom_hline(yintercept = -45) +
+    scale_x_longitude() +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_fill_viridis_c() +
+    facet_wrap(~month, labeller = labeller(month = month.abb))
+    
+```
+
+## Observaciones
+
+* Estructuras bien zonales de la amplitud indicarían ondas planterias que afectan a todo el hemisferio, mientras que las anomalías zonales implicarían que la actividad de onda está localizada.
+* Parecería haber meses con estructura más zonal que otros (en la siguiente sección).
+* ¿Qué es la amplitud y en qué unidades está? Por el valor está claro que no es en unidades de geopotencial. Es algo que tendría que investigar.
+* La zona de máxima amplitud aparece más al norte que usando fourier (~-45° vs. ~-55°)
+
+
+## Estructura:
+
+```{r}
+q3 <- ncep[, 
+           .(amplitude = FitQsWave(gh, k = 3)[[1]]), 
+           by = .(lat, lev, date)][
+           , .(amplitude = mean(amplitude)), 
+           by = .(lat, lev, month(date))]
+
+k3 <- k3.mean[, .(amplitude = mean(k.3)), by = .(lat, lev, month)]
+
+both <- k3[q3, on = c("lat", "lev", "month")]
+setnames(both, c("amplitude", "i.amplitude"), c("wavelet", "fourier"))
+both[, wavelet := wavelet*100]
+
+binwidth = 10
+ggplot(both, aes(lat, lev)) +
+    stat_contour_fill(aes(z = wavelet), binwidth = binwidth) +
+    geom_contour(aes(z = fourier, color = ..level..), binwidth = binwidth) +
+    scale_x_latitude(trans = "reverse", ticks = 15) +
+    scale_y_level() +
+    scale_fill_viridis_c(name = "Amplitud de wavelets * 100", 
+                         limits = c(0, 100)) +
+    scale_color_viridis_c(name = "Amplitud de fourier",
+                          limits = c(0, 100)) +
+    facet_wrap(~month)
+    
+```
+
+## Anomalías zonales de amplitud de onda:
+
+```{r}
+k3.mean[lev == 300,  k.3.z := Anomaly(k.3), by = .(lev, lat, month)][
+    lev == 300] %>% 
+    RepeatLon() %>% 
+    ggplot(aes(lon, lat)) +
+    stat_contour_fill(aes(z = k.3.z), binwidth = 0.02) +
+    map.SH.3 +
+    geom_hline(yintercept = c(-55, -35), linetype = 3) +
+    scale_x_longitude() +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_fill_divergent() +
+    facet_wrap(~month, labeller = labeller(month = month.abb))
+```
+
+## Desvío estándar medio en la franja
+
+```{r}
+k3.mean[lat %b% c(-50, -35) & lev == 300, .(sd = sd(k.3)), by = .(lat, month)][
+    , .(sd = mean(sd)), by = month] %>% 
+    ggplot(aes(month, sd)) +
+    geom_line() +
+    scale_x_continuous(name = "Mes", breaks = 1:12, labels = month.abb) +
+    scale_y_continuous(name = "")
+```
+

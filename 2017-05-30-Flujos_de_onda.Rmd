@@ -125,7 +125,6 @@ FluxPlot(gdata) +
 
 <div class="notes">
 Se ve como hay un importante flujo que va desde la baja al este de Australia hacia el sudeste. Parte de este sigue hacia el sur hasta \~-70°S donde hay una convergencia del flujo. Otra pequeña proporción sigue hacia el este y oscila entre los -45°S y -60°S hasta llegar al sur del Índico. Este no es el principal sentido del flujo.
-
 </div>
 
 

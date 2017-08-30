@@ -1,16 +1,33 @@
 ---
-title: "Tesis"
+title: "Teis"
+subtitle: "Una tesis"
 author: "Elio Campitelli"
-date: ""
-output: pdf_document
+date: "`r Sys.Date()`"
+output:
+    pdf_document:
+        citation_package: natbib
+        latex_engine: xelatex
+        toc: true
+        pandoc_args: [
+        "-V", "lang=es-AR"
+    ]
+bibliography: skeleton.bib
+link-citations: yes
 ---
-
+ 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, 
+                      cache.extra = packageVersion('tufte'),
+                      echo = FALSE)
+options(htmltools.dir.version = FALSE)
 ```
+
 
 Por ahora esto es un outline y no mucho más. 
 
+Numerar las cosas. Figuras relevantes para cada sección. 
 
 # Introducción
 
@@ -38,34 +55,59 @@ Algo más substancioso que "me interesa la gran escala y el clima de altas latit
 
 Descripción de los experimentos. 
 
-### Fuentes de datos
+## Fuentes de datos
 
-### Modelo SPEEDY
+## Modelo SPEEDY
 
 # Climatología observada
 
 ## Campos medios y anomalías. 
 
+
+
+
 ## Ondas Quasiestacionarias
+
+* Fourier
 
 * Onda 1 a 4. 
 * Amplitud, r2, etc...
 * Fase. 
 
-### Creación del índice
+* Wavelets
+   + Comparación.
 
-#### Antecedentes
+Venajas y desventajas. Justificaicón de decisión. 
+
+## Creación del índice
+
+## Antecedentes
 
 Breve comentario sobre los índices usados en otros lados. Discutir ventajas y debilidades.
 
-#### Índice propio
+* Amplitud
+* Fase (impacto en SA) 
+
+De todo eso, motiva decisión del índice.
+
+## Índice propio
 
 * Niveles elegidos
 * Promedio vs. máximo
 * Composiciones de campos y flujos.
 * Decisión del índice. 
 
-## Forzantes
+## Análisis dinámica de septiembre
+
+
+
+## Fuentes de actividad de onda
+
+## Fuentes de variabilidad interna
+
+(Discusión escrita más de papers), Pero nos concentramos en la fuente externa.
+
+## Fuentes externas
 
 Campos de correlación con SST y OLR, principalmente
 ¿Discusión de otros forzantes?

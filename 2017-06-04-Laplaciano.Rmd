@@ -13,6 +13,7 @@ library(tufte)
 knitr::opts_chunk$set(tidy = FALSE, cache = TRUE,
                       cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
+library(meteoR)
 source("scripts/helperfun.R")
 theme_elio <- theme_minimal() +
     theme(legend.position = "bottom")
@@ -125,6 +126,12 @@ ggplot(test, aes(x, y)) +
     geom_contour(aes(z = z.inv), color = "red")
 ```
 
+```{r}
+ggplot(test, aes(z, z.inv)) +
+    geom_point()
+```
+
+
 ¡Éxito!. A menos de una constante aditiva y una multiplicativa, obtengo el campo original.
 
 `r newthought("Vamos a aplicarlo a un")` campo más realista. La altura geopotencial según NCEP.
@@ -141,45 +148,45 @@ Para calcular el laplaciano, voy a tener que derivar:
 
 
 ```{r}
-Derivate <- function(x, y, order = 1, bc = "cyclic") {
-    # Calcula derivada centrada 1da o 2da
-    # Entra:
-    #  x: la variable a derivar
-    #  y: la variable que deriva
-    #  order: orden de la derivada (1 o 2)
-    #  bc: condiciones de borde (por ahora, sólo impliementadas cíclicas o nada)
-    # Sale:
-    #  un vector de la misma longitud que x e y con la derivada
-    # ¡Asume que la grilla es uniforme!
-    library(data.table)
-    N <- length(x)
-
-    d <- y[2] - y[1]
-
-    if (order == 1) {
-        dxdy <- (x[c(2:N, 1)] - x[c(N, 1:(N-1))])/(2*d)
-
-    } else if (order == 2) {
-        dxdy <- (x[c(2:N, 1)] + x[c(N, 1:(N-1))] - 2*x)/d^2
-    }
-    if (bc != "cyclic") {
-        dxdy[c(1, N)] <- NA
-    }
-
-    return(dxdy)
-}
+# Derivate <- function(x, y, order = 1, bc = "cyclic") {
+#     # Calcula derivada centrada 1da o 2da
+#     # Entra:
+#     #  x: la variable a derivar
+#     #  y: la variable que deriva
+#     #  order: orden de la derivada (1 o 2)
+#     #  bc: condiciones de borde (por ahora, sólo impliementadas cíclicas o nada)
+#     # Sale:
+#     #  un vector de la misma longitud que x e y con la derivada
+#     # ¡Asume que la grilla es uniforme!
+#     library(data.table)
+#     N <- length(x)
+# 
+#     d <- y[2] - y[1]
+# 
+#     if (order == 1) {
+#         dxdy <- (x[c(2:N, 1)] - x[c(N, 1:(N-1))])/(2*d)
+# 
+#     } else if (order == 2) {
+#         dxdy <- (x[c(2:N, 1)] + x[c(N, 1:(N-1))] - 2*x)/d^2
+#     }
+#     if (bc != "cyclic") {
+#         dxdy[c(1, N)] <- NA
+#     }
+# 
+#     return(dxdy)
+# }
 ```
 
 Listo, ahora a partir del laplaciano del geopotencial:
 
 ```{r, fig.cap="Geopotencial en sombreado, laplaciano del geopotencial en contornos.", fig.fullwidth = TRUE}
-a <- 6731000
-ncep[, gh.dxx := Derivate(gh, lon*pi/180, 2)/(a*cos(lat*pi/180))^2, by = lat]
-ncep[, gh.dyy := Derivate(gh, lat*pi/180, 2, bc = "none")/a^2, by = lon]
+
+ncep[, gh.dxx := DerivatePhysical(gh, lon, lat, order = 2, bc = "cyclic"), by = lat]
+ncep[, gh.dyy := DerivatePhysical(gh, lon, lat, order = 2, bc = "none"), by = lon]
 ncep[, gh.lap := gh.dxx + gh.dyy]
 
 ggplot(ncep[abs(lat) < 75], aes(lon, lat)) +
-    stat_fill_contour(aes(z = gh)) +
+    stat_contour_fill(aes(z = gh)) +
     geom_contour(aes(color = ..level.., z = gh.lap)) +
     map.world.3 +
     scale_fill_divergent() +
@@ -192,7 +199,7 @@ Puedo intentar obtener el geopotencial original:
 ncep[!is.na(gh.lap), gh.inv := InverseLaplacian(gh.lap, lon*pi/180, -lat*pi/180)]
 
 ggplot(ncep[abs(lat) < 80], aes(lon, lat)) +
-    stat_fill_contour(aes(z = gh)) +
+    stat_contour_fill(aes(z = gh)) +
     geom_contour(aes(y = lat, z = gh.inv, color = ..level..)) +
     map.world.3 +
     scale_fill_divergent() +
@@ -203,11 +210,11 @@ Más o menos. Los centros coinciden un poco, pero la verdad es que es un porquer
 
 Además, hay un problema adicional. Si no uso los datos globales para calcular invertir el laplaciano, el restulado es distinto:
 
-```{r, fig.fullwidth = TRUE, fig.cap = "Laplaciano invertido usando todo el globo en sombreado, laplaciano invertido usando sólo el hemisferio suro en contornos."}
+```{r, fig.fullwidth = TRUE, fig.cap = "Laplaciano invertido usando todo el globo en sombreado, laplaciano invertido usando sólo el hemisferio sur en contornos."}
 ncep[!is.na(gh.lap) & lat < 0, gh.inv.SH := InverseLaplacian(gh.lap, lon*pi/180, -lat*pi/180)]
 
 ggplot(ncep[lat < 0 & lat > -80], aes(lon, lat)) +
-    stat_fill_contour(aes(z = gh.inv)) +
+    stat_contour_fill(aes(z = gh.inv)) +
     geom_contour(aes(y = lat, z = gh.inv.SH, color = ..level..)) +
     scale_fill_divergent() +
     scale_color_divergent()
@@ -220,29 +227,27 @@ Antes de eso, un diagnóstico de que todo esté bien.
 ```{r}
 sp <- ReadNetCDF("DATA/SPEEDY/attm.nc",  vars = c("psi", "u", "v"))
 sp <- sp[lev == 300 & date == date[1]]
-
-
 ```
 
 ```{r, fig.fullwidth = TRUE, fig.cap = "El laplaciano de la función corriente en sombreado y la vorticidad relativa en contornos."}
 
-sp[, v.dx := Derivate(v, lon*pi/180, 1)/(a*cos(lat*pi/180)), by = lat]
-sp[, u.dy := Derivate(u, lat*pi/180, 1, bc = "none")/a, by = lon]
+sp[, v.dx := DerivatePhysical(v, lon, lat), by = lat]
+sp[, u.dy := DerivatePhysical(u, lon, lat, bc = "none"), by = lon]
 sp[, zeta := v.dx - u.dy]
 
-sp[, psi.dxx := Derivate(psi, lon*pi/180, 2)/(a*cos(lat*pi/180))^2, by = lat]
-sp[, psi.dyy := Derivate(psi, lat*pi/180, 2, bc = "none")/a^2, by = lon]
+sp[, psi.dxx := DerivatePhysical(psi, lon, lat, order = 2), by = lat]
+sp[, psi.dyy := DerivatePhysical(psi, lon, lat, order = 2, bc = "none"), by = lon]
 sp[, psi.lap := psi.dxx + psi.dyy]
 
 ggplot(sp, aes(lon, lat)) +
-    stat_fill_contour(aes(z = psi.lap)) + 
+    stat_contour_fill(aes(z = psi.lap)) + 
     geom_contour(aes(z = zeta, color = ..level..)) +
     map.world.3 +
     scale_fill_divergent() +
     scale_color_divergent()
 ```
 
-Los contornos siguen tan bien al sombreado que prácticamente no se nota la diferencia. Genial. 
+Los contornos siguen tan bien al sombreado que prácticamente no se nota la diferencia (slavo una maldita constante multiplicativa!). Genial. 
 
 ```{marginfigure}
 Hay que notar, igual, que hay una enorme diferencia en la magnitud. En particular, me da que $\nabla^2\psi\sim9.8\times10^{-7}\zeta$. Esa constante multiplicativa me indica, me parece, que no estoy haciendo bien las constantes que multiplican a las derivadas.
@@ -251,10 +256,11 @@ Hay que notar, igual, que hay una enorme diferencia en la magnitud. En particula
 
 
 ```{r, fig.fullwidth = TRUE, fig.cap = "Función corriente original en sombreado, función corriente a partir de invertir el laplaciano en contornos."}
+sp[, zeta := zeta/1.018e6]
 sp[!is.na(zeta), psi.inv := InverseLaplacian(zeta, lon*pi/180, lat*pi/180)]
 
 ggplot(sp, aes(lon, lat)) +
-    stat_fill_contour(aes(z = psi)) +
+    stat_contour_fill(aes(z = psi)) +
     geom_contour(aes(z = psi.inv, color = ..level..)) +
     map.world.3 +
     scale_fill_divergent() +
@@ -266,12 +272,12 @@ De nuevo, hay algunas similitudes generales, pero parecería ser una porquería.
 `r newthought("Calculo U")` a partir de esta función corriente.
 
 ```{r, fig.fullwidth = TRUE, fig.cap = "U derivada a partir de la función corriente real en sombreado, derivada a partir de la función corriente calculada, en contornos."}
-sp[, u.inv := -Derivate(psi.inv, lat*pi/180), by = lon]
-sp[, u.psi := -Derivate(psi, lat*pi/180), by = lon]
+sp[, u.inv := -DerivatePhysical(psi.inv, lon, lat), by = lon]
+sp[, u.psi := -DerivatePhysical(psi, lon, lat), by = lon]
 
 ggplot(sp[abs(lat) < 85], aes(lon, lat)) +
-    stat_fill_contour(aes(z = u.psi)) +
-    geom_contour(aes(z = u.inv, color = ..level..)) +
+    stat_contour_fill(aes(z = u.psi)) +
+    geom_contour(aes(z = u, color = ..level..)) +
     map.world.3 +
     scale_fill_divergent() + 
     scale_color_divergent()
@@ -311,7 +317,7 @@ InverseLaplacian <- function(v, x, y) {
 sp[!is.na(zeta), psi.inv := InverseLaplacian(zeta, lon*pi/180, lat*pi/180)]
 
 ggplot(sp, aes(lon, lat)) +
-    stat_fill_contour(aes(z = psi)) +
+    stat_contour_fill(aes(z = psi)) +
     geom_contour(aes(z = psi.inv, color = ..level..)) +
     map.world.3 +
     scale_fill_divergent() +
@@ -321,13 +327,26 @@ ggplot(sp, aes(lon, lat)) +
 Parece mejor. 
 
 ```{r, fig.fullwidth = TRUE, fig.cap = "U derivada a partir de la función corriente real en sombreado, derivada a partir de la función corriente calculada, en contornos."}
-sp[, u.inv := -Derivate(psi.inv, lat*pi/180), by = lon]
+sp[, u.inv := -DerivatePhysical(psi.inv, lon, lat), by = lon]
 
 ggplot(sp[abs(lat) < 85], aes(lon, lat)) +
-    stat_fill_contour(aes(z = u.psi)) +
+    stat_contour_fill(aes(z = u.psi)) +
     geom_contour(aes(z = u.inv, color = ..level..)) +
     map.world.3 +
     scale_fill_divergent() + 
     scale_color_divergent()
+```
+
+
+
+```{r}
+sp[, c("v.psi", "u.psi") := Derivate2(psi ~ lon + lat, bc = c("cyclic", "none"), 
+                                      sphere = F)]
+sp[, u.psi := -u.psi ]
+
+ggplot(sp, aes(lon, lat)) +
+    stat_contour_fill(aes(z = u)) +
+    geom_contour(aes(z = u.psi))
+
 ```
 
