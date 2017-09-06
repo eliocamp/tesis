@@ -38,11 +38,13 @@ polar.SH <- list(coord_polar(),
                  scale_y_latitude(limits = c(-90, 0)),
                  scale_x_longitude())
 
-guide_colorbar_bottom <- function(width = 25, ...) {
+guide_colorbar_bottom <- function(width = 25, height = 0.5, ...) {
     guide_colorbar(title.position = "top", title.hjust = 0.5,
-                   barheight = unit(0.5, "lines"),
-                   barwidth = unit(width, "lines"))
+                   barheight = height,
+                   barwidth = width, ...)
 }
+
+scale_s_map <- function() list(scale_y_latitude(), scale_x_longitude())
 
 AddSuffix <- function(suffix = "") {
     function(string) {
@@ -67,16 +69,9 @@ MakeBreaks <- function(binwidth = NULL, exclude = NULL) {
     }
 }
 
-LimitRange <- function(limit, binwidth) {
-    function(range) {
-        breaks <- scales::fullseq(range, binwidth)
-        breaks <- breaks[breaks <= limit]
-        return(breaks)
-    }
-}
-
 ## Hooks.
-DefineHook <- function(class.opts) {
+
+DefineHook <- function(class.name, class.opts) {
     class.name <- deparse(substitute(class.opts))
     class.fun <- function(options) {
         # print(class.name)
@@ -86,11 +81,11 @@ DefineHook <- function(class.opts) {
         options[names(class)] <- as.list(class)
         options
     }
-    
     invisible(knitr::opts_hooks$set(
         setNames(list(class.fun), class.name)
     ))
 }
+
 
 fig.class <- list(
     fullpage = c(
@@ -106,12 +101,10 @@ fig.class <- list(
         out.height = "0.5\\textheight",
         fig.align = "center")
 )
+
 DefineHook(fig.class)
 
 ```
-
-
-
 
 Por ahora esto es un outline y no mucho más. 
 
@@ -175,10 +168,7 @@ ncep.mean.season <- ncep.mean[, lapply(.SD, mean),
 
 ### Altura geopotencial
 
-* Campos medios a niveles bajos, medios y altos. 
-
-Campos medios (etiquetas en kilómetros geopotencial)
-
+Campo medio:
 
 ```{r gh_campo_medio_ncep, fig.class = "fullpage"}
 plot.levs <- c(500, 300, 200, 100, 30)
@@ -188,17 +178,16 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     map.SH +
     geom_contourlabel(aes(z = gh, label = ..level..), binwidth = binwidth,
                       size = 1.6) +
-    
+    scale_s_map() +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
-    coord_quickmap()
-# coord_map("stereographic", orientation = c(-90, 0, 0),
-# ylim = c(-90, 0))
+    coord_quickmap() 
 ```
 
 Cosas para ver:    
 Estructura dominantemente zonal. Zona de jet, variación de intensidad estacional. Vórtice polar en invierno/primavera. 
 
 Anomalías
+
 ```{r gh_anomalia_ncep, fig.class = "fullpage"}
 binwidth <- 60
 cutlat <- -60
@@ -208,14 +197,36 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     # geom_contour(aes(z = gh.z), binwidth = 60, color = "gray27", size = 0.2) +
     # geom_contourlabel(aes(z = gh.z, label = ..level..), binwidth = 60) +
     map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
     scale_fill_divergent(binwidth = binwidth, name = "Z*", exclude = 0, 
                          guide = guide_colorbar_bottom(25)) +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
-    polar.SH
+    coord_quickmap()
 ```
 
 Cosas para ver:    
 Estructura de onda 1. Ciclo estacional de la amplitud. Baroclinicidad. 
+
+Propuesta: unir ambos mapas
+
+```{r}
+binwidth.mean <- 250
+binwidth.anom <- 60
+ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
+    stat_contour_fill(aes(z = gh.z), binwidth = binwidth.anom, exclude = 0) +
+    stat_contour(aes(z = gh), binwidth = binwidth.mean, color = "black", size = 0.5) +
+    map.SH +
+    geom_contourlabel(aes(z = gh, label = ..level..), binwidth = binwidth.mean,
+                      size = 1.6) +
+    scale_fill_divergent(binwidth = binwidth.anom, name = "Z*", exclude = 0, 
+                         guide = guide_colorbar_bottom(25)) +
+    scale_s_map() +
+    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
+    coord_quickmap() 
+```
+
+
 
 
 Corte zonal en -65°
@@ -223,7 +234,6 @@ Corte zonal en -65°
 ```{r gh_zonal65_ncep, fig.class = "halfpage", fig.height = 4, fig.width = 9}
 binwidth <- 60
 ggplot(RepeatLon(ncep.mean.season[lat %~% cutlat]), aes(lon, lev)) +
-    # geom_contour(aes(z = gh.z), binwidth = binwidth) + 
     stat_contour_fill(aes(z = gh.z), binwidth = binwidth, exclude = 0) +
     scale_fill_divergent(binwidth = binwidth, exclude = 0, name = "Z*",
                          guide = guide_colorbar_bottom(width = 25)) +
@@ -234,6 +244,7 @@ ggplot(RepeatLon(ncep.mean.season[lat %~% cutlat]), aes(lon, lev)) +
 
 Complementa la figura anterior. 
 
+Desvío estándar por círculo de latitud:
 
 ```{r gh_sd_ncep, fig.class = "halfpage"}
 binwidth <- 20
@@ -253,6 +264,44 @@ ncep.mean[lev %in% plot.levs, .(sd = sd(gh.z)), by = .(lat, lev, month)] %>%
 Cosas para ver:    
 Latitud de mayor actividad de onda. Máximo en octubre en 300 hPa. Más adelante, se hace la misma figura pero con el desvío estándar asociado a cada número de onda. 
 
+### Viento zonal:
+
+Campo medio:
+
+```{r u_medio_ncep, fig.class = "fullpage"}
+ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
+    geom_contour(aes(z = u, color = ..level..), binwidth = 15) +
+    geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
+    geom_contourlabel(aes(z = u, color = ..level..), binwidth = 15, step = 1,
+                      size = 3, vjust = "inward", hjust = "inward") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    scale_color_divergent(name = "U", breaks = MakeBreaks(5),
+                          guide = guide_colorbar_bottom()) +
+    coord_quickmap() +
+    facet_grid(lev~season, labeller = labeller(lev = lev.lab))
+```
+
+Cosas para ver:    
+Jet polar en invierno y primavera en niveles altos (< 100 hPa). Jest subtropical en niveles "medios".
+
+```{r u_medio_corte_ncep, fig.class = "halfpage"}
+ncep.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>% 
+    ggplot(aes(lat, lev)) +
+    geom_contour(aes(z = u, color = ..level..), binwidth = 15) +
+    geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
+    geom_contourlabel(aes(z = u, color = ..level..), binwidth = 15, step = 1,
+                      size = 3) +
+    scale_y_level(breaks = plot.levs) +
+    scale_x_latitude(name = "latitud", trans = "reverse") +
+    scale_color_divergent(name = "U media zonal", breaks = MakeBreaks(5),
+                          guide = guide_colorbar_bottom()) +
+    facet_wrap(~season)
+```
+
+Cosas para ver:    
+Extensión y localización vertical de los jets. 
 
 ### Temperatura
 
@@ -270,8 +319,8 @@ ggplot(ncep.mean.season[lev %in% c(plot.levs, 1000)], aes(lon, lat)) +
 ```
 
 Cosas para ver:    
-   Gradiente muy pequeño en 200 hPa. Gradiente inverso en estratósfera. Núcleo cálido en ~50° (que se va a ver mejor en la anomalía zonal). Temperaturas frías en altas y bajas latitudes pero relativamente cálidas en ~50° en 100 hPa.
-   
+Gradiente muy pequeño en 200 hPa. Gradiente inverso en estratósfera. Núcleo cálido en ~50° (que se va a ver mejor en la anomalía zonal). Temperaturas frías en altas y bajas latitudes pero relativamente cálidas en ~50° en 100 hPa.
+
 
 ```{r temp_corte_ncep, fig.class = "halfpage"}
 binwidth <- 5
@@ -287,28 +336,25 @@ ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
 ```
 
 
-   
+
 ```{r temp_zonal_ncep, fig.class = "fullpage"}
 binwidth <- 1
 ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
     map.SH +
-    scale_fill_divergent(binwidth = binwidth, name = "Z*", exclude = 0, 
+    scale_fill_divergent(binwidth = binwidth, name = "T*", exclude = 0, 
                          guide = guide_colorbar_bottom(25)) +
+    scale_y_latitude() +
+    scale_x_longitude() +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
-    polar.SH
+    coord_quickmap() 
 ```
 
 Cosas para ver:   
-   Coincidencia entre la onda estacionaria 1 en gh y de t (en primavera). 
+Coincidencia entre la onda estacionaria 1 en gh y de t (en primavera). 
 
+Propuesta: combinar mapa de T y T*
 
-* Campos medios y anomalías a niveles bajos, medios y altos.    
-* Corte meridional
-
-3. Viento zonal:
-* Campos medios y ¿anomaláis? a ¿niveles?
-* Corte meridional
 
 
 
