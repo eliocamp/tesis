@@ -30,7 +30,7 @@ StatContourLabel <- ggproto("StatContourLabel", Stat,
                            }
                            # If necessary, compute breaks from binwidth
                            if (is.null(breaks)) {
-                               breaks <- fullseq(range(data$z), binwidth)
+                               breaks <- scales::fullseq(range(data$z), binwidth)
                            }
 
                            breaks.keep <- breaks[seq(1, length(breaks), by = step)]
@@ -39,7 +39,7 @@ StatContourLabel <- ggproto("StatContourLabel", Stat,
                            breaks.keep <- breaks.keep[!is.na(breaks.keep)]
 
                            contours <- ggplot2:::contour_lines(data, breaks.keep, complete = complete)
-                           contours.dt <- as.data.table(contours)
+                           contours.dt <- data.table::as.data.table(contours)
                            contours.dt[, var := minvar(x, y), by = .(piece)]
 
                            as.data.frame(contours.dt[var == T][, head(.SD, 1), by = piece])

@@ -49,28 +49,30 @@ BuildMap <- function(res = 1, smooth = 1, pm = 180,
     m <- rbind(m, m2)
     m <- m[long >= pm - 180 & long <= 180 + pm]
 
-    # Suavizo.
-    cut <- max(smooth, res)
-    notsmooth <- m[, .N, by = group][N < cut + 4, group]
-    m <- m[!(group %in% notsmooth)]    # saco los grupos muy chicos
     m[, MO := max(order), by = group]
-    m[order != 1 & order != MO,
-      `:=`(long = zoo::rollmean(long, smooth, fill = "extend"),
-           lat = zoo::rollmean(lat, smooth, fill = "extend")),
-      by = group]
 
+    # Suavizo.
+    if (smooth > 1) {
+        cut <- max(smooth, res)
+        notsmooth <- m[, .N, by = group][N < cut + 4, group]
+        m <- m[!(group %in% notsmooth)]    # saco los grupos muy chicos
+
+        m[order != 1 & order != MO,
+          `:=`(long = zoo::rollmean(long, smooth, fill = "extend"),
+               lat = zoo::rollmean(lat, smooth, fill = "extend")),
+          by = group]
+    }
     # Bajo la resolución.
-    m[, keep := c(1, rep(0, res)), by = group]
+    suppressWarnings(m[, keep := c(1, rep(0, res - 1)), by = group])
     m <- m[order == 1 | order == MO | keep == 1, .SD, by = group]
 
     return(m)
 }
 
-geom_map2 <- function(map) {
+geom_map2 <- function(map, size = 0.2, color = "black") {
     # Un geom_path con defaults copados para agregar mapas
     g <- geom_path(data = map, aes(long, lat, group = group),
-                   color = "black",
-                   inherit.aes = F, size = 0.2)
+                   inherit.aes = F, color = color, size = size)
     return(g)
 }
 
@@ -314,7 +316,7 @@ fill_neg <- function(vector) {
 
 # Nombres de los meses en español
 month.abb_sp <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
-               "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
+                  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
 names(month.abb_sp) <- as.character(1:12)
 
 
@@ -417,7 +419,7 @@ as.dt <- function(...) {
 }
 
 
-# source("scripts/geom_contourlabel.R")
+source("scripts/geom_contourlabel.R")
 # source("scripts/stat_fill_contour.R")
 
 factor2cols <- function(x, column, factors) {
