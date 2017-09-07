@@ -6,6 +6,9 @@ date: "`r Sys.Date()`"
 lang: es-AR
 bibliography: Papers/Biblio.bib
 link-citations: yes
+csl: Papers/apa.csl
+notice: |
+    @Vera2004
 output:
     pdf_document:
         fig_height: 10
