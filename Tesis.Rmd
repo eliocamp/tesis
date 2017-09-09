@@ -25,7 +25,9 @@ knitr::opts_chunk$set(tidy = FALSE,
                       warning = FALSE)
 library(data.table)
 library(ggplot2)
-library(metR)
+library(dplyr)
+library(metR) 
+
 source("scripts/helperfun.R")
 source("scripts/geom_contourlabel.R")
 
@@ -34,44 +36,18 @@ map.SH <- map.world[lat %b% c(-90, 0)]
 map.world <- geom_map2(map.world)
 map.SH <- geom_map2(map.SH)
 
+pres <- ReadNetCDF("DATA/NCEP/srfp.mon.mean.nc")
+pres.mean <- pres[, .(pres = mean(pres)), by = lat]
+pres.mean <- rbind(data.table(lat = 0.0, pres = Inf), 
+                   pres.mean, 
+                   data.table(lat = -90.0, pres = Inf))
+surface <- geom_polygon(data = pres.mean, aes(y = pres), fill = "gray40", 
+                 alpha = 0.5, color = "black", size = 0.5)
+
 theme_elio <- theme_minimal() +
     theme(legend.position = "bottom")
 theme_set(theme_elio)
 
-polar.SH <- list(coord_polar(),
-                 scale_y_latitude(limits = c(-90, 0)),
-                 scale_x_longitude())
-
-guide_colorbar_bottom <- function(width = 25, height = 0.5, ...) {
-    guide_colorbar(title.position = "top", title.hjust = 0.5,
-                   barheight = height,
-                   barwidth = width, ...)
-}
-
-scale_s_map <- function() list(scale_y_latitude(), scale_x_longitude())
-
-AddSuffix <- function(suffix = "") {
-    function(string) {
-        paste0(string, suffix)
-    }
-}
-
-lev.lab <- AddSuffix(" hPa")
-
-MakeBreaks <- function(binwidth = NULL, exclude = NULL) {
-    # If no parameters set, use pretty bins
-    if (is.null(binwidth)) {
-        breaks <- function(range) {
-            b <- pretty(range, 10)
-            b[!(b %in% exclude)]
-        }
-    } else {
-        breaks <- function(range) {
-            b <- scales::fullseq(range, binwidth)
-            b[!(b %in% exclude)]
-        }
-    }
-}
 
 ## Hooks.
 
@@ -102,7 +78,7 @@ fig.class <- list(
         fig.width = 9,
         fig.height = 3,
         # out.width = "\\textwidth",
-        out.height = "0.5\\textheight",
+        out.height = "0.25\\textheight",
         fig.align = "center")
 )
 
@@ -167,7 +143,10 @@ ncep.mean <- ncep.mean[, c(vars.z) := lapply(.SD, Anomaly),
 
 ncep.mean.season <- ncep.mean[, lapply(.SD, mean), 
                               by = .(lon, lat, lev, season = AssignSeason(month))]
+
+
 ```
+
 
 
 ### Altura geopotencial
@@ -229,6 +208,7 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
     coord_quickmap() 
 ```
+
 
 
 
@@ -296,6 +276,7 @@ ncep.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>%
     geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
     geom_contourlabel(aes(z = u, color = ..level..), binwidth = 15, step = 1,
                       size = 3) +
+    surface +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
     scale_color_divergent(name = "U media zonal", breaks = MakeBreaks(5),
@@ -306,6 +287,41 @@ ncep.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>%
 Cosas para ver:    
 Extensión y localización vertical de los jets. 
 
+Anomalía zonal
+
+```{r u_nomalia_ncep}
+binwidth <- 2.5
+cutlat <- -50
+ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
+    stat_contour_fill(aes(z = u.z), binwidth = binwidth, exclude = 0) +
+    geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
+    # geom_contour(aes(z = gh.z), binwidth = 60, color = "gray27", size = 0.2) +
+    # geom_contourlabel(aes(z = gh.z, label = ..level..), binwidth = 60) +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    scale_fill_divergent(binwidth = binwidth, name = "U*", exclude = 0, 
+                         guide = guide_colorbar_bottom(25)) +
+    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
+    coord_quickmap()
+```
+
+
+
+```{r}
+binwidth <- 2
+ggplot(RepeatLon(ncep.mean.season[lat %~% cutlat]), aes(lon, lev)) +
+    stat_contour_fill(aes(z = u.z), binwidth = binwidth, exclude = 0) +
+    scale_fill_divergent(binwidth = binwidth, exclude = 0, name = "U*",
+                         guide = guide_colorbar_bottom(width = 25)) +
+    scale_y_level(breaks = plot.levs, minor_breaks = NULL) +
+    scale_x_longitude(name = "longitud") +
+    facet_wrap(~season)
+```
+
+
+Cosas para ver (ambos):   
+        
 
 ### Temperatura
 
@@ -331,6 +347,7 @@ binwidth <- 5
 ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
        aes(lat, lev)) +
     stat_contour_fill(aes(z = t)) +
+    surface +
     scale_y_level(breaks = plot.levs, minor_breaks = NULL) + 
     scale_x_latitude(name = "latitud", trans = "reverse") +
     scale_fill_viridis_c(name = "Temperatura media zonal", 
@@ -390,6 +407,7 @@ binwidth <- 0.5
 ggplot(ncep.mean.season[lev >= 30, .(v = mean(v)), by = .(lat, lev, season)],
        aes(lat, lev)) +
     stat_contour_fill(aes(z = v), binwidth = binwidth, exclude = 0) +
+    surface + 
     scale_y_level(breaks = unique(ncep.mean.season$lev), minor_breaks = NULL) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
     scale_fill_divergent(name = "V media zonal", 
@@ -401,9 +419,102 @@ ggplot(ncep.mean.season[lev >= 30, .(v = mean(v)), by = .(lat, lev, season)],
 Cosas para ver:    
     Dipolo entre niveles bajos y altos que alterna entre invierno y verano (parte convergente en superficie y divergente en altura de la ITCZ que se mueve hacia el hemisferio de verano). En altas latitudes, en superficie hay máximos de viento del sur debido a los vientos catabáticos de la antártida.
 
+### Gradiente meridional de vorticidad absoluta
+
+```{r eta_calc_ncep, fig.class = "halfpage"}
+ncep.mean.season %>% 
+    .[, `:=`("v.dx" = Derivate(v ~ lon + lat, bc = c("cyclic", "none"), 
+                               sphere = TRUE)[[1]],
+             "u.dyy" = Derivate(u ~ lon + lat, order = 2, 
+                                bc = c("cyclic", "none"), 
+                                sphere = TRUE)[[2]],
+             "beta" = beta(lat)),
+      by = .(lev, season)] %>% 
+    .[, v.dxdy := Derivate(v.dx ~ lon + lat, bc = c("cyclic", "none"),
+                                        sphere = TRUE)[[2]], 
+                        by = .(lev, season)] %>% 
+    .[, eta.dy := beta + v.dxdy - u.dyy]
+
+binwidth <- 1e-11
+ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs & lat > -85]), aes(lon, lat)) +
+    stat_contour_fill(aes(z = eta.dy), binwidth = binwidth) +
+    stat_contour_fill(aes(z = eta.dy), breaks = 0, 
+                      fill = "grey50", alpha = 0.5, complete = FALSE) +
+    geom_contour(aes(z = eta.dy), breaks = 0, color = "black", size = 0.5) +
+    # stat_contour(aes(z = eta.dy), breaks = 0, geom = "polygon",
+                 # fill = "grey50", alpha = 0.5) +
+    map.SH +
+    # polar.SH + 
+    scale_fill_divergent(name = "Gradiente meridional de vorticiad absoluta", 
+                         guide = guide_colorbar_bottom(),
+                         breaks = MakeBreaks(binwidth)) +
+    scale_s_map() +
+    coord_quickmap() +
+    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab))
+```
+
+Cosas para ver:    
+   Máximos asociado con los flancos del jet. Zona "prohibida" en 200 y 300 hPa. 
+
 ## Ondas Quasiestacionarias
 
 * Fourier
+
+
+```{r fitqs_ncep}
+ncep.qs <- ncep[, FitQsWave(gh, k = 1:4), by = .(lat, lev, date)]
+```
+
+```{r r2_qs_ncep}
+binwidth <- 0.1
+rect.annotation <- data.frame(xmin = -55, xmax = -35,
+                              ymax = Inf, ymin = 50,
+                              k = c(1, 3))
+r2.mean <- ncep.qs[, .(r2 = mean(r2)), 
+                   by = .(lat, lev, k, season = AssignSeason(month(date)))]
+
+r2.diff <- r2.mean[, .(r2.ratio = r2[k == 3]/r2[k == 1]), 
+                   by = .(lat, lev, season)]
+r2.diff <- rbind(r2.diff[, k := 1], copy(r2.diff)[, k := 3])
+
+ggplot(r2.mean, aes(lat, lev)) +
+    stat_contour_fill(aes(z = r2), binwidth = binwidth) +
+    stat_contour_fill(aes(z = r2.ratio), data = r2.diff, breaks = 1, 
+                 color = "black", size = 0.5, complete = F,
+                 fill = "gray20", alpha = 0.2) +
+    surface +
+    # geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+    #           data = rect.annotation, inherit.aes = F,
+    #           fill = NA, color = "black", size = 0.4) +
+    scale_fill_viridis_c(name = expression(R^2), limits = c(0, 1),
+                         breaks = MakeBreaks(binwidth), 
+                         guide = guide_colorbar_bottom()) +
+    scale_y_level(breaks = plot.levs) +
+    scale_x_latitude(name = "latitud", trans = "reverse", 
+                     ticks = 15) +
+    facet_grid(k ~ season, labeller = labeller(k = qs.lab))
+```
+
+Cosas para ver:    
+    Estructura. Zona donde onda 3 explica más que la onda 1 (zona marcada en negro) 
+
+```{r ampl_qs_ncep}
+ampl.mean <- ncep.qs[, .(amplitude = mean(amplitude)), 
+                   by = .(lat, lev, k, season = AssignSeason(month(date)))]
+breaks <- 2^seq(0, log2(650), by = 1)
+ggplot(ampl.mean, aes(lat, lev)) +
+    stat_contour_fill(aes(z = amplitude), 
+                      breaks = breaks) +
+    surface +
+    scale_fill_viridis_c(name = "Amplitud (escala logarítmica)", trans = "log2",
+                         breaks = breaks,
+                         labels = round(breaks, 1),
+                         guide = guide_colorbar_bottom()) +
+    scale_y_level(breaks = plot.levs) +
+    scale_x_latitude(name = "latitud", trans = "reverse", 
+                     ticks = 15) +
+    facet_grid(k ~ season, labeller = labeller(k = qs.lab))
+```
 
 * Onda 1 a 4. 
 * Amplitud, r2, etc...

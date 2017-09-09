@@ -747,3 +747,63 @@ WaveFlux <- function(gh, u, v, lon, lat, lev) {
 #
 #     return(eof)
 # }
+
+polar.SH <- list(coord_polar(),
+                 scale_y_latitude(limits = c(-90, 0)),
+                 scale_x_longitude())
+
+guide_colorbar_bottom <- function(width = 25, height = 0.5, ...) {
+    guide_colorbar(title.position = "top", title.hjust = 0.5,
+                   barheight = height,
+                   barwidth = width, ...)
+}
+
+scale_s_map <- function() list(scale_y_latitude(), scale_x_longitude())
+
+AddSuffix <- function(suffix = "") {
+    function(string) {
+        paste0(string, suffix)
+    }
+}
+
+AddPreffix <- function(preffix = "") {
+    function(string) {
+        paste0(preffix, string)
+    }
+}
+
+lev.lab <- AddSuffix(" hPa")
+qs.lab <- AddPreffix("QS ")
+
+MakeBreaks <- function(binwidth = NULL, exclude = NULL) {
+    # If no parameters set, use pretty bins
+    if (is.null(binwidth)) {
+        breaks <- function(range) {
+            b <- pretty(range, 10)
+            b[!(b %in% exclude)]
+        }
+    } else {
+        breaks <- function(range) {
+            b <- scales::fullseq(range, binwidth)
+            b[!(b %in% exclude)]
+        }
+    }
+}
+
+
+coriolis <- function(lat) {
+    2*2*pi/(3600*24)*sin(lat*pi/180)
+}
+
+beta <- function(lat, a = 6371) {
+    a <- a*1000
+    2*2*pi/(3600*24)*cos(lat*pi/180)/a
+}
+
+
+
+yearmonth <- function(date, day = 1) {
+   months <- lubridate::month(date)
+   years <- lubridate::year(date)
+   lubridate::ymd(paste(years, months, day, sep = "-"))
+}
