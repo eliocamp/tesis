@@ -1,6 +1,6 @@
 .Rproj.user
 .Rhistory
-.RData
+.RData*
 .Ruserdata
 Papers
 cache-*
@@ -14,4 +14,5 @@ Data
 bfg-1.12.15.jar
 backup
 \.RDataTmp
-DATA 
+DATA/*
+fig

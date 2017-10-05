@@ -1,0 +1,22 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allaire et~al.(2017)Allaire, Cheng, Xie, McPherson, Chang, Allen,
+  Wickham, Atkins, Hyndman, and Arslan]{R-rmarkdown}
+JJ~Allaire, Joe Cheng, Yihui Xie, Jonathan McPherson, Winston Chang, Jeff
+  Allen, Hadley Wickham, Aron Atkins, Rob Hyndman, and Ruben Arslan.
+\newblock \emph{rmarkdown: Dynamic Documents for R}, 2017.
+\newblock URL \url{https://CRAN.R-project.org/package=rmarkdown}.
+\newblock R package version 1.6.
+
+\bibitem[{R Core Team}(2017)]{R-base}
+{R Core Team}.
+\newblock \emph{R: A Language and Environment for Statistical Computing}.
+\newblock R Foundation for Statistical Computing, Vienna, Austria, 2017.
+\newblock URL \url{https://www.R-project.org/}.
+
+\end{thebibliography}

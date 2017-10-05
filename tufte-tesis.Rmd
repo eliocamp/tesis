@@ -2,11 +2,13 @@
 title: "Tesis"
 subtitle: "Una tesis"
 author: "Elio Campitelli"
-date: ""
+date: "`r Sys.Date()`"
 lang: es-AR
-bibliography: [Papers/Biblio.bib, packages.bib]
-geometry: "left = 3cm, right = 2cm, top = 2.5cm, bottom = 2.5cm"
-documentclass: book
+bibliography: Papers/Biblio.bib
+link-citations: yes
+csl: Papers/apa.csl
+notice: |
+    @Vera2004
 output:
     pdf_document:
       fig_height: 10
@@ -17,17 +19,13 @@ output:
       toc: yes
       toc_depth: 4
 header-includes: 
-    - \linespread{1.25}
-    - \usepackage{subfig}
-#   - \usepackage[nomarkers,figuresonly]{endfloat}
-link-citations: yes
+    - \usepackage{marginnote}
+#    - \usepackage[nomarkers,figuresonly]{endfloat}
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(tidy = FALSE,
                       echo = FALSE, 
                       cache = TRUE, 
-                      cache.lazy = TRUE,
                       cache.path = "cache/tesis/",
                       fig.path = "fig/tesis/",
                       warning = FALSE)
@@ -82,7 +80,7 @@ fig.class <- list(
         fig.width = 11,
         fig.height = 8,
         out.height = "\\textwidth",
-        out.width = "0.9\\textheight",
+        out.width = "\\textheight",
         fig.align = "center",
         fig.fullwidth = TRUE,
         out.extra = "angle=90"),
@@ -101,29 +99,27 @@ fig.class <- list(
 DefineHook(fig.class)
 ```
 
-Resumen.
+# Resumen.
 
-```{r read_ncep, cache = FALSE}
-# ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean_sub.nc", vars = c(gh = "hgt"))
-# setnames(ncep, "level", "lev")
-# ncep[, t := ReadNetCDF("DATA/NCEP/air.mon.mean_sub.nc", out = "vector")]
-# ncep[, u := ReadNetCDF("DATA/NCEP/uwnd.mon.mean_sub.nc", out = "vector")]
-# ncep[, v := ReadNetCDF("DATA/NCEP/vwnd.mon.mean_sub.nc", out = "vector")]
-# 
-# vars <- c("gh", "t", "u", "v")
-# vars.z <- paste0(vars, ".z")
-# 
-# ncep[, c(vars.z) := lapply(.SD, Anomaly), by = .(lat, lev, date), .SDcols = -"lon"]
-# saveRDS(ncep, "DATA/NCEP/ncep.vars.Rds")
-ncep <- readRDS("DATA/NCEP/ncep.vars.Rds")
+```{r read_ncep}
+ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean_sub.nc", vars = c(gh = "hgt"))
+setnames(ncep, "level", "lev")
+ncep[, t := ReadNetCDF("DATA/NCEP/air.mon.mean_sub.nc", out = "vector")]
+ncep[, u := ReadNetCDF("DATA/NCEP/uwnd.mon.mean_sub.nc", out = "vector")]
+ncep[, v := ReadNetCDF("DATA/NCEP/vwnd.mon.mean_sub.nc", out = "vector")]
 
-```
-```{r ncep_anomalies}
+vars <- c("gh", "t", "u", "v")
+vars.z <- paste0(vars, ".z")
+
 ncep.mean <- ncep[, lapply(.SD, mean), 
                   by = .(lat, lon, lev, month(date))]
 
+ncep.mean <- ncep.mean[, c(vars.z) := lapply(.SD, Anomaly), 
+                       by = .(lat, lev, month), 
+                       .SDcols = -"lon"]
+
 ncep.mean.season <- ncep.mean[, lapply(.SD, mean), 
-                              by = .(lon, lat, lev, season(month))]
+                              by = .(lon, lat, lev, season = AssignSeason(month))]
 ```
 
 # Introducción
@@ -167,7 +163,7 @@ wave[, k := factor(k, levels = c("campo", 1:3))]
 ```
 
 
-```{r fourier_ejemplo_ondas, fig.cap = "Ejemplo fourier", fig.class = "halfwidth"}
+```{r fourier_ejemplo_ondas, fig.cap = "Ejemplo fourier"}
 binwidth <- 20
 ggplot(RepeatLon(wave), aes(lon, lat)) +
     stat_contour_fill(aes(z = gh.z), 
@@ -205,7 +201,26 @@ PeriodicWavelet <- function(x, k) {
 }
 ```
 
-```{r wavelet_latitudes}
+```{r wavelet_campo1}
+ncep[, gh.z := Anomaly(gh), by = .(lat, lev, date)]
+
+ggplot(RepeatLon(ncep[lev == 300 & date == as.Date("2008-09-01")]), 
+       aes(lon, lat)) +
+    # stat_contour(aes(z = gh.z)) +
+        geom_contour(aes(z = gh.z, linetype = factor(-sign(..level..), 
+                                                     levels = c(1, -1))),
+    binwidth = 50, color = "black", size = 0.3) +
+    map.SH +
+    geom_hline(yintercept = c(-60, -45), linetype = 3) +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_x_longitude() +
+    # scale_fill_divergent(name = "Anomalía zonal de altura geopotencial") +
+    scale_linetype_discrete(guide = "none") +
+    coord_polar()
+```
+
+
+```{r wavelet_60S}
 test <- ncep[lev == 300 & date == as.Date("2008-09-01") & lat %~% -60]
 test.1 <- copy(test)
 test.2 <- copy(test)
@@ -222,7 +237,12 @@ ampl <- as.data.table(melt(ampl))
 ampl[, period := period*dlon]
 ampl1 <- ampl[Between(lon, c(0, 360), include = c(T, F))]
 ampl1[, lat := -60]
+```
 
+
+Wavelet en -45
+
+```{r wavelet_45S, fig.cap = "Wavelets "}
 test <- ncep[lev == 300 & date == as.Date("2008-09-01") & lat %~% -45]
 test.1 <- copy(test)
 test.2 <- copy(test)
@@ -240,23 +260,6 @@ ampl[, period := period*dlon]
 ampl2 <- ampl[Between(lon, c(0, 360), include = c(T, F))]
 ampl2[, lat := -45]
 ampl <- rbind(ampl1, ampl2)
-```
-
-
-```{r wavelet_ejemplo, fig.show = "hold", fig.cap = "Wavelets", fig.class = "halfwidth", fig.subcap = c("Campo", "Análisis de Wavelets en círculos de latitud señalados.")}
-ggplot(RepeatLon(ncep[lev == 300 & date == as.Date("2008-09-01")]), 
-       aes(lon, lat)) +
-    # stat_contour(aes(z = gh.z)) +
-        geom_contour(aes(z = gh.z, linetype = factor(-sign(..level..), 
-                                                     levels = c(1, -1))),
-    binwidth = 50, color = "black", size = 0.3) +
-    map.SH +
-    geom_hline(yintercept = c(-60, -45), linetype = 3) +
-    scale_y_latitude(limits = c(-90, 0)) +
-    scale_x_longitude() +
-    # scale_fill_divergent(name = "Anomalía zonal de altura geopotencial") +
-    scale_linetype_discrete(guide = "none") +
-    coord_polar()
 
 ggplot(ampl, aes(lon, 360/period)) +
     # geom_tile(aes(fill = value)) +
@@ -268,9 +271,10 @@ ggplot(ampl, aes(lon, 360/period)) +
     scale_x_longitude(name = "longitud") +
     geom_hline(yintercept = 3, linetype = 3, alpha = 0.4) +
     scale_fill_viridis_c(name = "", guide = guide_colorbar_bottom()) +
-    facet_wrap(~lat, ncol = 2, labeller = labeller(lat = AddPreffix("Latitud: ")))
+    facet_wrap(~lat, labeller = labeller(lat = AddPreffix("Latitud: ")))
     
 ```
+
 
 Cosas para ver:    
     Cambio en el máximo. Localización en vez de un número para cada latitud. 
@@ -281,7 +285,7 @@ ncep.wv <- ncep[, .(lon = lon, gh.z = gh.z,
                 by = .(lat, lev, date)]
 ```
 
-```{r ejemplo_wavelets, fig.class = "halfwidth", fig.cap = "Amplitud wavelet"}
+```{r ejemplo_wavelets}
 ggplot(RepeatLon(ncep.wv[date == as.Date("2008-09-01") & lev == 300]), 
        aes(lon, lat)) +
     stat_contour_fill(aes(z = amplitude)) +
