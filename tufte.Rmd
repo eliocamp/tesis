@@ -7,6 +7,7 @@ output:
   tufte::tufte_book:
     citation_package: natbib
     latex_engine: xelatex
+    keep_tex: yes
 bibliography: skeleton.bib
 link-citations: yes
 ---

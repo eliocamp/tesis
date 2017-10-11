@@ -807,3 +807,10 @@ yearmonth <- function(date, day = 1) {
    years <- lubridate::year(date)
    lubridate::ymd(paste(years, months, day, sep = "-"))
 }
+
+
+geom_index.region <- function(data) {
+    geom_rect(data = data, aes(xmin = latmin, xmax = latmax,
+                               ymin = levmin, ymax = levmax),
+              inherit.aes = F, linetype = 3, color = "black", fill = NA)
+}

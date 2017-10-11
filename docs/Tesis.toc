@@ -1,0 +1,30 @@
+\select@language {spanish}
+\contentsline {chapter}{\numberline {1}Introducción}{5}{chapter.1}
+\contentsline {chapter}{\numberline {2}Métodos y Materiales}{7}{chapter.2}
+\contentsline {section}{\numberline {2.1}Conceptos básicos}{7}{section.2.1}
+\contentsline {section}{\numberline {2.2}Fuentes de datos}{7}{section.2.2}
+\contentsline {section}{\numberline {2.3}Descripción de SPEEDY}{7}{section.2.3}
+\contentsline {chapter}{\numberline {3}Climatología observada}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Altura geopotencial}{9}{section.3.1}
+\contentsline {section}{\numberline {3.2}Temperatura}{9}{section.3.2}
+\contentsline {section}{\numberline {3.3}Viento zonal}{10}{section.3.3}
+\contentsline {section}{\numberline {3.4}Viento meridional}{10}{section.3.4}
+\contentsline {section}{\numberline {3.5}Gradiente meridional de vorticidad absoluta}{12}{section.3.5}
+\contentsline {section}{\numberline {3.6}Ondas Quasiestacionarias}{12}{section.3.6}
+\contentsline {chapter}{\numberline {4}Onda 3}{13}{chapter.4}
+\contentsline {section}{\numberline {4.1}Características típicas}{13}{section.4.1}
+\contentsline {section}{\numberline {4.2}Creación del índice}{13}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Antecedentes}{13}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Propio}{14}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}Composición de campos}{14}{section.4.3}
+\contentsline {section}{\numberline {4.4}Descripción de la Fase}{14}{section.4.4}
+\contentsline {section}{\numberline {4.5}Análisis dinámica de septiembre}{14}{section.4.5}
+\contentsline {section}{\numberline {4.6}Fuentes de variabilidad interna}{14}{section.4.6}
+\contentsline {section}{\numberline {4.7}Fuentes externas}{14}{section.4.7}
+\contentsline {chapter}{\numberline {5}Experimentos}{17}{chapter.5}
+\contentsline {section}{\numberline {5.1}Validación SPEEDY}{17}{section.5.1}
+\contentsline {section}{\numberline {5.2}Comparación}{17}{section.5.2}
+\contentsline {section}{\numberline {5.3}Cosas inesperadas\ldots {}}{17}{section.5.3}
+\contentsline {chapter}{\numberline {6}Conclusiones}{19}{chapter.6}
+\contentsline {chapter}{\numberline {7}Agradecimientos}{21}{chapter.7}
+\contentsline {chapter}{\numberline {8}Referencias}{23}{chapter.8}

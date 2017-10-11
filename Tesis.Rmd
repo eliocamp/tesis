@@ -4,13 +4,17 @@ subtitle: "Una tesis"
 author: "Elio Campitelli"
 date: ""
 lang: es-AR
-bibliography: [Papers/Biblio.bib, packages.bib]
-geometry: "left = 3cm, right = 2cm, top = 2.5cm, bottom = 2.5cm"
+bibliography: [Papers/Biblio.bib, Papers/packages.bib]
+geometry: "inner = 3cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm, marginparwidth = 4.5cm, marginparsep = 3mm"
 documentclass: book
+classoption: a4paper
+knit: (function(file, encoding, ...) {
+    rmarkdown::render(file, encoding = encoding, 
+                output_dir = "docs/")})
 output:
     pdf_document:
-      fig_height: 10
-      fig_width: 8
+      fig_height: 3
+      fig_width: 6
       keep_tex: yes
       latex_engine: xelatex
       number_sections: yes
@@ -19,6 +23,7 @@ output:
 header-includes: 
     - \linespread{1.25}
     - \usepackage{subfig}
+    - \usepackage{marginnote}
 #   - \usepackage[nomarkers,figuresonly]{endfloat}
 link-citations: yes
 ---
@@ -27,7 +32,8 @@ link-citations: yes
 knitr::opts_chunk$set(tidy = FALSE,
                       echo = FALSE, 
                       cache = TRUE, 
-                      cache.lazy = TRUE,
+                      force.cap = TRUE,
+                      # cache.lazy = TRUE,
                       cache.path = "cache/tesis/",
                       fig.path = "fig/tesis/",
                       warning = FALSE)
@@ -39,7 +45,7 @@ library(metR)
 library(WaveletComp)
 
 knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp"), 
-                 file = "packages.bib")
+                 file = "Papers/packages.bib")
 
 source("scripts/helperfun.R")
 source("scripts/geom_contourlabel.R")
@@ -56,15 +62,33 @@ pres.mean <- rbind(data.table(lat = 0.0, pres = Inf),
                    data.table(lat = -90.0, pres = Inf))
 surface <- geom_polygon(data = pres.mean, aes(y = pres), fill = "white", 
                         alpha = 0.5, color = "gray30", size = 0.5)
+pres <- pres[, .(pres = mean(pres)), by = .(lon, lat)]
 
-theme_elio <- theme_minimal(base_size = 9) +
-    theme(legend.position = "bottom")
+theme_elio <- theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", legend.box = "vertical",
+          panel.spacing = unit(5, "mm"),
+          legend.spacing = unit(2, "mm"),
+          plot.margin = grid::unit(rep(3, 4), "mm"),
+          legend.title = element_blank())
 theme_set(theme_elio)
 
+geom_contour_fine <- function(...) geom_contour(..., size = 0.4)
 
 ## Hooks.
 
-DefineHook <- function(class.opts) {
+## Force captions
+plot_hook <- knitr::knit_hooks$get("plot")
+knitr::knit_hooks$set(
+    plot = function(x, options) {
+        if (options$force.cap == TRUE & is.null(options$fig.cap)) {
+            stop("All figures must have captions.")
+        } else {
+            plot_hook(x, options)
+        }
+    })
+
+## Figure classes
+DefineClass <- function(class.opts) {
     class.name <- deparse(substitute(class.opts))
     class.fun <- function(options) {
         class <- options[[class.name]]
@@ -77,20 +101,38 @@ DefineHook <- function(class.opts) {
     ))
 }
 
+page.width <- 210 - 30 - 30
+text.width <- page.width - 20
+text.height <- page.height <- 297 - 25 - 25
+
 fig.class <- list(
+    pagewidth = list(
+        fig.width = page.width/25.4,
+        out.width = paste0(page.width, "mm"),
+        # fig.align = "center",
+        fig.env = "figure*",
+        out.extra = " "
+    ),
+    textwidth = list(
+        fig.width = text.width/25.4,
+        out.width = paste0(text.width, "mm"),
+        fig.env = "figure",
+        fig.align = "center"
+    ),
     fullpage = list(
-        fig.width = 11,
-        fig.height = 8,
-        out.height = "\\textwidth",
-        out.width = "0.9\\textheight",
+        fig.width = (page.height - 20)/25.4,
+        fig.height = page.width/25.4,
+        out.width = paste0(page.height - 20, "mm"),
         fig.align = "center",
-        fig.fullwidth = TRUE,
-        out.extra = "angle=90"),
-    halfwidth = list(
-        fig.width = 4,
-        out.width = "0.48\\textwidth",
-        fig.align = "center"),
+        out.extra = "angle=90"
+    ),
     halfpage = list(
+        # out.width = "7.3cm",
+        fig.width = (page.width/2)/25.4,
+        out.width = paste0(page.width/2, "mm")
+    ),
+    
+    medium = list(
         fig.width = 8,
         fig.height = 4,
         # out.width = "\\textwidth",
@@ -98,7 +140,7 @@ fig.class <- list(
         fig.align = "center")
 )
 
-DefineHook(fig.class)
+DefineClass(fig.class)
 ```
 
 Resumen.
@@ -116,8 +158,8 @@ Resumen.
 # ncep[, c(vars.z) := lapply(.SD, Anomaly), by = .(lat, lev, date), .SDcols = -"lon"]
 # saveRDS(ncep, "DATA/NCEP/ncep.vars.Rds")
 ncep <- readRDS("DATA/NCEP/ncep.vars.Rds")
-
 ```
+
 ```{r ncep_anomalies}
 ncep.mean <- ncep[, lapply(.SD, mean), 
                   by = .(lat, lon, lev, month(date))]
@@ -129,11 +171,11 @@ ncep.mean.season <- ncep.mean[, lapply(.SD, mean),
 # Introducción
 
 * Antecedentes    
-     Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre las climatologías disponibles y sus limitaciones. 
+Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre las climatologías disponibles y sus limitaciones. 
 * Objetivo General
 * Objetivo particular 
 
-Esto es para probar una referencia bibliográfica: @Vera2004
+Esto es para probar una referencia bibliográfica: \cite{@Vera2004}
 
 # Métodos y Materiales
 
@@ -160,50 +202,35 @@ wave[, gh.z := Anomaly(gh), by = .(lat)][
 
 lons <- unique(ncep$lon)
 qs.wave <- ncep.qs[date == select.date & lev == 300 & k < 4, .(lon = lons, 
-                       gh.z = amplitude*cos(k*(lons*pi/180 - phase))),
+                                                               gh.z = amplitude*cos(k*(lons*pi/180 - phase))),
                    by = .(lat, date, k)]
 wave <- rbind(wave[, -c("gh")], qs.wave)
 wave[, k := factor(k, levels = c("campo", 1:3))]
 ```
 
 
-```{r fourier_ejemplo_ondas, fig.cap = "Ejemplo fourier", fig.class = "halfwidth"}
+```{r fourier-ejemplo-ondas, fig.class = "pagewidth", fig.cap = "Ejemplo fourier"}
 binwidth <- 20
 ggplot(RepeatLon(wave), aes(lon, lat)) +
     stat_contour_fill(aes(z = gh.z), 
                       binwidth = binwidth, size = 0.5) +
     map.SH +
     scale_s_map() +
-    scale_fill_divergent(name = "Amplitud", 
+    scale_fill_divergent(name = "", 
                          binwidth = binwidth, 
                          guide = guide_colorbar_bottom()) +
-    facet_wrap(~ k) +
+    theme(axis.title = element_blank()) +
+    facet_wrap(~ k, ncol = 4) +
     coord_polar()
 ```
 
-Cosas para ver:    
-   Descripción del "rol" de cada número de onda en generar el campo final. 
-   La onda 1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean contínuos.
+Cosas para ver de \autoref{fig:fourier-ejemplo-ondas}:   
+Descripción del "rol" de cada número de onda en generar el campo final. 
+La onda 1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean contínuos.
 
 
 * Wavelets 
 
-
-```{r periodicwavelet}
-PeriodicWavelet <- function(x, k) {
-    period <- length(x)/k
-    x1 <- rep(x, 3)
-    keep <- (length(x)+1):(2*length(x))
-    res <- list()
-    for (p in seq_along(period)) {
-        w <- WaveletComp::WaveletTransform(x1, dt = 1, upperPeriod = period[p], 
-                                           lowerPeriod = period[p])
-        res[[paste0("k", ".", k[p])]] <- w$Ampl[keep]*sd(x)
-        
-    }
-    return(res)
-}
-```
 
 ```{r wavelet_latitudes}
 test <- ncep[lev == 300 & date == as.Date("2008-09-01") & lat %~% -60]
@@ -216,7 +243,7 @@ test.a <- rbind(test.1, test, test.2)
 dlon <- diff(ncep$lon[1:2])
 w <- WaveletComp::WaveletTransform(test.a$gh.z, dt = 1, upperPeriod = 360/dlon)
 
-ampl <- w$Ampl
+ampl <- w$Ampl*sd(test.a$gh.z)
 dimnames(ampl) <- list(period = w$Period, lon = test.a$lon)
 ampl <- as.data.table(melt(ampl))
 ampl[, period := period*dlon]
@@ -233,69 +260,71 @@ test.a <- rbind(test.1, test, test.2)
 dlon <- diff(ncep$lon[1:2])
 w <- WaveletComp::WaveletTransform(test.a$gh.z, dt = 1, upperPeriod = 360/dlon)
 
-ampl <- w$Ampl
+ampl <- w$Ampl*sd(test.a$gh.z)
 dimnames(ampl) <- list(period = w$Period, lon = test.a$lon)
 ampl <- as.data.table(melt(ampl))
 ampl[, period := period*dlon]
 ampl2 <- ampl[Between(lon, c(0, 360), include = c(T, F))]
 ampl2[, lat := -45]
 ampl <- rbind(ampl1, ampl2)
+
+ncep.wv <- ncep[date == as.Date("2008-09-01") & lev == 300, 
+                .(lon = lon, gh.z = gh.z, 
+                  amplitude = unlist(PeriodicWavelet(gh, 3))), 
+                by = .(lat, lev, date)]
 ```
 
 
-```{r wavelet_ejemplo, fig.show = "hold", fig.cap = "Wavelets", fig.class = "halfwidth", fig.subcap = c("Campo", "Análisis de Wavelets en círculos de latitud señalados.")}
-ggplot(RepeatLon(ncep[lev == 300 & date == as.Date("2008-09-01")]), 
+```{r wavelet_ejemplo, fig.show = "hold", fig.env = "figure*", fig.height = 70/25.4, fig.cap = "Wavelets", fig.class = "halfpage", fig.subcap = c("Campo", "Análisis de Wavelets en círculos de latitud señalados.")}
+# ggplot(RepeatLon(ncep[lev == 300 & date == as.Date("2008-09-01")]), 
+#        aes(lon, lat)) +
+#     # stat_contour(aes(z = gh.z)) +
+#     stat_contour_fill(aes(z = gh.z), exclude = 0,
+#                  binwidth = 75, size = 0.3) +
+#     map.SH +
+#     geom_hline(yintercept = c(-60, -45), linetype = 3) +
+#     scale_y_latitude(limits = c(-90, 0)) +
+#     scale_x_longitude() +
+#     scale_fill_divergent(breaks = MakeBreaks(75, exclude = 0),
+#                          guide = guide_colorbar_bottom(15)) +
+#     coord_polar() 
+ggplot(RepeatLon(ncep.wv[date == as.Date("2008-09-01") & lev == 300]), 
        aes(lon, lat)) +
-    # stat_contour(aes(z = gh.z)) +
-        geom_contour(aes(z = gh.z, linetype = factor(-sign(..level..), 
-                                                     levels = c(1, -1))),
-    binwidth = 50, color = "black", size = 0.3) +
+    stat_contour_fill(aes(z = gh.z), exclude = 0,
+                      binwidth = 75, size = 0.3) +
+    stat_contour(aes(z = amplitude, color = ..level..), 
+                 binwidth = 15, size = 0.4) +
+    geom_hline(yintercept = -60, linetype = 2) +
+    geom_hline(yintercept = -45, linetype = 2) +
     map.SH +
-    geom_hline(yintercept = c(-60, -45), linetype = 3) +
     scale_y_latitude(limits = c(-90, 0)) +
     scale_x_longitude() +
-    # scale_fill_divergent(name = "Anomalía zonal de altura geopotencial") +
-    scale_linetype_discrete(guide = "none") +
+    scale_color_viridis_c(name = "Amplitud de onda 3", 
+                          breaks = MakeBreaks(25, 0),
+                          guide = "none") +
+    scale_fill_divergent(guide = guide_colorbar_bottom(15),
+                         breaks = MakeBreaks(binwidth = 50)) +
+    theme(axis.title = element_blank()) +
+    scale_linetype_discrete(name = "Anomalía zonal de geopotencial", drop = T) +
     coord_polar()
 
 ggplot(ampl, aes(lon, 360/period)) +
     # geom_tile(aes(fill = value)) +
-    stat_contour_fill(aes(z = value), binwidth = 0.15) +
+    stat_contour(aes(z = value, color = ..level..), binwidth = 15) +
     # geom_contour(aes(z = pval), breaks = c(0.001), color = "black") +
     scale_y_continuous(name = "Número de onda zonal", 
                        breaks = 1:10, limits = c(NA, 5), 
                        expand = c(0, 0)) +
     scale_x_longitude(name = "longitud") +
     geom_hline(yintercept = 3, linetype = 3, alpha = 0.4) +
-    scale_fill_viridis_c(name = "", guide = guide_colorbar_bottom()) +
+    scale_color_viridis_c(breaks = MakeBreaks(15),
+                          guide = guide_colorbar_bottom(15)) +
     facet_wrap(~lat, ncol = 2, labeller = labeller(lat = AddPreffix("Latitud: ")))
-    
 ```
 
 Cosas para ver:    
-    Cambio en el máximo. Localización en vez de un número para cada latitud. 
+Cambio en el máximo. Localización en vez de un número para cada latitud. \marginnote{Notar que en la amplitud está normalizada en el primer ejemplo pero no lo está en el segundo.}
 
-```{r wavelets_calc}
-ncep.wv <- ncep[, .(lon = lon, gh.z = gh.z, 
-                  amplitude = unlist(PeriodicWavelet(gh, 3))), 
-                by = .(lat, lev, date)]
-```
-
-```{r ejemplo_wavelets, fig.class = "halfwidth", fig.cap = "Amplitud wavelet"}
-ggplot(RepeatLon(ncep.wv[date == as.Date("2008-09-01") & lev == 300]), 
-       aes(lon, lat)) +
-    stat_contour_fill(aes(z = amplitude)) +
-    geom_contour(aes(z = gh.z, linetype = factor(-sign(..level..), levels = c(1, -1))),
-    binwidth = 50, color = "black", size = 0.3) +
-    geom_hline(yintercept = -60, linetype = 3) +
-    geom_hline(yintercept = -45, linetype = 3) +
-    map.SH +
-    scale_y_latitude(limits = c(-90, 0)) +
-    scale_x_longitude() +
-    scale_fill_viridis_c(name = "Amplitud de onda 3") +
-    scale_linetype_discrete(name = "Anomalía zonal de geopotencial", drop = T) +
-    coord_polar()
-```
 
 ## Fuentes de datos
 
@@ -303,13 +332,13 @@ ggplot(RepeatLon(ncep.wv[date == as.Date("2008-09-01") & lev == 300]),
 
 # Climatología observada
 
-### Altura geopotencial
+## Altura geopotencial
 
 Campo medio:
 
 ```{r gh_campo_medio_ncep, fig.class = "fullpage", fig.cap = "Altura geopotencial."}
 plot.levs <- c(500, 300, 200, 100, 50)
-binwidth <- 250
+binwidth <- 2500
 ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     stat_contour(aes(z = gh), binwidth = binwidth, color = "black", size = 0.5) +
     map.SH +
@@ -366,7 +395,7 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
 
 Corte zonal en -60°
 
-```{r gh_zonal65_ncep, fig.class = "halfpage", fig.cap = "Corte zonal de anomalía de geopotencial en -65°."}
+```{r gh_zonal65_ncep, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de geopotencial en -65°."}
 binwidth <- 60
 ggplot(RepeatLon(ncep.mean.season[lat %~% cutlat]), aes(lon, lev)) +
     stat_contour_fill(aes(z = gh.z), binwidth = binwidth, exclude = 0) +
@@ -381,7 +410,7 @@ Complementa la figura anterior.
 
 Desvío estándar por círculo de latitud:
 
-```{r gh_sd_ncep, fig.class = "halfpage"}
+```{r gh_sd_ncep, fig.class = "textwidth", fig.cap = "Desvío estándar por círculo de latitud."}
 binwidth <- 15
 ncep.mean[lev %in% plot.levs & lev != 50, .(sd = sd(gh.z)), by = .(lat, lev, month)] %>% 
     ggplot(aes(month, lat)) +
@@ -389,8 +418,8 @@ ncep.mean[lev %in% plot.levs & lev != 50, .(sd = sd(gh.z)), by = .(lat, lev, mon
                  size = 0.3) +
     # geom_contour(aes(z = sd), binwidth = binwidth) +
     scale_color_viridis_c(name = "Desvío estándar de Z* por círculo de latitud",
-                         breaks = MakeBreaks(binwidth),
-                         guide = guide_colorbar_bottom(25)) +
+                          breaks = MakeBreaks(binwidth),
+                          guide = guide_colorbar_bottom(25)) +
     scale_y_latitude(name = "latitud") +
     scale_x_continuous(name = "mes", breaks = 1:12, labels = month.abb_sp, 
                        expand = c(0, 0)) +
@@ -400,16 +429,17 @@ ncep.mean[lev %in% plot.levs & lev != 50, .(sd = sd(gh.z)), by = .(lat, lev, mon
 Cosas para ver:    
 Latitud de mayor actividad de onda. Máximo en octubre en 300 hPa. Más adelante, se hace la misma figura pero con el desvío estándar asociado a cada número de onda. 
 
-### Temperatura
+## Temperatura
 
-```{r temp_media_ncep, fig.class = "fullpage"}
+```{r temp_media_ncep, fig.class = "fullpage", fig.cap = "Temperatura media."}
 binwidth <- 5
 ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], aes(lon, lat)) +
-    geom_contour(aes(z = t), binwidth = binwidth, color = "black",
-                 size = 0.3) +
+    geom_contour(aes(z = t), binwidth = binwidth, color = "black") +
     geom_contourlabel(aes(z = t), binwidth = binwidth,
                       size = 1.6) +
+    geom_tile(data = pres[, lev := 850][pres < 850], fill = "white") +
     map.SH +
+    scale_s_map() +
     # scale_color_viridis_c(name = "T", guide = guide_colorbar_bottom(25), 
     # breaks = MakeBreaks(binwidth)) +
     coord_quickmap() +
@@ -420,23 +450,22 @@ Cosas para ver:
 Gradiente muy pequeño en 200 hPa. Gradiente inverso en estratósfera. Núcleo cálido en ~50° (que se va a ver mejor en la anomalía zonal). Temperaturas frías en altas y bajas latitudes pero relativamente cálidas en ~50° en 100 hPa.
 
 
-```{r temp_corte_ncep, fig.class = "halfpage"}
+```{r temp_corte_ncep, fig.class = "textwidth", fig.cap = "Corte meridional de temperatura media."}
 binwidth <- 5
 ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
        aes(lat, lev)) +
-    stat_contour(aes(z = t, color = ..level..)) +
+    geom_contour_fine(aes(z = t, color = ..level..)) +
     surface +
     scale_y_level(breaks = plot.levs, minor_breaks = NULL) + 
     scale_x_latitude(name = "latitud", trans = "reverse") +
     scale_color_viridis_c(name = "Temperatura media zonal", 
-                         breaks = MakeBreaks(binwidth), 
-                         guide = guide_colorbar_bottom()) +
+                          breaks = MakeBreaks(binwidth), 
+                          guide = guide_colorbar_bottom()) +
     facet_wrap(~season)
 ```
 
 
-
-```{r temp_zonal_ncep, fig.class = "fullpage"}
+```{r temp_zonal_ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de temperatura."}
 binwidth <- 1
 ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
@@ -452,7 +481,7 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
 
 Corte zonal en -60°
 
-```{r t_zonal65_ncep, fig.class = "halfpage", fig.cap = "Corte zonal de anomalía de temperatura en -65°."}
+```{r t_zonal65_ncep, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de temperatura en -65°."}
 binwidth <- 1
 ggplot(RepeatLon(ncep.mean.season[lat %~% cutlat]), aes(lon, lev)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
@@ -469,9 +498,9 @@ Coincidencia entre la onda estacionaria 1 en gh y de t (en primavera).
 Propuesta: combinar mapa de T y T*
 
 
-### Viento zonal
+## Viento zonal
 
-```{r u_medio_corte_ncep, fig.class = "halfpage", fig.cap = "Viento zonal medio."}
+```{r u_medio_corte_ncep, fig.class = "textwidth", fig.cap = "Viento zonal medio."}
 ncep.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>% 
     ggplot(aes(lat, lev)) +
     geom_contour(aes(z = u, color = ..level..), binwidth = 15) +
@@ -493,7 +522,7 @@ Campo medio:
 
 ```{r u_medio_ncep, fig.class = "fullpage", fig.cap = "Viento zonal."}
 ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
-    geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.5) +
+    geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.7) +
     geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
     geom_contourlabel(aes(z = u, color = ..level..), binwidth = 15, step = 1,
                       size = 3, vjust = "inward", hjust = "inward") +
@@ -531,13 +560,13 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
 
 Cosas para ver (ambos):   
 
-### Viento meridional
+## Viento meridional
 
 Campos medios.
 
 Corte meridional (v medio zonal):
 
-```{r v_corte_ncep, fig.class = "halfpage", fig.cap = "Media zonal del viento meridional."}
+```{r v_corte_ncep, fig.class = "textwidth", fig.cap = "Media zonal del viento meridional."}
 binwidth <- 0.5
 ggplot(ncep.mean.season[lev >= 30, .(v = mean(v)), by = .(lat, lev, season)],
        aes(lat, lev)) +
@@ -576,7 +605,7 @@ No mucha actividad salvo por la onda 1 en niveles altos (consistente con la onda
 
 Anomalía zonal:
 
-```{r}
+```{r v_anomal_ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de viento meridional."}
 binwidth <- 5
 ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     geom_contour(aes(z = v.z, color = ..level..), binwidth = binwidth, size = 0.5) +
@@ -594,28 +623,31 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
 
 Es básicamente igual. No poner gráfico pero aclarar que es no hay casi diferencia ya que la media zonal es casi cero en casi todo el dominio. 
 
-### Gradiente meridional de vorticidad absoluta
+## Gradiente meridional de vorticidad absoluta
 
-```{r eta_calc_ncep, fig.class = "fullpage"}
+```{r eta_calc_ncep}
 ncep.mean.season[, `:=`("v.dx" = Derivate(v ~ lon + lat, bc = c("cyclic", "none"), 
-                               sphere = TRUE)[[1]],
-             "u.dyy" = Derivate(u ~ lon + lat, order = 2, 
-                                bc = c("cyclic", "none"), 
-                                sphere = TRUE)[[2]],
-             "beta" = beta(lat)),
-      by = .(lev, season)][
-          , v.dxdy := Derivate(v.dx ~ lon + lat, bc = c("cyclic", "none"),
-                           sphere = TRUE)[[2]], 
-      by = .(lev, season)]
+                                          sphere = TRUE)[[1]],
+                        "u.dyy" = Derivate(u ~ lon + lat, order = 2, 
+                                           bc = c("cyclic", "none"), 
+                                           sphere = TRUE)[[2]],
+                        "beta" = beta(lat)),
+                 by = .(lev, season)][
+                     , v.dxdy := Derivate(v.dx ~ lon + lat, bc = c("cyclic", "none"),
+                                          sphere = TRUE)[[2]], 
+                     by = .(lev, season)]
 
 ncep.mean.season[, eta.dy := beta + v.dxdy - u.dyy]
+ncep.mean.season <- ncep.mean.season
+```
 
+```{r eta-dy-ncep, fig.class = "fullpage", fig.cap = "Gradiente meridional de vorticidad absoluta."}
 binwidth <- 1e-11
 ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs & lat > -85]), aes(lon, lat)) +
     stat_contour_fill(aes(z = eta.dy), binwidth = binwidth) +
     stat_contour_fill(aes(z = eta.dy), breaks = 0, 
                       fill = "grey50", alpha = 0.5, complete = FALSE) +
-    geom_contour(aes(z = eta.dy), breaks = 0, color = "black", size = 0.5) +
+    geom_contour_fine(aes(z = eta.dy), breaks = 0, color = "black") +
     # stat_contour(aes(z = eta.dy), breaks = 0, geom = "polygon",
     # fill = "grey50", alpha = 0.5) +
     map.SH +
@@ -629,23 +661,47 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs & lat > -85]), aes(lon, lat
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab))
 ```
 
+
 Cosas para ver:    
 Máximos asociado con los flancos del jet. Zona "prohibida" en 200 y 300 hPa. 
 
-### Ondas Quasiestacionarias
+## Función corriente
+
+```{r read_psi}
+stream <- ReadNetCDF("DATA/NCEP/stream.mon.mean.nc") %>% 
+    setnames("level", "lev") %>% 
+    .[lat <= 0]
+stream[, psi.z := Anomaly(psi), by = .(lat, date)]
+stream.mean.season <- stream[, .(psi = mean(psi),
+                                 psi.z = mean(psi.z)), 
+                             by = .(lon, lat, lev, season(date))]
+```
+
+```{r psi_ncep,  fig.class = "pagewidth", fig.cap = "Función corriente x 1099"}
+ggplot(stream.mean.season, aes(lon, lat)) +
+    stat_contour_fill(aes(z = psi.z*10^-9), binwidth = 0.005, 
+                      complete = FALSE, exclude = 0) +
+    geom_contour_fine(aes(z = psi*10^(-9)), color = "black", binwidth = 0.02) +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(breaks = MakeBreaks(0.005, 0), 
+                         guide = guide_colorbar_bottom(15)) +
+    facet_wrap(~season, ncol = 2) +
+    theme(axis.title = element_blank()) + 
+    coord_quickmap()
+```
+
+## Ondas Quasiestacionarias
 
 * Fourier
 
-```{r r2_qs_ncep, fig.class = "halfpage"}
+```{r r2_qs_ncep, fig.class = "textwidth", fig.cap = "$R^2$ de Fourier."}
 binwidth <- 0.1
+
 rect.annotation <- data.frame(latmin = -65, latmax = -40,
                               levmin = 100, levmax = 700, 
                               k = 3)
-geom_index.region <- function() {
-    geom_rect(aes(xmin = latmin, xmax = latmax, ymin = levmin, ymax = levmax),
-              data = rect.annotation, inherit.aes = F, linetype = 3,
-              fill = NA, color = "black", size = 0.4) 
-}
+
 r2.mean <- ncep.qs[, .(r2 = mean(r2)), 
                    by = .(lat, lev, k, season = AssignSeason(month(date)))]
 
@@ -663,7 +719,7 @@ ggplot(r2.mean, aes(lat, lev)) +
     # geom_rect(aes(xmin = latmin, xmax = latmax, ymin = levmin, ymax = levmax),
     #           data = rect.annotation, inherit.aes = F,
     #           fill = NA, color = "black", size = 0.4) +
-    geom_index.region() +
+    geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = expression(R^2), limits = c(0, 1),
                          breaks = MakeBreaks(binwidth), 
                          guide = guide_colorbar_bottom(),
@@ -677,7 +733,7 @@ ggplot(r2.mean, aes(lat, lev)) +
 Cosas para ver:    
 Estructura. Zona donde onda 3 explica más que la onda 1 (zona marcada en negro) 
 
-```{r ampl_qs_ncep, fig.class = "halfpage"}
+```{r ampl_qs_ncep, fig.class = "textwidth", fig.cap = "Ampllitud de Fourier."}
 
 ampl.mean <- ncep.qs[, .(amplitude = mean(amplitude)), 
                      by = .(lat, lev, k, season = AssignSeason(month(date)))]
@@ -686,7 +742,7 @@ ggplot(ampl.mean, aes(lat, lev)) +
     stat_contour_fill(aes(z = amplitude), 
                       breaks = breaks) +
     surface +
-    geom_index.region() +
+    geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = "Amplitud (escala logarítmica)", trans = "log2",
                          breaks = breaks,
                          labels = round(breaks, 1),
@@ -708,14 +764,14 @@ Onda 1 y 2 principalmente en estratósfera pero baja, salvo en verano. Onda 3 y 
 ```{r build_qs_ncep}
 lons <- unique(ncep$lon)
 qs.wave <- ncep.qs[k == 3, .(lon = lons, 
-                       QS3 = amplitude*cos(3*(lons*pi/180 - phase))),
+                             QS3 = amplitude*cos(3*(lons*pi/180 - phase))),
                    by = .(lat, lev, date)]
 qs.wave.season <- qs.wave[, .(mean = mean(QS3),
                               sd = sd(QS3)), 
                           by = .(lon, lat, lev, season = AssignSeason(month(date)))]
 ```
 
-```{r qs_teorico_ncep, fig.show = "hold", fig.class = "halfwidth", fig.cap = "Media de reconstrucción de onda 3."}
+```{r qs_teorico_ncep, fig.class = "pagewidth", fig.cap = "Media de reconstrucción de onda 3."}
 binwidth <- 10
 cutlat <- -52.5
 ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
@@ -728,7 +784,7 @@ ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
     scale_s_map() +
     scale_color_divergent(binwidth = binwidth, name = "QS3", exclude = 0,
                           guide = guide_colorbar_bottom(15)) +
-    facet_wrap(~season, ncol = 2) +
+    facet_wrap(~season, ncol = 3) +
     coord_quickmap()
 ```
 
@@ -738,7 +794,7 @@ Solo en 300 porque la estructura es barotrópica (no se gana mucho mirando vario
 Esto es el promedio de las ondas 3, pero es idéntico a la onda 3 del promedio. 
 
 
-```{r qs_teorico_corte_ncep, fig.class = "halfwidth", fig.cap = "Corte"}
+```{r qs_teorico_corte_ncep, fig.class = "pagewidth", fig.cap = "Corte"}
 ggplot(qs.wave.season[lat %~% cutlat], aes(lon, lev)) +
     # stat_contour_fill(aes(z = sd), binwidth = 10) +
     stat_contour(aes(z = mean, color = ..level..), binwidth = binwidth) +
@@ -746,13 +802,13 @@ ggplot(qs.wave.season[lat %~% cutlat], aes(lon, lev)) +
     scale_x_longitude(name = "longitud") +
     scale_color_divergent(binwidth = binwidth, name = "QS3", exclude = 0,
                           guide = guide_colorbar_bottom(15)) +
-    facet_wrap(~season)
+    facet_wrap(~season, ncol = 4) 
 ```
 
 Cosas para ver:    
 Estrucutra vertical barotrópica equivalente. Ciclo anual en la extensión vertical (se ve también en los cortes de amplitud). Aunque notar que en este corte la extensión en primavera parece la menor, pero de nuevo es por la variabilidad en la fase, ya que en el corte de amplitud se ve que la amplitud es mayor en altura incluso que en otoño. 
 
-```{r qs_teorico_sd_ncep, fig.show = "hold", fig.class = "halfwidth"}
+```{r qs_teorico_sd_ncep, fig.class = "pagewidth", fig.cap = "Desvío estándar de la reconstrucción de QS3."}
 binwidth <- 5
 cutlat <- -52.5
 ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
@@ -764,18 +820,18 @@ ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
     scale_s_map() +
     scale_color_viridis_c(name = "Desvío estándar de QS3", 
                           guide = guide_colorbar_bottom(15)) +
-    facet_wrap(~season, ncol = 2) +
+    facet_wrap(~season, ncol = 4) +
     coord_quickmap()
 ```
 
-```{r qs_teorico_sd_corte_ncep, fig.class = "halfwidth", fig.cap = "Corte sd"}
+```{r qs_teorico_sd_corte_ncep, fig.class = "pagewidth", fig.cap = "Corte sd"}
 ggplot(qs.wave.season[lat %~% cutlat], aes(lon, lev)) +
     stat_contour(aes(z = sd, color = ..level..), binwidth = binwidth) +
     scale_y_level(breaks = plot.levs) +
     scale_x_longitude(name = "longitud") +
     scale_color_viridis_c(name = "Desvío estándar de QS3",
                           guide = guide_colorbar_bottom(15)) +
-    facet_wrap(~season)
+    facet_wrap(~season, ncol = 4)
 ```
 
 No tengo idea de cómo interpretar esto...
@@ -784,15 +840,22 @@ No tengo idea de cómo interpretar esto...
 
 * Wavelets
 
+```{r wavelet_calc2}
+ncep.wv <- ncep[, 
+                .(lon = lon, gh.z = gh.z, 
+                  amplitude = unlist(PeriodicWavelet(gh, 3))), 
+                by = .(lat, lev, date)]
+```
 
-```{r wavelet_fourier_comp, fig.height = 4, fig.width = 8}
+
+```{r wavelet_fourier_comp, fig.class = "textwidth", fig.cap = "Amplitud de fourier y amplitud de wavelets (faaaaaltaaaaa)"}
 # binwidth <- 0.1
 ncep.wv[, .(amplitude = mean(amplitude)), 
         by = .(lat, lev, season = AssignSeason(month(date)))] %>% 
     ggplot(aes(lat, lev)) +
     stat_contour_fill(aes(z = amplitude), binwidth = 15) +
-    geom_contour(data = r2.mean[k == 3], aes(z = r2, color = ..level..), 
-                 binwidth = binwidth) +
+    geom_contour_fine(data = r2.mean[k == 3], aes(z = r2, color = ..level..), 
+                      binwidth = binwidth) +
     scale_fill_viridis_c(name = expression(R^2), 
                          guide = guide_colorbar_bottom()) +
     scale_color_viridis() +
@@ -806,50 +869,10 @@ ncep.wv[, .(amplitude = mean(amplitude)),
 
 Venajas y desventajas. Justificaicón de decisión. 
 
-Cosas que faltan:
- * Determinar bien qué significa la "amplitud" de wavelets. 
- * Como esa "amplitud" es parecido a r2 de fourier, buscar la verdadera ampliutud en wavelets. 
-
 
 ## Creación del índice
 
-Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la región del máximo (latitud entre -65 y -40, y entre 700 y 100 hPa). Variables posibles: amplitud, r2. Parámetros posibles: máximo, media. 
-
-
-```{r}
-# rect.annotation <- data.frame(xmin = -65, xmax = -40,
-# ymax = 700, ymin = 100,
-# k = 3)
-ncep.qs[, index.region := (lat %b% rect.annotation[1:2]) & 
-            (lev %b% c(30, 925))]
-ncep.qs[index.region == TRUE & k == 3, `:=`(max.ampl = max(amplitude),
-                                            mean.ampl = mean(amplitude)), 
-        by = .(date)]
-set.seed(42)
-ggplot(ncep.qs[index.region == TRUE & k == 3 &
-                   date %in% sample(date, 25)], aes(amplitude)) + 
-    geom_density() + 
-    geom_rug() +
-    geom_vline(aes(xintercept = max.ampl)) +
-    geom_vline(aes(xintercept = mean.ampl)) +
-    facet_wrap(~date)
-```
-
-```{r}
-binwidth <- 15
-set.seed(42)
-ggplot(ncep.qs[k == 3 &
-                   date %in% sample(date, 25)], aes(lat, lev)) + 
-    stat_contour_fill(aes(z = amplitude), binwidth = binwidth) +
-    geom_index.region() +
-    scale_y_level() +
-    scale_x_latitude(name = "latitud") +
-    scale_fill_viridis_c() +
-    facet_wrap(~date)
-```
-
-
-## Antecedentes
+### Antecedentes
 
 Breve comentario sobre los índices usados en otros lados. Discutir ventajas y debilidades.
 
@@ -858,12 +881,83 @@ Breve comentario sobre los índices usados en otros lados. Discutir ventajas y d
 
 De todo eso, motiva decisión del índice.
 
-## Índice propio
+### Propio
 
 * Niveles elegidos
 * Promedio vs. máximo
 * Composiciones de campos y flujos.
 * Decisión del índice. 
+
+Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la región del máximo (latitud entre -65 y -40, y entre 700 y 100 hPa). Variables posibles: amplitud, r2. Parámetros posibles: máximo, media. 
+
+```{r cleanup1}
+remove(ncep.wv)
+```
+
+
+```{r max_mean_compara, fig.show = "hold", fig.class = "textwidth", fig.cap = "Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.", fig.subcap = c("Discribución", "Corte vertical."), fig.ncol = 1}
+ncep.qs[, index.region := (lat %b% rect.annotation[1:2]) & 
+            (lev %b% c(30, 925))]
+max.mean <- ncep.qs[index.region == TRUE & k == 3, 
+                    .(max.ampl = max(amplitude),
+                      mean.ampl = mean(amplitude)), 
+                    by = .(date)]
+set.seed(44)
+select.dates <- sample(ncep.qs$date, 12)
+ggplot(ncep.qs[index.region == TRUE & k == 3 &
+                   date %in% select.dates], aes(amplitude)) + 
+    # geom_density() +
+    geom_vline(aes(xintercept = max.ampl), color = "red", size = 0.4,
+               data = max.mean[date %in% select.dates]) +
+    geom_vline(aes(xintercept = mean.ampl), color = "blue",
+               data = max.mean[date %in% select.dates]) +
+    geom_step(stat = "bin", binwidth = 5, boundary = 0) +
+    geom_rug() +
+    scale_x_continuous() +
+    facet_wrap(~date)
+
+M <- max(max.mean[date %in% select.dates, max.ampl])
+binwidth <- 15
+ggplot(ncep.qs[k == 3 &
+                   date %in% select.dates], aes(lat, lev)) + 
+    stat_contour_fill(aes(z = amplitude), binwidth = binwidth) +
+    geom_index.region(rect.annotation) +
+    geom_segment(data = max.mean[date %in% select.dates], inherit.aes = F,
+                 size = 1, color = "red", 
+                 aes(x = -90, xend = -90, y = 1000, 
+                     yend = 10^(-2/M*max.ampl + 3))) +
+    geom_segment(data = max.mean[date %in% select.dates], inherit.aes = F,
+                 size = 1, color = "blue", 
+                 aes(x = -90, xend = -90, y = 1000, 
+                     yend = 10^(-2/M*mean.ampl + 3))) +
+    surface +
+    scale_y_level(name = "nivel", 
+                  sec.axis = sec_axis(~-M/2*(log10(.) - 3), name = "amplitud")) +
+    scale_x_latitude(name = "latitud", trans = "reverse") +
+    scale_fill_viridis_c() +
+    facet_wrap(~date)
+```
+
+Cosas para ver:   
+Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs 1988-07-01 o ). 1987-11-01 vs 2008-01-01 muestra el caso: igual amplitud máxima pero en 2008 está más "concentrada". 
+Casos donde la actividad está ligeramente fuera de la caja (2000-09-01). 
+
+
+
+```{r campos_anomalia_select, fig.class = "fullwidth", fig.cap = "Anomalía zonal geopotencial en 300hPa para fechas seleccionadas."}
+ggplot(RepeatLon(ncep[date %in% select.dates & lev == 300]), aes(lon, lat)) +
+    stat_contour_fill(aes(z = gh.z), binwidth = 50) +
+    map.SH + 
+    scale_s_map() +
+    scale_fill_divergent() +
+    coord_polar() +
+    facet_wrap(~date)
+```
+
+Cosas para ver:    
+Analizar nivel de similitud entre los campos y similitud entre la estructura de la ampltiud.
+
+
 
 ## Composición de campos
 

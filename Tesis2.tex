@@ -163,13 +163,13 @@ Cambio en el máximo. Localización en vez de un número para cada latitud.
 
 \chapter{Climatología observada}\label{climatologia-observada}
 
-\section{Altura geopotencial}\label{altura-geopotencial}
+\subsection{Altura geopotencial}\label{altura-geopotencial}
 
 Campo medio:
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh_campo_medio_ncep-1} 
+{\centering \includegraphics[angle=90, height=227mm]{fig/tesis/gh_campo_medio_ncep-1} 
 
 }
 
@@ -184,7 +184,7 @@ Anomalías
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh_anomalia_ncep-1} 
+{\centering \includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/gh_anomalia_ncep-1} 
 
 }
 
@@ -198,7 +198,7 @@ Propuesta: unir ambos mapas
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh_ambos_ncep-1} 
+{\centering \includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/gh_ambos_ncep-1} 
 
 }
 
@@ -220,30 +220,16 @@ Complementa la figura anterior.
 
 Desvío estándar por círculo de latitud:
 
-\begin{figure}
-
-{\centering \includegraphics{fig/tesis/gh_sd_ncep-1} 
-
-}
-
-\caption{Desvío estándar por círculo de latitud.}\label{fig:gh_sd_ncep}
-\end{figure}
+\begin{center}\includegraphics{fig/tesis/gh_sd_ncep-1} \end{center}
 
 Cosas para ver:\\
 Latitud de mayor actividad de onda. Máximo en octubre en 300 hPa. Más
 adelante, se hace la misma figura pero con el desvío estándar asociado a
 cada número de onda.
 
-\section{Temperatura}\label{temperatura}
+\subsection{Temperatura}\label{temperatura}
 
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/temp_media_ncep-1} 
-
-}
-
-\caption{Temperatura media.}\label{fig:temp_media_ncep}
-\end{figure}
+\begin{center}\includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/temp_media_ncep-1} \end{center}
 
 Cosas para ver:\\
 Gradiente muy pequeño en 200 hPa. Gradiente inverso en estratósfera.
@@ -251,23 +237,9 @@ Núcleo cálido en \textasciitilde{}50° (que se va a ver mejor en la
 anomalía zonal). Temperaturas frías en altas y bajas latitudes pero
 relativamente cálidas en \textasciitilde{}50° en 100 hPa.
 
-\begin{figure}
+\begin{center}\includegraphics{fig/tesis/temp_corte_ncep-1} \end{center}
 
-{\centering \includegraphics{fig/tesis/temp_corte_ncep-1} 
-
-}
-
-\caption{Corte meridional de temperatura media.}\label{fig:temp_corte_ncep}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/temp_zonal_ncep-1} 
-
-}
-
-\caption{Anomalía zonal de temperatura.}\label{fig:temp_zonal_ncep}
-\end{figure}
+\begin{center}\includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/temp_zonal_ncep-1} \end{center}
 
 Corte zonal en -60°
 
@@ -285,7 +257,7 @@ Coincidencia entre la onda estacionaria 1 en gh y de t (en primavera).
 
 Propuesta: combinar mapa de T y T*
 
-\section{Viento zonal}\label{viento-zonal}
+\subsection{Viento zonal}\label{viento-zonal}
 
 \begin{figure}
 
@@ -303,7 +275,7 @@ Campo medio:
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u_medio_ncep-1} 
+{\centering \includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/u_medio_ncep-1} 
 
 }
 
@@ -318,7 +290,7 @@ Anomalía zonal
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u_nomalia_ncep-1} 
+{\centering \includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/u_nomalia_ncep-1} 
 
 }
 
@@ -327,7 +299,7 @@ Anomalía zonal
 
 Cosas para ver (ambos):
 
-\section{Viento meridional}\label{viento-meridional}
+\subsection{Viento meridional}\label{viento-meridional}
 
 Campos medios.
 
@@ -351,7 +323,7 @@ catabáticos de la antártida.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/v_medio_ncep-1} 
+{\centering \includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/v_medio_ncep-1} 
 
 }
 
@@ -364,24 +336,17 @@ la onda 1 de geopotenical).
 
 Anomalía zonal:
 
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/v_anomal_ncep-1} 
-
-}
-
-\caption{Anomalía zonal de viento meridional.}\label{fig:v_anomal_ncep}
-\end{figure}
+\includegraphics{fig/tesis/v_anomal_ncep-1.pdf}
 
 Es básicamente igual. No poner gráfico pero aclarar que es no hay casi
 diferencia ya que la media zonal es casi cero en casi todo el dominio.
 
-\section{Gradiente meridional de vorticidad
+\subsection{Gradiente meridional de vorticidad
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eta-dy-ncep-1} 
+{\centering \includegraphics[width=150 mm,height=227 mm,angle=90, keepaspectratio]{fig/tesis/eta-dy-ncep-1} 
 
 }
 
@@ -392,7 +357,7 @@ Cosas para ver:\\
 Máximos asociado con los flancos del jet. Zona ``prohibida'' en 200 y
 300 hPa.
 
-\section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
+\subsection{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
 
 \begin{itemize}
 \tightlist
@@ -400,27 +365,13 @@ Máximos asociado con los flancos del jet. Zona ``prohibida'' en 200 y
   Fourier
 \end{itemize}
 
-\begin{figure}
-
-{\centering \includegraphics{fig/tesis/r2_qs_ncep-1} 
-
-}
-
-\caption{$R^2$ de Fourier.}\label{fig:r2_qs_ncep}
-\end{figure}
+\begin{center}\includegraphics{fig/tesis/r2_qs_ncep-1} \end{center}
 
 Cosas para ver:\\
 Estructura. Zona donde onda 3 explica más que la onda 1 (zona marcada en
 negro)
 
-\begin{figure}
-
-{\centering \includegraphics{fig/tesis/ampl_qs_ncep-1} 
-
-}
-
-\caption{Ampllitud de Fourier.}\label{fig:ampl_qs_ncep}
-\end{figure}
+\begin{center}\includegraphics{fig/tesis/ampl_qs_ncep-1} \end{center}
 
 Cosas para ver:\\
 Onda 1 y 2 principalmente en estratósfera pero baja, salvo en verano.
@@ -431,9 +382,9 @@ amplitud de QS 3 y donde su R2 es mayor que la de QS 1.
 
 \section{Características típicas}\label{caracteristicas-tipicas}
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_ncep-1} \caption{Media de reconstrucción de onda 3.}\label{fig:qs_teorico_ncep}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=75mm]{fig/tesis/qs_teorico_ncep-1} \caption{Media de reconstrucción de onda 3.}\label{fig:qs_teorico_ncep}
+\end{figure}
 
 Cosas para ver:\\
 Solo en 300 porque la estructura es barotrópica (no se gana mucho
@@ -445,9 +396,9 @@ fase varía mucho y el promedio se desdibuja mucho.
 Esto es el promedio de las ondas 3, pero es idéntico a la onda 3 del
 promedio.
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_corte_ncep-1} \caption{Corte}\label{fig:qs_teorico_corte_ncep}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=75mm]{fig/tesis/qs_teorico_corte_ncep-1} \caption{Corte}\label{fig:qs_teorico_corte_ncep}
+\end{figure}
 
 Cosas para ver:\\
 Estrucutra vertical barotrópica equivalente. Ciclo anual en la extensión
@@ -456,13 +407,11 @@ este corte la extensión en primavera parece la menor, pero de nuevo es
 por la variabilidad en la fase, ya que en el corte de amplitud se ve que
 la amplitud es mayor en altura incluso que en otoño.
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_sd_ncep-1} \caption{Desvío estándar de la reconstrucción de QS3.}\label{fig:qs_teorico_sd_ncep}
-\end{figure*}
+\includegraphics[width=75mm]{fig/tesis/qs_teorico_sd_ncep-1}
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_sd_corte_ncep-1} \caption{Corte sd}\label{fig:qs_teorico_sd_corte_ncep}
-\end{figure*}
+\begin{figure}
+\includegraphics[width=75mm]{fig/tesis/qs_teorico_sd_corte_ncep-1} \caption{Corte sd}\label{fig:qs_teorico_sd_corte_ncep}
+\end{figure}
 
 No tengo idea de cómo interpretar esto\ldots{}
 
@@ -472,14 +421,7 @@ No tengo idea de cómo interpretar esto\ldots{}
   Wavelets
 \end{itemize}
 
-\begin{figure}
-
-{\centering \includegraphics{fig/tesis/wavelet_fourier_comp-1} 
-
-}
-
-\caption{Amplitud de fourier y amplitud de wavelets (faaaaaltaaaaa)}\label{fig:wavelet_fourier_comp}
-\end{figure}
+\includegraphics{fig/tesis/wavelet_fourier_comp-1.pdf}
 
 Venajas y desventajas. Justificaicón de decisión.
 
@@ -518,14 +460,9 @@ Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la
 región del máximo (latitud entre -65 y -40, y entre 700 y 100 hPa).
 Variables posibles: amplitud, r2. Parámetros posibles: máximo, media.
 
-\begin{figure}
-
-{\centering \subfloat[Discribución\label{fig:max_mean_compara1}]{\includegraphics{fig/tesis/max_mean_compara-1} }\newline\subfloat[Corte vertical.\label{fig:max_mean_compara2}]{\includegraphics{fig/tesis/max_mean_compara-2} }
-
-}
-
-\caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.}\label{fig:max_mean_compara}
-\end{figure}
+\begin{figure*}
+\subfloat[Discribución\label{fig:max_mean_compara1}]{\includegraphics[width=75mm]{fig/tesis/max_mean_compara-1} }\subfloat[Corte vertical.\label{fig:max_mean_compara2}]{\includegraphics[width=75mm]{fig/tesis/max_mean_compara-2} }\caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.}\label{fig:max_mean_compara}
+\end{figure*}
 
 Cosas para ver:\\
 Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs
