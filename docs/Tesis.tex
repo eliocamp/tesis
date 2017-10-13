@@ -133,6 +133,10 @@ Esto es para probar una referencia bibliográfica: \cite{@Vera2004}
 
 Ejemplo:
 
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-ondas-1} \caption{Ejemplo fourier}\label{fig:fourier-ejemplo-ondas}
 \end{figure*}
@@ -150,7 +154,7 @@ haciendo que los máximos y mínimos no sean contínuos.
 \end{itemize}
 
 \begin{figure*}
-\subfloat[Campo\label{fig:wavelet_ejemplo1}]{\includegraphics[width=75mm]{fig/tesis/wavelet_ejemplo-1} }\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet_ejemplo2}]{\includegraphics[width=75mm]{fig/tesis/wavelet_ejemplo-2} }\caption{Wavelets}\label{fig:wavelet_ejemplo}
+\subfloat[Campo\label{fig:wavelet_ejemplo1}]{\includegraphics[width=75mm]{fig/tesis/wavelet_ejemplo-1} }\newline\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet_ejemplo2}]{\includegraphics[width=75mm]{fig/tesis/wavelet_ejemplo-2} }\caption{Wavelets}\label{fig:wavelet_ejemplo}
 \end{figure*}
 
 Cosas para ver:\\
@@ -209,7 +213,7 @@ Corte zonal en -60°
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/gh_zonal65_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/gh_zonal65_ncep-1} 
 
 }
 
@@ -222,7 +226,7 @@ Desvío estándar por círculo de latitud:
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/gh_sd_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/gh_sd_ncep-1} 
 
 }
 
@@ -253,7 +257,7 @@ relativamente cálidas en \textasciitilde{}50° en 100 hPa.
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/temp_corte_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/temp_corte_ncep-1} 
 
 }
 
@@ -273,7 +277,7 @@ Corte zonal en -60°
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/t_zonal65_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/t_zonal65_ncep-1} 
 
 }
 
@@ -289,7 +293,7 @@ Propuesta: combinar mapa de T y T*
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/u_medio_corte_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/u_medio_corte_ncep-1} 
 
 }
 
@@ -335,7 +339,7 @@ Corte meridional (v medio zonal):
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/v_corte_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/v_corte_ncep-1} 
 
 }
 
@@ -408,7 +412,7 @@ Máximos asociado con los flancos del jet. Zona ``prohibida'' en 200 y
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/r2_qs_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/r2_qs_ncep-1} 
 
 }
 
@@ -421,7 +425,7 @@ negro)
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/ampl_qs_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/ampl_qs_ncep-1} 
 
 }
 
@@ -480,7 +484,7 @@ No tengo idea de cómo interpretar esto\ldots{}
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm]{fig/tesis/wavelet_fourier_comp-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/wavelet_fourier_comp-1} 
 
 }
 
@@ -489,9 +493,7 @@ No tengo idea de cómo interpretar esto\ldots{}
 
 Venajas y desventajas. Justificaicón de decisión.
 
-\section{Creación del índice}\label{creacion-del-indice}
-
-\subsection{Antecedentes}\label{antecedentes}
+\section{Antecedentes}\label{antecedentes}
 
 Breve comentario sobre los índices usados en otros lados. Discutir
 ventajas y debilidades.
@@ -505,8 +507,6 @@ ventajas y debilidades.
 \end{itemize}
 
 De todo eso, motiva decisión del índice.
-
-\subsection{Propio}\label{propio}
 
 \begin{itemize}
 \tightlist
@@ -522,16 +522,20 @@ De todo eso, motiva decisión del índice.
 
 Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la
 región del máximo (latitud entre -65 y -40, y entre 700 y 100 hPa).
-Variables posibles: amplitud, r2. Parámetros posibles: máximo, media.
+Variables posibles: amplitud media, amplitud máxima, r2, correlación
+entre campo teórico y observado.
 
-\begin{figure}
+Además de eso, tengo la fase. Puedo tomar la fase media en la región o
+la fase correspondiente a donde está el máximo de la amplitud (lo que
+equivale al centro del anticiclón).
 
-{\centering \subfloat[Discribución\label{fig:max_mean_compara1}]{\includegraphics[width=130mm]{fig/tesis/max_mean_compara-1} }\newline\subfloat[Corte vertical.\label{fig:max_mean_compara2}]{\includegraphics[width=130mm]{fig/tesis/max_mean_compara-2} }
+\section{Amplitud}\label{amplitud}
 
-}
+\subsection{Máximo o media.}\label{maximo-o-media.}
 
-\caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.}\label{fig:max_mean_compara}
-\end{figure}
+\begin{figure*}
+\subfloat[Discribución\label{fig:max_mean_compara1}]{\includegraphics[width=150mm, ]{fig/tesis/max_mean_compara-1} }\newline\subfloat[Corte vertical.\label{fig:max_mean_compara2}]{\includegraphics[width=150mm, ]{fig/tesis/max_mean_compara-2} }\caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.}\label{fig:max_mean_compara}
+\end{figure*}
 
 Cosas para ver:\\
 Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs
@@ -550,7 +554,122 @@ Cosas para ver:\\
 Analizar nivel de similitud entre los campos y similitud entre la
 estructura de la ampltiud.
 
-\section{Composición de campos}\label{composicion-de-campos}
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/mean_max_cor-1.pdf}
+\caption{Correlación entre amplitud máxima y media.}
+\end{figure}
+
+Cosas para ver:\\
+Relación lineal entre ambas. Ergo, da más o menso igual usar cualquiera.
+
+Luego\ldots{} concluir que vamos a usar la media.
+
+\begin{figure*}
+\subfloat[Serie temporal\label{fig:amplitud_timeseries1}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-1} }\newline\subfloat[Ciclo anual\label{fig:amplitud_timeseries2}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-2} }\caption{Amplitud media}\label{fig:amplitud_timeseries}
+\end{figure*}
+
+\section{R2}\label{r2}
+
+Se puede estimar de dos maneras distintas: a partir del ajuste de
+fourier para cada nivel y latitud (figura blabla) y haciendo un
+promedio, o reconstruyendo el campo tridimensional de la onda 3 y
+haciendo la correlación (global) con el campo tridimensional observado.
+Esta segunda forma da casi siempre un valor menor.
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/r2_comparacion-1.pdf}
+\caption{Relación entre R2 medio y R2 reconstruido.}
+\end{figure}
+
+Para ver:\\
+La relación ya no es lineal y hay bastante más scatter. Ergo, hay
+diferencia en la información. Cuando el R\^{}2 es bajo, la relación es
+``menor'' que 1:1 y hay algunos casos donde el R2 reconstruido es mayor
+que el r2 medio. Para R2 más grandes, la pendiente es 1.
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/r2_visual-1.pdf}
+\caption{R2 medio}
+\end{figure}
+
+Cosas para ver:\\
+Comparando con las figuras anteriores, casos donde la amplitud es grande
+pero el R2 no tanto.
+
+\begin{figure*}
+\subfloat[Serie temporal\label{fig:r2_timeseries1}]{\includegraphics[width=150mm, ]{fig/tesis/r2_timeseries-1} }\newline\subfloat[Ciclo anual\label{fig:r2_timeseries2}]{\includegraphics[width=150mm, ]{fig/tesis/r2_timeseries-2} }\caption{R2 medio}\label{fig:r2_timeseries}
+\end{figure*}
+
+Cosas para ver:\\
+El ciclo anual no es para nada tan claro. Varios outliers. La
+correlación reconstruida (azul) no tiene casi ciclo anual.
+
+\section{Composición de campos.}\label{composicion-de-campos.}
+
+Descripción de la seleccion. Cuestiones de la fase.
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/tabla_seleccion-1} 
+
+}
+
+\caption{Tabla de selección}\label{fig:tabla_seleccion}
+\end{figure}
+
+Cosas para ver:\\
+Años con coincidencia, años sin coindicentica. Meses donde la fase
+coincide (julio) vs meses donde no coindice (septiembre). También, años
+donde hay seguidilla de meses seleccionados (1999). Aunque posiblemente
+sea casualidad (no hay mucha persistencia mes a mes.)
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/tabla_interaccion-1.pdf}
+\caption{Tabla de interacción}
+\end{figure}
+
+Cosas para ver:\\
+4 o 5 párrafos explicando la tabla. Meses con mucha coincidencia
+(agosto) vs con menos.
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/comp-ampl-1} 
+
+}
+
+\caption{Composición según amplitud}\label{fig:comp-ampl}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/comp-r2-1} 
+
+}
+
+\caption{Composición según R2 medio}\label{fig:comp-r2}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/comp-cor-1} 
+
+}
+
+\caption{Composición según R2 Reconstruido}\label{fig:comp-cor}
+\end{figure}
 
 \section{Descripción de la Fase}\label{descripcion-de-la-fase}
 

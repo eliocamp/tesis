@@ -814,3 +814,24 @@ geom_index.region <- function(data) {
                                ymin = levmin, ymax = levmax),
               inherit.aes = F, linetype = 3, color = "black", fill = NA)
 }
+
+
+PeriodicWavelet <- function(x, k) {
+    period <- length(x)/k
+    x1 <- rep(x, 3)
+    keep <- (length(x)+1):(2*length(x))
+    res <- list()
+    for (p in seq_along(period)) {
+        w <- WaveletComp::WaveletTransform(x1, dt = 1, upperPeriod = period[p],
+                                           lowerPeriod = period[p])
+        res[[paste0("k", ".", k[p])]] <- w$Ampl[keep]*sd(x)
+
+    }
+    return(res)
+}
+
+
+greater <- function(x, N) {
+    r <- frank(-x, ties.method = "first")
+    r <= N
+}

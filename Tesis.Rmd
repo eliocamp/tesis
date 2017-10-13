@@ -33,6 +33,8 @@ knitr::opts_chunk$set(tidy = FALSE,
                       echo = FALSE, 
                       cache = TRUE, 
                       force.cap = TRUE,
+                      fig.calss = "pagewidth",
+                      fig.ncol = 1,
                       # cache.lazy = TRUE,
                       cache.path = "cache/tesis/",
                       fig.path = "fig/tesis/",
@@ -66,7 +68,7 @@ pres <- pres[, .(pres = mean(pres)), by = .(lon, lat)]
 
 theme_elio <- theme_minimal(base_size = 11) +
     theme(legend.position = "bottom", legend.box = "vertical",
-          panel.spacing = unit(5, "mm"),
+          panel.spacing.y = unit(5, "mm"),
           legend.spacing = unit(2, "mm"),
           plot.margin = grid::unit(rep(3, 4), "mm"),
           legend.title = element_blank())
@@ -117,7 +119,8 @@ fig.class <- list(
         fig.width = text.width/25.4,
         out.width = paste0(text.width, "mm"),
         fig.env = "figure",
-        fig.align = "center"
+        fig.align = "center",
+        out.extra = " "
     ),
     fullpage = list(
         fig.width = (page.height - 20)/25.4,
@@ -141,6 +144,8 @@ fig.class <- list(
 )
 
 DefineClass(fig.class)
+
+setDTthreads(3)
 ```
 
 Resumen.
@@ -158,6 +163,7 @@ Resumen.
 # ncep[, c(vars.z) := lapply(.SD, Anomaly), by = .(lat, lev, date), .SDcols = -"lon"]
 # saveRDS(ncep, "DATA/NCEP/ncep.vars.Rds")
 ncep <- readRDS("DATA/NCEP/ncep.vars.Rds")
+ncep[, date := as.Date(date), by = date]
 ```
 
 ```{r ncep_anomalies}
@@ -199,10 +205,11 @@ wave <- ncep[date == select.date & lev == 300,
              .(lon, lat, date, gh)]
 wave[, gh.z := Anomaly(gh), by = .(lat)][
     , k := "campo"]
-
+3
 lons <- unique(ncep$lon)
-qs.wave <- ncep.qs[date == select.date & lev == 300 & k < 4, .(lon = lons, 
-                                                               gh.z = amplitude*cos(k*(lons*pi/180 - phase))),
+qs.wave <- ncep.qs[date == select.date & lev == 300 & k < 4, 
+                   .(lon = lons, 
+                     gh.z = amplitude*cos(k*(lons*pi/180 - phase))),
                    by = .(lat, date, k)]
 wave <- rbind(wave[, -c("gh")], qs.wave)
 wave[, k := factor(k, levels = c("campo", 1:3))]
@@ -768,7 +775,7 @@ qs.wave <- ncep.qs[k == 3, .(lon = lons,
                    by = .(lat, lev, date)]
 qs.wave.season <- qs.wave[, .(mean = mean(QS3),
                               sd = sd(QS3)), 
-                          by = .(lon, lat, lev, season = AssignSeason(month(date)))]
+                          by = .(lon, lat, lev, season(date))]
 ```
 
 ```{r qs_teorico_ncep, fig.class = "pagewidth", fig.cap = "Media de reconstrucción de onda 3."}
@@ -783,7 +790,7 @@ ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
     map.SH +
     scale_s_map() +
     scale_color_divergent(binwidth = binwidth, name = "QS3", exclude = 0,
-                          guide = guide_colorbar_bottom(15)) +
+                          guide = guide_colorbar_bottom()) +
     facet_wrap(~season, ncol = 3) +
     coord_quickmap()
 ```
@@ -801,7 +808,7 @@ ggplot(qs.wave.season[lat %~% cutlat], aes(lon, lev)) +
     scale_y_level(breaks = plot.levs) +
     scale_x_longitude(name = "longitud") +
     scale_color_divergent(binwidth = binwidth, name = "QS3", exclude = 0,
-                          guide = guide_colorbar_bottom(15)) +
+                          guide = guide_colorbar_bottom()) +
     facet_wrap(~season, ncol = 4) 
 ```
 
@@ -819,7 +826,7 @@ ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
     map.SH +
     scale_s_map() +
     scale_color_viridis_c(name = "Desvío estándar de QS3", 
-                          guide = guide_colorbar_bottom(15)) +
+                          guide = guide_colorbar_bottom()) +
     facet_wrap(~season, ncol = 4) +
     coord_quickmap()
 ```
@@ -830,7 +837,7 @@ ggplot(qs.wave.season[lat %~% cutlat], aes(lon, lev)) +
     scale_y_level(breaks = plot.levs) +
     scale_x_longitude(name = "longitud") +
     scale_color_viridis_c(name = "Desvío estándar de QS3",
-                          guide = guide_colorbar_bottom(15)) +
+                          guide = guide_colorbar_bottom()) +
     facet_wrap(~season, ncol = 4)
 ```
 
@@ -849,7 +856,7 @@ ncep.wv <- ncep[,
 
 
 ```{r wavelet_fourier_comp, fig.class = "textwidth", fig.cap = "Amplitud de fourier y amplitud de wavelets (faaaaaltaaaaa)"}
-# binwidth <- 0.1
+binwidth <- 0.1
 ncep.wv[, .(amplitude = mean(amplitude)), 
         by = .(lat, lev, season = AssignSeason(month(date)))] %>% 
     ggplot(aes(lat, lev)) +
@@ -862,17 +869,17 @@ ncep.wv[, .(amplitude = mean(amplitude)),
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
     surface +
-    facet_wrap(~season) +
-    labs(title = '"Amplitud" de wavelets (sombreado) y R2 de Fourier (contornos)')
+    facet_wrap(~season)
 ```
 
+```{r cleanup1}
+remove(ncep.wv)
+```
 
 Venajas y desventajas. Justificaicón de decisión. 
 
 
-## Creación del índice
-
-### Antecedentes
+## Antecedentes 
 
 Breve comentario sobre los índices usados en otros lados. Discutir ventajas y debilidades.
 
@@ -881,60 +888,74 @@ Breve comentario sobre los índices usados en otros lados. Discutir ventajas y d
 
 De todo eso, motiva decisión del índice.
 
-### Propio
-
 * Niveles elegidos
 * Promedio vs. máximo
 * Composiciones de campos y flujos.
 * Decisión del índice. 
 
-Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la región del máximo (latitud entre -65 y -40, y entre 700 y 100 hPa). Variables posibles: amplitud, r2. Parámetros posibles: máximo, media. 
+Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la región del máximo (latitud entre -65 y -40, y entre 700 y 100 hPa). Variables posibles: amplitud media, amplitud máxima, r2, correlación entre campo teórico y observado.
 
-```{r cleanup1}
-remove(ncep.wv)
+Además de eso, tengo la fase. Puedo tomar la fase media en la región o la fase correspondiente a donde está el máximo de la amplitud (lo que equivale al centro del anticiclón). 
+
+## Amplitud
+
+### Máximo o media. 
+
+```{r indices_ncep}
+lats.index <- c(-65, -40)
+levs.index <- c(100, 700)
+ncep.qs <- ncep.qs[, index.region := (lev %b% levs.index) & (lat %b% lats.index)]
+
+index <- ncep.qs[index.region == TRUE & k == 3, 
+                 .(amplitude   = mean(amplitude),
+                   m.amplitude = max(amplitude),
+                   r2          = mean(r2),
+                   phase       = mean(phase),
+                   lat         = lat[which.max(amplitude)],
+                   lon         = phase[which.max(amplitude)]*180/pi,
+                   lev         = lev[which.max(amplitude)]),
+                 by = date]
+fields <- ncep[lev %b% levs.index, .(lon, lat, date, lev, gh.z)][
+    qs.wave[lev %b% levs.index], on = c("lat", "lon", "date", "lev")]
+cor.index <- fields[, .(cor = cor(gh.z, QS3)^2), by = .(date)]
+index <- index[cor.index, on = "date"]
 ```
 
+```{r max_mean_compara, fig.show = "hold", fig.cap = "Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.", fig.subcap = c("Discribución", "Corte vertical."), fig.height = 4, fig.class = "pagewidth"}
 
-```{r max_mean_compara, fig.show = "hold", fig.class = "textwidth", fig.cap = "Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.", fig.subcap = c("Discribución", "Corte vertical."), fig.ncol = 1}
-ncep.qs[, index.region := (lat %b% rect.annotation[1:2]) & 
-            (lev %b% c(30, 925))]
-max.mean <- ncep.qs[index.region == TRUE & k == 3, 
-                    .(max.ampl = max(amplitude),
-                      mean.ampl = mean(amplitude)), 
-                    by = .(date)]
 set.seed(44)
 select.dates <- sample(ncep.qs$date, 12)
-ggplot(ncep.qs[index.region == TRUE & k == 3 &
-                   date %in% select.dates], aes(amplitude)) + 
+gdata <- ncep.qs[k == 3 & date %in% select.dates]
+ggplot(gdata[index.region == TRUE], aes(amplitude)) + 
     # geom_density() +
-    geom_vline(aes(xintercept = max.ampl), color = "red", size = 0.4,
-               data = max.mean[date %in% select.dates]) +
-    geom_vline(aes(xintercept = mean.ampl), color = "blue",
-               data = max.mean[date %in% select.dates]) +
+    geom_vline(aes(xintercept = m.amplitude), color = "red", size = 0.4,
+               data = index[date %in% select.dates]) +
+    geom_vline(aes(xintercept = amplitude), color = "blue",
+               data = index[date %in% select.dates]) +
     geom_step(stat = "bin", binwidth = 5, boundary = 0) +
     geom_rug() +
     scale_x_continuous() +
     facet_wrap(~date)
 
-M <- max(max.mean[date %in% select.dates, max.ampl])
+
+M <- max(index[date %in% select.dates, m.amplitude])
 binwidth <- 15
-ggplot(ncep.qs[k == 3 &
-                   date %in% select.dates], aes(lat, lev)) + 
+ggplot(gdata, aes(lat, lev)) + 
     stat_contour_fill(aes(z = amplitude), binwidth = binwidth) +
     geom_index.region(rect.annotation) +
-    geom_segment(data = max.mean[date %in% select.dates], inherit.aes = F,
+    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
                  size = 1, color = "red", 
                  aes(x = -90, xend = -90, y = 1000, 
-                     yend = 10^(-2/M*max.ampl + 3))) +
-    geom_segment(data = max.mean[date %in% select.dates], inherit.aes = F,
+                     yend = 10^(-2/M*m.amplitude + 3))) +
+    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
                  size = 1, color = "blue", 
                  aes(x = -90, xend = -90, y = 1000, 
-                     yend = 10^(-2/M*mean.ampl + 3))) +
+                     yend = 10^(-2/M*amplitude + 3))) +
     surface +
     scale_y_level(name = "nivel", 
                   sec.axis = sec_axis(~-M/2*(log10(.) - 3), name = "amplitud")) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
-    scale_fill_viridis_c() +
+    scale_fill_viridis_c(guide = guide_colorbar_bottom(15)) +
     facet_wrap(~date)
 ```
 
@@ -942,24 +963,242 @@ Cosas para ver:
 Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs 1988-07-01 o ). 1987-11-01 vs 2008-01-01 muestra el caso: igual amplitud máxima pero en 2008 está más "concentrada". 
 Casos donde la actividad está ligeramente fuera de la caja (2000-09-01). 
 
-
-
-```{r campos_anomalia_select, fig.class = "fullwidth", fig.cap = "Anomalía zonal geopotencial en 300hPa para fechas seleccionadas."}
+```{r campos_anomalia_select, fig.cap = "Anomalía zonal geopotencial en 300hPa para fechas seleccionadas."}
 ggplot(RepeatLon(ncep[date %in% select.dates & lev == 300]), aes(lon, lat)) +
     stat_contour_fill(aes(z = gh.z), binwidth = 50) +
     map.SH + 
     scale_s_map() +
-    scale_fill_divergent() +
-    coord_polar() +
-    facet_wrap(~date)
+    scale_fill_divergent(guide = guide_colorbar_bottom(15)) +
+    coord_quickmap() +
+    facet_wrap(~date) +
+    theme(axis.title = element_blank()) 
 ```
 
 Cosas para ver:    
 Analizar nivel de similitud entre los campos y similitud entre la estructura de la ampltiud.
 
 
+```{r mean_max_cor, fig.cap = "Correlación entre amplitud máxima y media."}
+r2.ampl <- index[, cor(m.amplitude, amplitude)]^2
+ggplot(index, aes(m.amplitude, amplitude)) +
+    geom_point(size = 0.5, alpha = 0.5) +
+    geom_smooth(color = "black", size = 0.7) +
+    geom_abline(linetype = 3) +
+    annotate(geom = "text", x = 50, y = 100, 
+             label = paste0("r2 = ", round(r2.ampl, 2))) +
+    scale_y_continuous(name = "Amplitud media", breaks = MakeBreaks(25)) +
+    scale_x_continuous(name = "Amplitud máxima", breaks = MakeBreaks(25)) +
+    coord_equal()
+```
 
-## Composición de campos
+Cosas para ver:    
+Relación lineal entre ambas. Ergo, da más o menso igual usar cualquiera. 
+
+Luego... concluir que vamos a usar la media. 
+
+```{r index_remove_max}
+index[, m.amplitude := NULL]
+```
+
+```{r amplitud_timeseries, fig.class = "pagewidth", fig.cap = "Amplitud media", fig.subcap = c("Serie temporal", "Ciclo anual"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1}
+g <- ggplot(index, aes(date, amplitude)) +
+    geom_line() +
+    geom_hline(yintercept = mean(index$amplitude), linetype = 3) +
+    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%Y")
+DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "Amplitud")
+
+ggplot(index, aes(factor(month(date)), amplitude)) +
+    geom_boxplot() +
+    scale_x_discrete(name = "Mes", labels = month.abb_sp) +
+    scale_y_continuous(name = "Amplitud")
+```
+
+## R2
+
+Se puede estimar de dos maneras distintas: a partir del ajuste de fourier para cada nivel y latitud (figura blabla) y haciendo un promedio, o reconstruyendo el campo tridimensional de la onda 3 y haciendo la correlación (global) con el campo tridimensional observado. Esta segunda forma da casi siempre un valor menor. 
+
+```{r r2_comparacion, fig.cap = "Relación entre R2 medio y R2 reconstruido."}
+r2.cor <- index[, cor(cor, r2)]^2
+ggplot(index, aes(r2, cor)) +
+    geom_point(size = 0.5, alpha = 0.5) +
+    geom_smooth(color = "black", size = 0.7) + 
+    geom_abline(linetype = 3) +
+    annotate(geom = "text", x = 0.5, y = 0.2, 
+             label = paste0("r2 = ", round(r2.cor, 2))) +
+    scale_y_continuous(name = "R2 reconstrucción", breaks = MakeBreaks(0.1)) +
+    scale_x_continuous(name = "R2 medio", breaks = MakeBreaks(0.1)) +
+    coord_equal()
+```
+
+Para ver:    
+La relación ya no es lineal y hay bastante más scatter. Ergo, hay diferencia en la información. Cuando el R^2 es bajo, la relación es "menor" que 1:1 y hay algunos casos donde el R2 reconstruido es mayor que el r2 medio. Para R2 más grandes, la pendiente es 1. 
+
+
+```{r r2_visual, fig.cap = "R2 medio", fig.height = 4}
+M <- max(index[date %in% select.dates, r2])
+binwidth <- 0.1
+ggplot(gdata, aes(lat, lev)) + 
+    stat_contour_fill(aes(z = r2), binwidth = binwidth) +
+    geom_index.region(rect.annotation) +
+    surface +
+    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
+                 size = 1, color = "red", 
+                 aes(x = -90, xend = -90, y = 1000, 
+                     yend = 10^(-2/M*r2 + 3))) +
+    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
+                 size = 1, color = "blue", 
+                 aes(x = -90, xend = -90, y = 1000, 
+                     yend = 10^(-2/M*(cor) + 3))) +
+    scale_y_level(name = "nivel", 
+                  sec.axis = sec_axis(~-M/2*(log10(.) - 3), name = "R^2")) +
+    scale_x_latitude(name = "latitud", trans = "reverse") +
+    scale_fill_viridis_c(guide = guide_colorbar_bottom(15)) +
+    facet_wrap(~date)
+```
+
+Cosas para ver:    
+Comparando con las figuras anteriores, casos donde la amplitud es grande pero el R2 no tanto. 
+
+```{r r2_timeseries, fig.class = "pagewidth", fig.cap = "R2 medio", fig.subcap = c("Serie temporal", "Ciclo anual"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1}
+gdata <- melt(index, id.vars = "date", measure.vars = c("r2", "cor"), 
+              variable.name = "tipo", value.name = "r2" )
+g <- ggplot(gdata, aes(date, r2)) +
+    geom_line(aes(color = tipo)) +
+    geom_hline(data = gdata[, .(m = mean(r2)), by = tipo],
+               aes(yintercept = m, color = tipo), linetype = 3) +
+    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%Y") +
+    scale_color_brewer(palette = "Set1")
+DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "R2")
+
+ggplot(gdata, aes(factor(month(date)), r2, color = tipo)) +
+    geom_boxplot() +
+    scale_x_discrete(name = "Mes", labels = month.abb_sp) +
+    scale_y_continuous(name = "R2") +
+    scale_color_brewer(palette = "Set1")
+```
+
+Cosas para ver:    
+El ciclo anual no es para nada tan claro. Varios outliers. La correlación reconstruida (azul) no tiene casi ciclo anual. 
+
+## Composición de campos. 
+
+```{r fields}
+setnames(fields, c("gh.z", "QS3"), c("ncep", "qs3"))
+fields <- melt(fields[lev == 300], id.vars = c("lon", "lat", "date"), 
+               variable.name = "campo", value.name = "gh.z", 
+               measure.vars = c("ncep", "qs3"))
+
+```
+
+Descripción de la seleccion. Cuestiones de la fase. 
+
+
+```{r tabla_seleccion, fig.class = "fullpage", fig.cap = "Tabla de selección"}
+index[, `:=`(select.amplitude = greater(amplitude, 10),
+             select.r2 = greater(r2, 10),
+             select.cor = greater(cor, 10)), by = month(date)]
+index <- index
+
+selected <- melt(index[select.amplitude | select.r2 | select.cor],
+                 id.vars = c("date", "phase", "amplitude"), 
+                 measure.vars = c("select.amplitude", "select.r2",
+                                  "select.cor"), 
+                 variable.name = "select")
+selected <- selected[value == T]
+
+scale_color_selection <- 
+    scale_color_brewer(palette = "Set1", name = "Selección según:", 
+                       labels = c(select.amplitude = "Amplitud",
+                                  select.r2  = "R2 medio", 
+                                  select.cor = "R2 reconst"))
+library(ggstance)
+ggplot(selected, aes(year(date), as.factor(month(date)))) +
+    geom_point(aes(color = select),
+               position = position_dodgev(height = 0.6)) +
+    geom_spoke(aes(angle = phase/120*360, radius = amplitude/150), alpha = 0.6,
+               data = unique(selected[, .(date, amplitude, phase)])) +
+    scale_y_discrete(label = month.abb_sp, name = "Mes") +
+    scale_x_continuous(minor_breaks = 1985:2015, breaks = seq(1985, 2015, by = 5), 
+                       name = "Año") +
+    scale_color_selection
+```
+
+Cosas para ver:   
+Años con coincidencia, años sin coindicentica. Meses donde la fase coincide (julio) vs meses donde no coindice (septiembre).
+También, años donde hay seguidilla de meses seleccionados (1999). Aunque posiblemente sea casualidad (no hay mucha persistencia mes a mes.)
+
+```{r tabla_interaccion, fig.height = 6, fig.cap = "Tabla de interacción"}
+gdata <- index[, .N, by = .(month(date), 
+                            interaction(select.amplitude, 
+                                        select.r2, 
+                                        select.cor))] %>%
+    .[, c("amplitude", "r2", "cor") := tstrsplit(interaction, split = "\\.")] %>%
+    .[, interaction := NULL]
+
+labels.truefalse <- c("TRUE" = "Sí", "FALSE" = "No")
+
+ggplot(gdata, aes(amplitude, r2, color = cor)) +
+    geom_text(aes(label = N, 
+                  vjust = ifelse(cor, -0.3, 1.2))) +
+    facet_wrap(~month, labeller = labeller(month = month.abb_sp))  +
+    scale_color_brewer(palette = "Set1", name = "R2 reconst", 
+                       labels = labels.truefalse) +
+    theme(legend.title = element_text()) +
+    scale_y_discrete(name = "R^2 medio", labels = labels.truefalse) +
+    scale_x_discrete(name = "Amplitud", labels = labels.truefalse)
+```
+
+Cosas para ver:    
+4 o 5 párrafos explicando la tabla. 
+Meses con mucha coincidencia (agosto) vs con menos. 
+
+```{r PLotComposition_fun, cache = FALSE}
+PlotComposition <- function(select.dates, binwidth = c(40, 15)) {
+    comp.amplitude <- fields[date %in% select.dates,
+                             .(gh.z = mean(gh.z)),
+                             by = .(lon, lat, campo, month(date))]
+
+    binwidth <- 40
+    g1 <- ggplot(comp.amplitude[campo == "ncep"], aes(lon, lat)) +
+        geom_contour_fine(aes(z = gh.z, color = ..level..), binwidth = binwidth) +
+        map.SH +
+        scale_s_map() +
+        scale_color_divergent(breaks = MakeBreaks(binwidth),
+                              guide = guide_colorbar_bottom()) +
+        coord_quickmap() +
+        facet_wrap(~month, ncol = 3, nrow = 4, dir = "v",
+                   labeller = labeller(month = month.abb_sp))
+
+    binwidth <- 15
+    # g2 <- ggplot(comp.amplitude[campo == "qs3"], aes(lon, lat)) +
+    #     geom_contour_fine(aes(z = gh.z, color = ..level..), binwidth = binwidth) +
+    #     map.SH +
+    #     scale_s_map() +
+    #     scale_color_divergent(breaks = MakeBreaks(binwidth),
+    #                           guide = guide_colorbar_bottom()) +
+    #     coord_quickmap() +
+    #     facet_wrap(~month, ncol = 3, nrow = 4, dir = "v",
+    #                labeller = labeller(month = month.abb_sp))
+    # list(g1, g2)
+    g1
+}
+```
+
+
+```{r comp-ampl, fig.class = "fullpage", fig.cap = "Composición según amplitud"}
+
+select.dates <- index[select.amplitude == TRUE, date]
+PlotComposition(select.dates)
+```
+
+```{r comp-r2, fig.class = "fullpage", fig.cap = "Composición según R2 medio"}
+PlotComposition(index[select.r2 == TRUE, date])
+```
+
+
+```{r comp-cor, fig.class = "fullpage", fig.cap = "Composición según R2 Reconstruido"}
+PlotComposition(index[select.cor == TRUE, date])
+```
 
 ## Descripción de la Fase
 
