@@ -835,3 +835,8 @@ greater <- function(x, N) {
     r <- frank(-x, ties.method = "first")
     r <= N
 }
+
+
+decade <- function(year) {
+    substr(year, 3, 4)
+}

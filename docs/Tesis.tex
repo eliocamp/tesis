@@ -366,19 +366,9 @@ Cosas para ver:\\
 No mucha actividad salvo por la onda 1 en niveles altos (consistente con
 la onda 1 de geopotenical).
 
-Anomalía zonal:
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/v_anomal_ncep-1} 
-
-}
-
-\caption{Anomalía zonal de viento meridional.}\label{fig:v_anomal_ncep}
-\end{figure}
-
-Es básicamente igual. No poner gráfico pero aclarar que es no hay casi
-diferencia ya que la media zonal es casi cero en casi todo el dominio.
+La anomalía zonal es casi igual. No poner gráfico pero aclarar que es no
+hay casi diferencia ya que la media zonal es casi cero en casi todo el
+dominio.
 
 \section{Gradiente meridional de vorticidad
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
@@ -412,7 +402,7 @@ Máximos asociado con los flancos del jet. Zona ``prohibida'' en 200 y
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/r2_qs_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/r2_qs_ncep-1} 
 
 }
 
@@ -425,7 +415,7 @@ negro)
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ampl_qs_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ampl_qs_ncep-1} 
 
 }
 
@@ -468,10 +458,6 @@ la amplitud es mayor en altura incluso que en otoño.
 
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/qs_teorico_sd_ncep-1} \caption{Desvío estándar de la reconstrucción de QS3.}\label{fig:qs_teorico_sd_ncep}
-\end{figure*}
-
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_sd_corte_ncep-1} \caption{Corte sd}\label{fig:qs_teorico_sd_corte_ncep}
 \end{figure*}
 
 No tengo idea de cómo interpretar esto\ldots{}
@@ -525,16 +511,16 @@ región del máximo (latitud entre -65 y -40, y entre 700 y 100 hPa).
 Variables posibles: amplitud media, amplitud máxima, r2, correlación
 entre campo teórico y observado.
 
-Además de eso, tengo la fase. Puedo tomar la fase media en la región o
-la fase correspondiente a donde está el máximo de la amplitud (lo que
-equivale al centro del anticiclón).
-
 \section{Amplitud}\label{amplitud}
 
 \subsection{Máximo o media.}\label{maximo-o-media.}
 
 \begin{figure*}
-\subfloat[Discribución\label{fig:max_mean_compara1}]{\includegraphics[width=150mm, ]{fig/tesis/max_mean_compara-1} }\newline\subfloat[Corte vertical.\label{fig:max_mean_compara2}]{\includegraphics[width=150mm, ]{fig/tesis/max_mean_compara-2} }\caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.}\label{fig:max_mean_compara}
+\includegraphics[width=150mm, ]{fig/tesis/max_mean_compara-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.}\label{fig:max_mean_compara}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/max_mean_corte-1} \caption{Corte vertical de amplitud}\label{fig:max_mean_corte}
 \end{figure*}
 
 Cosas para ver:\\
@@ -543,20 +529,13 @@ Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs
 máxima pero en 2008 está más ``concentrada''. Casos donde la actividad
 está ligeramente fuera de la caja (2000-09-01).
 
-\begin{figure}
-\centering
-\includegraphics{fig/tesis/campos_anomalia_select-1.pdf}
-\caption{Anomalía zonal geopotencial en 300hPa para fechas
-seleccionadas.}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/campos_anomalia_select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas.}\label{fig:campos_anomalia_select}
+\end{figure*}
 
 Cosas para ver:\\
 Analizar nivel de similitud entre los campos y similitud entre la
 estructura de la ampltiud.
-
-\begin{verbatim}
-## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
-\end{verbatim}
 
 \begin{figure}
 \centering
@@ -581,10 +560,6 @@ promedio, o reconstruyendo el campo tridimensional de la onda 3 y
 haciendo la correlación (global) con el campo tridimensional observado.
 Esta segunda forma da casi siempre un valor menor.
 
-\begin{verbatim}
-## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
-\end{verbatim}
-
 \begin{figure}
 \centering
 \includegraphics{fig/tesis/r2_comparacion-1.pdf}
@@ -597,11 +572,9 @@ diferencia en la información. Cuando el R\^{}2 es bajo, la relación es
 ``menor'' que 1:1 y hay algunos casos donde el R2 reconstruido es mayor
 que el r2 medio. Para R2 más grandes, la pendiente es 1.
 
-\begin{figure}
-\centering
-\includegraphics{fig/tesis/r2_visual-1.pdf}
-\caption{R2 medio}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/r2_visual-1} \caption{R2 medio}\label{fig:r2_visual}
+\end{figure*}
 
 Cosas para ver:\\
 Comparando con las figuras anteriores, casos donde la amplitud es grande
@@ -614,6 +587,10 @@ pero el R2 no tanto.
 Cosas para ver:\\
 El ciclo anual no es para nada tan claro. Varios outliers. La
 correlación reconstruida (azul) no tiene casi ciclo anual.
+
+Además de eso, tengo la fase. Puedo tomar la fase media en la región o
+la fase correspondiente a donde está el máximo de la amplitud (lo que
+equivale al centro del anticiclón).
 
 \section{Composición de campos.}\label{composicion-de-campos.}
 
@@ -635,9 +612,12 @@ donde hay seguidilla de meses seleccionados (1999). Aunque posiblemente
 sea casualidad (no hay mucha persistencia mes a mes.)
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/tabla_interaccion-1.pdf}
-\caption{Tabla de interacción}
+
+{\centering \includegraphics[width=130mm, ]{fig/tesis/tabla_interaccion-1} 
+
+}
+
+\caption{Tabla de interacción}\label{fig:tabla_interaccion}
 \end{figure}
 
 Cosas para ver:\\
@@ -659,16 +639,7 @@ Cosas para ver:\\
 
 }
 
-\caption{Composición según R2 medio}\label{fig:comp-r2}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/comp-cor-1} 
-
-}
-
-\caption{Composición según R2 Reconstruido}\label{fig:comp-cor}
+\caption{Composición según R2}\label{fig:comp-r2}
 \end{figure}
 
 \section{Descripción de la Fase}\label{descripcion-de-la-fase}
