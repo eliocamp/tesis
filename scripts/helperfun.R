@@ -840,3 +840,8 @@ greater <- function(x, N) {
 decade <- function(year) {
     substr(year, 3, 4)
 }
+
+fsign <- function(x) {
+    f <- sign(x)
+    factor(ifelse(f == 0, NA, f))
+}

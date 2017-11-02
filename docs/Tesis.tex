@@ -133,10 +133,6 @@ Esto es para probar una referencia bibliográfica: \cite{@Vera2004}
 
 Ejemplo:
 
-\begin{verbatim}
-## [1] 3
-\end{verbatim}
-
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-ondas-1} \caption{Ejemplo fourier}\label{fig:fourier-ejemplo-ondas}
 \end{figure*}
@@ -568,9 +564,11 @@ Esta segunda forma da casi siempre un valor menor.
 
 Para ver:\\
 La relación ya no es lineal y hay bastante más scatter. Ergo, hay
-diferencia en la información. Cuando el R\^{}2 es bajo, la relación es
-``menor'' que 1:1 y hay algunos casos donde el R2 reconstruido es mayor
-que el r2 medio. Para R2 más grandes, la pendiente es 1.
+diferencia en la información.\\
+Dos regímenes: Cuando el R\^{}2 es bajo, la relación es ``menor'' que
+1:1 y hay algunos casos donde el R2 reconstruido es mayor que el r2
+medio. Para R2 más grandes, la pendiente es 1. Modelar la
+relación\ldots{} ¿Cómo se interpreta?
 
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/r2_visual-1} \caption{R2 medio}\label{fig:r2_visual}
@@ -588,13 +586,32 @@ Cosas para ver:\\
 El ciclo anual no es para nada tan claro. Varios outliers. La
 correlación reconstruida (azul) no tiene casi ciclo anual.
 
-Además de eso, tengo la fase. Puedo tomar la fase media en la región o
-la fase correspondiente a donde está el máximo de la amplitud (lo que
-equivale al centro del anticiclón).
+Una ventaja de la correlación entre el campo real y el reconstruido es
+que puede hacerse para cada punto y analizar la variación espacial de la
+misma.
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/cor-field-1.pdf}
+\caption{Media anual de la correlación cuadrada de cada mes entre el
+campo observado y el reconstruido.}
+\end{figure}
+
+Cosas para ver:\\
+Esto es, para cada punto de grilla, la correlación entre el campo
+observado y el reconstruido en todos los meses y años. Además de la
+dependencia latitudinal de la importancia de la onda 3 (que se puede ver
+en los cortes anteriores), se ve la dependencia zonal. La onda 3 es más
+importante en el Pacífico sur que en el Atlántico o el Índico. Además,
+se ve un patrón de altas correlaciones que asemejan a un tren de
+ondas.\\
+¿Confirma? lo que se ve en en análisis de wavelets.
+
+Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 
 \section{Composición de campos.}\label{composicion-de-campos.}
 
-Descripción de la seleccion. Cuestiones de la fase.
+Descripción de la seleccion.
 
 \begin{figure}
 
@@ -611,6 +628,14 @@ coincide (julio) vs meses donde no coindice (septiembre). También, años
 donde hay seguidilla de meses seleccionados (1999). Aunque posiblemente
 sea casualidad (no hay mucha persistencia mes a mes.)
 
+Pequeña digresión: Efecto de la fase.\\
+La climatología de la fase se va a discutir más adelante, pero\ldots{}
+discutir el efecto de promediar campos con similar amplitud pero fase
+distinta. Del gráfico, septiembre tiene 1997 y 2003 con fase a 180°, lo
+que significa que va a a haber cancelación parcial. Enero, por el
+contrario, no tiene ningún año en contrafase, aunque sí algunos a 90°,
+que desdibujan el patrón.
+
 \begin{figure}
 
 {\centering \includegraphics[width=130mm, ]{fig/tesis/tabla_interaccion-1} 
@@ -621,8 +646,9 @@ sea casualidad (no hay mucha persistencia mes a mes.)
 \end{figure}
 
 Cosas para ver:\\
-4 o 5 párrafos explicando la tabla. Meses con mucha coincidencia
-(agosto) vs con menos.
+Ambos criterios coinciden en casi todos los años seleccionados, así que
+no hay mucha diferencia. En efecto, las composiciones son casi iguales
+(no se muestra). Voy a usar la amplitud.
 
 \begin{figure}
 
@@ -630,19 +656,116 @@ Cosas para ver:\\
 
 }
 
-\caption{Composición según amplitud}\label{fig:comp-ampl}
+\caption{Composición de campos}\label{fig:comp-ampl}
 \end{figure}
 
 \begin{figure}
+\centering
+\includegraphics{fig/tesis/select-enero-1.pdf}
+\caption{Campos para los 10 eneros seleccionados.}
+\end{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/comp-r2-1} 
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/select-sept-1.pdf}
+\caption{Campos para los 10 septiembres seleccionados.}
+\end{figure}
+
+Estos gráficos me parecen importantes para ver lo que hay ``adentro'' de
+la composición, pero no sé bien qué decir sobre ellos. Supongo que lo
+principal es que hay años donde la onda
+
+\section{Fase}\label{fase}
+
+Además de eso, tengo la fase. Puedo tomar la fase media en la región o
+la fase correspondiente a donde está el máximo de la amplitud (lo que
+equivale al centro del anticiclón) o la moda de la fase.
+
+(más explicación\ldots{})
+
+¿Cuál usar?
+
+\begin{figure}
+
+{\centering \includegraphics[width=130mm, ]{fig/tesis/lon-phase-comp-1} 
 
 }
 
-\caption{Composición según R2}\label{fig:comp-r2}
+\caption{Fase promedio vs Fase del máximo}\label{fig:lon-phase-comp}
 \end{figure}
 
-\section{Descripción de la Fase}\label{descripcion-de-la-fase}
+Cosas para ver:\\
+Se ve que hay muchos casos donde coinciden bastante bien, pero otros que
+se alejan mucho. La razón es que al tomar el promedio, puede quedar
+cualquier cosa si la estructura cambia mucho con la latitud. Por
+ejemplo, los casos marcados en rojo.
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/fase-mal-1.pdf}
+\caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo
+es la fase en la latitud de amplitud máxima; el punto negro, la fase
+promedio; el punto azul, la moda de la fase. El rectángulo la región
+donde puede encontrarse la fase. Los límites meridionales definidos por
+la región donde se calcula el índice y los zonales por 360/3.}
+\end{figure}
+
+En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo
+que hace que la fase oscile entre valores cercanos a 0° y a 120° en
+distintas latitudes a pesar de que representan el mismo centro de
+máxima. El promedio, por lo tanto, queda en el centro y termina estando
+en una región donde el campo de geopotencial de onda 3 es nulo. Si bien
+la fase de la amplitud máxima y la moda de la fase parecen ser muy
+distintas, la naturaleza cíclica de la fase implica que representan
+aproximadamente el mismo punto.
+
+En segundo caso la estructura de onda 3 es de dos centros a distintas
+latitudes. La fase promedio de ambas (punto negro) representa el punto
+medio y, por lo tanto, está más cerca del mínimo de geopotencial que del
+máximo. En este caso la moda de la fase es una mejor representación del
+campo de onda 3 que la fase del máximo.
+
+Conclusión: vamos a usar la moda de la fase.
+
+Ciclo anual de la fase.
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/boxplot-fase-ncep-1.pdf}
+\caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes)}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/boxplot-fase-ncep2-1.pdf}
+\caption{Ciclo anual de la fase (todos)}
+\end{figure}
+
+Cosas para ver:\\
+Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay
+mucha variabilidad.\\
+Recordar que este es aproximadamente el centro del máximo de
+geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso
+implica que en los casos donde hay puntos cerca de -120° o 0°, hay el
+centro de mínima está en \textasciitilde{}-60°.\\
+También notar que, como se trata en realidad de una variable cíclica,
+los puntos extremos representan una situación similar.\\
+¿Hay mucha diferencia entre el boxplot con todos los datos y el de sólo
+los 20 más intensos? Yo no veo mucha y me parece que excluir a los 10
+más débiles invita más preguntas que las que responde.
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/centros-10max-1} 
+
+}
+
+\caption{Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.}\label{fig:centros-10max}
+\end{figure}
+
+Cosas para ver:\\
+La mayoría del tiempo estamos afectados por centro de máxima, pero hay
+casos intensos donde hay mínima.
 
 \section{Análisis dinámica de
 septiembre}\label{analisis-dinamica-de-septiembre}
