@@ -130,6 +130,12 @@ fig.class <- list(
         fig.align = "center",
         out.extra = "angle=90"
     ),
+    vfullpage = list(
+        fig.width = page.width/25.4,
+        fig.height = (page.height - 20)/25.4,
+        out.width = paste0(page.width, "mm"),
+        fig.align = "center"
+    ),
     halfpage = list(
         # out.width = "7.3cm",
         fig.width = (page.width/2)/25.4,
@@ -621,9 +627,10 @@ ncep.mean.season[, `:=`("v.dx" = Derivate(v ~ lon + lat, bc = c("cyclic", "none"
                         "u.dyy" = Derivate(u ~ lon + lat, order = 2, 
                                            bc = c("cyclic", "none"), 
                                            sphere = TRUE)[[2]],
-                        "beta" = beta(lat)),
+                        "beta" = f.dy(lat)),
                  by = .(lev, season)][
-                     , v.dxdy := Derivate(v.dx ~ lon + lat, bc = c("cyclic", "none"),
+                     , v.dxdy := Derivate(v.dx ~ lon + lat, 
+                                          bc = c("cyclic", "none"),
                                           sphere = TRUE)[[2]], 
                      by = .(lev, season)]
 
@@ -651,9 +658,39 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs & lat > -85]), aes(lon, lat
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab))
 ```
 
+## Número de onda estacionaria
+
+```{r k-steady, fig.cap = "Número de onda estacionario en 300hPa.", fig.height = 6}
+a <- 6371000
+
+ks <- ncep.mean.season[lev == 300, .(k = sqrt(eta.dy/u)*(a*cos(lat*pi/180))), 
+                       by = .(lon, lat, lev, season)] 
+ks[ , k.full := ifelse(is.na(k) | k > 10, -1, k)]
+
+ggplot(ks, aes(lon, lat)) +
+    stat_contour_fill(aes(z = k.full), breaks = 0:9 + 0.5) +
+    stat_contour(aes(z = k.full),
+                 breaks = c(2.5, 3.5), color = "black") +
+    geom_tile(data = ks[k.full == -1], fill = "white", color = "white") +
+    map.SH +
+    scale_s_map() +
+    scale_fill_viridis_c(breaks = 1:9, guide = guide_colorbar_bottom()) +
+    coord_quickmap() +
+    facet_wrap(~season)
+```
+
+```{r ks-lat, fig.class = "textwidth", fig.cap = "Número de onda estacionario medio por círculo de latitud."}
+ks[k < 10, .(ks = mean(k, na.rm = T)), by = .(lat)] %>% 
+    ggplot(aes(lat, ks)) +
+    geom_line() +
+    scale_y_continuous(name = "Número de onda estacionaria", breaks = 1:9) +
+    scale_x_latitude(name ="Latitud", ticks = 15) +
+    coord_flip()
+```
 
 Cosas para ver:    
-Máximos asociado con los flancos del jet. Zona "prohibida" en 200 y 300 hPa. 
+Máximos asociado con los flancos del jet. Zona "prohibida" en 200 y 300 hPa.    
+La onda 3 es estacionaria en -60°.
 
 ## Función corriente
 
@@ -912,12 +949,10 @@ index <- ncep.qs[index.region == TRUE & k == 3] %>%
     .[, .(lat.mode = lat[which.max(amplitude)]), by = date] %>% 
     index[., on = "date"]
 
-fields <- ncep[lev %b% levs.index, .(lon, lat, date, lev, gh.z)][
+fields <- ncep[lev %b% levs.index, .(lon, lat, date, lev, gh, gh.z)][
     qs.wave[lev %b% levs.index], on = c("lat", "lon", "date", "lev")]
 cor.index <- fields[, .(cor = cor(gh.z, QS3)^2), by = .(date)]
 index <- index[cor.index, on = "date"]
-
-
 ```
 
 
@@ -1086,23 +1121,45 @@ El ciclo anual no es para nada tan claro. Varios outliers. La correlación recon
 
 
 Una ventaja de la correlación entre el campo real y el reconstruido es que puede hacerse para cada punto y analizar la variación espacial de la misma. 
-
-```{r cor-field, fig.cap = "Media anual de la correlación cuadrada de cada mes entre el campo observado y el reconstruido."}
-cor.mean <- fields[lat > -90 & lev == 300, 
-                           .(corelation = cor(gh.z, QS3)^2), 
-                           by = .(lon, lat, month(date))][
-                         , .(corelation = mean(corelation)), 
-                           by = .(lon, lat)]
-cor.mean <- fields[lat > -90 & lev == 300, 
-                           .(corelation = cor(gh.z, QS3)^2), 
-                           by = .(lon, lat)]
-ggplot(cor.mean, aes(lon, lat)) +
-    stat_contour(aes(z = corelation, color = ..level..), binwidth = 0.15) +
+```{r corplot, cache = FALSE}
+corplot <- function(field, binwidth = 0.1) {
+    ggplot(field, aes(lon, lat)) +
+    stat_contour(aes(z = corelation, color = ..level..), binwidth = binwidth) +
     map.SH +
-    scale_color_viridis_c(breaks = MakeBreaks(0.15), 
+    scale_color_viridis_c(breaks = MakeBreaks(binwidth),
+                          limits = c(0, 1),
                           guide = guide_colorbar_bottom()) +
     scale_s_map() +
     coord_quickmap()
+}
+
+```
+
+```{r cor-field, fig.cap = "Media anual de la correlación cuadrada de cada mes entre el campo observado y el reconstruido.", fig.show = "hold", fig.ncol = 2}
+cor.mean1.z <- fields[lat > -90 & lev == 300, 
+                   .(corelation = cor(gh.z, QS3)^2), 
+                   by = .(lon, lat, month(date))][
+                       , .(corelation = mean(corelation)), 
+                       by = .(lon, lat)]
+cor.mean2.z <- fields[lat > -90 & lev == 300, 
+                   .(corelation = cor(gh.z, QS3)^2), 
+                   by = .(lon, lat)]
+
+cor.mean1 <- fields[lat > -90 & lev == 300, 
+                   .(corelation = cor(gh, QS3)^2), 
+                   by = .(lon, lat, month(date))][
+                       , .(corelation = mean(corelation)), 
+                       by = .(lon, lat)]
+cor.mean2 <- fields[lat > -90 & lev == 300, 
+                   .(corelation = cor(gh, QS3)^2), 
+                   by = .(lon, lat)]
+
+
+
+corplot(cor.mean1.z) + labs(subtitle = "Correlación con Z* mensual promediada")
+corplot(cor.mean2.z) + labs(subtitle = "Correlación con Z* total")
+corplot(cor.mean1) + labs(subtitle = "Correlación con Z mensual promediada")
+corplot(cor.mean2) + labs(subtitle = "Correlación con Z total")
 ```
 
 Cosas para ver:    
@@ -1186,14 +1243,6 @@ index <- index[, c("select.r2", "cor") := NULL]
 setnames(index, "select.amplitude", "select")
 ```
 
-```{r PLotComposition_fun, cache = FALSE}
-PlotComposition <- function(field, binwidth = binwidth) {
-    g1 <-
-        g1
-}
-```
-
-
 ```{r comp-ampl, fig.class = "fullpage", fig.cap = "Composición de campos"}
 select.dates <- index[select == TRUE, date]
 composition <- fields[date %in% select.dates,
@@ -1208,6 +1257,7 @@ ggplot(composition[campo == "ncep"], aes(lon, lat)) +
     scale_color_divergent(breaks = MakeBreaks(binwidth),
                           guide = guide_colorbar_bottom()) +
     coord_quickmap() +
+    # coord_polar() +
     facet_wrap(~month, ncol = 3, nrow = 4, dir = "v",
                labeller = labeller(month = month.abb_sp))
 ```
@@ -1241,15 +1291,45 @@ tempplot <- function(month) {
 }
 ```
 
-```{r select-enero, fig.cap = "Campos para los 10 eneros seleccionados.", fig.height = 11}
+```{r select-enero, fig.cap = "Campos para los 10 eneros seleccionados.", fig.class = "vfullpage"}
 tempplot(1)
 ```
 
-```{r select-sept, fig.cap = "Campos para los 10 septiembres seleccionados.", fig.height = 11}
+```{r select-sept, fig.cap = "Campos para los 10 septiembres seleccionados.", fig.class = "vfullpage"}
 tempplot(9)
 ```
 
 Estos gráficos me parecen importantes para ver lo que hay "adentro" de la composición, pero no sé bien qué decir sobre ellos. Supongo que lo principal es que hay años donde la onda 
+
+## Regresiones
+
+```{r make-regression}
+
+regression <- fields[campo == "ncep"][
+    index[, .(date, amplitude, phase.mode)], on = "date"][
+        , setNames(ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
+                                                         amplitude, 
+                                                         phase.mode),
+                                                   gh.z)),
+                   c("regressor", "estimate", "se")), 
+        by = .(lat, lon, month(date))][
+            , t := abs(estimate)/se]
+```
+
+```{r regression-ampl, fig.cap = "Regresión sobre amplitud.", fig.class = "vfullpage"}
+ggplot(regression[regressor == "amplitude"], aes(lon, lat)) +
+    stat_contour(aes(z = estimate, color = ..level..), binwidth = 0.5) +
+    map.SH +
+    # scale_s_map() +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_x_longitude() +
+    scale_color_divergent(breaks = MakeBreaks(binwidth = 0.5), 
+                          guide = guide_colorbar_bottom()) +
+    coord_polar() +
+    facet_wrap(~month, ncol = 3, nrow = 4, dir = "v",
+               labeller = labeller(month = month.abb_sp))
+```
+
 
 
 ## Fase
@@ -1393,7 +1473,7 @@ index[index[, .I[greater(amplitude, 10)], by = month(date)]$V1] %>%
 ```
 
 Cosas para ver:    
-La mayoría del tiempo estamos afectados por centro de máxima, pero hay casos intensos donde hay mínima. 
+La mayoría del tiempo estamos afectados por centro de máxima, pero hay casos intensos donde hay mínima. Especialmente en junio y julio. 
 
 
 ## Análisis dinámica de septiembre

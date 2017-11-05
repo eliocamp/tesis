@@ -795,7 +795,7 @@ coriolis <- function(lat) {
     2*2*pi/(3600*24)*sin(lat*pi/180)
 }
 
-beta <- function(lat, a = 6371) {
+beta <- function(lat, a = 6731) {
     a <- a*1000
     2*2*pi/(3600*24)*cos(lat*pi/180)/a
 }
