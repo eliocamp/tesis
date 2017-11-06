@@ -566,6 +566,50 @@ Luego\ldots{} concluir que vamos a usar la media.
 \subfloat[Serie temporal\label{fig:amplitud_timeseries1}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-1} }\newline\subfloat[Ciclo anual\label{fig:amplitud_timeseries2}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-2} }\caption{Amplitud media}\label{fig:amplitud_timeseries}
 \end{figure*}
 
+¿Cómo establecer una ``estacionalidad''? Algún criterio para agrupar
+meses. Claramente las estaciones climatológicas de siempre no sirven.
+
+Una forma es, a partir del índice, agrupar los meses según su amplitud y
+fase media:
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/ampl-fase-1.pdf}
+\caption{Amplitud y fase media para cada mes.}
+\end{figure}
+
+Otro ejemplo podría usar SVD:
+
+\includegraphics{fig/tesis/index-eof-1.pdf}
+\includegraphics{fig/tesis/index-eof-2.pdf}
+\includegraphics{fig/tesis/index-eof-3.pdf}
+\includegraphics{fig/tesis/index-eof-4.pdf}
+
+Cosas para ver:\\
+Los campos son descriptos bien por sólo 2 componentes principales de
+igual magnitud que esencialmente describen el corrimiento de fase de la
+onda. La ``magnitud'' del vector de componentes mapea bien a la amplitud
+de fourier y la diferencia mapea bien a la fasae. No hay nada nuevo por
+acá.
+
+O, medio equivalente, usar la correlación entre meses:
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/cros-cor-1.pdf}
+\caption{Matriz de Correlación del campo de QS3.}
+\end{figure}
+
+Grupos: * Enero + Febrero + Marzo es un grupo bastante seguro. Se ven
+juntos en el diagrama amplitud-fase, tienne alta correlación entre ellos
+y en componentes principales tienen PC1 significativamente mayor que
+PC2. * Junio + Julio parecen ir por su cuenta. Tienen mucha correlación
+entre ellos y ambos tienen PC2 mayor que PC1 aunque su fase difiere
+bastante.
+
+Los otros meses quedan medio mezclados, pero pueden agruparse como meses
+de ``transición''.
+
 \section{R2}\label{r2}
 
 Se puede estimar de dos maneras distintas: a partir del ajuste de
@@ -610,8 +654,13 @@ misma.
 
 \includegraphics{fig/tesis/cor-field-1.pdf}
 \includegraphics{fig/tesis/cor-field-2.pdf}
-\includegraphics{fig/tesis/cor-field-3.pdf}
-\includegraphics{fig/tesis/cor-field-4.pdf}
+
+\begin{figure}
+\centering
+\includegraphics{fig/tesis/cor-monson-1.pdf}
+\caption{Correlación cuadrada media para estaciones según Monsón de
+Sudamérica.}
+\end{figure}
 
 Cosas para ver:\\
 Esto es, para cada punto de grilla, la correlación entre el campo

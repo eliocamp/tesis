@@ -1049,6 +1049,107 @@ ggplot(index, aes(factor(month(date)), amplitude)) +
     scale_y_continuous(name = "Amplitud")
 ```
 
+¿Cómo establecer una "estacionalidad"? Algún criterio para agrupar meses. Claramente las estaciones climatológicas de siempre no sirven. 
+
+Una forma es, a partir del índice, agrupar los meses según su amplitud y fase media:
+
+```{r def-qs-season, cache = FALSE}
+qs.season <- function(month) {
+    if (metR:::.is.somedate(month)) month <- lubridate::month(month)
+
+    qs.seasons <- factor(c(rep("Verano", 3), 
+                       rep("Oto\u00f1o", 2), 
+                       rep("Invierno", 2), 
+                       rep("Primavera", 4), 
+                       "Verano"))
+        # seasons <- c(sum, sum, sum,rep(c(aut, win, spr), each = 3), sum)
+    
+    return(factor(qs.seasons[month], levels = c("Verano", "Oto\u00f1o", 
+                                                "Invierno", "Primavera")))
+}
+```
+
+```{r ampl-fase, fig.cap = "Amplitud y fase media para cada mes."}
+index[, .(amplitude = mean(amplitude), 
+          phase = mean(phase.mode)),
+      by = month(date)] %>% 
+    ggplot(aes(phase, amplitude)) +
+    ggforce::geom_link2(aes(color = qs.season(month), group = 1),
+                        alpha = 0.5) +
+    # geom_path(alpha = 0.5, aes(color = qs.season(month), group = 1)) +
+    geom_point(aes(color = qs.season(month))) +
+    ggrepel::geom_text_repel(aes(label = month.abb_sp[month]))  +
+    scale_y_continuous(name = "Amplitud") +
+    scale_x_continuous(name = "Fase")
+    # coord_polar(theta = "y", start = -180*pi/180)
+```
+
+Otro ejemplo podría usar SVD:
+
+```{r index-eof, fig.cap = "Análisis SVD de QS3.probablemente basura", fig.ncol = 1, fig.show = "hold", fig.subcap = c("Varianza explicada de cada componente", "Campo asociado a las primeras 2 componentes", "Factor de peso para cada mes", "'Magnitud' y 'Fase' de cada mes a partir de las componentes principales")}
+qs.eof.full <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", n = 10)
+
+qs.eof <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", n = 2)
+
+ggplot(qs.eof.full$sdev, aes(PC, r.squared)) +
+    geom_point() +
+    scale_x_continuous(breaks = 1:10) 
+
+ggplot(qs.eof$left, aes(lon, lat)) + 
+    stat_contour(aes(z = -value, color = ..level..)) +
+    map.SH +
+    scale_color_divergent() +
+    facet_wrap(~PC)
+ 
+ggplot(qs.eof$right, aes(month(date), -value)) +
+    geom_boxplot(aes(color =  paste0("PC", PC), 
+                     group = interaction(PC, month(date)))) +
+    annotate("errorbarh", y = 0.15, height = 0.01, alpha = 0.5,
+               xmin = c(-1, 4, 6, 8, 12) - 0.4, 
+             xmax = c(3, 5, 7, 11, 14) + 0.3, 
+             color = 1) +
+    scale_x_continuous(name = "Mes", breaks = 1:12, labels = month.abb_sp) +
+    scale_y_continuous(name = "PC") +
+    coord_cartesian(xlim = c(1, 12))
+
+dcast(qs.eof$right, ... ~ paste0("PC", PC)) %>% 
+    .[, .(dif = mean(PC2 - PC1), mag = mean(sqrt(PC2^2 + PC2^2))),
+      by = .(month(date))] %>% 
+    ggplot(aes(dif, mag)) +
+        ggforce::geom_link2(aes(color = qs.season(month), group = 1),
+                        alpha = 0.5) +
+    geom_point(aes(color = qs.season(month))) +
+    ggrepel::geom_text_repel(aes(label = month.abb_sp[month]))  +
+    scale_x_continuous(name = "PC2 - PC1") +
+    scale_y_continuous(name = "sqrt(PC1^2 + PC2^2)")
+```
+
+Cosas para ver:    
+Los campos son descriptos bien por sólo 2 componentes principales de igual magnitud que esencialmente describen el corrimiento de fase de la onda. La "magnitud" del vector de componentes mapea bien a la amplitud de fourier y la diferencia mapea bien a la fasae. 
+No hay nada nuevo por acá. 
+
+O, medio equivalente, usar la correlación entre meses:
+
+```{r cros-cor, fig.cap = "Matriz de Correlación del campo de QS3."}
+qs.field <- fields[lev == 300, .(lon, lat, date, QS3)]
+qs.croscor <- qs.field[, {value = QS3
+            qs.field[, cor(value, QS3), by = .(month2 = month(date))]}, 
+            by = .(month1 = month(date))]
+
+ggplot(qs.croscor[month1 != month2], aes(month1, month2)) +
+    geom_point(aes(color = V1, size = V1^2)) +
+    scale_x_continuous(breaks = 1:12, labels = month.abb_sp) +
+    scale_y_continuous(breaks = 1:12, labels = month.abb_sp) +
+    scale_color_divergent()
+```
+
+
+Grupos:
+* Enero + Febrero + Marzo es un grupo bastante seguro. Se ven juntos en el diagrama amplitud-fase, tienne alta correlación entre ellos y en componentes principales tienen PC1 significativamente mayor que PC2. 
+* Junio + Julio parecen ir por su cuenta. Tienen mucha correlación entre ellos y ambos tienen PC2 mayor que PC1 aunque su fase difiere bastante. 
+
+Los otros meses quedan medio mezclados, pero pueden agruparse como meses de "transición". 
+
 ## R2
 
 Se puede estimar de dos maneras distintas: a partir del ajuste de fourier para cada nivel y latitud (figura blabla) y haciendo un promedio, o reconstruyendo el campo tridimensional de la onda 3 y haciendo la correlación (global) con el campo tridimensional observado. Esta segunda forma da casi siempre un valor menor. 
@@ -1121,46 +1222,90 @@ El ciclo anual no es para nada tan claro. Varios outliers. La correlación recon
 
 
 Una ventaja de la correlación entre el campo real y el reconstruido es que puede hacerse para cada punto y analizar la variación espacial de la misma. 
-```{r corplot, cache = FALSE}
-corplot <- function(field, binwidth = 0.1) {
-    ggplot(field, aes(lon, lat)) +
-    stat_contour(aes(z = corelation, color = ..level..), binwidth = binwidth) +
+
+
+```{r cor-field, fig.cap = "Correlación cuadrada media para estaciones según onda3.", fig.show = "hold", fig.ncol = 2}
+cor.months.z <- fields[lat > -90 & lev == 300, 
+                   .(corelation = cor(gh.z, QS3)), 
+                   by = .(lon, lat, month(date))][
+                   , cor.w := corelation*sqrt(cos(lat*pi/180))]
+
+binwidth <- 0.15
+ggplot(cor.months.z[, .(cor = mean(corelation^2)), 
+                    by = .(lon, lat, season = qs.season(month))], 
+       aes(lon, lat)) +
+    stat_contour(aes(z = cor, color = ..level..), binwidth = binwidth) +
     map.SH +
     scale_color_viridis_c(breaks = MakeBreaks(binwidth),
                           limits = c(0, 1),
                           guide = guide_colorbar_bottom()) +
     scale_s_map() +
-    coord_quickmap()
-}
+    coord_quickmap() +
+    facet_wrap(~season)
+# 
+# cor.eof.z <- EOF(cor.months.z, lon + lat ~ month, value.var = "corelation", n = 4)
+# 
+# ggplot(cor.eof.z$right, aes(PC, value)) + 
+#     geom_point(aes(color = season(month)))
+# 
+# ggplot(cor.eof.z$left, aes(lon, lat)) +
+#     stat_contour_fill(aes(z = value)) +
+#     map.SH +
+#     scale_fill_divergent() +
+#     facet_wrap(~PC) 
+
+
+# cor.eof <- EOF(cor.months, lon + lat ~ month, value.var = "corelation", n = 4)
+# 
+# 
+# ggplot(cor.eof$right, aes(PC, value)) + 
+#     geom_point(aes(color = season(month)))
+# 
+# ggplot(cor.eof$left, aes(lon, lat)) +
+#     stat_contour_fill(aes(z = value)) +
+#     map.SH +
+#     scale_fill_divergent() +
+#     facet_wrap(~PC) 
+
+cor.months <- fields[lat > -90 & lev == 300, 
+                   .(corelation = cor(gh, QS3)), 
+                   by = .(lon, lat, month(date))][
+                   , cor.w := corelation*sqrt(cos(lat*pi/180))]
+
+binwidth <- 0.15
+ggplot(cor.months[, .(cor = mean(corelation^2)), 
+                    by = .(lon, lat, season = qs.season(month))], 
+       aes(lon, lat)) +
+    stat_contour(aes(z = cor, color = ..level..), binwidth = binwidth) +
+    map.SH +
+    scale_color_viridis_c(breaks = MakeBreaks(binwidth),
+                          limits = c(0, 1),
+                          guide = guide_colorbar_bottom()) +
+    scale_s_map() +
+    coord_quickmap() +
+    facet_wrap(~season)
 
 ```
 
-```{r cor-field, fig.cap = "Media anual de la correlación cuadrada de cada mes entre el campo observado y el reconstruido.", fig.show = "hold", fig.ncol = 2}
-cor.mean1.z <- fields[lat > -90 & lev == 300, 
-                   .(corelation = cor(gh.z, QS3)^2), 
-                   by = .(lon, lat, month(date))][
-                       , .(corelation = mean(corelation)), 
-                       by = .(lon, lat)]
-cor.mean2.z <- fields[lat > -90 & lev == 300, 
-                   .(corelation = cor(gh.z, QS3)^2), 
-                   by = .(lon, lat)]
 
-cor.mean1 <- fields[lat > -90 & lev == 300, 
-                   .(corelation = cor(gh, QS3)^2), 
-                   by = .(lon, lat, month(date))][
-                       , .(corelation = mean(corelation)), 
-                       by = .(lon, lat)]
-cor.mean2 <- fields[lat > -90 & lev == 300, 
-                   .(corelation = cor(gh, QS3)^2), 
-                   by = .(lon, lat)]
+```{r cor-monson, fig.cap = "Correlación cuadrada media para estaciones según Monsón de Sudamérica."}
 
-
-
-corplot(cor.mean1.z) + labs(subtitle = "Correlación con Z* mensual promediada")
-corplot(cor.mean2.z) + labs(subtitle = "Correlación con Z* total")
-corplot(cor.mean1) + labs(subtitle = "Correlación con Z mensual promediada")
-corplot(cor.mean2) + labs(subtitle = "Correlación con Z total")
+binwidth <- 0.15
+ggplot(cor.months.z[, .(cor = mean(corelation^2)), 
+                    by = .(lon, lat, season = (month %in% 5:9))], 
+       aes(lon, lat)) +
+    stat_contour(aes(z = cor, color = ..level..), binwidth = binwidth) +
+    map.SH +
+    scale_color_viridis_c(breaks = MakeBreaks(binwidth),
+                          limits = c(0, 1),
+                          guide = guide_colorbar_bottom()) +
+    scale_s_map() +
+    coord_quickmap() +
+    facet_wrap(~season, ncol = 2,
+               labeller = labeller(season = setNames(c("May-Sep", "Oct-Abr"),
+                                                     c(TRUE, FALSE))))
 ```
+
 
 Cosas para ver:    
 Esto es, para cada punto de grilla, la correlación entre el campo observado y el reconstruido en todos los meses y años. 
