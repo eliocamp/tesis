@@ -694,6 +694,23 @@ La onda 3 es estacionaria en -60°.
 
 ## Función corriente
 
+```{r waveflux-fun, cache = FALSE}
+WaveFlux <- function(psi, p = 250, a = 6371000) {
+    k <- p*100/(a^2*2000)
+    psi <- copy(psi)
+    psi[, c("psi.dlon", "psi.dlat") := Derivate(psi.z ~ lon + lat, 
+                                              bc = c("cyclic", "none"))] %>% 
+        .[, psi.ddlon := Derivate(psi.z ~ lon, bc = "cyclic", order = 2), 
+          by = lat] %>%
+        .[, psi.dlondlat := Derivate(psi.dlon ~ lat), 
+          by = lon] %>% 
+        .[, `:=`(f.lon = k/cos(lat*pi/180)*(psi.dlon^2 - psi.z*psi.ddlon),
+                 f.lat = k*(psi.dlon*psi.dlat - psi.z*psi.dlondlat))]
+    list(f.lat = psi$f.lat, f.lon = psi$f.lon)
+}
+```
+
+
 ```{r read_psi}
 stream <- ReadNetCDF("DATA/NCEP/stream.mon.mean.nc") %>% 
     setnames("level", "lev") %>% 
@@ -702,6 +719,8 @@ stream[, psi.z := Anomaly(psi), by = .(lat, date)]
 stream.mean.season <- stream[, .(psi = mean(psi),
                                  psi.z = mean(psi.z)), 
                              by = .(lon, lat, lev, season(date))]
+
+stream.mean.season[, c("f.lat", "f.lon") := WaveFlux(.SD), by = season]
 ```
 
 ```{r psi_ncep,  fig.class = "pagewidth", fig.cap = "Función corriente x 1099"}
@@ -709,6 +728,8 @@ ggplot(stream.mean.season, aes(lon, lat)) +
     stat_contour_fill(aes(z = psi.z*10^-9), binwidth = 0.005, 
                       complete = FALSE, exclude = 0) +
     geom_contour_fine(aes(z = psi*10^(-9)), color = "black", binwidth = 0.02) +
+    geom_arrow(aes(dx = f.lon, dy = f.lat), skip = 3, min.mag = 0.05, 
+               arrow.size = 0.2, scale = 50) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(0.005, 0), 
@@ -1056,13 +1077,13 @@ Una forma es, a partir del índice, agrupar los meses según su amplitud y fase 
 ```{r def-qs-season, cache = FALSE}
 qs.season <- function(month) {
     if (metR:::.is.somedate(month)) month <- lubridate::month(month)
-
+    
     qs.seasons <- factor(c(rep("Verano", 3), 
-                       rep("Oto\u00f1o", 2), 
-                       rep("Invierno", 2), 
-                       rep("Primavera", 4), 
-                       "Verano"))
-        # seasons <- c(sum, sum, sum,rep(c(aut, win, spr), each = 3), sum)
+                           rep("Oto\u00f1o", 2), 
+                           rep("Invierno", 2), 
+                           rep("Primavera", 4), 
+                           "Verano"))
+    # seasons <- c(sum, sum, sum,rep(c(aut, win, spr), each = 3), sum)
     
     return(factor(qs.seasons[month], levels = c("Verano", "Oto\u00f1o", 
                                                 "Invierno", "Primavera")))
@@ -1081,15 +1102,16 @@ index[, .(amplitude = mean(amplitude),
     ggrepel::geom_text_repel(aes(label = month.abb_sp[month]))  +
     scale_y_continuous(name = "Amplitud") +
     scale_x_continuous(name = "Fase")
-    # coord_polar(theta = "y", start = -180*pi/180)
+# coord_polar(theta = "y", start = -180*pi/180)
 ```
 
 Otro ejemplo podría usar SVD:
 
 ```{r index-eof, fig.cap = "Análisis SVD de QS3.probablemente basura", fig.ncol = 1, fig.show = "hold", fig.subcap = c("Varianza explicada de cada componente", "Campo asociado a las primeras 2 componentes", "Factor de peso para cada mes", "'Magnitud' y 'Fase' de cada mes a partir de las componentes principales")}
-qs.eof.full <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", n = 10)
+qs.eof.full <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", 
+                   n = 1:10)
 
-qs.eof <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", n = 2)
+qs.eof <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", n = 1:2)
 
 ggplot(qs.eof.full$sdev, aes(PC, r.squared)) +
     geom_point() +
@@ -1100,12 +1122,12 @@ ggplot(qs.eof$left, aes(lon, lat)) +
     map.SH +
     scale_color_divergent() +
     facet_wrap(~PC)
- 
+
 ggplot(qs.eof$right, aes(month(date), -value)) +
     geom_boxplot(aes(color =  paste0("PC", PC), 
                      group = interaction(PC, month(date)))) +
     annotate("errorbarh", y = 0.15, height = 0.01, alpha = 0.5,
-               xmin = c(-1, 4, 6, 8, 12) - 0.4, 
+             xmin = c(-1, 4, 6, 8, 12) - 0.4, 
              xmax = c(3, 5, 7, 11, 14) + 0.3, 
              color = 1) +
     scale_x_continuous(name = "Mes", breaks = 1:12, labels = month.abb_sp) +
@@ -1116,7 +1138,7 @@ dcast(qs.eof$right, ... ~ paste0("PC", PC)) %>%
     .[, .(dif = mean(PC2 - PC1), mag = mean(sqrt(PC2^2 + PC2^2))),
       by = .(month(date))] %>% 
     ggplot(aes(dif, mag)) +
-        ggforce::geom_link2(aes(color = qs.season(month), group = 1),
+    ggforce::geom_link2(aes(color = qs.season(month), group = 1),
                         alpha = 0.5) +
     geom_point(aes(color = qs.season(month))) +
     ggrepel::geom_text_repel(aes(label = month.abb_sp[month]))  +
@@ -1133,8 +1155,8 @@ O, medio equivalente, usar la correlación entre meses:
 ```{r cros-cor, fig.cap = "Matriz de Correlación del campo de QS3."}
 qs.field <- fields[lev == 300, .(lon, lat, date, QS3)]
 qs.croscor <- qs.field[, {value = QS3
-            qs.field[, cor(value, QS3), by = .(month2 = month(date))]}, 
-            by = .(month1 = month(date))]
+qs.field[, cor(value, QS3), by = .(month2 = month(date))]}, 
+by = .(month1 = month(date))]
 
 ggplot(qs.croscor[month1 != month2], aes(month1, month2)) +
     geom_point(aes(color = V1, size = V1^2)) +
@@ -1226,9 +1248,9 @@ Una ventaja de la correlación entre el campo real y el reconstruido es que pued
 
 ```{r cor-field, fig.cap = "Correlación cuadrada media para estaciones según onda3.", fig.show = "hold", fig.ncol = 2}
 cor.months.z <- fields[lat > -90 & lev == 300, 
-                   .(corelation = cor(gh.z, QS3)), 
-                   by = .(lon, lat, month(date))][
-                   , cor.w := corelation*sqrt(cos(lat*pi/180))]
+                       .(corelation = cor(gh.z, QS3)), 
+                       by = .(lon, lat, month(date))][
+                           , cor.w := corelation*sqrt(cos(lat*pi/180))]
 
 binwidth <- 0.15
 ggplot(cor.months.z[, .(cor = mean(corelation^2)), 
@@ -1268,13 +1290,13 @@ ggplot(cor.months.z[, .(cor = mean(corelation^2)),
 #     facet_wrap(~PC) 
 
 cor.months <- fields[lat > -90 & lev == 300, 
-                   .(corelation = cor(gh, QS3)), 
-                   by = .(lon, lat, month(date))][
-                   , cor.w := corelation*sqrt(cos(lat*pi/180))]
+                     .(corelation = cor(gh, QS3)), 
+                     by = .(lon, lat, month(date))][
+                         , cor.w := corelation*sqrt(cos(lat*pi/180))]
 
 binwidth <- 0.15
 ggplot(cor.months[, .(cor = mean(corelation^2)), 
-                    by = .(lon, lat, season = qs.season(month))], 
+                  by = .(lon, lat, season = qs.season(month))], 
        aes(lon, lat)) +
     stat_contour(aes(z = cor, color = ..level..), binwidth = binwidth) +
     map.SH +
@@ -1318,10 +1340,10 @@ Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 ## Composición de campos. 
 
 ```{r fields}
-setnames(fields, c("gh.z", "QS3"), c("ncep", "qs3"))
+setnames(fields, c("gh.z", "gh", "QS3"), c("ncep.z", "ncep", "qs3"))
 fields <- melt(fields[lev == 300], id.vars = c("lon", "lat", "date"), 
-               variable.name = "campo", value.name = "gh.z", 
-               measure.vars = c("ncep", "qs3"))
+               variable.name = "campo", value.name = "gh", 
+               measure.vars = c("ncep", "qs3", "ncep.z"))
 ```
 
 Descripción de la seleccion.  
@@ -1390,13 +1412,15 @@ setnames(index, "select.amplitude", "select")
 
 ```{r comp-ampl, fig.class = "fullpage", fig.cap = "Composición de campos"}
 select.dates <- index[select == TRUE, date]
-composition <- fields[date %in% select.dates,
-                      .(gh.z = mean(gh.z)),
-                      by = .(lon, lat, campo, month(date))]
-binwidth <- 30
+composition <- copy(fields) %>% 
+    .[, gh.a := gh - mean(gh), by = .(lon, lat, campo, month(date))] %>% 
+    .[date %in% select.dates, 
+      .(gh = mean(gh.a)), 
+      by = .(lon, lat, campo, month(date))]
+
+binwidth <- 15
 ggplot(composition[campo == "ncep"], aes(lon, lat)) +
-    geom_contour_fine(aes(z = gh.z, color = ..level..),
-                      binwidth = binwidth) +
+    geom_contour_fine(aes(z = gh, color = ..level..), binwidth = binwidth) +
     map.SH +
     scale_s_map() +
     scale_color_divergent(breaks = MakeBreaks(binwidth),
@@ -1446,32 +1470,76 @@ tempplot(9)
 
 Estos gráficos me parecen importantes para ver lo que hay "adentro" de la composición, pero no sé bien qué decir sobre ellos. Supongo que lo principal es que hay años donde la onda 
 
+
+Al igual que antes, ¿qué pasa si hago PSA?
+
+```{r eof-comp, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
+eofs <- copy(fields[date %in% select.dates & campo == "ncep"]) %>% 
+    .[, `:=`(year = year(date),
+             gh.w = gh*sqrt(cos(lat*pi/(180))))] %>% 
+    .[, EOF(.SD, lon + lat ~ year, value.var = "gh", n = 2:4)$left,
+      by = .(campo, month(date))]
+
+
+ggplot(eofs[campo == "ncep"], aes(lon, lat)) +
+    stat_contour_fill(aes(z = value), exclude = 0, complete = F, 
+                      binwidth = 0.01) +
+    map.SH +
+    scale_fill_divergent() +
+    facet_grid(PC~month)
+```
+
 ## Regresiones
 
 ```{r make-regression}
-
-regression <- fields[campo == "ncep"][
+regression <- ncep[lev == 300, .(lon, lat, date, gh)][
     index[, .(date, amplitude, phase.mode)], on = "date"][
-        , setNames(ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
-                                                         amplitude, 
-                                                         phase.mode),
-                                                   gh.z)),
-                   c("regressor", "estimate", "se")), 
+        , setNames(ExtractLm(
+            RcppArmadillo::fastLm(cbind(mean = 1,
+                                        amplitude = amplitude/sd(amplitude), 
+                                        phase = phase.mode),
+                                  gh)),
+            c("regressor", "estimate", "se")), 
         by = .(lat, lon, month(date))][
             , t := abs(estimate)/se]
 ```
 
 ```{r regression-ampl, fig.cap = "Regresión sobre amplitud.", fig.class = "vfullpage"}
+binwidth <- 10
 ggplot(regression[regressor == "amplitude"], aes(lon, lat)) +
-    stat_contour(aes(z = estimate, color = ..level..), binwidth = 0.5) +
+    stat_contour(aes(z = estimate, color = ..level..), binwidth = binwidth) +
     map.SH +
     # scale_s_map() +
     scale_y_latitude(limits = c(-90, 0)) +
     scale_x_longitude() +
-    scale_color_divergent(breaks = MakeBreaks(binwidth = 0.5), 
+    scale_color_divergent(binwidth = binwidth,
                           guide = guide_colorbar_bottom()) +
-    coord_polar() +
+    # coord_polar() +
+    coord_quickmap() +
     facet_wrap(~month, ncol = 3, nrow = 4, dir = "v",
+               labeller = labeller(month = month.abb_sp))
+```
+
+Cosas para ver:   
+* Además los patrones de onda 3, en julio y diciembre aparece un patrón de SAM positivo y negativo respectivamente. 
+
+```{r sam-ampl, fig.cap = "Relación entre amplitud media de la onda 3 y el SAM"}
+sam <- fread("DATA/sam.monthly.txt") %>% 
+    setnames(c("year", "month", "sam")) %>% 
+    .[year > 1984 & year < 2016] %>% 
+    .[, date := ymd(paste0(year, " ", month, " ", 01))] %>% 
+    .[, `:=`(year = NULL, month = NULL)]
+
+
+index[sam, on = "date"] %>% 
+    .[, month := month(date)] %>% 
+    ggplot(aes(amplitude, sam)) +
+    geom_point(size = 0.5) + 
+    geom_smooth(method = "lm", size = 0.5, color = "black") +
+    scale_x_continuous(name = "Amplitud media") +
+    scale_y_continuous(name = "SAM") +
+    facet_wrap(~month, scales = "free", 
+               ncol = 3, nrow = 4, dir = "v",
                labeller = labeller(month = month.abb_sp))
 ```
 
@@ -1622,6 +1690,7 @@ La mayoría del tiempo estamos afectados por centro de máxima, pero hay casos i
 
 
 ## Análisis dinámica de septiembre
+
 
 
 ## Fuentes de variabilidad interna
