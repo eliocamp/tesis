@@ -38,6 +38,7 @@ knitr::opts_chunk$set(tidy = FALSE,
                       # cache.lazy = TRUE,
                       cache.path = "cache/tesis/",
                       fig.path = "fig/tesis/",
+                      out.extra = " ",
                       warning = FALSE,
                       message = FALSE)
 library(tufte)
@@ -1246,7 +1247,7 @@ El ciclo anual no es para nada tan claro. Varios outliers. La correlación recon
 Una ventaja de la correlación entre el campo real y el reconstruido es que puede hacerse para cada punto y analizar la variación espacial de la misma. 
 
 
-```{r cor-field, fig.cap = "Correlación cuadrada media para estaciones según onda3.", fig.show = "hold", fig.ncol = 2}
+```{r cor-field, fig.cap = "Correlación cuadrada media para estaciones según onda3.", fig.show = "hold", fig.subcap = c("Anomalía zonal", "Campo total"), fig.ncol = 1}
 cor.months.z <- fields[lat > -90 & lev == 300, 
                        .(corelation = cor(gh.z, QS3)), 
                        by = .(lon, lat, month(date))][
@@ -1439,11 +1440,11 @@ gdata <- fields[date %in% select.dates & month(date) == c(1, 9)] %>%
     setDT()
 
 tempplot <- function(month) {
-    ggplot(mapping = aes(lon, lat, z = gh.z)) +
+    ggplot(mapping = aes(lon, lat, z = gh)) +
         stat_contour_fill(data = gdata[campo == "qs3" & month(date) == month], 
                           exclude = 0, complete = F,
                           binwidth = binwidth) +
-        geom_contour_fine(data = gdata[campo == "ncep" & month(date) == month],
+        geom_contour_fine(data = gdata[campo == "ncep.z" & month(date) == month],
                           aes(linetype = factor(sign(-..level..))),
                           binwidth = binwidth,
                           color = "black") +
@@ -1473,20 +1474,34 @@ Estos gráficos me parecen importantes para ver lo que hay "adentro" de la compo
 
 Al igual que antes, ¿qué pasa si hago PSA?
 
-```{r eof-comp, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
+```{r eof-com0, cache = FALSE}
 eofs <- copy(fields[date %in% select.dates & campo == "ncep"]) %>% 
     .[, `:=`(year = year(date),
              gh.w = gh*sqrt(cos(lat*pi/(180))))] %>% 
     .[, EOF(.SD, lon + lat ~ year, value.var = "gh", n = 2:4)$left,
       by = .(campo, month(date))]
 
-
-ggplot(eofs[campo == "ncep"], aes(lon, lat)) +
+g <- ggplot(eofs[campo == "ncep"], aes(lon, lat)) +
     stat_contour_fill(aes(z = value), exclude = 0, complete = F, 
                       binwidth = 0.01) +
     map.SH +
-    scale_fill_divergent() +
-    facet_grid(PC~month)
+    scale_fill_divergent() + 
+    coord_quickmap() 
+```
+
+```{r eof-comp1, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
+g + facet_grid_paginate(PC~month, ncol = 4, nrow = 3, page = 1,
+               labeller = labeller(month = month.abb_sp))
+```
+
+```{r eof-comp2, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
+g + facet_grid_paginate(PC~month, ncol = 4, nrow = 3, page = 2,
+               labeller = labeller(month = month.abb_sp))
+```
+
+```{r eof-comp3, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
+g + facet_grid_paginate(PC~month, ncol = 4, nrow = 3, page = 3,
+               labeller = labeller(month = month.abb_sp))
 ```
 
 ## Regresiones
@@ -1523,7 +1538,7 @@ ggplot(regression[regressor == "amplitude"], aes(lon, lat)) +
 Cosas para ver:   
 * Además los patrones de onda 3, en julio y diciembre aparece un patrón de SAM positivo y negativo respectivamente. 
 
-```{r sam-ampl, fig.cap = "Relación entre amplitud media de la onda 3 y el SAM"}
+```{r sam-ampl, fig.cap = "Relación entre amplitud media de la onda 3 y el SAM", fig.height = 6}
 sam <- fread("DATA/sam.monthly.txt") %>% 
     setnames(c("year", "month", "sam")) %>% 
     .[year > 1984 & year < 2016] %>% 
@@ -1574,7 +1589,7 @@ Se ve que hay muchos casos donde coinciden bastante bien, pero otros que se alej
 ```{r fase-mal, fig.cap = "Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.", fig.height = 6}
 ggplot(fields[campo == "qs3" & date %in% dates], 
        aes(lon, lat)) +
-    stat_contour_fill(aes(z = gh.z), exclude = 0, complete = F,
+    stat_contour_fill(aes(z = gh), exclude = 0, complete = F,
                       binwidth = 10) +
     geom_point(data = index[date %in% dates], aes(x = lon),
                color = "red") +

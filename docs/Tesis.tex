@@ -150,7 +150,7 @@ haciendo que los máximos y mínimos no sean contínuos.
 \end{itemize}
 
 \begin{figure*}
-\subfloat[Campo\label{fig:wavelet_ejemplo1}]{\includegraphics[width=75mm]{fig/tesis/wavelet_ejemplo-1} }\newline\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet_ejemplo2}]{\includegraphics[width=75mm]{fig/tesis/wavelet_ejemplo-2} }\caption{Wavelets}\label{fig:wavelet_ejemplo}
+\subfloat[Campo\label{fig:wavelet_ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet_ejemplo-1} }\newline\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet_ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet_ejemplo-2} }\caption{Wavelets}\label{fig:wavelet_ejemplo}
 \end{figure*}
 
 Cosas para ver:\\
@@ -381,9 +381,7 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 \section{Número de onda estacionaria}\label{numero-de-onda-estacionaria}
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/k-steady-1.pdf}
-\caption{Número de onda estacionario en 300hPa.}
+\includegraphics[ ]{fig/tesis/k-steady-1} \caption{Número de onda estacionario en 300hPa.}\label{fig:k-steady}
 \end{figure}
 
 \begin{figure}
@@ -552,9 +550,7 @@ Analizar nivel de similitud entre los campos y similitud entre la
 estructura de la ampltiud.
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/mean_max_cor-1.pdf}
-\caption{Correlación entre amplitud máxima y media.}
+\includegraphics[ ]{fig/tesis/mean_max_cor-1} \caption{Correlación entre amplitud máxima y media.}\label{fig:mean_max_cor}
 \end{figure}
 
 Cosas para ver:\\
@@ -573,17 +569,14 @@ Una forma es, a partir del índice, agrupar los meses según su amplitud y
 fase media:
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/ampl-fase-1.pdf}
-\caption{Amplitud y fase media para cada mes.}
+\includegraphics[ ]{fig/tesis/ampl-fase-1} \caption{Amplitud y fase media para cada mes.}\label{fig:ampl-fase}
 \end{figure}
 
 Otro ejemplo podría usar SVD:
 
-\includegraphics{fig/tesis/index-eof-1.pdf}
-\includegraphics{fig/tesis/index-eof-2.pdf}
-\includegraphics{fig/tesis/index-eof-3.pdf}
-\includegraphics{fig/tesis/index-eof-4.pdf}
+\begin{figure}
+\subfloat[Varianza explicada de cada componente\label{fig:index-eof1}]{\includegraphics[ ]{fig/tesis/index-eof-1} }\newline\subfloat[Campo asociado a las primeras 2 componentes\label{fig:index-eof2}]{\includegraphics[ ]{fig/tesis/index-eof-2} }\newline\subfloat[Factor de peso para cada mes\label{fig:index-eof3}]{\includegraphics[ ]{fig/tesis/index-eof-3} }\newline\subfloat['Magnitud' y 'Fase' de cada mes a partir de las componentes principales\label{fig:index-eof4}]{\includegraphics[ ]{fig/tesis/index-eof-4} }\caption{Análisis SVD de QS3.probablemente basura}\label{fig:index-eof}
+\end{figure}
 
 Cosas para ver:\\
 Los campos son descriptos bien por sólo 2 componentes principales de
@@ -595,9 +588,7 @@ acá.
 O, medio equivalente, usar la correlación entre meses:
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/cros-cor-1.pdf}
-\caption{Matriz de Correlación del campo de QS3.}
+\includegraphics[ ]{fig/tesis/cros-cor-1} \caption{Matriz de Correlación del campo de QS3.}\label{fig:cros-cor}
 \end{figure}
 
 Grupos: * Enero + Febrero + Marzo es un grupo bastante seguro. Se ven
@@ -619,9 +610,7 @@ haciendo la correlación (global) con el campo tridimensional observado.
 Esta segunda forma da casi siempre un valor menor.
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/r2_comparacion-1.pdf}
-\caption{Relación entre R2 medio y R2 reconstruido.}
+\includegraphics[ ]{fig/tesis/r2_comparacion-1} \caption{Relación entre R2 medio y R2 reconstruido.}\label{fig:r2_comparacion}
 \end{figure}
 
 Para ver:\\
@@ -652,14 +641,12 @@ Una ventaja de la correlación entre el campo real y el reconstruido es
 que puede hacerse para cada punto y analizar la variación espacial de la
 misma.
 
-\includegraphics{fig/tesis/cor-field-1.pdf}
-\includegraphics{fig/tesis/cor-field-2.pdf}
+\begin{figure}
+\subfloat[Anomalía zonal\label{fig:cor-field1}]{\includegraphics[ ]{fig/tesis/cor-field-1} }\newline\subfloat[Campo total\label{fig:cor-field2}]{\includegraphics[ ]{fig/tesis/cor-field-2} }\caption{Correlación cuadrada media para estaciones según onda3.}\label{fig:cor-field}
+\end{figure}
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/cor-monson-1.pdf}
-\caption{Correlación cuadrada media para estaciones según Monsón de
-Sudamérica.}
+\includegraphics[ ]{fig/tesis/cor-monson-1} \caption{Correlación cuadrada media para estaciones según Monsón de Sudamérica.}\label{fig:cor-monson}
 \end{figure}
 
 Cosas para ver:\\
@@ -726,7 +713,7 @@ no hay mucha diferencia. En efecto, las composiciones son casi iguales
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm]{fig/tesis/select-enero-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/select-enero-1} 
 
 }
 
@@ -735,7 +722,7 @@ no hay mucha diferencia. En efecto, las composiciones son casi iguales
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm]{fig/tesis/select-sept-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/select-sept-1} 
 
 }
 
@@ -750,18 +737,36 @@ Al igual que antes, ¿qué pasa si hago PSA?
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eof-comp-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eof-comp1-1} 
 
 }
 
-\caption{Campos EOF para cada mes (probablemente basura)}\label{fig:eof-comp}
+\caption{Campos EOF para cada mes (probablemente basura)}\label{fig:eof-comp1}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eof-comp2-1} 
+
+}
+
+\caption{Campos EOF para cada mes (probablemente basura)}\label{fig:eof-comp2}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eof-comp3-1} 
+
+}
+
+\caption{Campos EOF para cada mes (probablemente basura)}\label{fig:eof-comp3}
 \end{figure}
 
 \section{Regresiones}\label{regresiones}
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm]{fig/tesis/regression-ampl-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/regression-ampl-1} 
 
 }
 
@@ -773,9 +778,7 @@ Cosas para ver:\\
 de SAM positivo y negativo respectivamente.
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/sam-ampl-1.pdf}
-\caption{Relación entre amplitud media de la onda 3 y el SAM}
+\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM}\label{fig:sam-ampl}
 \end{figure}
 
 \section{Fase}\label{fase}
@@ -804,13 +807,7 @@ cualquier cosa si la estructura cambia mucho con la latitud. Por
 ejemplo, los casos marcados en rojo.
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/fase-mal-1.pdf}
-\caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo
-es la fase en la latitud de amplitud máxima; el punto negro, la fase
-promedio; el punto azul, la moda de la fase. El rectángulo la región
-donde puede encontrarse la fase. Los límites meridionales definidos por
-la región donde se calcula el índice y los zonales por 360/3.}
+\includegraphics[ ]{fig/tesis/fase-mal-1} \caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.}\label{fig:fase-mal}
 \end{figure}
 
 En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo
@@ -833,15 +830,11 @@ Conclusión: vamos a usar la moda de la fase.
 Ciclo anual de la fase.
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/boxplot-fase-ncep-1.pdf}
-\caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes)}
+\includegraphics[ ]{fig/tesis/boxplot-fase-ncep-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes)}\label{fig:boxplot-fase-ncep}
 \end{figure}
 
 \begin{figure}
-\centering
-\includegraphics{fig/tesis/boxplot-fase-ncep2-1.pdf}
-\caption{Ciclo anual de la fase (todos)}
+\includegraphics[ ]{fig/tesis/boxplot-fase-ncep2-1} \caption{Ciclo anual de la fase (todos)}\label{fig:boxplot-fase-ncep2}
 \end{figure}
 
 Cosas para ver:\\
