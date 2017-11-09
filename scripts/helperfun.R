@@ -845,3 +845,12 @@ fsign <- function(x) {
     f <- sign(x)
     factor(ifelse(f == 0, NA, f))
 }
+
+
+
+ifelse2 <- function(x, expression, yes = NA, no = x) {
+    e <- eval(parse(text = deparse(substitute(expression))), envir = environment())
+    yes <- eval(parse(text = deparse(substitute(yes))), envir = environment())
+    no <- eval(parse(text = deparse(substitute(no))), envir = environment())
+    ifelse(e, yes, no)
+}

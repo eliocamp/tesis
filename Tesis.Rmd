@@ -24,7 +24,7 @@ header-includes:
     - \linespread{1.25}
     - \usepackage{subfig}
     - \usepackage{marginnote}
-#   - \usepackage[nomarkers,figuresonly]{endfloat}
+    - \usepackage[nomarkers,figuresonly]{endfloat}
 link-citations: yes
 ---
 
@@ -700,7 +700,7 @@ WaveFlux <- function(psi, p = 250, a = 6371000) {
     k <- p*100/(a^2*2000)
     psi <- copy(psi)
     psi[, c("psi.dlon", "psi.dlat") := Derivate(psi.z ~ lon + lat, 
-                                              bc = c("cyclic", "none"))] %>% 
+                                                bc = c("cyclic", "none"))] %>% 
         .[, psi.ddlon := Derivate(psi.z ~ lon, bc = "cyclic", order = 2), 
           by = lat] %>%
         .[, psi.dlondlat := Derivate(psi.dlon ~ lat), 
@@ -715,14 +715,17 @@ WaveFlux <- function(psi, p = 250, a = 6371000) {
 ```{r read_psi}
 stream <- ReadNetCDF("DATA/NCEP/stream.mon.mean.nc") %>% 
     setnames("level", "lev") %>% 
-    .[lat <= 0]
+    .[lat <= 40]
 stream[, psi.z := Anomaly(psi), by = .(lat, date)]
+stream[, date := as.Date(date), by = date]
 stream.mean.season <- stream[, .(psi = mean(psi),
                                  psi.z = mean(psi.z)), 
                              by = .(lon, lat, lev, season(date))]
 
 stream.mean.season[, c("f.lat", "f.lon") := WaveFlux(.SD), by = season]
 ```
+
+
 
 ```{r psi_ncep,  fig.class = "pagewidth", fig.cap = "Función corriente x 1099"}
 ggplot(stream.mean.season, aes(lon, lat)) +
@@ -1071,6 +1074,132 @@ ggplot(index, aes(factor(month(date)), amplitude)) +
     scale_y_continuous(name = "Amplitud")
 ```
 
+## Fase
+
+Además de eso, tengo la fase. Puedo tomar la fase media en la región o la fase correspondiente a donde está el máximo de la amplitud (lo que equivale al centro del anticiclón) o la moda de la fase. 
+
+(más explicación...)
+
+¿Cuál usar? 
+
+```{r lon-phase-comp, fig.cap = "Fase promedio vs Fase del máximo", fig.class = "textwidth"}
+
+dates <- c(as.Date("2013-06-01"),
+           index[, date[which.max(abs(lon - phase*180/pi))]],
+           index[, date[which.min(abs(lon - phase*180/pi))]])
+ggplot(index, aes(lon, phase*180/pi)) +
+    geom_point(size = 0.5) +
+    geom_point(data = index[date %in% dates], size = 3, 
+               shape = 21, fill = NA, color = "red") +
+    geom_abline(linetype = 3) +
+    scale_x_continuous(name = "Fase de amplitud máxima") +
+    scale_y_continuous(name = "Fase promedio") +
+    coord_fixed() 
+```
+
+Cosas para ver:   
+Se ve que hay muchos casos donde coinciden bastante bien, pero otros que se alejan mucho. La razón es que al tomar el promedio, puede quedar cualquier cosa si la estructura cambia mucho con la latitud. Por ejemplo, los casos marcados en rojo.
+
+
+```{r fase-mal, fig.cap = "Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.", fig.height = 6}
+ggplot(fields[lev == 300 & date %in% dates], 
+       aes(lon, lat)) +
+    stat_contour_fill(aes(z = QS3), exclude = 0, complete = F, binwidth = 10) +
+    geom_point(data = index[date %in% dates], aes(x = lon),
+               color = "red") +
+    geom_point(data = index[date %in% dates], 
+               aes(x = phase*180/pi)) +
+    geom_point(data = index[date %in% dates],
+               aes(x = phase.mode*180/pi, y = lat.mode), 
+               color = "blue") +
+    annotate(geom = "rect", xmin = 0, xmax = 120, 
+             ymin = rect.annotation$latmin, ymax = rect.annotation$latmax,
+             fill = NA, linetype = 3, color = "black") +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(breaks = MakeBreaks(10),
+                         guide = guide_colorbar_bottom()) +
+    coord_quickmap() +
+    facet_wrap(~date, ncol = 1)
+```
+
+En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo que hace que la fase oscile entre valores cercanos a 0° y a 120° en distintas latitudes a pesar de que representan el mismo centro de máxima. El promedio, por lo tanto, queda en el centro y termina estando en una región donde el campo de geopotencial de onda 3 es nulo. Si bien la fase de la amplitud máxima y la moda de la fase parecen ser muy distintas, la naturaleza cíclica de la fase implica que representan aproximadamente el mismo punto. 
+
+En tercer caso la estructura de onda 3 es de dos centros a distintas latitudes. La fase promedio de ambas (punto negro) representa el punto medio y, por lo tanto, está más cerca del mínimo de geopotencial que del máximo. En este caso la moda de la fase es una mejor representación del campo de onda 3 que la fase del máximo. 
+
+En el caso del medio, todo anda bien y los tres puntos coinciden. 
+
+Conclusión: vamos a usar la moda de la fase. 
+
+
+```{r remove-phase}
+index <- index[, c("lon", "phase", "lat") := NULL]
+setnames(index, c("phase.mode", "lat.mode"), c("phase", "lat"))
+```
+
+Ciclo anual de la fase. 
+
+```{r boxplot-fase-ncep, fig.cap = "Ciclo anual de la fase (20 mayores amplitudes para cada mes)"}
+lat.lims <- c(-70, -22)
+lon.lims <- c(230, 360)
+map.arg <- geom_map2(BuildMap(countries = T)[lat %b% lat.lims & 
+                                                 long %b% lon.lims])
+index %>% 
+    group_by(month = month(date)) %>% 
+    filter(greater(amplitude, 20)) %>% 
+    ggplot() +
+    map.arg + 
+    ggstance::geom_boxploth(aes(phase*180/pi + 240, 
+                                (-month(date) + 6)*2.4 - 45, 
+                                group = as.factor(month(date)))) +
+    annotate(geom = "text", x = rep(237, 12), y = (-(1:12) + 6)*2.4 - 45, 
+             label = month.abb_sp, size = 3, hjust = 1) +
+    geom_vline(xintercept = c(240, 360), linetype = 3) +
+    # map.SH.3 +
+    scale_x_longitude(ticks = 20) +
+    scale_y_latitude(ticks = 10) +
+    ylab("lat") +
+    # coord_quickmap(xlim = lon.lims, ylim = lat.lims) +
+    coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims)
+```
+
+Cosas para ver:    
+Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay mucha variabilidad.    
+Recordar que este es aproximadamente el centro del máximo de geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso implica que en los casos donde hay puntos cerca de -120° o 0°, hay el centro de mínima está en ~-60°.    
+También notar que, como se trata en realidad de una variable cíclica, los puntos extremos representan una situación similar.     
+¿Hay mucha diferencia entre el boxplot con todos los datos y el de sólo los 20 más intensos? Yo no veo mucha y me parece que excluir a los 10 más débiles invita más preguntas que las que responde. 
+
+```{r centros-10max, fig.cap = "Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.", fig.class = "fullpage"}
+library(scales)
+index[index[, .I[greater(amplitude, 10)], by = month(date)]$V1] %>%
+    mutate(month = month(date)) %>% 
+    ggplot(aes(phase*180/pi + 240, lat)) +
+    # geom_segment(aes(xend = ifelse(phase*180/pi > 60, 
+    #                                phase*180/pi + 240 - 60, 
+    #                                phase*180/pi + 60 + 240), 
+    #                  yend = lat)) +
+    geom_point(color = muted("red")) +
+    geom_point(aes(x = phase*180/pi + 240 - 60), color = muted("blue")) +
+    geom_point(aes(x = phase*180/pi + 240 + 60), color = muted("blue")) +
+    map.arg +
+    annotate(geom = "rect", xmin = 240, xmax = 360, 
+             ymin = rect.annotation$latmin, ymax = rect.annotation$latmax,
+             fill = NA, linetype = 3, color = "black") +
+    # map.SH.3 +
+    scale_x_longitude(ticks = 20, limits = c(240, 360)) +
+    scale_y_latitude(ticks = 10) +
+    ylab("lat") +
+    # coord_quickmap(xlim = lon.lims, ylim = lat.lims) +
+    coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims) +
+    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb_sp))
+```
+
+Cosas para ver:    
+La mayoría del tiempo estamos afectados por centro de máxima, pero hay casos intensos donde hay mínima. Especialmente en junio y julio. 
+
+## Estaciones
+
+
 ¿Cómo establecer una "estacionalidad"? Algún criterio para agrupar meses. Claramente las estaciones climatológicas de siempre no sirven. 
 
 Una forma es, a partir del índice, agrupar los meses según su amplitud y fase media:
@@ -1093,7 +1222,7 @@ qs.season <- function(month) {
 
 ```{r ampl-fase, fig.cap = "Amplitud y fase media para cada mes."}
 index[, .(amplitude = mean(amplitude), 
-          phase = mean(phase.mode)),
+          phase = mean(phase)),
       by = month(date)] %>% 
     ggplot(aes(phase, amplitude)) +
     ggforce::geom_link2(aes(color = qs.season(month), group = 1),
@@ -1151,27 +1280,47 @@ Cosas para ver:
 Los campos son descriptos bien por sólo 2 componentes principales de igual magnitud que esencialmente describen el corrimiento de fase de la onda. La "magnitud" del vector de componentes mapea bien a la amplitud de fourier y la diferencia mapea bien a la fasae. 
 No hay nada nuevo por acá. 
 
-O, medio equivalente, usar la correlación entre meses:
-
-```{r cros-cor, fig.cap = "Matriz de Correlación del campo de QS3."}
-qs.field <- fields[lev == 300, .(lon, lat, date, QS3)]
-qs.croscor <- qs.field[, {value = QS3
-qs.field[, cor(value, QS3), by = .(month2 = month(date))]}, 
-by = .(month1 = month(date))]
-
-ggplot(qs.croscor[month1 != month2], aes(month1, month2)) +
-    geom_point(aes(color = V1, size = V1^2)) +
-    scale_x_continuous(breaks = 1:12, labels = month.abb_sp) +
-    scale_y_continuous(breaks = 1:12, labels = month.abb_sp) +
-    scale_color_divergent()
-```
-
 
 Grupos:
 * Enero + Febrero + Marzo es un grupo bastante seguro. Se ven juntos en el diagrama amplitud-fase, tienne alta correlación entre ellos y en componentes principales tienen PC1 significativamente mayor que PC2. 
 * Junio + Julio parecen ir por su cuenta. Tienen mucha correlación entre ellos y ambos tienen PC2 mayor que PC1 aunque su fase difiere bastante. 
 
 Los otros meses quedan medio mezclados, pero pueden agruparse como meses de "transición". 
+
+## Persistencia (ver dónde va)
+
+```{r cros-cor, fig.cap = "Correlación lageada para cada mes con los 12 sigientes."}
+lags <- 0:12
+qs.croscor <- copy(qs.wave[lev == 300]) %>%
+    .[, (paste0("l", lags)) := shift(QS3, lags, type = "lead"), 
+      by = .(lat, lon)] %>% 
+    .[, lapply(lags, function(l) cor(.SD$l0, .SD[[paste0("l", l)]], 
+                                     use = "complete.obs")), 
+      by = month(date)] %>% 
+    set_colnames(c("month", 0:12)) %>% 
+    melt(id.vars = "month", variable.name = "lag", value.name = "cor") %>% 
+    .[, lag := as.numeric(as.character(lag))] %>% 
+    .[, month2 := ifelse2(month + lag, x > 12, x - 12)]
+
+ggplot(qs.croscor[lag != 0], aes(month2, month)) +
+    # annotate("ribbon", x = c(0.5, rep(1:12 + 0.5, each = 2)),
+    #          ymin = c(0, 0, rep(1:11, each = 2) + 0.5, 12),
+    #          ymax = 13, 
+    #          fill = "gray80", alpha = 0.2) +
+    # geom_point(aes(size = abs(cor), color = cor)) +
+    geom_tile(aes(fill = cor)) +
+    geom_text(aes(label = round(cor*10, 1))) +
+    annotate("step", x = 2:13 - 0.5, y = 1:12 - 0.5, direction = "vh",
+             color = "gray20", linetype = 1) +
+    # points(seq(0.1, 0.5, by = 0.1)) +
+    scale_size() +
+    scale_y_continuous(name = "Mes", expand = c(0, 0), trans = "reverse", 
+                       breaks = 1:12, labels = month.abb_sp) +
+    scale_x_continuous(name = "Mes siguiente", expand = c(0, 0),
+                       breaks = 1:12, labels = month.abb_sp) +
+    scale_fill_divergent(breaks = MakeBreaks(0.1), 
+                          guide = "none")
+```
 
 ## R2
 
@@ -1248,48 +1397,6 @@ Una ventaja de la correlación entre el campo real y el reconstruido es que pued
 
 
 ```{r cor-field, fig.cap = "Correlación cuadrada media para estaciones según onda3.", fig.show = "hold", fig.subcap = c("Anomalía zonal", "Campo total"), fig.ncol = 1}
-cor.months.z <- fields[lat > -90 & lev == 300, 
-                       .(corelation = cor(gh.z, QS3)), 
-                       by = .(lon, lat, month(date))][
-                           , cor.w := corelation*sqrt(cos(lat*pi/180))]
-
-binwidth <- 0.15
-ggplot(cor.months.z[, .(cor = mean(corelation^2)), 
-                    by = .(lon, lat, season = qs.season(month))], 
-       aes(lon, lat)) +
-    stat_contour(aes(z = cor, color = ..level..), binwidth = binwidth) +
-    map.SH +
-    scale_color_viridis_c(breaks = MakeBreaks(binwidth),
-                          limits = c(0, 1),
-                          guide = guide_colorbar_bottom()) +
-    scale_s_map() +
-    coord_quickmap() +
-    facet_wrap(~season)
-# 
-# cor.eof.z <- EOF(cor.months.z, lon + lat ~ month, value.var = "corelation", n = 4)
-# 
-# ggplot(cor.eof.z$right, aes(PC, value)) + 
-#     geom_point(aes(color = season(month)))
-# 
-# ggplot(cor.eof.z$left, aes(lon, lat)) +
-#     stat_contour_fill(aes(z = value)) +
-#     map.SH +
-#     scale_fill_divergent() +
-#     facet_wrap(~PC) 
-
-
-# cor.eof <- EOF(cor.months, lon + lat ~ month, value.var = "corelation", n = 4)
-# 
-# 
-# ggplot(cor.eof$right, aes(PC, value)) + 
-#     geom_point(aes(color = season(month)))
-# 
-# ggplot(cor.eof$left, aes(lon, lat)) +
-#     stat_contour_fill(aes(z = value)) +
-#     map.SH +
-#     scale_fill_divergent() +
-#     facet_wrap(~PC) 
-
 cor.months <- fields[lat > -90 & lev == 300, 
                      .(corelation = cor(gh, QS3)), 
                      by = .(lon, lat, month(date))][
@@ -1307,26 +1414,6 @@ ggplot(cor.months[, .(cor = mean(corelation^2)),
     scale_s_map() +
     coord_quickmap() +
     facet_wrap(~season)
-
-```
-
-
-```{r cor-monson, fig.cap = "Correlación cuadrada media para estaciones según Monsón de Sudamérica."}
-
-binwidth <- 0.15
-ggplot(cor.months.z[, .(cor = mean(corelation^2)), 
-                    by = .(lon, lat, season = (month %in% 5:9))], 
-       aes(lon, lat)) +
-    stat_contour(aes(z = cor, color = ..level..), binwidth = binwidth) +
-    map.SH +
-    scale_color_viridis_c(breaks = MakeBreaks(binwidth),
-                          limits = c(0, 1),
-                          guide = guide_colorbar_bottom()) +
-    scale_s_map() +
-    coord_quickmap() +
-    facet_wrap(~season, ncol = 2,
-               labeller = labeller(season = setNames(c("May-Sep", "Oct-Abr"),
-                                                     c(TRUE, FALSE))))
 ```
 
 
@@ -1338,7 +1425,63 @@ Además de la dependencia latitudinal de la importancia de la onda 3 (que se pue
 
 Conclusión: no voy a usar el r2 a partir del campo reconstruido. 
 
-## Composición de campos. 
+
+## Regresiones
+
+```{r make-regression}
+regression <- ncep[lev == 300, .(lon, lat, date, gh)][
+    index[, .(date, amplitude, phase)], on = "date"][
+        , setNames(ExtractLm(
+            RcppArmadillo::fastLm(cbind(mean = 1,
+                                        amplitude = amplitude/sd(amplitude), 
+                                        phase = phase),
+                                  gh)),
+            c("regressor", "estimate", "se")), 
+        by = .(lat, lon, month(date))][
+            , t := abs(estimate)/se]
+```
+
+```{r regression-ampl, fig.cap = "Regresión sobre amplitud.", fig.class = "vfullpage"}
+binwidth <- 10
+ggplot(regression[regressor == "amplitude"], aes(lon, lat)) +
+    stat_contour(aes(z = estimate, color = ..level..), binwidth = binwidth) +
+    map.SH +
+    # scale_s_map() +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_x_longitude() +
+    scale_color_divergent(binwidth = binwidth,
+                          guide = guide_colorbar_bottom()) +
+    # coord_polar() +
+    coord_quickmap() +
+    facet_wrap(~month, ncol = 3, nrow = 4, dir = "v",
+               labeller = labeller(month = month.abb_sp))
+```
+
+Cosas para ver:   
+* Además los patrones de onda 3, en julio y diciembre aparece un patrón de SAM positivo y negativo respectivamente. 
+
+```{r sam-ampl, fig.cap = "Relación entre amplitud media de la onda 3 y el SAM", fig.height = 6}
+sam <- fread("DATA/sam.monthly.txt") %>% 
+    setnames(c("year", "month", "sam")) %>% 
+    .[year > 1984 & year < 2016] %>% 
+    .[, date := ymd(paste0(year, " ", month, " ", 01))] %>% 
+    .[, `:=`(year = NULL, month = NULL)]
+
+
+index[sam, on = "date"] %>% 
+    .[, month := month(date)] %>% 
+    ggplot(aes(amplitude, sam)) +
+    geom_point(size = 0.5) + 
+    geom_smooth(method = "lm", size = 0.5, color = "black") +
+    scale_x_continuous(name = "Amplitud media") +
+    scale_y_continuous(name = "SAM") +
+    facet_wrap(~month, scales = "free", 
+               ncol = 3, nrow = 4, dir = "v",
+               labeller = labeller(month = month.abb_sp))
+```
+
+
+### Composición de campos. 
 
 ```{r fields}
 setnames(fields, c("gh.z", "gh", "QS3"), c("ncep.z", "ncep", "qs3"))
@@ -1384,7 +1527,6 @@ También, años donde hay seguidilla de meses seleccionados (1999). Aunque posib
 
 Pequeña digresión: Efecto de la fase.     
 La climatología de la fase se va a discutir más adelante, pero... discutir el efecto de promediar campos con similar amplitud pero fase distinta. Del gráfico, septiembre tiene 1997 y 2003 con fase a 180°, lo que significa que va a a haber cancelación parcial. Enero, por el contrario, no tiene ningún año en contrafase, aunque sí algunos a 90°, que desdibujan el patrón. 
-
 
 ```{r tabla_interaccion, fig.height = 4, fig.class = "textwidth", fig.cap = "Tabla de interacción"}
 gdata <- index[, .N, by = .(month(date), 
@@ -1474,234 +1616,7 @@ Estos gráficos me parecen importantes para ver lo que hay "adentro" de la compo
 
 Al igual que antes, ¿qué pasa si hago PSA?
 
-```{r eof-com0, cache = FALSE}
-eofs <- copy(fields[date %in% select.dates & campo == "ncep"]) %>% 
-    .[, `:=`(year = year(date),
-             gh.w = gh*sqrt(cos(lat*pi/(180))))] %>% 
-    .[, EOF(.SD, lon + lat ~ year, value.var = "gh", n = 2:4)$left,
-      by = .(campo, month(date))]
 
-g <- ggplot(eofs[campo == "ncep"], aes(lon, lat)) +
-    stat_contour_fill(aes(z = value), exclude = 0, complete = F, 
-                      binwidth = 0.01) +
-    map.SH +
-    scale_fill_divergent() + 
-    coord_quickmap() 
-```
-
-```{r eof-comp1, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
-g + facet_grid_paginate(PC~month, ncol = 4, nrow = 3, page = 1,
-               labeller = labeller(month = month.abb_sp))
-```
-
-```{r eof-comp2, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
-g + facet_grid_paginate(PC~month, ncol = 4, nrow = 3, page = 2,
-               labeller = labeller(month = month.abb_sp))
-```
-
-```{r eof-comp3, fig.class = "fullpage", fig.cap = "Campos EOF para cada mes (probablemente basura)"}
-g + facet_grid_paginate(PC~month, ncol = 4, nrow = 3, page = 3,
-               labeller = labeller(month = month.abb_sp))
-```
-
-## Regresiones
-
-```{r make-regression}
-regression <- ncep[lev == 300, .(lon, lat, date, gh)][
-    index[, .(date, amplitude, phase.mode)], on = "date"][
-        , setNames(ExtractLm(
-            RcppArmadillo::fastLm(cbind(mean = 1,
-                                        amplitude = amplitude/sd(amplitude), 
-                                        phase = phase.mode),
-                                  gh)),
-            c("regressor", "estimate", "se")), 
-        by = .(lat, lon, month(date))][
-            , t := abs(estimate)/se]
-```
-
-```{r regression-ampl, fig.cap = "Regresión sobre amplitud.", fig.class = "vfullpage"}
-binwidth <- 10
-ggplot(regression[regressor == "amplitude"], aes(lon, lat)) +
-    stat_contour(aes(z = estimate, color = ..level..), binwidth = binwidth) +
-    map.SH +
-    # scale_s_map() +
-    scale_y_latitude(limits = c(-90, 0)) +
-    scale_x_longitude() +
-    scale_color_divergent(binwidth = binwidth,
-                          guide = guide_colorbar_bottom()) +
-    # coord_polar() +
-    coord_quickmap() +
-    facet_wrap(~month, ncol = 3, nrow = 4, dir = "v",
-               labeller = labeller(month = month.abb_sp))
-```
-
-Cosas para ver:   
-* Además los patrones de onda 3, en julio y diciembre aparece un patrón de SAM positivo y negativo respectivamente. 
-
-```{r sam-ampl, fig.cap = "Relación entre amplitud media de la onda 3 y el SAM", fig.height = 6}
-sam <- fread("DATA/sam.monthly.txt") %>% 
-    setnames(c("year", "month", "sam")) %>% 
-    .[year > 1984 & year < 2016] %>% 
-    .[, date := ymd(paste0(year, " ", month, " ", 01))] %>% 
-    .[, `:=`(year = NULL, month = NULL)]
-
-
-index[sam, on = "date"] %>% 
-    .[, month := month(date)] %>% 
-    ggplot(aes(amplitude, sam)) +
-    geom_point(size = 0.5) + 
-    geom_smooth(method = "lm", size = 0.5, color = "black") +
-    scale_x_continuous(name = "Amplitud media") +
-    scale_y_continuous(name = "SAM") +
-    facet_wrap(~month, scales = "free", 
-               ncol = 3, nrow = 4, dir = "v",
-               labeller = labeller(month = month.abb_sp))
-```
-
-
-
-## Fase
-
-Además de eso, tengo la fase. Puedo tomar la fase media en la región o la fase correspondiente a donde está el máximo de la amplitud (lo que equivale al centro del anticiclón) o la moda de la fase. 
-
-(más explicación...)
-
-¿Cuál usar? 
-
-```{r lon-phase-comp, fig.cap = "Fase promedio vs Fase del máximo", fig.class = "textwidth"}
-date.max <- index[, date[which.max(abs(lon - phase*180/pi))]]
-date.select <- as.Date("2013-06-01")
-dates <- c(date.select, date.max)
-ggplot(index, aes(lon, phase*180/pi)) +
-    geom_point(size = 0.5) +
-    geom_point(data = index[date %in% dates], size = 3, 
-               shape = 21, fill = NA, color = "red") +
-    geom_abline(linetype = 3) +
-    scale_x_continuous(name = "Fase de amplitud máxima") +
-    scale_y_continuous(name = "Fase promedio") +
-    coord_fixed() 
-```
-
-Cosas para ver:   
-Se ve que hay muchos casos donde coinciden bastante bien, pero otros que se alejan mucho. La razón es que al tomar el promedio, puede quedar cualquier cosa si la estructura cambia mucho con la latitud. Por ejemplo, los casos marcados en rojo.
-
-
-```{r fase-mal, fig.cap = "Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.", fig.height = 6}
-ggplot(fields[campo == "qs3" & date %in% dates], 
-       aes(lon, lat)) +
-    stat_contour_fill(aes(z = gh), exclude = 0, complete = F,
-                      binwidth = 10) +
-    geom_point(data = index[date %in% dates], aes(x = lon),
-               color = "red") +
-    geom_point(data = index[date %in% dates], 
-               aes(x = phase*180/pi)) +
-    geom_point(data = index[date %in% dates],
-               aes(x = phase.mode*180/pi, y = lat.mode), 
-               color = "blue") +
-    annotate(geom = "rect", xmin = 0, xmax = 120, 
-             ymin = rect.annotation$latmin, ymax = rect.annotation$latmax,
-             fill = NA, linetype = 3, color = "black") +
-    map.SH +
-    scale_s_map() +
-    scale_fill_divergent(breaks = MakeBreaks(10),
-                         guide = guide_colorbar_bottom()) +
-    coord_quickmap() +
-    facet_wrap(~date, ncol = 1)
-```
-
-En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo que hace que la fase oscile entre valores cercanos a 0° y a 120° en distintas latitudes a pesar de que representan el mismo centro de máxima. El promedio, por lo tanto, queda en el centro y termina estando en una región donde el campo de geopotencial de onda 3 es nulo. Si bien la fase de la amplitud máxima y la moda de la fase parecen ser muy distintas, la naturaleza cíclica de la fase implica que representan aproximadamente el mismo punto. 
-
-En segundo caso la estructura de onda 3 es de dos centros a distintas latitudes. La fase promedio de ambas (punto negro) representa el punto medio y, por lo tanto, está más cerca del mínimo de geopotencial que del máximo. En este caso la moda de la fase es una mejor representación del campo de onda 3 que la fase del máximo. 
-
-Conclusión: vamos a usar la moda de la fase. 
-
-
-```{r remove-phase}
-index <- index[, c("lon", "phase", "lat") := NULL]
-setnames(index, c("phase.mode", "lat.mode"), c("phase", "lat"))
-```
-
-Ciclo anual de la fase. 
-
-```{r boxplot-fase-ncep, fig.cap = "Ciclo anual de la fase (20 mayores amplitudes para cada mes)"}
-lat.lims <- c(-70, -22)
-lon.lims <- c(230, 360)
-map.arg <- geom_map2(BuildMap(countries = T)[lat %b% lat.lims & 
-                                                 long %b% lon.lims])
-index %>% 
-    group_by(month = month(date)) %>% 
-    filter(greater(amplitude, 20)) %>% 
-    ggplot() +
-    map.arg + 
-    ggstance::geom_boxploth(aes(phase*180/pi + 240, 
-                                (-month(date) + 6)*2.4 - 45, 
-                                group = as.factor(month(date)))) +
-    annotate(geom = "text", x = rep(237, 12), y = (-(1:12) + 6)*2.4 - 45, 
-             label = month.abb_sp, size = 3, hjust = 1) +
-    geom_vline(xintercept = c(240, 360), linetype = 3) +
-    # map.SH.3 +
-    scale_x_longitude(ticks = 20) +
-    scale_y_latitude(ticks = 10) +
-    ylab("lat") +
-    # coord_quickmap(xlim = lon.lims, ylim = lat.lims) +
-    coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims)
-```
-
-```{r boxplot-fase-ncep2, fig.cap = "Ciclo anual de la fase (todos)"}
-lat.lims <- c(-70, -22)
-lon.lims <- c(230, 360)
-map.arg <- geom_map2(BuildMap(countries = T)[lat %b% lat.lims & 
-                                                 long %b% lon.lims])
-index %>% 
-    ggplot() +
-    map.arg + 
-    ggstance::geom_boxploth(aes(phase*180/pi + 240, 
-                                (-month(date) + 6)*2.4 - 45, 
-                                group = as.factor(month(date)))) +
-    annotate(geom = "text", x = rep(237, 12), y = (-(1:12) + 6)*2.4 - 45, 
-             label = month.abb_sp, size = 3, hjust = 1) +
-    geom_vline(xintercept = c(240, 360), linetype = 3) +
-    # map.SH.3 +
-    scale_x_longitude(ticks = 20) +
-    scale_y_latitude(ticks = 10) +
-    ylab("lat") +
-    # coord_quickmap(xlim = lon.lims, ylim = lat.lims) +
-    coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims)
-```
-
-Cosas para ver:    
-Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay mucha variabilidad.    
-Recordar que este es aproximadamente el centro del máximo de geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso implica que en los casos donde hay puntos cerca de -120° o 0°, hay el centro de mínima está en ~-60°.    
-También notar que, como se trata en realidad de una variable cíclica, los puntos extremos representan una situación similar.     
-¿Hay mucha diferencia entre el boxplot con todos los datos y el de sólo los 20 más intensos? Yo no veo mucha y me parece que excluir a los 10 más débiles invita más preguntas que las que responde. 
-
-```{r centros-10max, fig.cap = "Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.", fig.class = "fullpage"}
-library(scales)
-index[index[, .I[greater(amplitude, 10)], by = month(date)]$V1] %>%
-    mutate(month = month(date)) %>% 
-    ggplot(aes(phase*180/pi + 240, lat)) +
-    # geom_segment(aes(xend = ifelse(phase*180/pi > 60, 
-    #                                phase*180/pi + 240 - 60, 
-    #                                phase*180/pi + 60 + 240), 
-    #                  yend = lat)) +
-    geom_point(color = muted("red")) +
-    geom_point(aes(x = phase*180/pi + 240 - 60), color = muted("blue")) +
-    geom_point(aes(x = phase*180/pi + 240 + 60), color = muted("blue")) +
-    map.arg +
-    annotate(geom = "rect", xmin = 240, xmax = 360, 
-             ymin = rect.annotation$latmin, ymax = rect.annotation$latmax,
-             fill = NA, linetype = 3, color = "black") +
-    # map.SH.3 +
-    scale_x_longitude(ticks = 20, limits = c(240, 360)) +
-    scale_y_latitude(ticks = 10) +
-    ylab("lat") +
-    # coord_quickmap(xlim = lon.lims, ylim = lat.lims) +
-    coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims) +
-    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb_sp))
-```
-
-Cosas para ver:    
-La mayoría del tiempo estamos afectados por centro de máxima, pero hay casos intensos donde hay mínima. Especialmente en junio y julio. 
 
 
 ## Análisis dinámica de septiembre
