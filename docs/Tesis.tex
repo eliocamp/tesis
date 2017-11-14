@@ -93,6 +93,7 @@
 \linespread{1.25}
 \usepackage{subfig}
 \usepackage{marginnote}
+\usepackage[nomarkers,figuresonly]{endfloat}
 
 \begin{document}
 \maketitle
@@ -562,6 +563,88 @@ Luego\ldots{} concluir que vamos a usar la media.
 \subfloat[Serie temporal\label{fig:amplitud_timeseries1}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-1} }\newline\subfloat[Ciclo anual\label{fig:amplitud_timeseries2}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-2} }\caption{Amplitud media}\label{fig:amplitud_timeseries}
 \end{figure*}
 
+\section{Fase}\label{fase}
+
+Además de eso, tengo la fase. Puedo tomar la fase media en la región o
+la fase correspondiente a donde está el máximo de la amplitud (lo que
+equivale al centro del anticiclón) o la moda de la fase.
+
+(más explicación\ldots{})
+
+¿Cuál usar?
+
+\begin{figure}
+
+{\centering \includegraphics[width=130mm, ]{fig/tesis/lon-phase-comp-1} 
+
+}
+
+\caption{Fase promedio vs Fase del máximo}\label{fig:lon-phase-comp}
+\end{figure}
+
+Cosas para ver:\\
+Se ve que hay muchos casos donde coinciden bastante bien, pero otros que
+se alejan mucho. La razón es que al tomar el promedio, puede quedar
+cualquier cosa si la estructura cambia mucho con la latitud. Por
+ejemplo, los casos marcados en rojo.
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/fase-mal-1} \caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.}\label{fig:fase-mal}
+\end{figure}
+
+En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo
+que hace que la fase oscile entre valores cercanos a 0° y a 120° en
+distintas latitudes a pesar de que representan el mismo centro de
+máxima. El promedio, por lo tanto, queda en el centro y termina estando
+en una región donde el campo de geopotencial de onda 3 es nulo. Si bien
+la fase de la amplitud máxima y la moda de la fase parecen ser muy
+distintas, la naturaleza cíclica de la fase implica que representan
+aproximadamente el mismo punto.
+
+En tercer caso la estructura de onda 3 es de dos centros a distintas
+latitudes. La fase promedio de ambas (punto negro) representa el punto
+medio y, por lo tanto, está más cerca del mínimo de geopotencial que del
+máximo. En este caso la moda de la fase es una mejor representación del
+campo de onda 3 que la fase del máximo.
+
+En el caso del medio, todo anda bien y los tres puntos coinciden.
+
+Conclusión: vamos a usar la moda de la fase.
+
+Ciclo anual de la fase.
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/boxplot-fase-ncep-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes)}\label{fig:boxplot-fase-ncep}
+\end{figure}
+
+Cosas para ver:\\
+Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay
+mucha variabilidad.\\
+Recordar que este es aproximadamente el centro del máximo de
+geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso
+implica que en los casos donde hay puntos cerca de -120° o 0°, hay el
+centro de mínima está en \textasciitilde{}-60°.\\
+También notar que, como se trata en realidad de una variable cíclica,
+los puntos extremos representan una situación similar.\\
+¿Hay mucha diferencia entre el boxplot con todos los datos y el de sólo
+los 20 más intensos? Yo no veo mucha y me parece que excluir a los 10
+más débiles invita más preguntas que las que responde.
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/centros-10max-1} 
+
+}
+
+\caption{Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.}\label{fig:centros-10max}
+\end{figure}
+
+Cosas para ver:\\
+La mayoría del tiempo estamos afectados por centro de máxima, pero hay
+casos intensos donde hay mínima. Especialmente en junio y julio.
+
+\section{Estaciones}\label{estaciones}
+
 ¿Cómo establecer una ``estacionalidad''? Algún criterio para agrupar
 meses. Claramente las estaciones climatológicas de siempre no sirven.
 
@@ -585,12 +668,6 @@ onda. La ``magnitud'' del vector de componentes mapea bien a la amplitud
 de fourier y la diferencia mapea bien a la fasae. No hay nada nuevo por
 acá.
 
-O, medio equivalente, usar la correlación entre meses:
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/cros-cor-1} \caption{Matriz de Correlación del campo de QS3.}\label{fig:cros-cor}
-\end{figure}
-
 Grupos: * Enero + Febrero + Marzo es un grupo bastante seguro. Se ven
 juntos en el diagrama amplitud-fase, tienne alta correlación entre ellos
 y en componentes principales tienen PC1 significativamente mayor que
@@ -600,6 +677,12 @@ bastante.
 
 Los otros meses quedan medio mezclados, pero pueden agruparse como meses
 de ``transición''.
+
+\section{Persistencia (ver dónde va)}\label{persistencia-ver-donde-va}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/cros-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes.}\label{fig:cros-cor}
+\end{figure}
 
 \section{R2}\label{r2}
 
@@ -642,11 +725,7 @@ que puede hacerse para cada punto y analizar la variación espacial de la
 misma.
 
 \begin{figure}
-\subfloat[Anomalía zonal\label{fig:cor-field1}]{\includegraphics[ ]{fig/tesis/cor-field-1} }\newline\subfloat[Campo total\label{fig:cor-field2}]{\includegraphics[ ]{fig/tesis/cor-field-2} }\caption{Correlación cuadrada media para estaciones según onda3.}\label{fig:cor-field}
-\end{figure}
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/cor-monson-1} \caption{Correlación cuadrada media para estaciones según Monsón de Sudamérica.}\label{fig:cor-monson}
+\includegraphics[ ]{fig/tesis/cor-field-1} \caption{Correlación cuadrada media para estaciones según onda3.}\label{fig:cor-field}
 \end{figure}
 
 Cosas para ver:\\
@@ -661,7 +740,34 @@ ondas.\\
 
 Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 
-\section{Composición de campos.}\label{composicion-de-campos.}
+\section{Regresiones}\label{regresiones}
+
+\begin{figure}
+
+{\centering \includegraphics[width=150mm, ]{fig/tesis/regression-ampl-1} 
+
+}
+
+\caption{Regresión sobre amplitud.}\label{fig:regression-ampl}
+\end{figure}
+
+Cosas para ver:\\
+* Además los patrones de onda 3, en julio y diciembre aparece un patrón
+de SAM positivo y negativo respectivamente.
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/regr-polar-1} \caption{Igual que figura XX, pero en proyección polar para julio y septiembre.}\label{fig:regr-polar}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM}\label{fig:sam-ampl}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/psi-reg-1} \caption{Regresión de Psi con la amplitud.}\label{fig:psi-reg}
+\end{figure}
+
+\subsection{Composición de campos.}\label{composicion-de-campos.}
 
 Descripción de la seleccion.
 
@@ -733,139 +839,6 @@ Estos gráficos me parecen importantes para ver lo que hay ``adentro'' de
 la composición, pero no sé bien qué decir sobre ellos. Supongo que lo
 principal es que hay años donde la onda
 
-Al igual que antes, ¿qué pasa si hago PSA?
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eof-comp1-1} 
-
-}
-
-\caption{Campos EOF para cada mes (probablemente basura)}\label{fig:eof-comp1}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eof-comp2-1} 
-
-}
-
-\caption{Campos EOF para cada mes (probablemente basura)}\label{fig:eof-comp2}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eof-comp3-1} 
-
-}
-
-\caption{Campos EOF para cada mes (probablemente basura)}\label{fig:eof-comp3}
-\end{figure}
-
-\section{Regresiones}\label{regresiones}
-
-\begin{figure}
-
-{\centering \includegraphics[width=150mm, ]{fig/tesis/regression-ampl-1} 
-
-}
-
-\caption{Regresión sobre amplitud.}\label{fig:regression-ampl}
-\end{figure}
-
-Cosas para ver:\\
-* Además los patrones de onda 3, en julio y diciembre aparece un patrón
-de SAM positivo y negativo respectivamente.
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM}\label{fig:sam-ampl}
-\end{figure}
-
-\section{Fase}\label{fase}
-
-Además de eso, tengo la fase. Puedo tomar la fase media en la región o
-la fase correspondiente a donde está el máximo de la amplitud (lo que
-equivale al centro del anticiclón) o la moda de la fase.
-
-(más explicación\ldots{})
-
-¿Cuál usar?
-
-\begin{figure}
-
-{\centering \includegraphics[width=130mm, ]{fig/tesis/lon-phase-comp-1} 
-
-}
-
-\caption{Fase promedio vs Fase del máximo}\label{fig:lon-phase-comp}
-\end{figure}
-
-Cosas para ver:\\
-Se ve que hay muchos casos donde coinciden bastante bien, pero otros que
-se alejan mucho. La razón es que al tomar el promedio, puede quedar
-cualquier cosa si la estructura cambia mucho con la latitud. Por
-ejemplo, los casos marcados en rojo.
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/fase-mal-1} \caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.}\label{fig:fase-mal}
-\end{figure}
-
-En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo
-que hace que la fase oscile entre valores cercanos a 0° y a 120° en
-distintas latitudes a pesar de que representan el mismo centro de
-máxima. El promedio, por lo tanto, queda en el centro y termina estando
-en una región donde el campo de geopotencial de onda 3 es nulo. Si bien
-la fase de la amplitud máxima y la moda de la fase parecen ser muy
-distintas, la naturaleza cíclica de la fase implica que representan
-aproximadamente el mismo punto.
-
-En segundo caso la estructura de onda 3 es de dos centros a distintas
-latitudes. La fase promedio de ambas (punto negro) representa el punto
-medio y, por lo tanto, está más cerca del mínimo de geopotencial que del
-máximo. En este caso la moda de la fase es una mejor representación del
-campo de onda 3 que la fase del máximo.
-
-Conclusión: vamos a usar la moda de la fase.
-
-Ciclo anual de la fase.
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/boxplot-fase-ncep-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes)}\label{fig:boxplot-fase-ncep}
-\end{figure}
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/boxplot-fase-ncep2-1} \caption{Ciclo anual de la fase (todos)}\label{fig:boxplot-fase-ncep2}
-\end{figure}
-
-Cosas para ver:\\
-Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay
-mucha variabilidad.\\
-Recordar que este es aproximadamente el centro del máximo de
-geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso
-implica que en los casos donde hay puntos cerca de -120° o 0°, hay el
-centro de mínima está en \textasciitilde{}-60°.\\
-También notar que, como se trata en realidad de una variable cíclica,
-los puntos extremos representan una situación similar.\\
-¿Hay mucha diferencia entre el boxplot con todos los datos y el de sólo
-los 20 más intensos? Yo no veo mucha y me parece que excluir a los 10
-más débiles invita más preguntas que las que responde.
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/centros-10max-1} 
-
-}
-
-\caption{Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.}\label{fig:centros-10max}
-\end{figure}
-
-Cosas para ver:\\
-La mayoría del tiempo estamos afectados por centro de máxima, pero hay
-casos intensos donde hay mínima. Especialmente en junio y julio.
-
-\section{Análisis dinámica de
-septiembre}\label{analisis-dinamica-de-septiembre}
-
 \section{Fuentes de variabilidad
 interna}\label{fuentes-de-variabilidad-interna}
 
@@ -873,6 +846,15 @@ interna}\label{fuentes-de-variabilidad-interna}
 externa.
 
 \section{Fuentes externas}\label{fuentes-externas}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/sst-regr-ampl-1} 
+
+}
+
+\caption{Regresión de SST con la amplitud de la onda 3}\label{fig:sst-regr-ampl}
+\end{figure}
 
 Campos de correlación con SST y OLR, principalmente ¿Discusión de otros
 forzantes?
