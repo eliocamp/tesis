@@ -401,9 +401,14 @@ La onda 3 es estacionaria en -60°.
 
 \section{Función corriente}\label{funcion-corriente}
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/psi_ncep-1} \caption{Función corriente x 1099}\label{fig:psi_ncep}
-\end{figure*}
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi_ncep-1} 
+
+}
+
+\caption{Función corriente x 1099}\label{fig:psi_ncep}
+\end{figure}
 
 \section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
 
@@ -481,14 +486,49 @@ No tengo idea de cómo interpretar esto\ldots{}
   Wavelets
 \end{itemize}
 
+La amplitud media obtenida mediante wavelets es virtualmente idéntica
+
 \begin{figure}
 
 {\centering \includegraphics[width=130mm, ]{fig/tesis/wavelet_fourier_comp-1} 
 
 }
 
-\caption{Amplitud de fourier y amplitud de wavelets (faaaaaltaaaaa)}\label{fig:wavelet_fourier_comp}
+\caption{Amplitud de wavelets (sombreados) y de fourier (contornos)}\label{fig:wavelet_fourier_comp}
 \end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/wavelet_medio_anom-1} 
+
+}
+
+\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa.}\label{fig:wavelet_medio_anom}
+\end{figure}
+
+Cosas para ver:\\
+* La amplitud de la onda 3 es bastante zonal, pero tiene asimetrías
+consistentes. En \textasciitilde{}60°S, la máxima amplitude se da en el
+hemisferio oeste, mientras que en \textasciitilde{}50°S se da en el
+hemisferio este.
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/wavelet_corte-1} 
+
+}
+
+\caption{Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado).}\label{fig:wavelet_corte}
+\end{figure}
+
+Cosas para ver:\\
+* Si bien el máximo medio de la amplitud se da en
+\textasciitilde{}300hPa (Fig \autoref{fig:wavelet_fourier_comp}) igual
+que en fourier, el análisis por longitud muestra algo un poco más
+complejo. En verano y otoño, la máxima amplitud sigue en 300hPa, pero
+ésta asciente a entre 100 y 50hPa en invierno y primavera al rederor de
+120°O. Además, durante estas estaciones hay indicación de que el máximo
+cambia de latitud con la altura.
 
 Venajas y desventajas. Justificaicón de decisión.
 
@@ -764,7 +804,12 @@ de SAM positivo y negativo respectivamente.
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/psi-reg-1} \caption{Regresión de Psi con la amplitud.}\label{fig:psi-reg}
+
+{\centering \includegraphics[width=150mm, ]{fig/tesis/psi-reg-1} 
+
+}
+
+\caption{Regresión de Psi con la amplitud.}\label{fig:psi-reg}
 \end{figure}
 
 \subsection{Composición de campos.}\label{composicion-de-campos.}
@@ -846,6 +891,8 @@ interna}\label{fuentes-de-variabilidad-interna}
 externa.
 
 \section{Fuentes externas}\label{fuentes-externas}
+
+\subsection{SST}\label{sst}
 
 \begin{figure}
 

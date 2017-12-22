@@ -48,11 +48,10 @@ library(dplyr)
 library(metR) 
 library(WaveletComp)
 
-knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp"), 
+knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"), 
                  file = "Papers/packages.bib")
 
 source("scripts/helperfun.R")
-source("scripts/geom_contourlabel.R")
 
 map.world <- BuildMap(res = 1, smooth = 1)
 map.SH <- map.world[lat %b% c(-90, 0)]
@@ -624,19 +623,15 @@ La anomalía zonal es casi igual. No poner gráfico pero aclarar que es no hay c
 ## Gradiente meridional de vorticidad absoluta
 
 ```{r eta_calc_ncep}
-ncep.mean.season[, `:=`("v.dx" = Derivate(v ~ lon + lat, bc = c("cyclic", "none"), 
-                                          sphere = TRUE)[[1]],
-                        "u.dyy" = Derivate(u ~ lon + lat, order = 2, 
-                                           bc = c("cyclic", "none"), 
-                                           sphere = TRUE)[[2]],
-                        "beta" = f.dy(lat)),
-                 by = .(lev, season)][
-                     , v.dxdy := Derivate(v.dx ~ lon + lat, 
-                                          bc = c("cyclic", "none"),
-                                          sphere = TRUE)[[2]], 
-                     by = .(lev, season)]
+ncep.mean.season[, zeta := Vorticity(u + v ~ lon + lat, cyclical = TRUE,
+                                     sphere = TRUE), 
+                 by = .(lev, season)]
+ncep.mean.season[, zeta.dy := Derivate(zeta ~ lon + lat, 
+                                       cyclical = c(FALSE, FALSE),
+                                       sphere = TRUE)[[2]],
+                 by = .(lev, season)]
 
-ncep.mean.season[, eta.dy := beta + v.dxdy - u.dyy]
+ncep.mean.season[, eta.dy := zeta.dy + f.dy(lat)]
 ncep.mean.season <- ncep.mean.season
 ```
 
@@ -665,7 +660,8 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs & lat > -85]), aes(lon, lat
 ```{r k-steady, fig.cap = "Número de onda estacionario en 300hPa.", fig.height = 6}
 a <- 6371000
 
-ks <- ncep.mean.season[lev == 300, .(k = sqrt(eta.dy/u)*(a*cos(lat*pi/180))), 
+ks <- ncep.mean.season[lev == 300, 
+                       .(k = sqrt(eta.dy/u)*(a*cos(lat*pi/180))), 
                        by = .(lon, lat, lev, season)] 
 ks[ , k.full := ifelse(is.na(k) | k > 10, -1, k)]
 
@@ -673,7 +669,8 @@ ggplot(ks, aes(lon, lat)) +
     stat_contour_fill(aes(z = k.full), breaks = 0:9 + 0.5) +
     stat_contour(aes(z = k.full),
                  breaks = c(2.5, 3.5), color = "black") +
-    geom_tile(data = ks[k.full == -1], fill = "white", color = "white") +
+    stat_filter(aes(filter = k.full == -1), geom = "tile", color = "white", 
+                fill = "white") +
     map.SH +
     scale_s_map() +
     scale_fill_viridis_c(breaks = 1:9, guide = guide_colorbar_bottom()) +
@@ -701,8 +698,8 @@ WaveFlux <- function(psi, p = 250, a = 6371000) {
     k <- p*100/(a^2*2000)
     psi <- copy(psi)
     psi[, c("psi.dlon", "psi.dlat") := Derivate(psi.z ~ lon + lat, 
-                                                bc = c("cyclic", "none"))] %>% 
-        .[, psi.ddlon := Derivate(psi.z ~ lon, bc = "cyclic", order = 2), 
+                                                cyclical = c(TRUE, FALSE))] %>% 
+        .[, psi.ddlon := Derivate(psi.z ~ lon, cyclical = TRUE, order = 2), 
           by = lat] %>%
         .[, psi.dlondlat := Derivate(psi.dlon ~ lat), 
           by = lon] %>% 
@@ -727,14 +724,13 @@ stream.mean.season[, c("f.lon", "f.lat") := WaveFlux(.SD), by = season]
 ```
 
 
-
-```{r psi_ncep,  fig.class = "pagewidth", fig.cap = "Función corriente x 1099"}
+```{r psi_ncep,  fig.class = "fullpage", fig.cap = "Función corriente x 1099"}
 ggplot(stream.mean.season, aes(lon, lat)) +
     stat_contour_fill(aes(z = psi.z*10^-9), binwidth = 0.005, 
                       complete = FALSE, exclude = 0) +
     geom_contour_fine(aes(z = psi*10^(-9)), color = "black", binwidth = 0.02) +
-    geom_arrow(aes(dx = f.lon, dy = f.lat), skip = 3, min.mag = 0.05, 
-               arrow.size = 0.2, scale = 50) +
+    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 3, min.mag = 0.05, 
+                scale = 50) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(0.005, 0), 
@@ -756,7 +752,7 @@ rect.annotation <- data.frame(latmin = -65, latmax = -40,
                               k = 3)
 
 r2.mean <- ncep.qs[, .(r2 = mean(r2)), 
-                   by = .(lat, lev, k, season = AssignSeason(month(date)))]
+                   by = .(lat, lev, k, season(month(date)))]
 
 r2.diff <- r2.mean[, .(r2.ratio = r2[k == 3]/r2[k == 1]), 
                    by = .(lat, lev, season)]
@@ -789,7 +785,7 @@ Estructura. Zona donde onda 3 explica más que la onda 1 (zona marcada en negro)
 ```{r ampl_qs_ncep, fig.class = "fullpage", fig.cap = "Ampllitud de Fourier."}
 
 ampl.mean <- ncep.qs[, .(amplitude = mean(amplitude)), 
-                     by = .(lat, lev, k, season = AssignSeason(month(date)))]
+                     by = .(lat, lev, k, season(month(date)))]
 breaks <- 2^seq(0, log2(650), by = 0.5)
 ggplot(ampl.mean, aes(lat, lev)) +
     stat_contour_fill(aes(z = amplitude), 
@@ -897,16 +893,22 @@ No tengo idea de cómo interpretar esto...
 ncep.wv <- readRDS("DATA/ncep.wv.Rds")
 ```
 
+La amplitud media obtenida mediante wavelets es virtualmente idéntica 
 
-```{r wavelet_fourier_comp, fig.class = "textwidth", fig.cap = "Amplitud de fourier y amplitud de wavelets (faaaaaltaaaaa)"}
-binwidth <- 0.1
-ncep.wv[, .(amplitude = mean(amplitude)), 
-        by = .(lat, lev, season = AssignSeason(month(date)))] %>% 
-    ggplot(aes(lat, lev)) +
+```{r wavelet_fourier_comp, fig.class = "textwidth", fig.cap = "Amplitud de wavelets (sombreados) y de fourier (contornos)"}
+binwidth <- 15
+ncep.wv.mean <- ncep.wv[, .(amplitude = mean(amplitude)), 
+                        by = .(lat, lev, season(month(date)))]
+
+ggplot(ncep.wv.mean, aes(lat, lev)) +
     stat_contour_fill(aes(z = amplitude), binwidth = 15) +
-    geom_contour_fine(data = r2.mean[k == 3], aes(z = r2, color = ..level..), 
+    geom_contour_fine(data = ampl.mean[k == 3], 
+                      aes(z = amplitude),
+                      binwidth = binwidth, color = "black") +
+    geom_text_contour(data = ampl.mean[k == 3], 
+                      aes(z = amplitude, label = ..level..),
                       binwidth = binwidth) +
-    scale_fill_viridis_c(name = expression(R^2), 
+    scale_fill_viridis_c(name = expression(R^2), breaks = MakeBreaks(binwidth),
                          guide = guide_colorbar_bottom()) +
     scale_color_viridis() +
     scale_y_level() +
@@ -915,8 +917,53 @@ ncep.wv[, .(amplitude = mean(amplitude)),
     facet_wrap(~season)
 ```
 
+```{r wavelet_medio_anom, fig.class = "fullpage", fig.cap = "Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa."}
+ncep.wv.mean <- ncep.wv[, .(amplitude = mean(amplitude)), 
+                        by = .(lat, lon, lev, season(month(date)))]
+ncep.wv.mean[, amplitude.z := Anomaly(amplitude), 
+             by = .(lat, lev, season)]
+
+ggplot(ncep.wv.mean[lev == 300], aes(lon, lat)) +
+    geom_contour_fill(aes(z = amplitude.z), binwidth = 1, 
+                      exclude = 0) +
+    geom_contour_fine(aes(z = amplitude), binwidth = 10,
+                 color = "black") +
+    # geom_text_contour(aes(z = amplitude, label = ..level..), binwidth = 10, 
+                 # color = "black") +
+    geom_label_contour2(aes(z = amplitude, label = ..level..), binwidth = 10, 
+                 color = "black") +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(name = "Anomalía de ampltiud wavelets",
+                         breaks = MakeBreaks(1),
+                         guide = guide_colorbar_bottom()) +
+    facet_wrap(~season, ncol = 2) +
+    coord_quickmap()
+```
+
+Cosas para ver:    
+    * La amplitud de la onda 3 es bastante zonal, pero tiene asimetrías consistentes. En ~60°S, la máxima amplitude se da en el hemisferio oeste, mientras que en ~50°S se da en el hemisferio este. 
+    
+```{r wavelet_corte, fig.class = "fullpage", fig.cap = "Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado)."}
+ggplot(ncep.wv.mean[lat %~% -60], aes(lon, lev)) +
+    geom_contour_fill(aes(z = amplitude.z), binwidth = 2, exclude = 0) +
+    geom_contour_fine(aes(z = amplitude), color = "black", 
+                      binwidth = 5) +
+    geom_label_contour2(aes(z = amplitude, label = ..level..), 
+                        binwidth = 5) +
+    scale_y_level(breaks = plot.levs) +
+    scale_x_longitude() +
+    scale_fill_divergent(name = "Anomalía de amplitud wavelets",
+                         breaks = MakeBreaks(2),
+                         guide = guide_colorbar_bottom()) +
+    facet_wrap(~season, ncol = 2) 
+```
+
+Cosas para ver:    
+  * Si bien el máximo medio de la amplitud se da en ~300hPa (Fig \autoref{fig:wavelet_fourier_comp}) igual que en fourier, el análisis por longitud muestra algo un poco más complejo. En verano y otoño, la máxima amplitud sigue en 300hPa, pero ésta asciente a entre 100 y 50hPa en invierno y primavera al rederor de 120°O. Además, durante estas estaciones hay indicación de que el máximo cambia de latitud con la altura. 
+
 ```{r cleanup1}
-remove(ncep.wv)
+remove(ncep.wv, ncep.wv.mean)
 ```
 
 Venajas y desventajas. Justificaicón de decisión. 
@@ -1320,7 +1367,7 @@ ggplot(qs.croscor[lag != 0], aes(month2, month)) +
     scale_x_continuous(name = "Mes siguiente", expand = c(0, 0),
                        breaks = 1:12, labels = month.abb_sp) +
     scale_fill_divergent(breaks = MakeBreaks(0.1), 
-                          guide = "none")
+                         guide = "none")
 ```
 
 ## R2
@@ -1430,16 +1477,22 @@ Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 ## Regresiones
 
 ```{r make-regression}
-regression <- ncep[lev == 300, .(lon, lat, date, gh)][
-    index[, .(date, amplitude, phase)], on = "date"][
-        , setNames(ExtractLm(
-            RcppArmadillo::fastLm(cbind(mean = 1,
-                                        amplitude = amplitude/sd(amplitude), 
-                                        phase = phase),
-                                  gh)),
-            c("regressor", "estimate", "se")), 
-        by = .(lat, lon, month(date))][
-            , t := abs(estimate)/se]
+file <- "DATA/regression.Rds"
+if (file.exists(file)) {
+    regression <- readRDS(file)
+} else {
+    regression <- ncep[lev == 300, .(lon, lat, date, gh)][
+        index[, .(date, amplitude, phase)], on = "date"][
+            , setNames(ExtractLm(
+                RcppArmadillo::fastLm(cbind(mean = 1,
+                                            amplitude = amplitude/sd(amplitude), 
+                                            phase = phase),
+                                      gh)),
+                c("regressor", "estimate", "se")), 
+            by = .(lat, lon, month(date))][
+                , t := abs(estimate)/se]
+    saveRDS(regression, file)
+}
 ```
 
 ```{r regression-ampl, fig.cap = "Regresión sobre amplitud.", fig.class = "vfullpage"}
@@ -1500,35 +1553,47 @@ index[sam, on = "date"] %>%
 ```
 
 ```{r make-reg-psi}
-stream.reg <- stream[, .(lon, lat, date, psi.z)][
-    index[, .(date, amplitude, phase)], on = "date"][
-        , setNames(ExtractLm(
-            RcppArmadillo::fastLm(cbind(mean = 1,
-                                        amplitude = amplitude/sd(amplitude), 
-                                        phase = phase),
-                                  psi.z)),
-            c("regressor", "estimate", "se")), 
-        by = .(lat, lon, month(date))][
-            , t := abs(estimate)/se]
-
-stream.reg[, psi.z := estimate]
-stream.reg[, c("f.x", "f.y") := WaveFlux(.SD), by = .(regressor, month)]
+file <- "DATA/stream.reg.Rds"
+if (file.exists(file)) {
+    stream.reg <- readRDS(file)
+} else {
+    stream.reg <- stream[, .(lon, lat, date, psi)][
+        index[, .(date, amplitude, phase)], on = "date"][
+            , setNames(ExtractLm(
+                RcppArmadillo::fastLm(cbind(mean = 1,
+                                            amplitude = amplitude/sd(amplitude), 
+                                            phase = phase),
+                                      psi)),
+                c("regressor", "estimate", "se")), 
+            by = .(lat, lon, month(date))][
+                , t := abs(estimate)/se]
+    
+    stream.reg[, estimate.z := Anomaly(estimate), 
+           by = .(lat, month, regressor)]
+    stream.reg[, psi.z := estimate.z]
+    stream.reg[, c("f.x", "f.y") := WaveFlux(.SD), by = .(regressor, month)]
+    
+    saveRDS(stream.reg, file)
+}
 ```
 
-```{r psi-reg, fig.cap = "Regresión de Psi con la amplitud."}
+```{r psi-reg, fig.cap = "Regresión de Psi con la amplitud.", fig.class = "vfullpage"}
 binwidth <- 1e6
+scale <- 600
+
 ggplot(RepeatLon(stream.reg[regressor == "amplitude"]), 
        aes(lon, lat)) +
-    stat_contour_fill(aes(z = estimate), binwidth = binwidth, exclude = 0, 
-                      complete = FALSE) +
-        geom_arrow(aes(dx = f.x, dy = f.y), skip = 4, min.mag = 0.005, 
-               arrow.size = 0.15, scale = 600) +
+    stat_contour_fill(aes(z = estimate.z), exclude = 0, 
+                      complete = FALSE, binwidth = binwidth) +
+    # geom_segment(aes(xend = lon + f.x*scale, yend = lat + f.y*scale)) +
+    geom_vector(aes(dx = f.x, dy = f.y), skip = 4, min.mag = 0.005,
+               arrow.size = 0.2, scale = 600, size = 0.2) +
     map.world +
     # scale_s_map() +
     scale_y_latitude(limits = c(-90, 40)) +
     scale_x_longitude() +
     scale_fill_divergent(binwidth = binwidth, 
-                          guide = guide_colorbar_bottom()) +
+                         guide = guide_colorbar_bottom()) +
     coord_quickmap() +
     facet_wrap(~month, labeller = labeller(month = month.abb_sp))
 ```
@@ -1648,7 +1713,7 @@ scale_color_enso <- function(...) {
 gdata <- fields[date %in% select.dates & month(date) == c(1, 9)] %>% 
     .[, year := year(date), by = date] %>% 
     enso[., on = "date"] 
-    
+
 binwidth <- 30
 tempplot <- function(month) {
     ggplot(mapping = aes(lon, lat, z = gh)) +
@@ -1691,23 +1756,31 @@ Estos gráficos me parecen importantes para ver lo que hay "adentro" de la compo
 
 ## Fuentes externas
 
-```{r make-regr-sst}
-sst <- ReadNetCDF("DATA/NCEP/sst.nc", vars = "sst") %>% 
-    .[, date := as.Date(date), by = date]
+### SST
 
-sst.regr <- sst[index[, .(date, amplitude, phase)], on = "date"] %>% 
-    .[, ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
-                                          amplitude = amplitude/sd(amplitude), 
-                                          phase = phase),
-                                        sst)),
-      by = .(lon, lat, month(date))]
-sst.regr[, t := abs(estimate)/se]
+```{r make-regr-sst}
+file <- "DATA/sst.regr.Rds"
+if (file.exists(file)) {
+    sst.regr <- readRDS(file)
+} else {
+    sst <- ReadNetCDF("DATA/NCEP/sst.nc", vars = "sst") %>% 
+        .[, date := as.Date(date), by = date]
+    
+    sst.regr <- sst[index[, .(date, amplitude, phase)], on = "date"] %>% 
+        .[, ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
+                                                  amplitude = amplitude/sd(amplitude), 
+                                                  phase = phase),
+                                            sst)),
+          by = .(lon, lat, month(date))]
+    sst.regr[, t := abs(estimate)/se]
+    saveRDS(sst.regr, file)
+}
 ```
 
 ```{r sst-regr-ampl, fig.cap = "Regresión de SST con la amplitud de la onda 3", fig.class = "fullpage"}
 sst.regr[, estimate.full := ifelse(is.na(estimate), 
-                                 mean(estimate, na.rm = T), 
-                                 estimate), 
+                                   mean(estimate, na.rm = T), 
+                                   estimate), 
          by = regressor]
 
 binwidth <- 0.15
@@ -1724,7 +1797,6 @@ ggplot(sst.regr[regressor == "amplitude"], aes(lon, lat)) +
     coord_quickmap() +
     facet_wrap(~month, labeller = labeller(month = month.abb_sp))
 ```
-
 
 
 Campos de correlación con SST y OLR, principalmente

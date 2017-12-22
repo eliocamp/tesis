@@ -854,3 +854,9 @@ ifelse2 <- function(x, expression, yes = NA, no = x) {
     no <- eval(parse(text = deparse(substitute(no))), envir = environment())
     ifelse(e, yes, no)
 }
+
+geom_label_contour2 <- function(...) {
+    list(geom_label_contour(fill = "white", label.r = unit(0, "lines"),
+                            label.padding = unit(0.06, "lines"), color = NA, ...),
+         geom_text_contour(..., rotate = FALSE))
+}
