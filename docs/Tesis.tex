@@ -382,16 +382,16 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 \section{Número de onda estacionaria}\label{numero-de-onda-estacionaria}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/k-steady-1} \caption{Número de onda estacionario en 300hPa.}\label{fig:k-steady}
+\includegraphics[ ]{fig/tesis/k-steady-ncep-1} \caption{Número de onda estacionario en 300hPa.}\label{fig:k-steady-ncep}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-lat-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-lat-ncep-1} 
 
 }
 
-\caption{Número de onda estacionario medio por círculo de latitud.}\label{fig:ks-lat}
+\caption{Número de onda estacionario medio por círculo de latitud.}\label{fig:ks-lat-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -910,18 +910,219 @@ forzantes?
 
 \section{Validación SPEEDY}\label{validacion-speedy}
 
+Validación de la corrida control
+
 \begin{itemize}
 \tightlist
 \item
   Comparación campos medios.
+\end{itemize}
+
+Acá un problemita es que en speedy no tengo el nivel de 50hPa, sólo
+tengo 925, 850, 700, 500, 300, 200, 100, 30. Podría usar 30, pero eso es
+la tapa del modelo\ldots{}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/sp-nc-regr-1} \caption{Correlación lineal entre campos de SPEEDY y NCEP.}\label{fig:sp-nc-regr}
+\end{figure}
+
+\begin{itemize}
+\item
+  Altura geopotencial (gh) Para el caso del campo total, la correlación
+  del campo es buena (\textgreater{}0.8)en casi todos los niveles y
+  meses, excepto en 30hPa durante verano donde los campos ¡está
+  anticorrelacionados! La parte asimétrica zonal muestra valores
+  menores, indicando que gran parte de la correlación del campo total se
+  debe a la capacidad del modelo de reproducir el gradiente meridional.
+  Sin embargo, se siguen obteniendo correlaciones \textgreater{}0.6 en
+  casi todos los niveles y estaciones. Se observa un mínimo relativo en
+  500hPa donde en se tienen correlaciones menores durante casi todo el
+  año y uno en niveles altos centrado en invierno y primavera.
+\item
+  Viento zonal (U) Las correlaciones con el campo total son
+  \textgreater{}=0.8 en todo el año y todos los niveles, sin embargo, la
+  parte asimétrica muestra correlaciones mucho más baja con un máximo de
+  \textasciitilde{}0.6 en 925hPa. Esto indica que el modelo resuelve
+  correctamente la estructura media del Jet, pero no sus variaciones
+  zonales.
+\item
+  Viento meridional (V) Los campos de correlación son prácticamente
+  idénticos entre parte total y parte asimétrica. Ésta muestra un patrón
+  de bajas correlaciones en general.
+\item
+  Temperatura (T) La correlación con el campo total muestra una
+  estructura similar que la altura geopotencial, con una excelente
+  correlación en todos los meses para niveles mayores a 200hPa, pero
+  anticorrelacionado en niveles altos en todos los meses salvo en
+  invierno. La parte asimétrica muestra correlaciones bajas en todos los
+  niveles salvo en 925hPa.
+\item
+  Gradiente meridional de vorticidad absoluta. Tiene correlación
+  moderada con un mínimo relativo en 200hPa en verano que en las otras
+  estacione se convierte en un máximo.
+\end{itemize}
+
+\subsection{Altura Geopotencial}\label{altura-geopotencial-1}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/sp-nc-gh-1} 
+
+}
+
+\caption{Altura geopotencial (speedy contornos con color, ncep contornos grises)}\label{fig:sp-nc-gh}
+\end{figure}
+
+Anomalía
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/sp-nc-gh.z-1} 
+
+}
+
+\caption{Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos)}\label{fig:sp-nc-gh.z}
+\end{figure}
+
+Veredicto:\\
+* Agarra bien la estructura media. Localización e intensidad del los
+gradientes y su variación con la altura. * Agarra bien la anomalía zonal
+aunque con magnitud menor.
+
+\begin{figure}
+
+{\centering \includegraphics[width=130mm, ]{fig/tesis/sp-nc-gh.65-1} 
+
+}
+
+\caption{Corte zonal de anomalía de geopotencial en -65° (speedy sombreado, ncep contornos).}\label{fig:sp-nc-gh.65}
+\end{figure}
+
+El corte zonal evidencia que además de tener menor amplitud, la
+estructura vertical de las anomalías es barotrópica equivalente en
+Speedy, a diferencia de la estructura baroclínica de NCEP.
+
+\subsection{Viento zonal}\label{viento-zonal-1}
+
+\begin{figure}
+
+{\centering \includegraphics[width=130mm, ]{fig/tesis/sp-nc-u-corte-1} 
+
+}
+
+\caption{Viento zonal medio.}\label{fig:sp-nc-u-corte}
+\end{figure}
+
+Cosas para ver:\\
+* Speedy no logra desarrollar un jet polar por la falta de niveles
+verticales en la estratósfera. Tampoco reproduce los estes
+estratosféricos en latitudes bajas. Su jet subtropical es más intenso y
+su máximo se da ligéramente en niveles más altos en NCEP.
+
+Campo medio (me parece que no lo voy a poner, no agrega información que
+no esté en el anterior y en el de geopotencial.)
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u_medio_sp-1} 
+
+}
+
+\caption{Viento zonal.}\label{fig:u_medio_sp}
+\end{figure}
+
+Cosas para ver:\\
+Jet polar en invierno y primavera en niveles altos (\textless{} 100
+hPa). Jest subtropical en niveles ``medios''.
+
+Anomalía zonal
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u_nomalia_sp-1} 
+
+}
+
+\caption{Anomalía zonal de viento zonal.}\label{fig:u_nomalia_sp}
+\end{figure}
+
+\subsection{Gradiente meridional de vorticidad
+absoluta}\label{gradiente-meridional-de-vorticidad-absoluta-1}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eta-dy-sp-nc-1} 
+
+}
+
+\caption{Gradiente meridional de vorticidad absoluta.}\label{fig:eta-dy-sp-nc}
+\end{figure}
+
+Comparando con la figura \autoref{fig:eta-dy-ncep}, los gradientes son
+menores y más zonales. Es significativo que la región ``prohibida'' en
+invierno de niveles altos es menor en 200hPa y casi desaparece en
+300hPa.
+
+\subsection{Número de onda
+estacionaria}\label{numero-de-onda-estacionaria-1}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/k-steady-sp-1} \caption{Número de onda estacionario en 300hPa.}\label{fig:k-steady-sp}
+\end{figure}
+
+Comparando con \autoref{fig:k-steady-ncep} la mayor diferencia es la
+desaparición de una región de propagación impedida en
+\textasciitilde{}-40° en el Índico y el Pacífico en Otoño.
+
+\begin{figure}
+
+{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-lat-sp-1} 
+
+}
+
+\caption{Número de onda estacionario medio por círculo de latitud.}\label{fig:ks-lat-sp}
+\end{figure}
+
+En promedio zonal, sin embargo, SPEEDY funciona bien.
+
+\begin{itemize}
+\tightlist
 \item
   Validación de las corridas experimentales (mostrar que es constante lo
   que tiene que ser consante)
 \end{itemize}
 
+\subsection{Onda 3}\label{onda-3-1}
+
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-comp-1} \caption{Ampllitud de Fourier (speedy en sombreado, ncep en contornos).}\label{fig:ampl-comp}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/qs-comp-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep)}\label{fig:qs-comp}
+\end{figure*}
+
+La onda 3 no está muy bien representada en el modelo. Aunque la
+estructura vertical y la posición meridional está bien (salvo en otoño),
+la amplitud es mucho menor. La fase, además, está corrida ligeramente en
+verano, pero quedando en cuadratura en invierno y defasado 180 en
+primavera.
+
 \section{Comparación}\label{comparacion}
 
 Comparación entre corridas y ncep.
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/ampl-corridas-1} \caption{Amplitud media de la onda 3 para cada corrida.}\label{fig:ampl-corridas}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/control-run-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida.}\label{fig:control-run}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/sp-ciclo-anual-1} \caption{Ciclo anual de amplitud de onda 3.}\label{fig:sp-ciclo-anual}
+\end{figure}
 
 \section{Cosas inesperadas\ldots{}}\label{cosas-inesperadas}
 

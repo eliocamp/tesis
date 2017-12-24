@@ -334,7 +334,8 @@ names(month.abb_sp) <- as.character(1:12)
 
 # Para interpolación en data table
 Interpolate.DT <- function(z, x, y, yo = unique(y), xo = unique(x), ...){
-    int <- akima::interp(x = x, y = y, z = z, yo = yo, xo = xo, ...)
+    na <- is.na(z)
+    int <- akima::interp(x = x[!na], y = y[!na], z = z[!na], yo = yo, xo = xo, ...)
     names <- c(deparse(substitute(x)),
                deparse(substitute(y)),
                deparse(substitute(z)))    # muy feo, sí
