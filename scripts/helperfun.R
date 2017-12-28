@@ -861,3 +861,15 @@ geom_label_contour2 <- function(...) {
                             label.padding = unit(0.06, "lines"), color = NA, ...),
          geom_text_contour(..., rotate = FALSE))
 }
+
+
+cache.file <- function(file, expression) {
+    if (file.exists(file)) {
+        message("Reading data from file.")
+        return(readRDS(file))
+    } else {
+       r <- eval(expression)
+       saveRDS(r, file = file)
+       return(r)
+    }
+}

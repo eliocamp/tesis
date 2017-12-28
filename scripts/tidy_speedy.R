@@ -28,7 +28,7 @@ files <- c("DATA/SPEEDY/attm.nc",
            "DATA/SPEEDY/attmnoland.nc")
 out.files <- c("speedy.Rds",
                "speedy.clim.Rds",
-               "speedy.zonal]Rds",
+               "speedy.zonal.Rds",
                "speedy.noice.Rds",
                "speedy.noland.Rds")
 
