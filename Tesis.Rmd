@@ -50,6 +50,7 @@ library(ggplot2)
 library(dplyr)
 library(metR) 
 library(WaveletComp)
+library(patchwork)
 
 knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"), 
                  file = "Papers/packages.bib")
@@ -90,7 +91,7 @@ knitr::knit_hooks$set(
         if (options$force.cap == TRUE & is.null(options$fig.cap)) {
             stop("All figures must have captions.")
         }
-        if (options$fig.publish == TRUE | params$draft == TRUE)
+        if (options$fig.publish == TRUE | params$draft == TRUE) {
             plot_hook(x, options)
         }
     })
@@ -486,11 +487,12 @@ ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
 
 ```{r temp_zonal_ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de temperatura."}
 binwidth <- 1
-ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
+ggplot(RepeatLon(ncep.mean.season[lev %in% c(plot.levs, 850)]), 
+       aes(lon, lat)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
     geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
     map.SH +
-    scale_fill_divergent(binwidth = binwidth, name = "T*", exclude = 0, 
+    scale_fill_divergent(binwidth = binwidth, name = "T*", 
                          guide = guide_colorstrip_bottom(25)) +
     scale_y_latitude() +
     scale_x_longitude() +
@@ -932,6 +934,8 @@ ggplot(ncep.wv.mean[lev == 300], aes(lon, lat)) +
                       exclude = 0) +
     geom_contour_fine(aes(z = amplitude), binwidth = 10,
                       color = "black") +
+    stat_contour(aes(z = mean), breaks = c(1, -1)*20, color = "black", 
+                 size = 0.5, data = qs.wave.season[lev == 300]) +
     # geom_text_contour(aes(z = amplitude, label = ..level..), binwidth = 10, 
     # color = "black") +
     geom_label_contour2(aes(z = amplitude, label = ..level..), binwidth = 10, 
@@ -1818,23 +1822,32 @@ Validación de la corrida control
 ```{r read-speedy}
 vars <- c(gh = "gh", u = "u", t = "temp", psi = "psi", v = "v")
 vars.z <- paste0(names(vars), ".z")
-speedy <- ReadNetCDF("DATA/SPEEDY/attm-Control.nc", vars = vars)
-speedy <- speedy[lat <= 0]
+
+runs <- c("Control", "SSTCLIM", "NOLAND", "SSTZONAL") 
+
+file.speedy <- "DATA/SPEEDY/speedy.runs.Rds"
+speedy <- cache.file(file.speedy, {
+    rbindlist(lapply(seq_along(runs), function (x) {
+        ReadNetCDF(paste0("DATA/SPEEDY/attm-", runs[x], "_HS.nc"), 
+                   vars = vars)[, run := runs[x]]
+    }))
+})
+speedy[, run := factor(run, levels = runs)]
 speedy[, t := t - 273.15]
 
 speedy[, c(vars.z) := lapply(.SD, Anomaly), 
-       by = .(lat, lev, date), .SDcols = -"lon"]
+       by = .(lat, lev, date, run), .SDcols = -"lon"]
 
 speedy.mean.season <- speedy[, lapply(.SD, mean), 
-                             by = .(lon, lat, lev, season(date))]
+                             by = .(lon, lat, lev, season(date), run)]
 
 speedy.mean.season[, zeta := Vorticity(u + v ~ lon + lat, cyclical = TRUE,
                                        sphere = TRUE), 
-                   by = .(lev, season)]
+                   by = .(lev, season, run)]
 speedy.mean.season[, zeta.dy := Derivate(zeta ~ lon + lat, 
                                          cyclical = c(FALSE, FALSE),
                                          sphere = TRUE)[[2]],
-                   by = .(lev, season)]
+                   by = .(lev, season, run)]
 
 speedy.mean.season[, eta.dy := zeta.dy + f.dy(lat)]
 speedy.mean.season[, `:=`(zeta = NULL, zeta.dy = NULL)]
@@ -1866,33 +1879,25 @@ ncep.interp <-
 
 
 ```{r regr-sp-nc-calc}
-speedy.long <- melt(speedy.mean.season, 
-                    id.vars = c("season", "lon", "lat", "lev"))
-
-sp.nc <- speedy.long[ncep.interp, 
-                     on = c("variable", "season", "lon", "lat", "lev")] %>% 
+sp.nc <-  melt(speedy.mean.season[run == "Control"][, run := NULL], 
+               id.vars = c("season", "lon", "lat", "lev")) %>% 
+    .[ncep.interp, on = c("variable", "season", "lon", "lat", "lev")] %>% 
     .[!is.na(value) & !is.na(i.value)]
-
-regr.sp_nc <- sp.nc[, ExtractLm(RcppArmadillo::fastLm(cbind(1, i.value), 
-                                                      value)), 
-                    by = .(season, lev, variable)] %>% 
-    .[regressor == "i.value"]
 
 cor.sp_nc <- sp.nc[, .(cor = cor(value, i.value)),
                    by = .(season, lev, variable)]
-regr.sp_nc <- cor.sp_nc[regr.sp_nc, on = c("season", "lev", "variable")]
 
-regr.sp_nc[, zonal := substr(variable, 
-                             stri_length(variable) - 1, 
-                             stri_length(variable)) == ".z"]
-regr.sp_nc[zonal == TRUE, 
-           variable := substr(variable, 
-                              1, 
-                              stri_length(variable) - 2)]
+cor.sp_nc[, zonal := substr(variable, 
+                            stri_length(variable) - 1, 
+                            stri_length(variable)) == ".z"] 
+cor.sp_nc[zonal == TRUE, 
+          variable := substr(variable, 
+                             1, 
+                             stri_length(variable) - 2)]
 ```
 
-```{r sp-nc-regr, fig.cap = "Correlación lineal entre campos de SPEEDY y NCEP.", fig.height = 5}
-ggplot(regr.sp_nc, aes(lev, cor, color = zonal)) +
+```{r sp-nc-regr, fig.cap = "Correlación lineal entre campos de SPEEDY y NCEP.", fig.height = 5, fig.publish = FALSE}
+ggplot(cor.sp_nc, aes(lev, cor, color = zonal)) +
     geom_line() +
     coord_flip() +
     scale_x_level(breaks = plot.levs, name = "Nivel") +
@@ -1934,7 +1939,7 @@ Anomalía
 plot.levs.sp <- c(500, 200)
 binwidth <- 20
 cutlat <- -60
-ggplot(speedy.mean.season[lev %in% plot.levs.sp], aes(lon, lat)) +
+ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp], aes(lon, lat)) +
     geom_contour_fill(aes(z = gh.z), 
                       binwidth = binwidth, exclude = 0) +
     # geom_contour_fine(aes(z = gh.z), binwidth = binwidth, exclude = 0,
@@ -1976,10 +1981,65 @@ ggplot(sp.nc[lev %in% plot.levs.sp & variable == "gh.z"], aes(lon, lat)) +
 Veredicto:    
 * Agarra bien la anomalía zonal aunque con magnitud menor. 
 
+### Temperatura 
+
+```{r nc-sp-temp}
+binwidth <- 5
+ggplot(speedy.mean.season[run == "Control" & lev %in% 850], aes(lon, lat, z = t)) +
+    geom_contour_fill(binwidth = binwidth) +
+    # geom_contour_fine(aes(z = gh.z), binwidth = binwidth, exclude = 0,
+    # color = "black", size = 0.2) +
+    geom_contour_back(aes(linetype = factor(sign(-..level..))),
+                      binwidth = binwidth,
+                      data = ncep.mean.season[lev %in% 850]) +
+    geom_label_contour_back(aes(label = ..level..),
+                            binwidth = binwidth,
+                            data = ncep.mean.season[lev %in% 850]) +
+    # geom_hline(yintercept = cutlat, 
+    # linetype = 2, size = 0.5) +
+    scale_fill_viridis_c(name = "Z*", 
+                         breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_quickmap() +
+    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) 
+```
+
+
+```{r sp-nc-temp.z}
+binwidth <- 2
+ggplot(speedy.mean.season[run == "Control" & lev %in% c(200, 850)], aes(lon, lat, z = t.z)) +
+    geom_contour_fill(binwidth = binwidth, exclude = 0) +
+    # geom_contour_fine(aes(z = gh.z), binwidth = binwidth, exclude = 0,
+    # color = "black", size = 0.2) +
+    geom_contour_back(aes(linetype = factor(sign(-..level..))),
+                      binwidth = binwidth,
+                      data = ncep.mean.season[lev %in% c(200, 850)]) +
+    geom_label_contour_back(aes(label = ..level..),
+                            binwidth = binwidth,
+                            data = ncep.mean.season[lev %in% c(200, 850)]) +
+    # geom_hline(yintercept = cutlat, 
+    # linetype = 2, size = 0.5) +
+    scale_fill_divergent(name = "Z*", 
+                         breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_quickmap() +
+    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) 
+```
+
+En 850 tiene una fuerte onda 1 en latitudes polares producida por la topografía de la Antártida y representa bien las anomalías causadas por los continentes, aunque en menor amplitud.    
+En 200, falla miserablemente. La onda 1 polar que se ve bien claro en NCEP ni aparece en SPEEDY, mientras que en latitudes medias aparecen ligeras anomalías que no se observan en las observaciones. 
 
 ```{r sp-nc-gh.65, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de geopotencial en -65° (speedy sombreado, ncep contornos)."}
 binwidth <- 20
-ggplot(speedy.mean.season[lat %~% cutlat], aes(lon, lev)) +
+ggplot(speedy.mean.season[run == "Control" & lat %~% cutlat], aes(lon, lev)) +
     geom_contour_fill(aes(z = gh.z), binwidth = binwidth, exclude = 0) +
     geom_contour_back(aes(z = gh.z, linetype = factor(sign(-..level..))), 
                       binwidth = binwidth, 
@@ -2000,24 +2060,24 @@ El corte zonal evidencia que además de tener menor amplitud, la estructura vert
 ### Viento zonal
 
 ```{r sp-nc-u-corte, fig.class = "textwidth", fig.cap = "Viento zonal medio (speedy contornos, ncep sombreado)."}
-speedy.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>% 
+speedy.mean.season[run == "Control", 
+                   .(u = mean(u)), 
+                   by = .(lat, lev, season)] %>% 
     ggplot(aes(lat, lev)) +
-    geom_contour_fill(aes(z = u), binwidth = 15, exclude = 0, complete = FALSE,
+    geom_contour_fill(aes(z = u), binwidth = 5, exclude = 0, complete = FALSE) +
+    geom_contour_back(aes(z = u, linetype = factor(-sign(..level..))), 
+                      binwidth = 5,
                       data = ncep.mean.season[, .(u = mean(u)), 
                                               by = .(lat, lev, season)]) +
-    geom_contour_back(aes(z = u, linetype = factor(-sign(..level..))), 
-                      binwidth = 5) +
     geom_label_contour_back(aes(z = u, label = ..level..), 
-                            binwidth = 5) +
+                            binwidth = 5,
+                            data = ncep.mean.season[, .(u = mean(u)), 
+                                              by = .(lat, lev, season)]) +
     surface +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
     scale_fill_divergent(name = "U media zonal", breaks = MakeBreaks(5),
-                         guide = guide_colorstrip_bottom(),
-                         limits = c(-30, 75)) +
-    scale_color_divergent(name = "U media zonal", breaks = MakeBreaks(5),
-                          guide = guide_colorstrip_bottom(),
-                          limits = c(-30, 75)) +
+                         guide = guide_colorstrip_bottom()) +
     scale_linetype(guide = "none") +
     facet_wrap(~season)
 ```
@@ -2029,14 +2089,14 @@ Cosas para ver:
 Campo medio (me parece que no lo voy a poner, no agrega información que no esté en el anterior y en el de geopotencial.)
 
 ```{r u_medio_sp, fig.class = "fullpage", fig.cap = "Viento zonal (contornos ncep, sombreado speedy)."}
-ggplot(RepeatLon(speedy.mean.season[lev %in% plot.levs.sp]), aes(lon, lat)) +
+ggplot(RepeatLon(speedy.mean.season[run == "Control" & lev == 200]), aes(lon, lat)) +
     geom_contour_fill(aes(z = u), binwidth = 5) +
     geom_contour_back(aes(z = u, linetype = factor(-sign(..level..))), 
                       binwidth = 5, 
-                      data = RepeatLon(ncep.mean.season[lev %in% plot.levs.sp])) +
+                      data = RepeatLon(ncep.mean.season[lev == 200])) +
     geom_label_contour_back(aes(z = u, label = ..level..), 
                             binwidth = 5, 
-                            data = RepeatLon(ncep.mean.season[lev %in% plot.levs.sp])) +
+                            data = RepeatLon(ncep.mean.season[lev == 200])) +
     # geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
     map.SH +
     scale_y_latitude() +
@@ -2051,22 +2111,40 @@ ggplot(RepeatLon(speedy.mean.season[lev %in% plot.levs.sp]), aes(lon, lat)) +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
+
+```{r u-nce-sp-dif, fig.cap = "Diferencia entre ncep y speedy en viento zonal"}
+binwidth <- 5
+
+ggplot(RepeatLon(sp.nc[lev == 200 & variable == "u"]), aes(lon, lat)) +
+    geom_contour_fill(aes(z = dif), exclude = 0, binwidth = binwidth) +
+    scale_fill_divergent(name = "Z*", breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_polar() +
+    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) 
+```
+
 Cosas para ver:    
 Jet polar en invierno y primavera en niveles altos (< 100 hPa). Jest subtropical en niveles "medios".
 
-
 ### Gradiente meridional de vorticidad absoluta
 
-
 ```{r eta-dy-sp-nc, fig.class = "fullpage", fig.cap = "Gradiente meridional de vorticidad absoluta (speedy)."}
-binwidth <- 1e-11
-ggplot(speedy.mean.season[lev %in% plot.levs.sp & lat > -85], aes(lon, lat)) +
-    stat_contour_fill(aes(z = eta.dy), binwidth = binwidth) +
-    stat_contour_fill(aes(z = eta.dy), breaks = 0, 
-                      fill = "grey50", alpha = 0.5, complete = FALSE) +
-    geom_contour_fine(aes(z = eta.dy), breaks = 0, color = "black") +
-    # stat_contour(aes(z = eta.dy), breaks = 0, geom = "polygon",
-    # fill = "grey50", alpha = 0.5) +
+binwidth <- 1
+ggplot(speedy.mean.season[run == "Control" & lev == 200 & lat > -85], 
+       aes(lon, lat, z = eta.dy*1e11)) +
+    # stat_contour_fill(binwidth = binwidth) +
+    geom_contour_fine(binwidth = binwidth, color = "black") +
+    geom_label_contour2(aes(label = ..level..), 
+                        binwidth = binwidth) +
+    stat_filter(aes(filter = eta.dy <= 0), geom = "tile",
+                color = "gray50", fill = "gray50") +
+    # stat_contour_fill(breaks = 0,
+    # fill = "black", complete = FALSE) +
+    geom_contour_fine(breaks = 0, color = "black") +
     map.SH +
     # polar.SH + 
     scale_fill_divergent(name = "Gradiente meridional de vorticiad absoluta", 
@@ -2086,9 +2164,9 @@ Comparando con la figura \autoref{fig:eta-dy-ncep}, los gradientes son menores y
 ```{r k-steady-sp, fig.cap = "Número de onda estacionario en 300hPa (speedy).", fig.height = 6}
 a <- 6371000
 
-sp.ks <- speedy.mean.season[lev == 300, 
-                            .(k = sqrt(eta.dy/u)*(a*cos(lat*pi/180))), 
-                            by = .(lon, lat, lev, season)] 
+speedy.mean.season[, k := sqrt(eta.dy/u)*(a*cos(lat*pi/180))] 
+sp.ks <- speedy.mean.season[run == "Control" & lev == 300,
+                            .(lon, lat, lev, season, k)]
 sp.ks[ , k.full := ifelse(is.na(k) | k > 10, -1, k)]
 
 ggplot(sp.ks, aes(lon, lat)) +
@@ -2125,22 +2203,48 @@ rbind(ks[lon %~% 180][, mod := "NCEP"],
 
 En promedio zonal, sin embargo, SPEEDY funciona bien. 
 
+### Función corriente
 
-* Validación de las corridas experimentales (mostrar que es constante lo que tiene que ser consante)
+
+```{r sp-nc-psi,  fig.class = "fullpage", fig.cap = "Función corriente x 1099"}
+speedy.mean.season[lev == 200, 
+                   c("f.lon", "f.lat") := WaveFlux(.SD, p = 200), 
+                   by = .(season, run)]
+binwidth <- 5
+ggplot(speedy.mean.season[run == "Control" & lev == 200], aes(lon, lat)) +
+    stat_contour_fill(aes(z = psi.z),
+                      binwidth = binwidth,
+                      complete = FALSE, exclude = 0) +
+    geom_contour_fine(aes(z = psi), 
+                      binwidth = 20,
+                      color = "black") +
+    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 3,
+                min.mag = 0.05,
+                scale = 5) +
+    map.SH +
+    # scale_s_map() +
+    scale_x_longitude(limits = c(0, 360)) +
+    scale_y_latitude() +
+    scale_fill_divergent(breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    facet_wrap(~season) +
+    theme(axis.title = element_blank()) + 
+    coord_quickmap()
+```
 
 ### Onda 3
 
 
 ```{r ampl-comp, fig.class = "pagewidth", fig.cap = "Ampllitud de Fourier (speedy en sombreado, ncep en contornos)."}
 speedy <- speedy[, c("amplitude", "phase", "r2") := FitQsWave(gh, 3),
-                 by = .(lat, lev, date)]
+                 by = .(lat, lev, date, run)]
 
 qs.sp.season <-speedy[, lapply(.SD, mean),
-                      by = .(lat, lev, season(date)), 
+                      by = .(lat, lev, season(date), run), 
                       .SDcols = c("amplitude", "phase", "r2")]
 # breaks <- 2^seq(0, log2(650), by = 0.5)
 binwidth <- 10
-ggplot(qs.sp.season, aes(lat, lev)) +
+ggplot(qs.sp.season[run == "Control"], aes(lat, lev)) +
     geom_contour_fill(aes(z = amplitude), binwidth = binwidth) +
     geom_contour_back(aes(z = amplitude), 
                       data = ampl.mean[k == 3], binwidth = binwidth) +
@@ -2161,10 +2265,9 @@ ggplot(qs.sp.season, aes(lat, lev)) +
 
 ```{r}
 lons <- unique(speedy$lon)
-speedy <- speedy[, QS3 := amplitude*cos(3*(lon*pi/180 - phase)), 
-                 by = .(lat, lev, date)]
+speedy <- speedy[, QS3 := amplitude*cos(3*(lon*pi/180 - phase))]
 qs.wave.sp.season <- speedy[lev == 300, .(mean = mean(QS3)), 
-                            by = .(lon, lat, season(date))]
+                            by = .(lon, lat, season(date), run)]
 ```
 
 
@@ -2172,8 +2275,7 @@ qs.wave.sp.season <- speedy[lev == 300, .(mean = mean(QS3)),
 binwidth <- 10
 cutlat <- data.frame(lat = c(-52.5), 
                      season = c("Verano"))
-ggplot(qs.wave.sp.season, aes(lon, lat)) +
-    # stat_contour_fill(aes(z = sd), binwidth = 10) +
+ggplot(qs.wave.sp.season[run == "Control"], aes(lon, lat)) +
     geom_contour_fill(aes(z = mean), binwidth = binwidth, exclude = 0, 
                       complete = FALSE) +
     geom_contour_back(aes(z = mean, linetype = factor(-sign(..level..))),
@@ -2183,16 +2285,10 @@ ggplot(qs.wave.sp.season, aes(lon, lat)) +
     geom_label_contour_back(aes(z = mean, label = ..level..), 
                             binwidth = binwidth,
                             data = qs.wave.season[lev == 300]) +
-    geom_hline(data = cutlat, aes(yintercept = lat),
-               linetype = 2, size = 0.3, color = "gray50") +
-    # geom_contour(aes(z = gh.z), binwidth = 60, color = "gray27", size = 0.2) +
-    # geom_contourlabel(aes(z = gh.z, label = ..level..), binwidth = 60) +
     map.SH +
     scale_s_map() +
     scale_linetype(guide = "none") +
-    scale_color_divergent(binwidth = binwidth, name = "QS3", exclude = 0,
-                          guide = guide_colorstrip_bottom()) +
-    scale_fill_divergent(binwidth = binwidth, name = "QS3", exclude = 0,
+    scale_fill_divergent(breaks = MakeBreaks(binwidth), name = "QS3",
                          guide = guide_colorstrip_bottom()) +
     facet_wrap(~season, ncol = 2) +
     coord_quickmap()
@@ -2204,58 +2300,151 @@ La onda 3 no está muy bien representada en el modelo. Aunque la estructura vert
 
 ## Comparación 
 
-```{r read-corridas, cache = F}
-runs <- c("Control", "SSTCLIM", "NOICE", "NOLAND", "SSTZONAL") 
-
-file.speedy <- "DATA/SPEEDY/speedy.runs.Rds"
-speedy <- cache.file(file.speedy, {
-    rbindlist(lapply(seq_along(runs), function (x) {
-        ReadNetCDF(paste0("DATA/SPEEDY/attm-", runs[x], ".nc"), 
-                   vars = c("gh", "sst", "lst"))[, run := runs[x]]
-    }))
-})
-speedy[, run := factor(run, levels = runs)]
-```
-
-
-```{r sd-val, fig.cap = "Desvío estándar medio para SST y LST.", fig.height = 9}
-speedy.sd <- speedy[lev == 925, 
-                    lapply(.SD, function(x) sd(x, na.rm = T)/mean(x, na.rm = T)),
-                    by = .(lon, lat, month(date), run), 
-                    .SDcols = -c("gh", "date", "lev")] %>% 
-    .[, lapply(.SD, mean, na.rm = T), 
-      by = .(lon, lat, run), .SDcols = -"month"] %>% 
-    melt(id.vars = c("lon", "lat", "run"))
-
-ggplot(speedy.sd, aes(lon, lat, z = value)) +
-    geom_contour_fill() +
-    stat_na(aes(na = value), color = "white", fill = "white") +
-    map.world +
-    scale_fill_viridis_c() +
-    scale_s_map() +
-    coord_quickmap() +
-    facet_grid(run~variable)
-```
-
-Se verifica que NOLAND y NOICE tienen nula variabilidad en SST y LST mientras que SSTCLIM tiene variablidad en LST y la variabilidad en SST es menor y producto sólo de la variabilidad del hielo marítimo (no se muestra). 
-
 
 Comparación entre corridas
+### Altura geopotencial
 
+```{r sp-corridas.gh.z, fig.class = "fullpage", fig.cap = "Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos)"}
 
-```{r speedy-qs}
-# Calculo la onda 3
-speedy <- speedy[lat <= 0]
-qs.sp <- speedy[, FitQsWave(gh, 3), by = .(lat, lev, date, run)]
-qs.sp.season <- qs.sp[, lapply(.SD, mean),
-                      by = .(lat, lev, season(date), run)]
-levs.index <- c(700, 300, 100)
+plot.levs.sp <- 200
+binwidth <- 20
 
-# qs.sp.season <- speedy[, mean(gh), 
-                       # by = .(lon, lat, lev, run, season(date))] %>% 
-    # .[, FitQsWave(V1, 3), by = .(lat, lev, run, season)]
-
+ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
+    geom_contour_fill(aes(z = gh.z), 
+                      binwidth = binwidth, exclude = 0) +
+    scale_fill_divergent(binwidth = binwidth, name = "Z*", 
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_quickmap() +
+    facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
 ```
+
+```{r dif-gh.z, fig.cap = "Diferencia Control - corrida para Z*"}
+speedy.mean.season.l <- melt(speedy.mean.season, 
+                             id.vars = c("lon", "lat", "lev", "season", "run"))
+
+s <- speedy.mean.season.l[, value[run == "Control"]]
+speedy.mean.season.l[, dif := s - value, by = run]
+run.dif <- setNames(paste0("Control -\n", runs[-1]),
+                runs[-1])
+binwidth <- 10
+speedy.mean.season.l[lev == 200 & variable == "gh.z" & run != "Control"] %>% 
+ggplot(aes(lon, lat, z = dif)) +
+    geom_contour_fill(binwidth = binwidth) +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(breaks = MakeBreaks(binwidth),
+        guide = "colorstrip_bottom") +
+    coord_quickmap() +
+    # coord_polar() +
+    facet_grid(run ~ season, labeller = labeller(run = run.dif))
+```
+
+### Temperatura
+
+No hay casi diferencia entre las corridas. 
+
+```{r sp-corridas.t.z, fig.class = "fullpage", fig.cap = "Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos)"}
+binwidth <- 5
+ggplot(speedy.mean.season[lev == 850], aes(lon, lat)) +
+    geom_contour_fill(aes(z = t), 
+                      binwidth = binwidth, complete = F, exclude = 0) +
+    scale_fill_divergent(binwidth = binwidth, name = "Z*", 
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_quickmap() +
+    facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
+```
+
+```{r dif-gh.z, fig.cap = "Diferencia Control - corrida para Z*"}
+speedy.mean.season.l <- melt(speedy.mean.season, 
+                             id.vars = c("lon", "lat", "lev", "season", "run"))
+
+s <- speedy.mean.season.l[, value[run == "Control"]]
+speedy.mean.season.l[, dif := s - value, by = run]
+run.dif <- setNames(paste0("Control -\n", runs[-1]),
+                runs[-1])
+binwidth <- 10
+speedy.mean.season.l[lev == 200 & variable == "gh.z" & run != "Control"] %>% 
+ggplot(aes(lon, lat, z = dif)) +
+    geom_contour_fill(binwidth = binwidth) +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(breaks = MakeBreaks(binwidth),
+        guide = "colorstrip_bottom") +
+    coord_quickmap() +
+    # coord_polar() +
+    facet_grid(run ~ season, labeller = labeller(run = run.dif))
+```
+
+### Viento zonal
+
+```{r sp-corridas.u.z, fig.class = "fullpage", fig.cap = "Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos)"}
+binwidth <- 5
+ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
+    geom_contour_fill(aes(z = u), 
+                      binwidth = binwidth,
+                      # breaks = MakeBreaks(binwidth),
+                      exclude = 0) +
+    scale_fill_divergent(name = "Z*", 
+                         breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_quickmap() +
+    facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
+```
+
+```{r dif-u, fig.cap = "Diferencia control - corrida para U."}
+binwidth <- 2
+speedy.mean.season[lev == 200] %>% 
+    .[, u.dif := speedy.mean.season[lev == 200 & run == "Control", u] - u] %>%
+    .[run != "Control"] %>% 
+ggplot(aes(lon, lat)) +
+    geom_contour_fill(aes(z = u.dif), 
+                      binwidth = binwidth,
+                      # breaks = MakeBreaks(binwidth),
+                      exclude = 0) +
+    scale_fill_divergent(name = "Z*", 
+                         breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_quickmap() +
+    facet_grid(run ~ season, labeller = labeller(run = dif)) 
+```
+
+### Función corriente
+
+```{r sp-corridas.psi, fig.class = "fullpage", fig.cap = "Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos)"}
+binwidth <- 2
+ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
+    geom_contour_fill(aes(z = psi.z), 
+                      binwidth = binwidth,
+                      # breaks = MakeBreaks(binwidth),
+                      exclude = 0) +
+    scale_fill_divergent(name = "Z*", 
+                         breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    scale_linetype(guide = "none") +
+    map.SH +
+    scale_y_latitude() +
+    scale_x_longitude() +
+    coord_quickmap() +
+    facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
+```
+
+### Onda 3
 
 ```{r ampl-corridas, fig.cap = c("Amplitud media de la onda 3 para cada corrida."), fig.height = 5}
 sp.levs <- unique(speedy$lev)
@@ -2288,6 +2477,7 @@ ggplot(qs.sp.season[run != "Control"], aes(lat, lev, z = dif)) +
 ```
 
 ```{r sp-index}
+levs.index <- c(700, 300, 100)
 lats.index <- c(-65, -40)
 levs.index <- c(100, 700)
 qs.sp <- qs.sp[, index.region := (lev %b% levs.index) & 
@@ -2298,6 +2488,9 @@ sp.index <- qs.sp[index.region == TRUE,
                     phase  = mode(phase)),
                   by = .(date, run)]
 ```
+
+
+
 
 ```{r sp-ciclo-anual, fig.cap = "Ciclo anual de amplitud de onda 3."}
 ggplot(sp.index, aes(factor(month(date)), amplitude, color = run)) +

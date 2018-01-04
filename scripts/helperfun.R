@@ -868,7 +868,9 @@ cache.file <- function(file, expression) {
         message("Reading data from file.")
         return(readRDS(file))
     } else {
+        message("Evaluating expression.")
         r <- eval(expression)
+        message("Saving data to file.")
         saveRDS(r, file = file)
         return(r)
     }
