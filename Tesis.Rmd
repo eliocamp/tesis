@@ -1485,11 +1485,9 @@ Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 ## Regresiones
 
 ```{r make-regression}
-file <- "DATA/regression.Rds"
-if (file.exists(file)) {
-    regression <- readRDS(file)
-} else {
-    regression <- ncep[lev == 300, .(lon, lat, date, gh)][
+file <- "DATA/regr-gh-ncep.Rds"
+regression <- cache.file(file, {
+    ncep[lev == 300, .(lon, lat, date, gh)][
         index[, .(date, amplitude, phase)], on = "date"][
             , setNames(ExtractLm(
                 RcppArmadillo::fastLm(cbind(mean = 1,
@@ -1500,7 +1498,7 @@ if (file.exists(file)) {
             by = .(lat, lon, month(date))][
                 , t := abs(estimate)/se]
     saveRDS(regression, file)
-}
+})
 ```
 
 ```{r regression-ampl, fig.cap = "Regresión sobre amplitud.", fig.class = "vfullpage"}
@@ -1538,8 +1536,6 @@ ggplot(RepeatLon(regression[regressor == "amplitude" & month %in% c(7, 12)]),
     facet_wrap(~month, labeller = labeller(month = month.abb_sp))
 ```
 
-
-
 ```{r sam-ampl, fig.cap = "Relación entre amplitud media de la onda 3 y el SAM", fig.height = 6}
 sam <- fread("DATA/sam.monthly.txt") %>% 
     setnames(c("year", "month", "sam")) %>% 
@@ -1562,27 +1558,22 @@ index[sam, on = "date"] %>%
 
 ```{r make-reg-psi}
 file <- "DATA/stream.reg.Rds"
-if (file.exists(file)) {
-    stream.reg <- readRDS(file)
-} else {
-    stream.reg <- stream[, .(lon, lat, date, psi)][
-        index[, .(date, amplitude, phase)], on = "date"][
-            , setNames(ExtractLm(
-                RcppArmadillo::fastLm(cbind(mean = 1,
-                                            amplitude = amplitude/sd(amplitude), 
-                                            phase = phase),
-                                      psi)),
-                c("regressor", "estimate", "se")), 
-            by = .(lat, lon, month(date))][
-                , t := abs(estimate)/se]
-    
-    stream.reg[, estimate.z := Anomaly(estimate), 
-               by = .(lat, month, regressor)]
-    stream.reg[, psi.z := estimate.z]
-    stream.reg[, c("f.x", "f.y") := WaveFlux(.SD), by = .(regressor, month)]
-    
-    saveRDS(stream.reg, file)
-}
+stream.reg <- cache.file(file, {
+    stream[, .(lon, lat, date, psi)] %>% 
+        .[index[, .(date, amplitude, phase)], on = "date"] %>% 
+        .[, setNames(ExtractLm(
+            RcppArmadillo::fastLm(cbind(mean = 1,
+                                        amplitude = amplitude/sd(amplitude), 
+                                        phase = phase),
+                                  psi)),
+            c("regressor", "estimate", "se")),
+          by = .(lat, lon, month(date))] %>% 
+        .[, t := abs(estimate)/se] %>% 
+        .[, estimate.z := Anomaly(estimate),
+          by = .(lat, month, regressor)] %>% 
+        .[, psi.z := estimate.z] %>% 
+        .[, c("f.x", "f.y") := WaveFlux(.SD), by = .(regressor, month)]
+})
 ```
 
 ```{r psi-reg, fig.cap = "Regresión de Psi con la amplitud.", fig.class = "vfullpage"}
@@ -1605,8 +1596,6 @@ ggplot(RepeatLon(stream.reg[regressor == "amplitude"]),
     coord_quickmap() +
     facet_wrap(~month, labeller = labeller(month = month.abb_sp))
 ```
-
-
 
 
 ### Composición de campos. 
@@ -2351,10 +2340,10 @@ No hay casi diferencia entre las corridas.
 binwidth <- 5
 ggplot(speedy.mean.season[lev == 850], aes(lon, lat)) +
     geom_contour_fill(aes(z = t), 
-                      binwidth = binwidth, complete = F, exclude = 0) +
-    scale_fill_divergent(binwidth = binwidth, name = "Z*", 
+                      binwidth = binwidth) +
+    scale_fill_viridis_c(breaks = MakeBreaks(binwidth),
+                         name = "Z*", 
                          guide = guide_colorstrip_bottom()) +
-    scale_linetype(guide = "none") +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
@@ -2362,18 +2351,11 @@ ggplot(speedy.mean.season[lev == 850], aes(lon, lat)) +
     facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
 ```
 
-```{r dif-gh.z, fig.cap = "Diferencia Control - corrida para Z*"}
-speedy.mean.season.l <- melt(speedy.mean.season, 
-                             id.vars = c("lon", "lat", "lev", "season", "run"))
-
-s <- speedy.mean.season.l[, value[run == "Control"]]
-speedy.mean.season.l[, dif := s - value, by = run]
-run.dif <- setNames(paste0("Control -\n", runs[-1]),
-                runs[-1])
-binwidth <- 10
-speedy.mean.season.l[lev == 200 & variable == "gh.z" & run != "Control"] %>% 
+```{r dif-t.z, fig.cap = "Diferencia Control - corrida para Z*"}
+binwidth <- 1
+speedy.mean.season.l[lev == 850 & variable == "t.z" & run != "Control"] %>% 
 ggplot(aes(lon, lat, z = dif)) +
-    geom_contour_fill(binwidth = binwidth) +
+    geom_contour_fill(binwidth = binwidth, exclude = 0) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(binwidth),
@@ -2421,7 +2403,7 @@ ggplot(aes(lon, lat)) +
     scale_y_latitude() +
     scale_x_longitude() +
     coord_quickmap() +
-    facet_grid(run ~ season, labeller = labeller(run = dif)) 
+    facet_grid(run ~ season, labeller = labeller(run = run.dif)) 
 ```
 
 ### Función corriente
@@ -2480,9 +2462,10 @@ ggplot(qs.sp.season[run != "Control"], aes(lat, lev, z = dif)) +
 levs.index <- c(700, 300, 100)
 lats.index <- c(-65, -40)
 levs.index <- c(100, 700)
-qs.sp <- qs.sp[, index.region := (lev %b% levs.index) & 
-                   (lat %b% lats.index)]
-sp.index <- qs.sp[index.region == TRUE,
+
+sp.index <- speedy[(lev %b% levs.index) & 
+                   (lat %b% lats.index) & 
+                       lon == 0,
                   .(amplitude   = mean(amplitude),
                     r2          = mean(r2),
                     phase  = mode(phase)),
@@ -2509,16 +2492,32 @@ ggplot(sp.index, aes(factor(month(date)), amplitude, color = run)) +
 ```{r make-sp-regression}
 regr.file <- "DATA/regression-exps.Rds"
 regr.exps <- cache.file(regr.file, {
-    sp.regr <- speedy[lev == 925, ] %>% 
+    speedy[lev == 300, ] %>% 
         .[sp.index[, .(date, run, amplitude, phase)], 
           on = c("date", "run")] %>% 
         .[, 
           ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
                                                 amplitude = amplitude/sd(amplitude),
                                                 phase = phase),
-                                          sst)), 
+                                          psi)), 
           by = .(lon, lat, month(date), run)]
 })
+```
+
+```{r}
+binwidth <- 0.5
+regr.exps[regressor == "amplitude"] %>% 
+    .[, mean(estimate), by = .(lon, lat, season(month), run)] %>% 
+    .[, V1.z := Anomaly(V1), by = .(lat, season, run)] %>% 
+    # .[, c("fx", "fy") := WaveFlux(.SD), by = ]
+ggplot(aes(lon, lat, z = V1.z)) +
+    geom_contour_fill(binwidth = binwidth, exclude = 0) +
+    # geom_contour(binwidth = binwidth) +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(guide = guide_colorstrip_bottom(),
+                         breaks = MakeBreaks(binwidth)) +
+    facet_grid(run ~ season)
 ```
 
 
