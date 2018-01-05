@@ -5,7 +5,7 @@ author: "Elio Campitelli"
 date: ""
 lang: es-AR
 bibliography: [Papers/Biblio.bib, Papers/packages.bib]
-geometry: "inner = 3cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm, marginparwidth = 4.5cm, marginparsep = 3mm"
+geometry: "inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm"
 documentclass: book
 classoption: a4paper
 knit: (function(file, encoding, ...) {
@@ -1810,7 +1810,7 @@ Campos de correlación con SST y OLR, principalmente
 
 Validación de la corrida control
 
-```{r read-speedy}
+```{r read-speedy, cache = FALSE}
 vars <- c(gh = "gh", u = "u", t = "temp", psi = "psi", v = "v")
 vars.z <- paste0(names(vars), ".z")
 
@@ -1828,7 +1828,8 @@ speedy[, t := t - 273.15]
 
 speedy[, c(vars.z) := lapply(.SD, Anomaly), 
        by = .(lat, lev, date, run), .SDcols = -"lon"]
-
+speedy <- speedy[, c("amplitude", "phase", "r2") := FitQsWave(gh, 3),
+                 by = .(lat, lev, date, run)]
 speedy.mean.season <- speedy[, lapply(.SD, mean), 
                              by = .(lon, lat, lev, season(date), run)]
 
@@ -1974,7 +1975,7 @@ Veredicto:
 
 ### Temperatura 
 
-```{r nc-sp-temp}
+```{r nc-sp-temp, fig.cap = "Temperatura"}
 binwidth <- 5
 ggplot(speedy.mean.season[run == "Control" & lev %in% 850], aes(lon, lat, z = t)) +
     geom_contour_fill(binwidth = binwidth) +
@@ -2000,7 +2001,7 @@ ggplot(speedy.mean.season[run == "Control" & lev %in% 850], aes(lon, lat, z = t)
 ```
 
 
-```{r sp-nc-temp.z}
+```{r sp-nc-temp.z, fig.cap = "T*"}
 binwidth <- 2
 ggplot(speedy.mean.season[run == "Control" & lev %in% c(200, 850)], aes(lon, lat, z = t.z)) +
     geom_contour_fill(binwidth = binwidth, exclude = 0) +
@@ -2227,8 +2228,6 @@ ggplot(speedy.mean.season[run == "Control" & lev == 200], aes(lon, lat)) +
 
 
 ```{r ampl-comp, fig.class = "pagewidth", fig.cap = "Ampllitud de Fourier (speedy en sombreado, ncep en contornos)."}
-speedy <- speedy[, c("amplitude", "phase", "r2") := FitQsWave(gh, 3),
-                 by = .(lat, lev, date, run)]
 
 qs.sp.season <-speedy[, lapply(.SD, mean),
                       by = .(lat, lev, season(date), run), 
