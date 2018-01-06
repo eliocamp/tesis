@@ -656,59 +656,72 @@ ReadERA <- function(file, var, levs = T, date.fun = "hours", since = "1800-01-01
 # }
 
 
-WaveFlux <- function(gh, u, v, lon, lat, lev) {
-    # Flujos de actividad de onda. Adaptado de
-    # https://github.com/marisolosman/Reunion_Clima/blob/master/WAF/Calculo_WAF.ipynb y
-    # Takata y Nakamura 2001
-    # Entra:
-    #   gh: campo de altura geopotencial (anomalía zonal)
-    #   u: velocidad zonal
-    #   v: velocidad meridional
-    #   lon: longitudes
-    #   lat: latitudes
-    #   lev: nivel
-    # Sale:
-    #   una lista con longitud, latitud, y las componentes zonales y
-    #   meridionales del flujo de actividad de onda.
-    g  <- 9.81
-    a <- 6371000
-    p0 <- 100000    # normalizo a 100hPa
+# WaveFlux <- function(gh, u, v, lon, lat, lev) {
+#     # Flujos de actividad de onda. Adaptado de
+#     # https://github.com/marisolosman/Reunion_Clima/blob/master/WAF/Calculo_WAF.ipynb y
+#     # Takata y Nakamura 2001
+#     # Entra:
+#     #   gh: campo de altura geopotencial (anomalía zonal)
+#     #   u: velocidad zonal
+#     #   v: velocidad meridional
+#     #   lon: longitudes
+#     #   lat: latitudes
+#     #   lev: nivel
+#     # Sale:
+#     #   una lista con longitud, latitud, y las componentes zonales y
+#     #   meridionales del flujo de actividad de onda.
+#     g  <- 9.81
+#     a <- 6371000
+#     p0 <- 100000    # normalizo a 100hPa
+#
+#     # Todo en una data.table para que sea más cómodo.
+#     dt <- data.table(lon = lon, lat = lat,
+#                      lonrad = lon*pi/180, latrad = lat*pi/180,
+#                      gh = gh, u.mean = u, v.mean = v)
+#     setkey(dt, lat, lon)
+#     dt[, f := 2*pi/(3600*24)*sin(latrad)]
+#     dt[, psi := g/f*gh]
+#
+#     # Derivadas
+#     dt[, `:=`(psi.dx  = Derivate(psi, lonrad),
+#               psi.dxx = Derivate(psi, lonrad, 2)), by = lat]
+#     dt[, `:=`(psi.dy  = Derivate(psi, latrad, bc = "none"),
+#               psi.dyy = Derivate(psi, latrad, 2, bc = "none"),
+#               psi.dxy = Derivate(psi.dx, latrad, bc = "none")), by = lon]
+#
+#     # Cálculo del flujo (al fin!)
+#     flux <- dt[, {
+#         wind <- sqrt(u.mean^2 + v.mean^2)
+#
+#         xu <- psi.dx^2      - psi*psi.dxx
+#         xv <- psi.dx*psi.dy - psi*psi.dxy
+#         yv <- psi.dy^2      - psi*psi.dyy
+#
+#         coslat <- cos(latrad)
+#         coeff <- lev*100/p0/(2*wind*a^2)
+#
+#         w.x <- coeff*(u.mean/coslat*xu + v.mean*xv)
+#         w.y <- coeff*(u.mean*xv + v.mean*coslat*yv)
+#
+#         list(lon = lon, lat = lat,
+#              w.x = w.x, w.y = w.y)}
+#         ]
+#     return(flux)
+# }
 
-    # Todo en una data.table para que sea más cómodo.
-    dt <- data.table(lon = lon, lat = lat,
-                     lonrad = lon*pi/180, latrad = lat*pi/180,
-                     gh = gh, u.mean = u, v.mean = v)
-    setkey(dt, lat, lon)
-    dt[, f := 2*pi/(3600*24)*sin(latrad)]
-    dt[, psi := g/f*gh]
-
-    # Derivadas
-    dt[, `:=`(psi.dx  = Derivate(psi, lonrad),
-              psi.dxx = Derivate(psi, lonrad, 2)), by = lat]
-    dt[, `:=`(psi.dy  = Derivate(psi, latrad, bc = "none"),
-              psi.dyy = Derivate(psi, latrad, 2, bc = "none"),
-              psi.dxy = Derivate(psi.dx, latrad, bc = "none")), by = lon]
-
-    # Cálculo del flujo (al fin!)
-    flux <- dt[, {
-        wind <- sqrt(u.mean^2 + v.mean^2)
-
-        xu <- psi.dx^2      - psi*psi.dxx
-        xv <- psi.dx*psi.dy - psi*psi.dxy
-        yv <- psi.dy^2      - psi*psi.dyy
-
-        coslat <- cos(latrad)
-        coeff <- lev*100/p0/(2*wind*a^2)
-
-        w.x <- coeff*(u.mean/coslat*xu + v.mean*xv)
-        w.y <- coeff*(u.mean*xv + v.mean*coslat*yv)
-
-        list(lon = lon, lat = lat,
-             w.x = w.x, w.y = w.y)}
-        ]
-    return(flux)
+WaveFlux <- function(psi, p = 250, a = 6371000) {
+    k <- p*100/(a^2*2000)
+    psi <- copy(psi)
+    psi[, c("psi.dlon", "psi.dlat") := Derivate(psi.z ~ lon + lat,
+                                                cyclical = c(TRUE, FALSE))] %>%
+        .[, psi.ddlon := Derivate(psi.z ~ lon, cyclical = TRUE, order = 2),
+          by = lat] %>%
+        .[, psi.dlondlat := Derivate(psi.dlon ~ lat),
+          by = lon] %>%
+        .[, `:=`(f.lon = k/cos(lat*pi/180)*(psi.dlon^2 - psi.z*psi.ddlon),
+                 f.lat = k*(psi.dlon*psi.dlat - psi.z*psi.dlondlat))]
+    list(f.lon = psi$f.lon, f.lat = psi$f.lat)
 }
-
 #
 # Percentile <- function(x) {
 #     ecdf(x)(x)
@@ -875,3 +888,37 @@ cache.file <- function(file, expression) {
         return(r)
     }
 }
+
+mode <- function(x) {
+    if (length(x) > 1) {
+        d <- density(x)
+        x[x %~% d$x[which.max(d$y)]]
+    } else {
+        x
+    }
+}
+
+# "Estaciones" en base a la amplitud y fase de la onda 3.
+qs.season <- function(month) {
+    if (metR:::.is.somedate(month)) month <- lubridate::month(month)
+
+    qs.seasons <- factor(c(rep("Verano", 3),
+                           rep("Oto\u00f1o", 2),
+                           rep("Invierno", 2),
+                           rep("Primavera", 4),
+                           "Verano"))
+    # seasons <- c(sum, sum, sum,rep(c(aut, win, spr), each = 3), sum)
+
+    return(factor(qs.seasons[month], levels = c("Verano", "Oto\u00f1o",
+                                                "Invierno", "Primavera")))
+}
+
+geom_contour_back <- function(...) {
+    geom_contour(..., color = "black", size = 0.2, alpha = 0.5)
+}
+geom_label_contour_back <- function(...) {
+    geom_label_contour2(..., alpha = 0.5)
+}
+
+geom_contour_fine <- function(...) geom_contour(..., size = 0.4)
+stat_contour_fine <- function(...) stat_contour(..., size = 0.4)

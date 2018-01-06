@@ -21,8 +21,7 @@
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[inner = 3cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm, marginparwidth =
-4.5cm, marginparsep = 3mm]{geometry}
+\usepackage[inner = 3cm, outer = 2cm, top = 2.5cm, bottom = 2.5cm]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={Tesis},
@@ -104,6 +103,10 @@
 }
 Resumen.
 
+\begin{figure}
+\includegraphics[ ]{fig/tesis/test-1} \caption{prueba{test}}\label{fig:test}
+\end{figure}
+
 \chapter{Introducción}\label{introduccion}
 
 \begin{itemize}
@@ -135,7 +138,7 @@ Esto es para probar una referencia bibliográfica: \cite{@Vera2004}
 Ejemplo:
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-ondas-1} \caption{Ejemplo fourier}\label{fig:fourier-ejemplo-ondas}
+\includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-1} \caption{Ejemplo fourier{fig:fourier-ejemplo}}\label{fig:fourier-ejemplo}
 \end{figure*}
 
 Cosas para ver de \autoref{fig:fourier-ejemplo-ondas}:\\
@@ -151,7 +154,7 @@ haciendo que los máximos y mínimos no sean contínuos.
 \end{itemize}
 
 \begin{figure*}
-\subfloat[Campo\label{fig:wavelet_ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet_ejemplo-1} }\newline\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet_ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet_ejemplo-2} }\caption{Wavelets}\label{fig:wavelet_ejemplo}
+\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }\newline\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets{fig:wavelet-ejemplo}}\label{fig:wavelet-ejemplo}
 \end{figure*}
 
 Cosas para ver:\\
@@ -170,11 +173,11 @@ Campo medio:
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh_campo_medio_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-ncep-1} 
 
 }
 
-\caption{Altura geopotencial.}\label{fig:gh_campo_medio_ncep}
+\caption{Altura geopotencial.{fig:gh-ncep}}\label{fig:gh-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -185,36 +188,25 @@ Anomalías
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh_anomalia_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-ncep-1} 
 
 }
 
-\caption{Anomalía zonal de altura geopotencial.}\label{fig:gh_anomalia_ncep}
+\caption{Anomalía zonal de altura geopotencial.{fig:ghz-ncep}}\label{fig:ghz-ncep}
 \end{figure}
 
 Cosas para ver:\\
 Estructura de onda 1. Ciclo estacional de la amplitud. Baroclinicidad.
 
-Propuesta: unir ambos mapas
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh_ambos_ncep-1} 
-
-}
-
-\caption{Altura geopotencial (contornos) y anomalías (sombreado).}\label{fig:gh_ambos_ncep}
-\end{figure}
-
 Corte zonal en -60°
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/gh_zonal65_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/ghz-ncep-corte60-1} 
 
 }
 
-\caption{Corte zonal de anomalía de geopotencial en -65°.}\label{fig:gh_zonal65_ncep}
+\caption{Corte zonal de anomalía de geopotencial en -60°.{fig:ghz-ncep-corte60}}\label{fig:ghz-ncep-corte60}
 \end{figure}
 
 Complementa la figura anterior.
@@ -223,11 +215,11 @@ Desvío estándar por círculo de latitud:
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/gh_sd_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/sd-gh-ncep-1} 
 
 }
 
-\caption{Desvío estándar por círculo de latitud.}\label{fig:gh_sd_ncep}
+\caption{Desvío estándar por círculo de latitud.{fig:sd-gh-ncep}}\label{fig:sd-gh-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -239,11 +231,11 @@ cada número de onda.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/temp_media_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/t-ncep-1} 
 
 }
 
-\caption{Temperatura media.}\label{fig:temp_media_ncep}
+\caption{Temperatura media.{fig:t-ncep}}\label{fig:t-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -254,31 +246,31 @@ relativamente cálidas en \textasciitilde{}50° en 100 hPa.
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/temp_corte_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/tz-ncep-corte-1} 
 
 }
 
-\caption{Corte meridional de temperatura media.}\label{fig:temp_corte_ncep}
+\caption{Corte meridional de temperatura media.{fig:tz-ncep-corte}}\label{fig:tz-ncep-corte}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/temp_zonal_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/tz-ncep-1} 
 
 }
 
-\caption{Anomalía zonal de temperatura.}\label{fig:temp_zonal_ncep}
+\caption{Anomalía zonal de temperatura.{fig:tz-ncep}}\label{fig:tz-ncep}
 \end{figure}
 
 Corte zonal en -60°
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/t_zonal65_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/tz-ncep-corte60-1} 
 
 }
 
-\caption{Corte zonal de anomalía de temperatura en -65°.}\label{fig:t_zonal65_ncep}
+\caption{Corte zonal de anomalía de temperatura en -60°.{fig:tz-ncep-corte60}}\label{fig:tz-ncep-corte60}
 \end{figure}
 
 Cosas para ver:\\
@@ -290,11 +282,11 @@ Propuesta: combinar mapa de T y T*
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/u_medio_corte_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/u-ncep-corte-1} 
 
 }
 
-\caption{Viento zonal medio.}\label{fig:u_medio_corte_ncep}
+\caption{Viento zonal medio.{fig:u-ncep-corte}}\label{fig:u-ncep-corte}
 \end{figure}
 
 Cosas para ver:\\
@@ -304,11 +296,11 @@ Campo medio:
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u_medio_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u-ncep-1} 
 
 }
 
-\caption{Viento zonal.}\label{fig:u_medio_ncep}
+\caption{Viento zonal.{fig:u-ncep}}\label{fig:u-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -319,11 +311,11 @@ Anomalía zonal
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u_nomalia_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/uz-ncep-1} 
 
 }
 
-\caption{Anomalía zonal de viento zonal.}\label{fig:u_nomalia_ncep}
+\caption{Anomalía zonal de viento zonal.{fig:uz-ncep}}\label{fig:uz-ncep}
 \end{figure}
 
 Cosas para ver (ambos):
@@ -336,11 +328,11 @@ Corte meridional (v medio zonal):
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/v_corte_ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/v-ncep-corte-1} 
 
 }
 
-\caption{Media zonal del viento meridional.}\label{fig:v_corte_ncep}
+\caption{Media zonal del viento meridional.{fig:v-ncep-corte}}\label{fig:v-ncep-corte}
 \end{figure}
 
 Cosas para ver:\\
@@ -352,11 +344,11 @@ catabáticos de la antártida.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/v_medio_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/v-ncep-1} 
 
 }
 
-\caption{Viento meridional medio.}\label{fig:v_medio_ncep}
+\caption{Viento meridional medio.{fig:v-ncep}}\label{fig:v-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -372,26 +364,26 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eta-dy-ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/etady-ncep-1} 
 
 }
 
-\caption{Gradiente meridional de vorticidad absoluta.}\label{fig:eta-dy-ncep}
+\caption{Gradiente meridional de vorticidad absoluta.{fig:etady-ncep}}\label{fig:etady-ncep}
 \end{figure}
 
 \section{Número de onda estacionaria}\label{numero-de-onda-estacionaria}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/k-steady-ncep-1} \caption{Número de onda estacionario en 300hPa.}\label{fig:k-steady-ncep}
+\includegraphics[ ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa.{fig:ks-ncep}}\label{fig:ks-ncep}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-lat-ncep-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-ncep-corte-1} 
 
 }
 
-\caption{Número de onda estacionario medio por círculo de latitud.}\label{fig:ks-lat-ncep}
+\caption{Número de onda estacionario medio por círculo de latitud.{fig:ks-ncep-corte}}\label{fig:ks-ncep-corte}
 \end{figure}
 
 Cosas para ver:\\
@@ -403,11 +395,11 @@ La onda 3 es estacionaria en -60°.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi-ncep-1} 
 
 }
 
-\caption{Función corriente x 1099}\label{fig:psi_ncep}
+\caption{Función corriente x 1099{fig:psi-ncep}}\label{fig:psi-ncep}
 \end{figure}
 
 \section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
@@ -420,11 +412,11 @@ La onda 3 es estacionaria en -60°.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/r2_qs_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/r2-ncep-1} 
 
 }
 
-\caption{$R^2$ de Fourier.}\label{fig:r2_qs_ncep}
+\caption{$R^2$ de Fourier.{fig:r2-ncep}}\label{fig:r2-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -433,11 +425,11 @@ negro)
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ampl_qs_ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ampl-ncep-1} 
 
 }
 
-\caption{Ampllitud de Fourier.}\label{fig:ampl_qs_ncep}
+\caption{Ampllitud de Fourier.{fig:ampl-ncep}}\label{fig:ampl-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -450,7 +442,7 @@ amplitud de QS 3 y donde su R2 es mayor que la de QS 1.
 \section{Características típicas}\label{caracteristicas-tipicas}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_ncep-1} \caption{Media de reconstrucción de onda 3.}\label{fig:qs_teorico_ncep}
+\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-1} \caption{Media de reconstrucción de onda 3.{fig:qs3-ncep}}\label{fig:qs3-ncep}
 \end{figure*}
 
 Cosas para ver:\\
@@ -464,7 +456,7 @@ Esto es el promedio de las ondas 3, pero es idéntico a la onda 3 del
 promedio.
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_corte_ncep-1} \caption{Corte}\label{fig:qs_teorico_corte_ncep}
+\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte{fig:qs3-ncep-corte}}\label{fig:qs3-ncep-corte}
 \end{figure*}
 
 Cosas para ver:\\
@@ -475,7 +467,7 @@ por la variabilidad en la fase, ya que en el corte de amplitud se ve que
 la amplitud es mayor en altura incluso que en otoño.
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs_teorico_sd_ncep-1} \caption{Desvío estándar de la reconstrucción de QS3.}\label{fig:qs_teorico_sd_ncep}
+\includegraphics[width=150mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3.{fig:qs3sd-ncep}}\label{fig:qs3sd-ncep}
 \end{figure*}
 
 No tengo idea de cómo interpretar esto\ldots{}
@@ -490,20 +482,20 @@ La amplitud media obtenida mediante wavelets es virtualmente idéntica
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/wavelet_fourier_comp-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/wavelet-fourier-ncep-1} 
 
 }
 
-\caption{Amplitud de wavelets (sombreados) y de fourier (contornos)}\label{fig:wavelet_fourier_comp}
+\caption{Amplitud de wavelets (sombreados) y de fourier (contornos){fig:wavelet-fourier-ncep}}\label{fig:wavelet-fourier-ncep}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/wavelet_medio_anom-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/waveletz-ncep-1} 
 
 }
 
-\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa.}\label{fig:wavelet_medio_anom}
+\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa.{fig:waveletz-ncep}}\label{fig:waveletz-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -514,11 +506,11 @@ hemisferio este.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/wavelet_corte-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/wavelet-ncep-corte-1} 
 
 }
 
-\caption{Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado).}\label{fig:wavelet_corte}
+\caption{Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado).{fig:wavelet-ncep-corte}}\label{fig:wavelet-ncep-corte}
 \end{figure}
 
 Cosas para ver:\\
@@ -569,11 +561,11 @@ entre campo teórico y observado.
 \subsection{Máximo o media.}\label{maximo-o-media.}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/max_mean_compara-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.}\label{fig:max_mean_compara}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.{fig:ampl-max-mean}}\label{fig:ampl-max-mean}
 \end{figure*}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/max_mean_corte-1} \caption{Corte vertical de amplitud}\label{fig:max_mean_corte}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-corte-1} \caption{Corte vertical de amplitud{fig:ampl-max-mean-corte}}\label{fig:ampl-max-mean-corte}
 \end{figure*}
 
 Cosas para ver:\\
@@ -583,7 +575,7 @@ máxima pero en 2008 está más ``concentrada''. Casos donde la actividad
 está ligeramente fuera de la caja (2000-09-01).
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/campos_anomalia_select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas.}\label{fig:campos_anomalia_select}
+\includegraphics[width=150mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas.{fig:ghz-ncep-select}}\label{fig:ghz-ncep-select}
 \end{figure*}
 
 Cosas para ver:\\
@@ -591,7 +583,7 @@ Analizar nivel de similitud entre los campos y similitud entre la
 estructura de la ampltiud.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/mean_max_cor-1} \caption{Correlación entre amplitud máxima y media.}\label{fig:mean_max_cor}
+\includegraphics[ ]{fig/tesis/cor-mean-max-1} \caption{Correlación entre amplitud máxima y media.{fig:cor-mean-max}}\label{fig:cor-mean-max}
 \end{figure}
 
 Cosas para ver:\\
@@ -600,7 +592,7 @@ Relación lineal entre ambas. Ergo, da más o menso igual usar cualquiera.
 Luego\ldots{} concluir que vamos a usar la media.
 
 \begin{figure*}
-\subfloat[Serie temporal\label{fig:amplitud_timeseries1}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-1} }\newline\subfloat[Ciclo anual\label{fig:amplitud_timeseries2}]{\includegraphics[width=150mm, ]{fig/tesis/amplitud_timeseries-2} }\caption{Amplitud media}\label{fig:amplitud_timeseries}
+\subfloat[Serie temporal\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Ciclo anual\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media{fig:ampl-ts}}\label{fig:ampl-ts}
 \end{figure*}
 
 \section{Fase}\label{fase}
@@ -615,11 +607,11 @@ equivale al centro del anticiclón) o la moda de la fase.
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/lon-phase-comp-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/lon-phase-1} 
 
 }
 
-\caption{Fase promedio vs Fase del máximo}\label{fig:lon-phase-comp}
+\caption{Fase promedio vs Fase del máximo{fig:lon-phase}}\label{fig:lon-phase}
 \end{figure}
 
 Cosas para ver:\\
@@ -629,7 +621,7 @@ cualquier cosa si la estructura cambia mucho con la latitud. Por
 ejemplo, los casos marcados en rojo.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/fase-mal-1} \caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.}\label{fig:fase-mal}
+\includegraphics[ ]{fig/tesis/fase-mal-1} \caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.{fig:fase-mal}}\label{fig:fase-mal}
 \end{figure}
 
 En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo
@@ -654,7 +646,7 @@ Conclusión: vamos a usar la moda de la fase.
 Ciclo anual de la fase.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/boxplot-fase-ncep-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes)}\label{fig:boxplot-fase-ncep}
+\includegraphics[ ]{fig/tesis/fase-boxplot-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes){fig:fase-boxplot}}\label{fig:fase-boxplot}
 \end{figure}
 
 Cosas para ver:\\
@@ -676,7 +668,7 @@ más débiles invita más preguntas que las que responde.
 
 }
 
-\caption{Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.}\label{fig:centros-10max}
+\caption{Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.{fig:centros-10max}}\label{fig:centros-10max}
 \end{figure}
 
 Cosas para ver:\\
@@ -692,13 +684,17 @@ Una forma es, a partir del índice, agrupar los meses según su amplitud y
 fase media:
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ampl-fase-1} \caption{Amplitud y fase media para cada mes.}\label{fig:ampl-fase}
+\includegraphics[ ]{fig/tesis/ampl-vs-fase-1} \caption{Amplitud y fase media para cada mes.{fig:ampl-vs-fase}}\label{fig:ampl-vs-fase}
 \end{figure}
 
 Otro ejemplo podría usar SVD:
 
 \begin{figure}
-\subfloat[Varianza explicada de cada componente\label{fig:index-eof1}]{\includegraphics[ ]{fig/tesis/index-eof-1} }\newline\subfloat[Campo asociado a las primeras 2 componentes\label{fig:index-eof2}]{\includegraphics[ ]{fig/tesis/index-eof-2} }\newline\subfloat[Factor de peso para cada mes\label{fig:index-eof3}]{\includegraphics[ ]{fig/tesis/index-eof-3} }\newline\subfloat['Magnitud' y 'Fase' de cada mes a partir de las componentes principales\label{fig:index-eof4}]{\includegraphics[ ]{fig/tesis/index-eof-4} }\caption{Análisis SVD de QS3.probablemente basura}\label{fig:index-eof}
+\subfloat[Varianza explicada de cada componente\label{fig:eof1}]{\includegraphics[ ]{fig/tesis/eof-1} }\newline\subfloat[Campo asociado a las primeras 2 componentes\label{fig:eof2}]{\includegraphics[ ]{fig/tesis/eof-2} }\newline\subfloat[Factor de peso para cada mes\label{fig:eof3}]{\includegraphics[ ]{fig/tesis/eof-3} }\caption{Análisis SVD de QS3.probablemente basura{fig:eof}}\label{fig:eof}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/eof1-eof2-1} \caption{'Magnitud' y 'Fase' de cada mes a partir de las componentes principales{fig:eof1-eof2}}\label{fig:eof1-eof2}
 \end{figure}
 
 Cosas para ver:\\
@@ -721,7 +717,7 @@ de ``transición''.
 \section{Persistencia (ver dónde va)}\label{persistencia-ver-donde-va}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/cros-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes.}\label{fig:cros-cor}
+\includegraphics[ ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes.{fig:lag-cor}}\label{fig:lag-cor}
 \end{figure}
 
 \section{R2}\label{r2}
@@ -733,7 +729,7 @@ haciendo la correlación (global) con el campo tridimensional observado.
 Esta segunda forma da casi siempre un valor menor.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/r2_comparacion-1} \caption{Relación entre R2 medio y R2 reconstruido.}\label{fig:r2_comparacion}
+\includegraphics[ ]{fig/tesis/r2-cor2-1} \caption{Relación entre R2 medio y R2 reconstruido.{fig:r2-cor2}}\label{fig:r2-cor2}
 \end{figure}
 
 Para ver:\\
@@ -745,7 +741,7 @@ medio. Para R2 más grandes, la pendiente es 1. Modelar la
 relación\ldots{} ¿Cómo se interpreta?
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/r2_visual-1} \caption{R2 medio}\label{fig:r2_visual}
+\includegraphics[width=150mm, ]{fig/tesis/r2-corte-1} \caption{R2 medio{fig:r2-corte}}\label{fig:r2-corte}
 \end{figure*}
 
 Cosas para ver:\\
@@ -753,7 +749,7 @@ Comparando con las figuras anteriores, casos donde la amplitud es grande
 pero el R2 no tanto.
 
 \begin{figure*}
-\subfloat[Serie temporal\label{fig:r2_timeseries1}]{\includegraphics[width=150mm, ]{fig/tesis/r2_timeseries-1} }\newline\subfloat[Ciclo anual\label{fig:r2_timeseries2}]{\includegraphics[width=150mm, ]{fig/tesis/r2_timeseries-2} }\caption{R2 medio}\label{fig:r2_timeseries}
+\subfloat[Serie temporal\label{fig:r2-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-1} }\newline\subfloat[Ciclo anual\label{fig:r2-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-2} }\caption{R2 medio{fig:r2-ts}}\label{fig:r2-ts}
 \end{figure*}
 
 Cosas para ver:\\
@@ -765,7 +761,7 @@ que puede hacerse para cada punto y analizar la variación espacial de la
 misma.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/cor-field-1} \caption{Correlación cuadrada media para estaciones según onda3.}\label{fig:cor-field}
+\includegraphics[ ]{fig/tesis/cor-campo-1} \caption{Correlación cuadrada media para estaciones según onda3.{fig:cor-campo}}\label{fig:cor-campo}
 \end{figure}
 
 Cosas para ver:\\
@@ -782,13 +778,15 @@ Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 
 \section{Regresiones}\label{regresiones}
 
+\subsection{Geopotencial}\label{geopotencial}
+
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/regression-ampl-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/regr-gh-ncep-1} 
 
 }
 
-\caption{Regresión sobre amplitud.}\label{fig:regression-ampl}
+\caption{Regresión sobre amplitud.{fig:regr-gh-ncep}}\label{fig:regr-gh-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -796,33 +794,35 @@ Cosas para ver:\\
 de SAM positivo y negativo respectivamente.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/regr-polar-1} \caption{Igual que figura XX, pero en proyección polar para julio y septiembre.}\label{fig:regr-polar}
+\includegraphics[ ]{fig/tesis/regr-gh-polar-1} \caption{Igual que figura  XX, pero en proyección polar para julio y septiembre.{fig:regr-gh-polar}}\label{fig:regr-gh-polar}
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM}\label{fig:sam-ampl}
+\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM{fig:sam-ampl}}\label{fig:sam-ampl}
 \end{figure}
+
+\subsection{Función Corriente}\label{funcion-corriente-1}
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/psi-reg-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/regr-psi-ncep-1} 
 
 }
 
-\caption{Regresión de Psi con la amplitud.}\label{fig:psi-reg}
+\caption{Regresión de Psi con la amplitud.{fig:regr-psi-ncep}}\label{fig:regr-psi-ncep}
 \end{figure}
 
-\subsection{Composición de campos.}\label{composicion-de-campos.}
+\section{Composición de campos.}\label{composicion-de-campos.}
 
 Descripción de la seleccion.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/tabla_seleccion-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/seleccion-tabla-1} 
 
 }
 
-\caption{Tabla de selección}\label{fig:tabla_seleccion}
+\caption{Tabla de selección{fig:seleccion-tabla}}\label{fig:seleccion-tabla}
 \end{figure}
 
 Cosas para ver:\\
@@ -841,11 +841,11 @@ que desdibujan el patrón.
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/tabla_interaccion-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/interaccion-tabla-1} 
 
 }
 
-\caption{Tabla de interacción}\label{fig:tabla_interaccion}
+\caption{Tabla de interacción{fig:interaccion-tabla}}\label{fig:interaccion-tabla}
 \end{figure}
 
 Cosas para ver:\\
@@ -855,29 +855,29 @@ no hay mucha diferencia. En efecto, las composiciones son casi iguales
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/comp-ampl-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-comp-1} 
 
 }
 
-\caption{Composición de campos}\label{fig:comp-ampl}
+\caption{Composición de campos{fig:gh-comp}}\label{fig:gh-comp}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/select-enero-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-ene-1} 
 
 }
 
-\caption{Campos para los 10 eneros seleccionados.}\label{fig:select-enero}
+\caption{Campos para los 10 eneros seleccionados.{fig:gh-qs3-select-ene}}\label{fig:gh-qs3-select-ene}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/select-sept-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-sep-1} 
 
 }
 
-\caption{Campos para los 10 septiembres seleccionados.}\label{fig:select-sept}
+\caption{Campos para los 10 septiembres seleccionados.{fig:gh-qs3-select-sep}}\label{fig:gh-qs3-select-sep}
 \end{figure}
 
 Estos gráficos me parecen importantes para ver lo que hay ``adentro'' de
@@ -896,11 +896,11 @@ externa.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/sst-regr-ampl-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-sst-ncep-1} 
 
 }
 
-\caption{Regresión de SST con la amplitud de la onda 3}\label{fig:sst-regr-ampl}
+\caption{Regresión de SST con la amplitud de la onda 3{fig:regr-sst-ncep}}\label{fig:regr-sst-ncep}
 \end{figure}
 
 Campos de correlación con SST y OLR, principalmente ¿Discusión de otros
@@ -923,7 +923,7 @@ tengo 925, 850, 700, 500, 300, 200, 100, 30. Podría usar 30, pero eso es
 la tapa del modelo\ldots{}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/sp-nc-regr-1} \caption{Correlación lineal entre campos de SPEEDY y NCEP.}\label{fig:sp-nc-regr}
+\includegraphics[ ]{fig/tesis/cor-sp-nc-1} \caption{Correlación lineal entre campos de SPEEDY y NCEP.{fig:cor-sp-nc}}\label{fig:cor-sp-nc}
 \end{figure}
 
 \begin{itemize}
@@ -968,18 +968,20 @@ Anomalía
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/sp-nc-gh.z-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-sp-nc-1} 
 
 }
 
-\caption{Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos)}\label{fig:sp-nc-gh.z}
-\end{figure}\begin{figure}
+\caption{Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos){fig:ghz-sp-nc}}\label{fig:ghz-sp-nc}
+\end{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/sp-nc-dif-gh.z-1} 
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-dif-sp-nc-1} 
 
 }
 
-\caption{Diferencia entre speedy y ncep}\label{fig:sp-nc-dif-gh.z}
+\caption{Diferencia entre speedy y ncep{fig:ghz-dif-sp-nc}}\label{fig:ghz-dif-sp-nc}
 \end{figure}
 
 Veredicto:\\
@@ -987,26 +989,43 @@ Veredicto:\\
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/sp-nc-gh.65-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/ghz-sp-nc-corte60-1} 
 
 }
 
-\caption{Corte zonal de anomalía de geopotencial en -65° (speedy sombreado, ncep contornos).}\label{fig:sp-nc-gh.65}
+\caption{Corte zonal de anomalía de geopotencial en -60° (speedy sombreado, ncep contornos).{fig:ghz-sp-nc-corte60}}\label{fig:ghz-sp-nc-corte60}
 \end{figure}
 
 El corte zonal evidencia que además de tener menor amplitud, la
 estructura vertical de las anomalías es barotrópica equivalente en
 Speedy, a diferencia de la estructura baroclínica de NCEP.
 
+\subsection{Temperatura}\label{temperatura-1}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/t-nc-sp-1} \caption{Temperatura{fig:t-nc-sp}}\label{fig:t-nc-sp}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/tz-sp-nc-1} \caption{T*{fig:tz-sp-nc}}\label{fig:tz-sp-nc}
+\end{figure}
+
+En 850 tiene una fuerte onda 1 en latitudes polares producida por la
+topografía de la Antártida y representa bien las anomalías causadas por
+los continentes, aunque en menor amplitud.\\
+En 200, falla miserablemente. La onda 1 polar que se ve bien claro en
+NCEP ni aparece en SPEEDY, mientras que en latitudes medias aparecen
+ligeras anomalías que no se observan en las observaciones.
+
 \subsection{Viento zonal}\label{viento-zonal-1}
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/sp-nc-u-corte-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/u-sp-nc-corte-1} 
 
 }
 
-\caption{Viento zonal medio (speedy contornos, ncep sombreado).}\label{fig:sp-nc-u-corte}
+\caption{Viento zonal medio (speedy contornos, ncep sombreado).{fig:u-sp-nc-corte}}\label{fig:u-sp-nc-corte}
 \end{figure}
 
 Cosas para ver:\\
@@ -1020,11 +1039,15 @@ no esté en el anterior y en el de geopotencial.)
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u_medio_sp-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u-sp-nc-1} 
 
 }
 
-\caption{Viento zonal (contornos ncep, sombreado speedy).}\label{fig:u_medio_sp}
+\caption{Viento zonal (contornos ncep, sombreado speedy).{fig:u-sp-nc}}\label{fig:u-sp-nc}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/u-dif-sp-nc-1} \caption{Diferencia entre ncep y speedy en viento zonal{fig:u-dif-sp-nc}}\label{fig:u-dif-sp-nc}
 \end{figure}
 
 Cosas para ver:\\
@@ -1036,11 +1059,11 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta-1}
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/eta-dy-sp-nc-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/etady-sp-nc-1} 
 
 }
 
-\caption{Gradiente meridional de vorticidad absoluta (speedy).}\label{fig:eta-dy-sp-nc}
+\caption{Gradiente meridional de vorticidad absoluta (speedy).{fig:etady-sp-nc}}\label{fig:etady-sp-nc}
 \end{figure}
 
 Comparando con la figura \autoref{fig:eta-dy-ncep}, los gradientes son
@@ -1052,7 +1075,7 @@ invierno de niveles altos es menor en 200hPa y casi desaparece en
 estacionaria}\label{numero-de-onda-estacionaria-1}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/k-steady-sp-1} \caption{Número de onda estacionario en 300hPa (speedy).}\label{fig:k-steady-sp}
+\includegraphics[ ]{fig/tesis/ks-sp-1} \caption{Número de onda estacionario en 300hPa (speedy).{fig:ks-sp}}\label{fig:ks-sp}
 \end{figure}
 
 Comparando con \autoref{fig:k-steady-ncep} la mayor diferencia es la
@@ -1061,30 +1084,34 @@ desaparición de una región de propagación impedida en
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-lat-sp-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-sp-nc-corte-1} 
 
 }
 
-\caption{Número de onda estacionario medio por círculo de latitud.}\label{fig:ks-lat-sp}
+\caption{Número de onda estacionario medio por círculo de latitud.{fig:ks-sp-nc-corte}}\label{fig:ks-sp-nc-corte}
 \end{figure}
 
 En promedio zonal, sin embargo, SPEEDY funciona bien.
 
-\begin{itemize}
-\tightlist
-\item
-  Validación de las corridas experimentales (mostrar que es constante lo
-  que tiene que ser consante)
-\end{itemize}
+\subsection{Función corriente}\label{funcion-corriente-2}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi-sp-1} 
+
+}
+
+\caption{Función corriente x 1099{fig:psi-sp}}\label{fig:psi-sp}
+\end{figure}
 
 \subsection{Onda 3}\label{onda-3-1}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-comp-1} \caption{Ampllitud de Fourier (speedy en sombreado, ncep en contornos).}\label{fig:ampl-comp}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de Fourier (speedy en sombreado, ncep en contornos).{fig:ampl-sp-nc}}\label{fig:ampl-sp-nc}
 \end{figure*}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs-comp-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep)}\label{fig:qs-comp}
+\includegraphics[width=150mm, ]{fig/tesis/qs2-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep){fig:qs2-sp-nc}}\label{fig:qs2-sp-nc}
 \end{figure*}
 
 La onda 3 no está muy bien representada en el modelo. Aunque la
@@ -1095,30 +1122,91 @@ primavera.
 
 \section{Comparación}\label{comparacion}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/sd-val-1} \caption{Desvío estándar medio para SST y LST.}\label{fig:sd-val}
-\end{figure}
-
-Se verifica que NOLAND y NOICE tienen nula variabilidad en SST y LST
-mientras que SSTCLIM tiene variablidad en LST y la variabilidad en SST
-es menor y producto sólo de la variabilidad del hielo marítimo (no se
-muestra).
-
-Comparación entre corridas
+Comparación entre corridas \#\#\# Altura geopotencial
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ampl-corridas-1} \caption{Amplitud media de la onda 3 para cada corrida.}\label{fig:ampl-corridas}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-sp-runs-1} 
+
+}
+
+\caption{Anomalía zonal de altura geopotencial.{fig:ghz-sp-runs}}\label{fig:ghz-sp-runs}
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/control-run-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida.}\label{fig:control-run}
+\includegraphics[ ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Control - corrida para Z*{fig:ghz-dif-sp-runs}}\label{fig:ghz-dif-sp-runs}
+\end{figure}
+
+\subsection{Temperatura}\label{temperatura-2}
+
+ONo hay casi diferencia entre las corridas.
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/t-sp-runs-1} \caption{Temperatura media en 850hPa.{fig:t-sp-runs}}\label{fig:t-sp-runs}
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/sp-ciclo-anual-1} \caption{Ciclo anual de amplitud de onda 3.}\label{fig:sp-ciclo-anual}
+\includegraphics[ ]{fig/tesis/tz-sp-runs-1} \caption{Temperatura media en 850hPa.{fig:tz-sp-runs}}\label{fig:tz-sp-runs}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/tz-dif-sp-runs-1} 
+
+}
+
+\caption{Diferencia Control - corrida para T*{fig:tz-dif-sp-runs}}\label{fig:tz-dif-sp-runs}
+\end{figure}
+
+\subsection{Viento zonal}\label{viento-zonal-2}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/uz-sp-runs-1} 
+
+}
+
+\caption{Viento zonal{fig:uz-sp-runs}}\label{fig:uz-sp-runs}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/u-dif-sp-runs-1} \caption{Diferencia control - corrida para U.{fig:u-dif-sp-runs}}\label{fig:u-dif-sp-runs}
+\end{figure}
+
+\subsection{Función corriente}\label{funcion-corriente-3}
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi-sp-runs-1} 
+
+}
+
+\caption{Anomalía zonal de función corriente y flujos de acción de onda.{fig:psi-sp-runs}}\label{fig:psi-sp-runs}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/psiz-dif-sp-runs-1} \caption{Diferencia en psi.z y flujos de acción de onda.{fig:psiz-dif-sp-runs}}\label{fig:psiz-dif-sp-runs}
+\end{figure}
+
+\subsection{Onda 3}\label{onda-3-2}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/ampl-sp-runs-1} \caption{Amplitud media de la onda 3 para cada corrida.{fig:ampl-sp-runs}}\label{fig:ampl-sp-runs}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/ampl-dif-sp-runs-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida.{fig:ampl-dif-sp-runs}}\label{fig:ampl-dif-sp-runs}
+\end{figure}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/index-sp-boxplot-1} \caption{Ciclo anual de amplitud de onda 3.{fig:index-sp-boxplot}}\label{fig:index-sp-boxplot}
 \end{figure}
 
 \section{Regresión}\label{regresion}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/regr-psi-sp-runs-1} \caption{Regresión en función corriente.{fig:regr-psi-sp-runs}}\label{fig:regr-psi-sp-runs}
+\end{figure}
 
 \section{Cosas inesperadas\ldots{}}\label{cosas-inesperadas}
 
