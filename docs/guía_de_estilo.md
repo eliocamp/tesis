@@ -118,6 +118,8 @@ convertir_fecha <- function(x) {
 
 Los nombres de los argumentos van en minúscula y usa "." para separación. 
 
+Los labels de chunks usan guiones para separar y en las figuras el orden tiene que ser variable-modelo-tipo. Donde "tipo" hace referencia al tipo de gráfico, como "corte". Si es un campo, no poner nada. 
+
 ## Sintaxis
 
 Usar espacios alrededor de: ` =`, ` ==` , ` +`, ` -`, ` <-`, ` ^`.
@@ -172,7 +174,7 @@ if (i == 5)
 
 Usar ` <-` para asignación (esto es lo más controversial de la guía ya que hubiera preferido aprender R usando ` =`; pero lo hecho hecho está y el código usando ` =` me resulta feo). Tratar de no usar nunca la asignación ` ->`. 
 
-Respetar la identación usando 4 espacios. Se puede poner espaciado extra para alinear asignación de varias variables o la asiganción de muchos argumentos en una función. Acá está bien ser flexible si el código termina con demasiado espaciado innecesario. Algunos ejempos donde puede obviarse es al usar ` invisible()` para arreglar los problemas entre data.table y knitr o código muy largo dentro del *j* de un data.table. 
+Respetar la identación usando 4 espacios. Se puede poner espaciado extra para alinear asignación de varias variables o la asiganción de muchos argumentos en una función. Acá está bien ser flexible si el código termina con demasiado espaciado innecesario.
 
 Usar nuevas líneas para estructurar el código. Tratar el código como si fuera texto y separarlo en párrafos con una temática consistente. Por ejemplo, líneas donde se lee y prepara una fuente de datos, por ejemplo, van todos juntos, pero separados de otro bloque donde se leen otros datos.
 
