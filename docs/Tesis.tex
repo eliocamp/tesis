@@ -91,6 +91,7 @@
 
 \linespread{1.25}
 \usepackage{subfig}
+\usepackage{hyperref}
 \usepackage{marginnote}
 \usepackage[nomarkers,figuresonly]{endfloat}
 
@@ -102,10 +103,6 @@
 \tableofcontents
 }
 Resumen.
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/test-1} \caption{prueba{test}}\label{fig:test}
-\end{figure}
 
 \chapter{Introducción}\label{introduccion}
 
@@ -121,7 +118,9 @@ Resumen.
   Objetivo particular
 \end{itemize}
 
-Esto es para probar una referencia bibliográfica: \cite{@Vera2004}
+Esto es para probar una referencia bibliográfica: Vera et~al.
+(\protect\hyperlink{ref-Vera2004}{2004}) y (Vera et~al.
+\protect\hyperlink{ref-Vera2004}{2004})
 
 \chapter{Métodos y Materiales}\label{metodos-y-materiales}
 
@@ -138,10 +137,10 @@ Esto es para probar una referencia bibliográfica: \cite{@Vera2004}
 Ejemplo:
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-1} \caption{Ejemplo fourier{fig:fourier-ejemplo}}\label{fig:fourier-ejemplo}
+\includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-1} \caption{Ejemplo fourier - fig:fourier-ejemplo}\label{fig:fourier-ejemplo}
 \end{figure*}
 
-Cosas para ver de \autoref{fig:fourier-ejemplo-ondas}:\\
+Cosas para ver de \autoref{fig:fourier-ejemplo}:\\
 Descripción del ``rol'' de cada número de onda en generar el campo
 final. La onda 1 es la principal, marcando altas presiones al sur del
 pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple
@@ -154,12 +153,11 @@ haciendo que los máximos y mínimos no sean contínuos.
 \end{itemize}
 
 \begin{figure*}
-\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }\newline\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets{fig:wavelet-ejemplo}}\label{fig:wavelet-ejemplo}
+\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets {fig:wavelet-ejemplo}}\label{fig:wavelet-ejemplo}
 \end{figure*}
 
 Cosas para ver:\\
 Cambio en el máximo. Localización en vez de un número para cada latitud.
-\marginnote{Notar que en la amplitud está normalizada en el primer ejemplo pero no lo está en el segundo.}
 
 \section{Fuentes de datos}\label{fuentes-de-datos}
 
@@ -177,14 +175,17 @@ Campo medio:
 
 }
 
-\caption{Altura geopotencial.{fig:gh-ncep}}\label{fig:gh-ncep}
+\caption{Campo de Z (NCEP) - fig:gh-ncep}\label{fig:gh-ncep}
 \end{figure}
 
-Cosas para ver:\\
-Estructura dominantemente zonal. Zona de jet, variación de intensidad
-estacional. Vórtice polar en invierno/primavera.
+El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra
+una estructura más zonal en el HS que en el HN. Es evidente la
+generación del vórtice polar en la estratósfera de invierno y primavera
+y el aumento del gradiente meridional de Z con la altura.
 
-Anomalías
+\begin{figure}
+\includegraphics[ ]{fig/tesis/ghdy-ncep-corte-1} \caption{Gradiente meridional de Z - fig:ghdy-ncep-corte}\label{fig:ghdy-ncep-corte}
+\end{figure}
 
 \begin{figure}
 
@@ -195,10 +196,19 @@ Anomalías
 \caption{Anomalía zonal de altura geopotencial.{fig:ghz-ncep}}\label{fig:ghz-ncep}
 \end{figure}
 
-Cosas para ver:\\
-Estructura de onda 1. Ciclo estacional de la amplitud. Baroclinicidad.
+Las anomalías zonales (\autoref{fig:ghz-ncep}) muestran una
+preponderancia de una onda 1 (QS1) con una amplitud máxima en la
+estratósfera de primavera y una estructura coherente en la vertical en
+60°S (\autoref{fig:ghz-ncep-corte}). Salvo en verano, la inclinación
+hacia el oeste en la horizontal y en la vertical indica que las
+perturbaciones estacionarias están asociadas con transporte hacia el
+polo tanto de cantidad de movimiento zonal como de temperatura.
+\footnote{¿Debería agregar una justificaicón de esto? ¿Un resumen del desarrollo matemático que está en el James?}
 
-Corte zonal en -60°
+En verano, las anomalías zonales tienen una estructura barotrópica
+equivalente y carecen de inclinación en la horizontal. Consecuentemente,
+los transportes meridionales asociados se reducen considerablemente.
+\footnote{¿Por qué?}
 
 \begin{figure}
 
@@ -208,6 +218,12 @@ Corte zonal en -60°
 
 \caption{Corte zonal de anomalía de geopotencial en -60°.{fig:ghz-ncep-corte60}}\label{fig:ghz-ncep-corte60}
 \end{figure}
+
+\begin{figure}
+\subfloat[uz*vz*\label{fig:uzvz-ncep-corte1}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte}\label{fig:uzvz-ncep-corte}
+\end{figure}
+
+Hasta acá.
 
 Complementa la figura anterior.
 
@@ -235,7 +251,7 @@ cada número de onda.
 
 }
 
-\caption{Temperatura media.{fig:t-ncep}}\label{fig:t-ncep}
+\caption{Temperatura media. - fig:t-ncep}\label{fig:t-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -259,7 +275,7 @@ relativamente cálidas en \textasciitilde{}50° en 100 hPa.
 
 }
 
-\caption{Anomalía zonal de temperatura.{fig:tz-ncep}}\label{fig:tz-ncep}
+\caption{Anomalía zonal de temperatura. - fig:tz-ncep}\label{fig:tz-ncep}
 \end{figure}
 
 Corte zonal en -60°
@@ -592,7 +608,7 @@ Relación lineal entre ambas. Ergo, da más o menso igual usar cualquiera.
 Luego\ldots{} concluir que vamos a usar la media.
 
 \begin{figure*}
-\subfloat[Serie temporal\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Ciclo anual\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media{fig:ampl-ts}}\label{fig:ampl-ts}
+\subfloat[Serie temporal\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Ciclo anual\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media - fig:ampl-ts}\label{fig:ampl-ts}
 \end{figure*}
 
 \section{Fase}\label{fase}
@@ -749,7 +765,7 @@ Comparando con las figuras anteriores, casos donde la amplitud es grande
 pero el R2 no tanto.
 
 \begin{figure*}
-\subfloat[Serie temporal\label{fig:r2-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-1} }\newline\subfloat[Ciclo anual\label{fig:r2-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-2} }\caption{R2 medio{fig:r2-ts}}\label{fig:r2-ts}
+\subfloat[Serie temporal\label{fig:r2-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-1} }\newline\subfloat[Ciclo anual\label{fig:r2-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-2} }\caption{R2 medio - fig:r2-ts}\label{fig:r2-ts}
 \end{figure*}
 
 Cosas para ver:\\
@@ -1222,7 +1238,15 @@ ONo hay casi diferencia entre las corridas.
 
 \chapter{Agradecimientos}\label{agradecimientos}
 
-\chapter{Referencias}\label{referencias}
+\chapter*{Referencias}\label{referencias}
+\addcontentsline{toc}{chapter}{Referencias}
+
+\hypertarget{refs}{}
+\hypertarget{ref-Vera2004}{}
+Vera, Carolina, Gabriel Silvestri, Vicente Barros, y Andrea Carril.
+2004. «Differences in El Niño response over the Southern Hemisphere».
+\emph{Journal of Climate} 17 (9): 1741-53.
+doi:\href{https://doi.org/10.1175/1520-0442(2004)017\%3C1741:DIENRO\%3E2.0.CO;2}{10.1175/1520-0442(2004)017\textless{}1741:DIENRO\textgreater{}2.0.CO;2}.
 
 
 \end{document}

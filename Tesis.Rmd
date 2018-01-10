@@ -23,11 +23,13 @@ output:
 header-includes: 
     - \linespread{1.25}
     - \usepackage{subfig}
+    - \usepackage{hyperref}
     - \usepackage{marginnote}
     - \usepackage[nomarkers,figuresonly]{endfloat}
 link-citations: yes
 params: 
     draft: TRUE
+biblio-style: apalike
 ---
 
 ```{r setup, include=FALSE}
@@ -89,9 +91,8 @@ knitr::knit_hooks$set(
             stop("All figures must have captions.")
         }
         if (params$draft == TRUE) {
-            options$fig.cap <- paste0(options$fig.cap, "{fig:", 
-                                      knitr::opts_current$get("label"), 
-                                      "}")
+            options$fig.cap <- paste0(options$fig.cap, " - fig:", 
+                                      knitr::opts_current$get("label"))
         }
         if (options$fig.publish == TRUE | params$draft == TRUE) {
             plot_hook(x, options)
@@ -164,10 +165,6 @@ setDTthreads(3)
 
 Resumen.
 
-```{r test, fig.cap = "prueba"}
-plot(pressure)
-
-```
 
 ```{r read-ncep, cache = FALSE}
 file.ncep <- "DATA/NCEP/ncep.vars.Rds"
@@ -199,12 +196,13 @@ ncep.mean.season <- ncep.mean[, lapply(.SD, mean),
 
 # Introducción
 
+
 * Antecedentes    
 Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre las climatologías disponibles y sus limitaciones. 
 * Objetivo General
 * Objetivo particular 
 
-Esto es para probar una referencia bibliográfica: \cite{@Vera2004}
+Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
 
 # Métodos y Materiales
 
@@ -252,9 +250,10 @@ ggplot(RepeatLon(wave), aes(lon, lat)) +
     theme(axis.title = element_blank()) +
     facet_wrap(~ k, ncol = 4) +
     coord_polar()
+
 ```
 
-Cosas para ver de \autoref{fig:fourier-ejemplo-ondas}:   
+Cosas para ver de \autoref{fig:fourier-ejemplo}:   
 Descripción del "rol" de cada número de onda en generar el campo final. 
 La onda 1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean contínuos.
 
@@ -305,7 +304,7 @@ ncep.wv <- ncep[date == as.Date("2008-09-01") & lev == 300,
 ```
 
 
-```{r wavelet-ejemplo, fig.show = "hold", fig.env = "figure*", fig.height = 70/25.4, fig.cap = "Wavelets", fig.class = "halfpage", fig.subcap = c("Campo", "Análisis de Wavelets en círculos de latitud señalados.")}
+```{r wavelet-ejemplo, fig.show = "hold", fig.env = "figure*", fig.height = 70/25.4, fig.cap = "Wavelets", fig.class = "halfpage", fig.subcap = c("Campo", "Análisis de Wavelets en círculos de latitud señalados."), fig.ncol = 2}
 # ggplot(RepeatLon(ncep[lev == 300 & date == as.Date("2008-09-01")]), 
 #        aes(lon, lat)) +
 #     # stat_contour(aes(z = gh.z)) +
@@ -333,7 +332,7 @@ ggplot(RepeatLon(ncep.wv[date == as.Date("2008-09-01") & lev == 300]),
                           breaks = MakeBreaks(25, 0),
                           guide = "none") +
     scale_fill_divergent(guide = guide_colorstrip_bottom(15),
-                         breaks = MakeBreaks(binwidth = 50)) +
+                         breaks = MakeBreaks(binwidth = 75)) +
     theme(axis.title = element_blank()) +
     scale_linetype_discrete(name = "Anomalía zonal de geopotencial", drop = T) +
     coord_polar()
@@ -348,12 +347,12 @@ ggplot(ampl, aes(lon, 360/period)) +
     scale_x_longitude(name = "longitud") +
     geom_hline(yintercept = 3, linetype = 3, alpha = 0.4) +
     scale_color_viridis_c(breaks = MakeBreaks(15),
-                          guide = guide_colorstrip_bottom(15)) +
+                          guide = guide_colorstrip_bottom(15, inside = T)) +
     facet_wrap(~lat, ncol = 2, labeller = labeller(lat = AddPreffix("Latitud: ")))
 ```
 
 Cosas para ver:    
-Cambio en el máximo. Localización en vez de un número para cada latitud. \marginnote{Notar que en la amplitud está normalizada en el primer ejemplo pero no lo está en el segundo.}
+Cambio en el máximo. Localización en vez de un número para cada latitud. 
 
 
 ## Fuentes de datos
@@ -366,7 +365,7 @@ Cambio en el máximo. Localización en vez de un número para cada latitud. \mar
 
 Campo medio:
 
-```{r gh-ncep, fig.class = "fullpage", fig.cap = "Altura geopotencial."}
+```{r gh-ncep, fig.class = "fullpage", fig.cap = "Campo de Z (NCEP)"}
 plot.levs <- c(500, 300, 200, 100, 50)
 binwidth <- 250
 ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
@@ -379,10 +378,27 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     coord_quickmap() 
 ```
 
-Cosas para ver:    
-Estructura dominantemente zonal. Zona de jet, variación de intensidad estacional. Vórtice polar en invierno/primavera. 
+El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra una estructura más zonal en el HS que en el HN. Es evidente la generación del vórtice polar en la estratósfera de invierno y primavera y el aumento del gradiente meridional de Z con la altura. 
 
-Anomalías
+```{r ghdy-ncep-corte, fig.cap = "Gradiente meridional de Z", fig.publish = FALSE}
+ncep.mean.season[, mean(gh), by = .(lat, lev, season)] %>% 
+    .[, gh.dy := Derivate(V1 ~ lat), by = .(lev, season)] %>% 
+    # .[, .(gh.dy = mean(gh.dy, na.rm = T)), by = .(lev, season)] %>% 
+    # ggplot(aes(lev, gh.dy, color = season)) +
+    # geom_line() + 
+    # scale_x_level() +
+    # coord_flip()
+    ggplot(aes(lat, lev)) +
+    geom_contour_fill(aes(z = gh.dy), binwidth = 10, na.rm = T) +
+    surface +
+    scale_fill_viridis_c(breaks = MakeBreaks(10),
+                         guide = guide_colorstrip_bottom()) +
+    scale_fill_divergent() +
+    scale_y_level(breaks = plot.levs) +
+    scale_x_latitude(trans = "reverse") +
+    facet_wrap(~season)
+```
+
 
 ```{r ghz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de altura geopotencial."}
 binwidth <- 20
@@ -401,11 +417,9 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     coord_quickmap()
 ```
 
-Cosas para ver:    
-Estructura de onda 1. Ciclo estacional de la amplitud. Baroclinicidad. 
+Las anomalías zonales (\autoref{fig:ghz-ncep}) muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima en la estratósfera de primavera y una estructura coherente en la vertical en 60°S (\autoref{fig:ghz-ncep-corte60}). Salvo en verano, la inclinación hacia el oeste en la horizontal y en la vertical indica que las perturbaciones estacionarias están asociadas con transporte hacia el polo tanto de cantidad de movimiento zonal como de temperatura. \footnote{¿Debería agregar una justificaicón de esto? ¿Un resumen del desarrollo matemático que está en el James?}
 
-
-Corte zonal en -60°
+En verano, las anomalías zonales tienen una estructura barotrópica equivalente y carecen de inclinación en la horizontal. Consecuentemente, los transportes meridionales asociados se reducen considerablemente. \footnote{¿Por qué?}
 
 ```{r ghz-ncep-corte60, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de geopotencial en -60°."}
 binwidth <- 60
@@ -417,6 +431,28 @@ ggplot(ncep.mean.season[lat %~% cutlat], aes(lon, lev)) +
     scale_x_longitude(name = "longitud") +
     facet_wrap(~season)
 ```
+
+
+```{r uzvz-ncep-corte, fig.cap = "Transportes", fig.subcap = c("uz*vz*", "T*v*"), fig.publish = FALSE}
+ncep[, mean(u.z*v.z), by = .(lat, lev, season(date))] %>% 
+    ggplot(aes(lat, lev)) +
+    geom_contour(aes(z = V1, color = ..level..), binwidth = 5) +
+    scale_color_divergent(breaks = MakeBreaks(5)) +
+    scale_y_level() +
+    scale_x_latitude(trans = "reverse") +
+    facet_wrap(~season)
+
+ncep[, mean(v.z*t.z), by = .(lat, lev, season(date))] %>% 
+    ggplot(aes(lat, lev)) +
+    geom_contour(aes(z = V1, color = ..level..)) +
+    scale_color_divergent(breaks = MakeBreaks()) +
+    scale_y_level() +
+    scale_x_latitude(trans = "reverse") +
+    facet_wrap(~season)
+```
+
+
+Hasta acá.
 
 Complementa la figura anterior. 
 
@@ -449,7 +485,7 @@ ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], aes(lon, lat)) +
     geom_contour(aes(z = t), binwidth = binwidth, color = "black") +
     geom_contourlabel(aes(z = t), binwidth = binwidth,
                       size = 1.6) +
-    geom_tile(data = pres[, lev := 850][pres < 850], fill = "white") +
+    geom_tile(data = pres[, lev := 850][pres < 850], fill = "white", color = "white") +
     map.SH +
     scale_s_map() +
     # scale_color_viridis_c(name = "T", guide = guide_colorstrip_bottom(25), 
@@ -482,9 +518,13 @@ binwidth <- 1
 ggplot(RepeatLon(ncep.mean.season[lev %in% c(plot.levs, 850)]), 
        aes(lon, lat)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
+    geom_tile(data = pres[, lev := 850][pres < 850], 
+              fill = "white", color = "white") +
     geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
     map.SH +
-    scale_fill_divergent(binwidth = binwidth, name = "T*", 
+    scale_fill_divergent(breaks = MakeBreaks(binwidth), 
+                         limits = c(-9, NA),
+                         name = "T*", 
                          guide = guide_colorstrip_bottom(25)) +
     scale_y_latitude() +
     scale_x_longitude() +
