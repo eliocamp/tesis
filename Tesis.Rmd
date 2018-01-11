@@ -46,6 +46,7 @@ knitr::opts_chunk$set(tidy = FALSE,
                       out.extra = " ",
                       warning = FALSE,
                       message = FALSE)
+
 library(tufte)
 library(data.table)
 library(ggplot2)
@@ -78,7 +79,9 @@ theme_elio <- theme_minimal(base_size = 11) +
           panel.spacing.y = unit(5, "mm"),
           legend.spacing = unit(2, "mm"),
           plot.margin = grid::unit(rep(3, 4), "mm"),
-          legend.title = element_blank())
+          legend.title = element_blank(),
+          panel.grid = element_line(color = "black", size = 0.2, linetype = 3),
+          panel.ontop = TRUE)
 theme_set(theme_elio)
 
 ## Hooks.
@@ -93,6 +96,9 @@ knitr::knit_hooks$set(
         if (params$draft == TRUE) {
             options$fig.cap <- paste0(options$fig.cap, " - fig:", 
                                       knitr::opts_current$get("label"))
+        }
+        if (options$fig.publish == FALSE) {
+            options$fig.cap <- paste0(options$fig.cap, " - SÓLO BORRADOR")
         }
         if (options$fig.publish == TRUE | params$draft == TRUE) {
             plot_hook(x, options)
@@ -184,7 +190,7 @@ ncep <- cache.file(file.ncep, {
     ncep[, c(vars.z) := lapply(.SD, Anomaly), by = .(lat, lev, date), .SDcols = -"lon"]
     ncep
 })
-    
+
 
 ncep[, date := as.Date(date), by = date]
 ncep.mean <- ncep[, lapply(.SD, mean), 
@@ -305,18 +311,7 @@ ncep.wv <- ncep[date == as.Date("2008-09-01") & lev == 300,
 
 
 ```{r wavelet-ejemplo, fig.show = "hold", fig.env = "figure*", fig.height = 70/25.4, fig.cap = "Wavelets", fig.class = "halfpage", fig.subcap = c("Campo", "Análisis de Wavelets en círculos de latitud señalados."), fig.ncol = 2}
-# ggplot(RepeatLon(ncep[lev == 300 & date == as.Date("2008-09-01")]), 
-#        aes(lon, lat)) +
-#     # stat_contour(aes(z = gh.z)) +
-#     stat_contour_fill(aes(z = gh.z), exclude = 0,
-#                  binwidth = 75, size = 0.3) +
-#     map.SH +
-#     geom_hline(yintercept = c(-60, -45), linetype = 3) +
-#     scale_y_latitude(limits = c(-90, 0)) +
-#     scale_x_longitude() +
-#     scale_fill_divergent(breaks = MakeBreaks(75, exclude = 0),
-#                          guide = guide_colorstrip_bottom(15)) +
-#     coord_polar() 
+
 ggplot(RepeatLon(ncep.wv[date == as.Date("2008-09-01") & lev == 300]), 
        aes(lon, lat)) +
     stat_contour_fill(aes(z = gh.z), exclude = 0,
@@ -368,7 +363,7 @@ Campo medio:
 ```{r gh-ncep, fig.class = "fullpage", fig.cap = "Campo de Z (NCEP)"}
 plot.levs <- c(500, 300, 200, 100, 50)
 binwidth <- 250
-ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
+ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     geom_contour_fine(aes(z = gh), binwidth = binwidth, color = "black") +
     map.SH +
     geom_label_contour2(aes(z = gh, label = ..level..), binwidth = binwidth,
@@ -403,11 +398,9 @@ ncep.mean.season[, mean(gh), by = .(lat, lev, season)] %>%
 ```{r ghz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de altura geopotencial."}
 binwidth <- 20
 cutlat <- -60
-ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
+ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     geom_contour_fill(aes(z = gh.z), binwidth = binwidth, exclude = 0) +
-    geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
-    # geom_contour(aes(z = gh.z), binwidth = 60, color = "gray27", size = 0.2) +
-    # geom_contourlabel(aes(z = gh.z, label = ..level..), binwidth = 60) +
+    # geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
@@ -417,7 +410,9 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
     coord_quickmap()
 ```
 
-Las anomalías zonales (\autoref{fig:ghz-ncep}) muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima en la estratósfera de primavera y una estructura coherente en la vertical en 60°S (\autoref{fig:ghz-ncep-corte60}). Salvo en verano, la inclinación hacia el oeste en la horizontal y en la vertical indica que las perturbaciones estacionarias están asociadas con transporte hacia el polo tanto de cantidad de movimiento zonal como de temperatura. \footnote{¿Debería agregar una justificaicón de esto? ¿Un resumen del desarrollo matemático que está en el James?}
+Las anomalías zonales (\autoref{fig:ghz-ncep}) muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima en la estratósfera de primavera y una estructura coherente en la vertical en 60°S (\autoref{fig:ghz-ncep-corte60}). Pueden diferenciarse dos QS1 distintas; una centrada en ~60°S y con el centro anticiclónico al rededor de la línea de fecha, y la otra sobre la costa del continente y el centro anticilónico entre 120 y 60°O. @Quintanar1995 concluyó que el primero está asociado principalmente con forzantes de latitudes bajas mientras que el segundo responde a la orografía del continente antártico.
+
+Salvo en verano, la inclinación hacia el oeste en la horizontal y en la vertical indica que las perturbaciones estacionarias están asociadas con transporte hacia el polo tanto de cantidad de movimiento zonal como de temperatura. \footnote{¿Debería agregar una justificaicón de esto? ¿Un resumen del desarrollo matemático que está en el James?} 
 
 En verano, las anomalías zonales tienen una estructura barotrópica equivalente y carecen de inclinación en la horizontal. Consecuentemente, los transportes meridionales asociados se reducen considerablemente. \footnote{¿Por qué?}
 
@@ -449,33 +444,26 @@ ncep[, mean(v.z*t.z), by = .(lat, lev, season(date))] %>%
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
     facet_wrap(~season)
+
 ```
 
-
-Hasta acá.
-
-Complementa la figura anterior. 
-
-Desvío estándar por círculo de latitud:
+El ciclo anual de la amplitud de las ondas estacionarias se observa en \autoref{fig:sd-gh-ncep}, donde se muestra el desvío estándar de Z por círculo de latitud para cada mes \footnote{¿Explicar la relación de esto con la amplitud de la onda?}. La mayor amplitud se enuentra centrado al rededor de los 60°S, como ya se vio en la \autoref{fig:ghz-ncep} y alcanza su máximo entre agosto y octubre, y el mínimo entre febrero y abril, según el nivel. 
 
 ```{r sd-gh-ncep, fig.class = "textwidth", fig.cap = "Desvío estándar por círculo de latitud."}
 binwidth <- 15
-ncep.mean[lev %in% plot.levs & lev != 50, .(sd = sd(gh.z)), by = .(lat, lev, month)] %>% 
+ncep.mean[lev %in% plot.levs & !(lev %in% c(50)), .(sd = sd(gh.z)), by = .(lat, lev, month)] %>% 
     ggplot(aes(month, lat)) +
     stat_contour(aes(z = sd, color = ..level..), binwidth = binwidth,
                  size = 0.3) +
     # geom_contour(aes(z = sd), binwidth = binwidth) +
     scale_color_viridis_c(name = "Desvío estándar de Z* por círculo de latitud",
                           breaks = MakeBreaks(binwidth),
-                          guide = guide_colorstrip_bottom(25)) +
+                          guide = guide_colorstrip_bottom(inside = T)) +
     scale_y_latitude(name = "latitud") +
     scale_x_continuous(name = "mes", breaks = 1:12, labels = month.abb_sp, 
                        expand = c(0, 0)) +
     facet_wrap(~lev, scales = "free", labeller = labeller(lev = AddSuffix(" hPa")))
 ```
-
-Cosas para ver:    
-Latitud de mayor actividad de onda. Máximo en octubre en 300 hPa. Más adelante, se hace la misma figura pero con el desvío estándar asociado a cada número de onda. 
 
 ## Temperatura
 
@@ -483,20 +471,15 @@ Latitud de mayor actividad de onda. Máximo en octubre en 300 hPa. Más adelante
 binwidth <- 5
 ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], aes(lon, lat)) +
     geom_contour(aes(z = t), binwidth = binwidth, color = "black") +
-    geom_contourlabel(aes(z = t), binwidth = binwidth,
-                      size = 1.6) +
+    geom_label_contour2(aes(z = t, label = ..level..), binwidth = binwidth) +
     geom_tile(data = pres[, lev := 850][pres < 850], fill = "white", color = "white") +
     map.SH +
     scale_s_map() +
-    # scale_color_viridis_c(name = "T", guide = guide_colorstrip_bottom(25), 
-    # breaks = MakeBreaks(binwidth)) +
     coord_quickmap() +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-Cosas para ver:    
-Gradiente muy pequeño en 200 hPa. Gradiente inverso en estratósfera. Núcleo cálido en ~50° (que se va a ver mejor en la anomalía zonal). Temperaturas frías en altas y bajas latitudes pero relativamente cálidas en ~50° en 100 hPa.
-
+En la tropósfera, la temperatura (\autoref{fig:t-ncep}) presenta una estructura zonal con mayor baroclinicidad en invierno. En 200 hPa los gradientes meridionales son mínimos y por encima de ese nivel éstos se revierten, dando lugar a tempearturas ecuatoriales menores que las polares (\autoref{fig:t-ncep-corte}). Por encima de 100 hPa de invierno y primavera, hay un máximo relativo en ~45° \footnote{¿Por qué?} y una región de anomalías zonales positivas que se ve claramente incluso en el campo total, particularmente en primavera. 
 
 ```{r tz-ncep-corte, fig.class = "textwidth", fig.cap = "Corte meridional de temperatura media."}
 binwidth <- 5
@@ -515,12 +498,12 @@ ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
 
 ```{r tz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de temperatura."}
 binwidth <- 1
-ggplot(RepeatLon(ncep.mean.season[lev %in% c(plot.levs, 850)]), 
+ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], 
        aes(lon, lat)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
     geom_tile(data = pres[, lev := 850][pres < 850], 
               fill = "white", color = "white") +
-    geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
+    # geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
     map.SH +
     scale_fill_divergent(breaks = MakeBreaks(binwidth), 
                          limits = c(-9, NA),
@@ -532,11 +515,16 @@ ggplot(RepeatLon(ncep.mean.season[lev %in% c(plot.levs, 850)]),
     coord_quickmap() 
 ```
 
-Corte zonal en -60°
+
+Como se puede apreciar en el campo de T* (\autoref{fig:tz-ncep}), en invierno y primavera, los niveles altos están dominados por una onda 1 con máximo en el sur de Autralia y mínimo en el Atlántico sur. En niveles más bajos, la onda se defasa hacia el este y queda casi en cuadratura (\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en Antártida occidental. 
+
+
+
+En los trópicos, las anomlaías de temperatura presentan un patrón de onda 3 con máximos en los continentes y mínimos en los océanos que se revierten de signo en 100hPa. Estas características tienen su correlato en la altura geopotencial y corresponden a circulaciones tipo Walker \footnote{¿Es así?}. 
 
 ```{r tz-ncep-corte60, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de temperatura en -60°."}
 binwidth <- 1
-ggplot(RepeatLon(ncep.mean.season[lat %~% cutlat]), aes(lon, lev)) +
+ggplot(ncep.mean.season[lat %~% cutlat], aes(lon, lev)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
     scale_fill_divergent(binwidth = binwidth, exclude = 0, name = "T*",
                          guide = guide_colorstrip_bottom(width = 25)) +
@@ -548,76 +536,63 @@ ggplot(RepeatLon(ncep.mean.season[lat %~% cutlat]), aes(lon, lev)) +
 Cosas para ver:   
 Coincidencia entre la onda estacionaria 1 en gh y de t (en primavera). 
 
-Propuesta: combinar mapa de T y T*
-
-
 ## Viento zonal
 
 ```{r u-ncep-corte, fig.class = "textwidth", fig.cap = "Viento zonal medio."}
 ncep.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>% 
     ggplot(aes(lat, lev)) +
-    geom_contour(aes(z = u, color = ..level..), binwidth = 15) +
-    geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
-    geom_label_contour2(aes(z = u, color = ..level.., label = ..level..),
-                        binwidth = 15, skip = 1, size = 3) +
+    geom_contour_fill(aes(z = u), binwidth = 5) +
+    # geom_contour(aes(z = u, color = ..level..), binwidth = 15) +
+    # geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
+    # geom_label_contour2(aes(z = u, color = ..level.., label = ..level..),
+    # binwidth = 15, skip = 0) +
     surface +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
-    scale_color_divergent(name = "U media zonal", breaks = MakeBreaks(5),
-                          guide = guide_colorstrip_bottom()) +
+    scale_fill_divergent(name = "U media zonal", 
+                         breaks = MakeBreaks(5),
+                         guide = guide_colorstrip_bottom()) +
     facet_wrap(~season)
 ```
 
-Cosas para ver:    
-Extensión y localización vertical de los jets. 
-
-Campo medio:
+La estructura meridional del viento zonal (\autoref{fig:u-ncep-corte}) muestra la localización e intensidad de los jets subtropical y subpolar. El primero está presente durante todo el año aunque con mayor intensidad y corrido hacia latitudes más ecuatoriales en invierno y primavera. El segundo está presente principalmente en invierno y primavera, e incipiente en otoño. En la estratósfera se observan vientos del este en latitudes bajas que son más intensos en verano y otoño. 
 
 ```{r u-ncep, fig.class = "fullpage", fig.cap = "Viento zonal."}
-ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
-    geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.7) +
-    geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
-    geom_contourlabel(aes(z = u, color = ..level..), binwidth = 15, step = 1,
-                      size = 3, vjust = "inward", hjust = "inward") +
+ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
+    geom_contour_fill(aes(z = u), binwidth = 5, exclude = 0) +
+    # geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.7) +
+    # geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
+    # geom_contourlabel(aes(z = u, color = ..level..), binwidth = 15, step = 1,
+    # size = 3, vjust = "inward", hjust = "inward") +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
-    scale_color_divergent(name = "U", breaks = MakeBreaks(5),
-                          guide = guide_colorstrip_bottom()) +
+    scale_fill_divergent(name = "U", breaks = MakeBreaks(5),
+                         guide = guide_colorstrip_bottom()) +
     coord_quickmap() +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-Cosas para ver:    
-Jet polar en invierno y primavera en niveles altos (< 100 hPa). Jest subtropical en niveles "medios".
+En la \autoref{fig:u-ncep} se observa que el jet subpolar es más intenso al sur de África, donde además se encuentra en una latitud más ecuatorial que en la región del Pacífico. El jet subtropical también tiene un máximo al sur de África y otro al norte de Nueva Zelanda --especialmente en invierno--, donde además se produce una bifurcación del jet. Se trata de una región de persistentes y frecuentes bloqueos [@Trenberth1985] que se evidencia como anomalías zonales negativas durante todo el año (\autoref{fig:uz-ncep}).
 
-
-Anomalía zonal
+Las anomalías zonales en la \autoref{fig:uz-ncep} también evidencian la circulación tropical forzada por la temperatura superficial del pacífico. Consistene con los campos de temperatura, en verano del pacífico central existen divergencias en niveles altos y convergencias en niveles bajos (no se muestra) que se traducen anomalías zonales positivas y negativas al este y al oeste de 180° respectivamente. 
 
 ```{r uz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de viento zonal."}
 binwidth <- 2.5
-ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
+ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     stat_contour_fill(aes(z = u.z), binwidth = binwidth, exclude = 0) +
-    # geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
-    # geom_contour(aes(z = gh.z), binwidth = 60, color = "gray27", size = 0.2) +
-    # geom_contourlabel(aes(z = gh.z, label = ..level..), binwidth = 60) +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
-    scale_fill_divergent(binwidth = binwidth, name = "U*", exclude = 0, 
-                         guide = guide_colorstrip_bottom(25)) +
+    scale_fill_divergent(breaks = MakeBreaks(binwidth), name = "U*", 
+                         guide = guide_colorstrip_bottom()) +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
     coord_quickmap()
 ```
 
 
-Cosas para ver (ambos):   
-
 ## Viento meridional
 
-Campos medios.
-
-Corte meridional (v medio zonal):
 
 ```{r v-ncep-corte, fig.class = "textwidth", fig.cap = "Media zonal del viento meridional."}
 binwidth <- 0.5
@@ -633,30 +608,49 @@ ggplot(ncep.mean.season[lev >= 30, .(v = mean(v)), by = .(lat, lev, season)],
     facet_wrap(~season)
 ```
 
-Cosas para ver:    
-Dipolo entre niveles bajos y altos que alterna entre invierno y verano (parte convergente en superficie y divergente en altura de la ITCZ que se mueve hacia el hemisferio de verano). En altas latitudes, en superficie hay máximos de viento del sur debido a los vientos catabáticos de la antártida.
+En los campos medios zonales de viento meridional (\autoref{fig:v-ncep-corte}) se muestra claramente la circulación de Hadley. En verano, la rama ascendente de encuentra en el hemisferio sur y se tiene convergencias en niveles bajos y divergencias en niveles altos. En invierno, en cambio, sólo se ve la rama descendente, mucho más intensa que en verano, que genera convergencias en niveles altos y divergencias en niveles bajos al rededor de los 30°S. 
 
+Presentes durante todo el año, los vientos de drenaje antárticos también son evidentes en la \autoref{fig:v-ncep-corte}. Estos vientos catabáticos son máximos en la costa del continente y alcanzan su máxima intensidad en invierno. 
 ```{r v-ncep, fig.class = "fullpage", fig.cap = "Viento meridional medio."}
-binwidth <- 5
-ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs]), aes(lon, lat)) +
-    geom_contour(aes(z = v, color = ..level..), binwidth = binwidth, size = 0.5) +
-    geom_contour(aes(z = v, color = ..level..), binwidth = 1, size = 0.1) +
-    geom_contourlabel(aes(z = v, color = ..level..), binwidth = binwidth, step = 1,
-                      size = 3, vjust = "inward", hjust = "inward") +
+binwidth <- 2
+ggplot(ncep.mean.season[lev %in% c(850, plot.levs)], aes(lon, lat)) +
+    geom_contour_fill(aes(z = v), binwidth = binwidth, exclude = 0) +
+    # geom_contour(aes(z = v, color = ..level..), binwidth = 1, size = 0.1) +
+    # geom_contourlabel(aes(z = v, color = ..level..), binwidth = binwidth, step = 1,
+    # size = 3, vjust = "inward", hjust = "inward") +
+    # geom_tile(aes(fill = v)) +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
-    scale_color_divergent(name = "V", breaks = MakeBreaks(1),
-                          guide = guide_colorstrip_bottom()) +
+    scale_fill_divergent(name = "V", breaks = MakeBreaks(1),
+                         guide = guide_colorstrip_bottom()) +
     coord_quickmap() +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
+Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}. En invierno, existe evidencia de un tren de ondas de Rossby que se propaga desde el Índico occidental sudeste llegando a su máxima latutud en 150°O donde comienza a propagarse hacia el norte hasta llegar al sur de Sudamérica. Este tren de ondas puede identificarse con mayor dificultad en el campo de geopotencial (\autoref{fig:ghz-ncep}) debido a la interferencia de la onda 1. 
 
-Cosas para ver:    
-No mucha actividad salvo por la onda 1 en niveles altos (consistente con la onda 1 de geopotenical).
+También en invierno, en los trópicos se puede observar el viento meridional hacia el norte en 850hPa en la costa oeste de África asociado al monzón de la India. El monzón sudamericano, por su parte, se evidenia por un aumento de la intensidad de los vientos del norte en verano sobre el continente americano. En altura, el monzón de la India se muestra como viento hacia el sur producto de la divergencia de niveles altos generada por la convección anómala. El sudamérica, la alta de Bolivia genera viento hacia el nort y hacia el sur al este y al oeste de Bolivia respectivamente. 
 
-La anomalía zonal es casi igual. No poner gráfico pero aclarar que es no hay casi diferencia ya que la media zonal es casi cero en casi todo el dominio. 
+La anomalía zonal de V es prácticamente idéntica al campo total ya que la media zonal es casi nula en gran parte del dominio (\autoref{fig:v-ncep-corte}); por lo tanto, no se muestra. 
+
+```{r ghminus1-ncep, fig.publish = FALSE, fig.cap = "Z* menos onda 1."}
+ncep.mean.season %>% 
+    .[, c("ampl", "phase") := FitQsWave(gh, k = 1)[1:2], 
+      by = .(lat, lev, season)] %>%
+    .[, qs1 := BuildQsField(lon*pi/180, ampl, phase, k = 1), 
+      by = .(lat, lev, season)] %>% 
+    .[, gh.minus := gh.z - qs1] %>% 
+    .[lev %in% plot.levs] %>% 
+    ggplot(aes(lon, lat)) +
+    geom_contour_fill(aes(z = gh.minus)) +
+    map.SH +
+    scale_fill_divergent() +
+    facet_grid(lev~season)
+```
+
+
+hasta acá
 
 ## Gradiente meridional de vorticidad absoluta
 
@@ -675,7 +669,7 @@ ncep.mean.season <- ncep.mean.season
 
 ```{r etady-ncep, fig.class = "fullpage", fig.cap = "Gradiente meridional de vorticidad absoluta."}
 binwidth <- 1e-11
-ggplot(RepeatLon(ncep.mean.season[lev %in% plot.levs & lat > -85]), aes(lon, lat)) +
+ggplot(ncep.mean.season[lev %in% plot.levs & lat > -85], aes(lon, lat)) +
     stat_contour_fill(aes(z = eta.dy), binwidth = binwidth) +
     stat_contour_fill(aes(z = eta.dy), breaks = 0, 
                       fill = "grey50", alpha = 0.5, complete = FALSE) +
@@ -848,13 +842,10 @@ qs.wave.season <- qs.wave[, .(mean = mean(QS3),
 binwidth <- 10
 cutlat <- data.frame(lat = c(-52.5, rep(NA, 3)), 
                      season = c("Verano", "Invierno", "Otoño", "Primavera"))
-ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
-    # stat_contour_fill(aes(z = sd), binwidth = 10) +
+ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
     stat_contour(aes(z = mean, color = ..level..), binwidth = binwidth) +
     geom_hline(data = cutlat, aes(yintercept = lat),
                linetype = 2, size = 0.3, color = "gray50") +
-    # geom_contour(aes(z = gh.z), binwidth = 60, color = "gray27", size = 0.2) +
-    # geom_contourlabel(aes(z = gh.z, label = ..level..), binwidth = 60) +
     map.SH +
     scale_s_map() +
     scale_color_divergent(binwidth = binwidth, name = "QS3", exclude = 0,
@@ -886,13 +877,10 @@ Estrucutra vertical barotrópica equivalente. Ciclo anual en la extensión verti
 ```{r qs3sd-ncep, fig.class = "pagewidth", fig.cap = "Desvío estándar de la reconstrucción de QS3.",  fig.height = 6}
 binwidth <- 5
 # cutlat <- -52.5
-ggplot(RepeatLon(qs.wave.season[lev == 300]), aes(lon, lat)) +
+ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
     stat_contour(aes(z = mean), breaks = c(1, -1)*20, color = "black", 
                  size = 0.5) +
     stat_contour(aes(z = sd, color = ..level..), binwidth = binwidth) +
-    # geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
-    # geom_contour(aes(z = gh.z), binwidth = 60, color = "gray27", size = 0.2) +
-    # geom_contourlabel(aes(z = gh.z, label = ..level..), binwidth = 60) +
     map.SH +
     scale_s_map() +
     scale_color_viridis_c(name = "Desvío estándar de QS3", 
@@ -1088,7 +1076,7 @@ Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs 1988-07-01 
 Casos donde la actividad está ligeramente fuera de la caja (2000-09-01). 
 
 ```{r ghz-ncep-select, fig.cap = "Anomalía zonal geopotencial en 300hPa para fechas seleccionadas.", fig.class = "pagewidth", fig.height = 6}
-ggplot(RepeatLon(ncep[date %in% select.dates & lev == 300]), aes(lon, lat)) +
+ggplot(ncep[date %in% select.dates & lev == 300], aes(lon, lat)) +
     stat_contour_fill(aes(z = gh.z), binwidth = 50) +
     map.SH + 
     scale_s_map() +
@@ -1576,7 +1564,7 @@ stream.reg <- cache.file(file, {
 binwidth <- 1e6
 scale <- 600
 
-ggplot(RepeatLon(stream.reg[regressor == "amplitude"]), 
+ggplot(stream.reg[regressor == "amplitude"], 
        aes(lon, lat)) +
     stat_contour_fill(aes(z = estimate.z), exclude = 0, 
                       complete = FALSE, binwidth = binwidth) +
@@ -1820,7 +1808,7 @@ speedy[, t := t - 273.15]
 speedy[, c(vars.z) := lapply(.SD, Anomaly), 
        by = .(lat, lev, date, run), .SDcols = -"lon"]
 speedy[, c("amplitude", "phase", "r2") := FitQsWave(gh, 3),
-                 by = .(lat, lev, date, run)]
+       by = .(lat, lev, date, run)]
 speedy <- speedy[, QS3 := amplitude*cos(3*(lon*pi/180 - phase))]
 
 speedy.mean.season <- speedy[, lapply(.SD, mean), 
@@ -2052,7 +2040,7 @@ speedy.mean.season[run == "Control",
     geom_label_contour_back(aes(z = u, label = ..level..), 
                             binwidth = 5,
                             data = ncep.mean.season[, .(u = mean(u)), 
-                                              by = .(lat, lev, season)]) +
+                                                    by = .(lat, lev, season)]) +
     surface +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
@@ -2304,10 +2292,10 @@ speedy.mean.season.l <- melt(speedy.mean.season,
 s <- speedy.mean.season.l[, value[run == "Control"]]
 speedy.mean.season.l[, dif := s - value, by = run]
 run.dif <- setNames(paste0("Control -\n", runs[-1]),
-                runs[-1])
+                    runs[-1])
 sp.dif <- dcast(speedy.mean.season.l[run != "Control"][, -c("value")], 
-           ... ~ variable, 
-           value.var = "dif")
+                ... ~ variable, 
+                value.var = "dif")
 remove(speedy.mean.season.l)
 
 binwidth <- 10
@@ -2316,7 +2304,7 @@ ggplot(sp.dif[lev == 200], aes(lon, lat, z = gh.z)) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(binwidth),
-        guide = "colorstrip_bottom") +
+                         guide = "colorstrip_bottom") +
     coord_quickmap() +
     # coord_polar() +
     facet_grid(run ~ season, labeller = labeller(run = run.dif))
@@ -2363,7 +2351,7 @@ ggplot(sp.dif[lev == 850], aes(lon, lat, z = t.z)) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(binwidth),
-        guide = "colorstrip_bottom") +
+                         guide = "colorstrip_bottom") +
     coord_quickmap() +
     # coord_polar() +
     facet_grid(run ~ season, labeller = labeller(run = run.dif))
@@ -2394,7 +2382,7 @@ binwidth <- 2
 speedy.mean.season[lev == 200] %>% 
     .[, u.dif := speedy.mean.season[lev == 200 & run == "Control", u] - u] %>%
     .[run != "Control"] %>% 
-ggplot(aes(lon, lat)) +
+    ggplot(aes(lon, lat)) +
     geom_contour_fill(aes(z = u.dif), 
                       binwidth = binwidth,
                       # breaks = MakeBreaks(binwidth),
@@ -2492,12 +2480,12 @@ lats.index <- c(-65, -40)
 levs.index <- c(100, 700)
 
 sp.index <- speedy[(lev %b% levs.index) & 
-                   (lat %b% lats.index) & 
+                       (lat %b% lats.index) & 
                        lon == 0,
-                  .(amplitude   = mean(amplitude),
-                    r2          = mean(r2),
-                    phase  = mode(phase)),
-                  by = .(date, run)]
+                   .(amplitude   = mean(amplitude),
+                     r2          = mean(r2),
+                     phase  = mode(phase)),
+                   by = .(date, run)]
 ```
 
 
@@ -2539,9 +2527,9 @@ regr.exps[regressor == "amplitude"] %>%
       by = .(lon, lat, run, season(month), regressor)] %>% 
     .[, psi.z := Anomaly(estimate), by = .(run, season, lat)] %>% 
     .[, c("fx", "fy") := WaveFlux(.SD, p = 300), by = .(run, season)] %>%
-ggplot(aes(lon, lat, z = psi.z)) +
+    ggplot(aes(lon, lat, z = psi.z)) +
     geom_contour_fill(binwidth = binwidth, exclude = 0) +
-     geom_vector(aes(dx = fx, dy = fy), skip = 3,
+    geom_vector(aes(dx = fx, dy = fy), skip = 3,
                 min.mag = 1e-15,
                 scale = 1e15) +
     map.SH +

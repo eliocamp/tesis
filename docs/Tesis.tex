@@ -153,7 +153,7 @@ haciendo que los máximos y mínimos no sean contínuos.
 \end{itemize}
 
 \begin{figure*}
-\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets {fig:wavelet-ejemplo}}\label{fig:wavelet-ejemplo}
+\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets - fig:wavelet-ejemplo}\label{fig:wavelet-ejemplo}
 \end{figure*}
 
 Cosas para ver:\\
@@ -193,16 +193,25 @@ y el aumento del gradiente meridional de Z con la altura.
 
 }
 
-\caption{Anomalía zonal de altura geopotencial.{fig:ghz-ncep}}\label{fig:ghz-ncep}
+\caption{Anomalía zonal de altura geopotencial. - fig:ghz-ncep}\label{fig:ghz-ncep}
 \end{figure}
 
 Las anomalías zonales (\autoref{fig:ghz-ncep}) muestran una
 preponderancia de una onda 1 (QS1) con una amplitud máxima en la
 estratósfera de primavera y una estructura coherente en la vertical en
-60°S (\autoref{fig:ghz-ncep-corte}). Salvo en verano, la inclinación
-hacia el oeste en la horizontal y en la vertical indica que las
-perturbaciones estacionarias están asociadas con transporte hacia el
-polo tanto de cantidad de movimiento zonal como de temperatura.
+60°S (\autoref{fig:ghz-ncep-corte60}). Pueden diferenciarse dos QS1
+distintas; una centrada en \textasciitilde{}60°S y con el centro
+anticiclónico al rededor de la línea de fecha, y la otra sobre la costa
+del continente y el centro anticilónico entre 120 y 60°O. Quintanar y
+Mechoso (\protect\hyperlink{ref-Quintanar1995}{1995}) concluyó que el
+primero está asociado principalmente con forzantes de latitudes bajas
+mientras que el segundo responde a la orografía del continente
+antártico.
+
+Salvo en verano, la inclinación hacia el oeste en la horizontal y en la
+vertical indica que las perturbaciones estacionarias están asociadas con
+transporte hacia el polo tanto de cantidad de movimiento zonal como de
+temperatura.
 \footnote{¿Debería agregar una justificaicón de esto? ¿Un resumen del desarrollo matemático que está en el James?}
 
 En verano, las anomalías zonales tienen una estructura barotrópica
@@ -220,14 +229,16 @@ los transportes meridionales asociados se reducen considerablemente.
 \end{figure}
 
 \begin{figure}
-\subfloat[uz*vz*\label{fig:uzvz-ncep-corte1}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte}\label{fig:uzvz-ncep-corte}
+\subfloat[uz*vz*\label{fig:uzvz-ncep-corte1}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte - SÓLO BORRADOR}\label{fig:uzvz-ncep-corte}
 \end{figure}
 
-Hasta acá.
-
-Complementa la figura anterior.
-
-Desvío estándar por círculo de latitud:
+El ciclo anual de la amplitud de las ondas estacionarias se observa en
+\autoref{fig:sd-gh-ncep}, donde se muestra el desvío estándar de Z por
+círculo de latitud para cada mes
+\footnote{¿Explicar la relación de esto con la amplitud de la onda?}. La
+mayor amplitud se enuentra centrado al rededor de los 60°S, como ya se
+vio en la \autoref{fig:ghz-ncep} y alcanza su máximo entre agosto y
+octubre, y el mínimo entre febrero y abril, según el nivel.
 
 \begin{figure}
 
@@ -235,13 +246,8 @@ Desvío estándar por círculo de latitud:
 
 }
 
-\caption{Desvío estándar por círculo de latitud.{fig:sd-gh-ncep}}\label{fig:sd-gh-ncep}
+\caption{Desvío estándar por círculo de latitud. - fig:sd-gh-ncep}\label{fig:sd-gh-ncep}
 \end{figure}
-
-Cosas para ver:\\
-Latitud de mayor actividad de onda. Máximo en octubre en 300 hPa. Más
-adelante, se hace la misma figura pero con el desvío estándar asociado a
-cada número de onda.
 
 \section{Temperatura}\label{temperatura}
 
@@ -254,11 +260,14 @@ cada número de onda.
 \caption{Temperatura media. - fig:t-ncep}\label{fig:t-ncep}
 \end{figure}
 
-Cosas para ver:\\
-Gradiente muy pequeño en 200 hPa. Gradiente inverso en estratósfera.
-Núcleo cálido en \textasciitilde{}50° (que se va a ver mejor en la
-anomalía zonal). Temperaturas frías en altas y bajas latitudes pero
-relativamente cálidas en \textasciitilde{}50° en 100 hPa.
+En la tropósfera, la temperatura (\autoref{fig:t-ncep}) presenta una
+estructura zonal con mayor baroclinicidad en invierno. En 200 hPa los
+gradientes meridionales son mínimos y por encima de ese nivel éstos se
+revierten, dando lugar a tempearturas ecuatoriales menores que las
+polares (\autoref{fig:t-ncep-corte}). Por encima de 100 hPa de invierno
+y primavera, hay un máximo relativo en \textasciitilde{}45°
+\footnote{¿Por qué?} y una región de anomalías zonales positivas que se
+ve claramente incluso en el campo total, particularmente en primavera.
 
 \begin{figure}
 
@@ -278,7 +287,18 @@ relativamente cálidas en \textasciitilde{}50° en 100 hPa.
 \caption{Anomalía zonal de temperatura. - fig:tz-ncep}\label{fig:tz-ncep}
 \end{figure}
 
-Corte zonal en -60°
+Como se puede apreciar en el campo de T* (\autoref{fig:tz-ncep}), en
+invierno y primavera, los niveles altos están dominados por una onda 1
+con máximo en el sur de Autralia y mínimo en el Atlántico sur. En
+niveles más bajos, la onda se defasa hacia el este y queda casi en
+cuadratura (\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en
+Antártida occidental.
+
+En los trópicos, las anomlaías de temperatura presentan un patrón de
+onda 3 con máximos en los continentes y mínimos en los océanos que se
+revierten de signo en 100hPa. Estas características tienen su correlato
+en la altura geopotencial y corresponden a circulaciones tipo Walker
+\footnote{¿Es así?}.
 
 \begin{figure}
 
@@ -286,13 +306,11 @@ Corte zonal en -60°
 
 }
 
-\caption{Corte zonal de anomalía de temperatura en -60°.{fig:tz-ncep-corte60}}\label{fig:tz-ncep-corte60}
+\caption{Corte zonal de anomalía de temperatura en -60°. - fig:tz-ncep-corte60}\label{fig:tz-ncep-corte60}
 \end{figure}
 
 Cosas para ver:\\
 Coincidencia entre la onda estacionaria 1 en gh y de t (en primavera).
-
-Propuesta: combinar mapa de T y T*
 
 \section{Viento zonal}\label{viento-zonal}
 
@@ -302,13 +320,16 @@ Propuesta: combinar mapa de T y T*
 
 }
 
-\caption{Viento zonal medio.{fig:u-ncep-corte}}\label{fig:u-ncep-corte}
+\caption{Viento zonal medio. - fig:u-ncep-corte}\label{fig:u-ncep-corte}
 \end{figure}
 
-Cosas para ver:\\
-Extensión y localización vertical de los jets.
-
-Campo medio:
+La estructura meridional del viento zonal (\autoref{fig:u-ncep-corte})
+muestra la localización e intensidad de los jets subtropical y subpolar.
+El primero está presente durante todo el año aunque con mayor intensidad
+y corrido hacia latitudes más ecuatoriales en invierno y primavera. El
+segundo está presente principalmente en invierno y primavera, e
+incipiente en otoño. En la estratósfera se observan vientos del este en
+latitudes bajas que son más intensos en verano y otoño.
 
 \begin{figure}
 
@@ -316,14 +337,25 @@ Campo medio:
 
 }
 
-\caption{Viento zonal.{fig:u-ncep}}\label{fig:u-ncep}
+\caption{Viento zonal. - fig:u-ncep}\label{fig:u-ncep}
 \end{figure}
 
-Cosas para ver:\\
-Jet polar en invierno y primavera en niveles altos (\textless{} 100
-hPa). Jest subtropical en niveles ``medios''.
+En la \autoref{fig:u-ncep} se observa que el jet subpolar es más intenso
+al sur de África, donde además se encuentra en una latitud más
+ecuatorial que en la región del Pacífico. El jet subtropical también
+tiene un máximo al sur de África y otro al norte de Nueva Zelanda
+--especialmente en invierno--, donde además se produce una bifurcación
+del jet. Se trata de una región de persistentes y frecuentes bloqueos
+(Trenberth y Mo \protect\hyperlink{ref-Trenberth1985}{1985}) que se
+evidencia como anomalías zonales negativas durante todo el año
+(\autoref{fig:uz-ncep}).
 
-Anomalía zonal
+Las anomalías zonales en la \autoref{fig:uz-ncep} también evidencian la
+circulación tropical forzada por la temperatura superficial del
+pacífico. Consistene con los campos de temperatura, en verano del
+pacífico central existen divergencias en niveles altos y convergencias
+en niveles bajos (no se muestra) que se traducen anomalías zonales
+positivas y negativas al este y al oeste de 180° respectivamente.
 
 \begin{figure}
 
@@ -331,16 +363,10 @@ Anomalía zonal
 
 }
 
-\caption{Anomalía zonal de viento zonal.{fig:uz-ncep}}\label{fig:uz-ncep}
+\caption{Anomalía zonal de viento zonal. - fig:uz-ncep}\label{fig:uz-ncep}
 \end{figure}
 
-Cosas para ver (ambos):
-
 \section{Viento meridional}\label{viento-meridional}
-
-Campos medios.
-
-Corte meridional (v medio zonal):
 
 \begin{figure}
 
@@ -351,12 +377,18 @@ Corte meridional (v medio zonal):
 \caption{Media zonal del viento meridional.{fig:v-ncep-corte}}\label{fig:v-ncep-corte}
 \end{figure}
 
-Cosas para ver:\\
-Dipolo entre niveles bajos y altos que alterna entre invierno y verano
-(parte convergente en superficie y divergente en altura de la ITCZ que
-se mueve hacia el hemisferio de verano). En altas latitudes, en
-superficie hay máximos de viento del sur debido a los vientos
-catabáticos de la antártida.
+En los campos medios zonales de viento meridional
+(\autoref{fig:v-ncep-corte}) se muestra claramente la circulación de
+Hadley. En verano, la rama ascendente de encuentra en el hemisferio sur
+y se tiene convergencias en niveles bajos y divergencias en niveles
+altos. En invierno, en cambio, sólo se ve la rama descendente, mucho más
+intensa que en verano, que genera convergencias en niveles altos y
+divergencias en niveles bajos al rededor de los 30°S.
+
+Presentes durante todo el año, los vientos de drenaje antárticos también
+son evidentes en la \autoref{fig:v-ncep-corte}. Estos vientos
+catabáticos son máximos en la costa del continente y alcanzan su máxima
+intensidad en invierno.
 
 \begin{figure}
 
@@ -364,16 +396,36 @@ catabáticos de la antártida.
 
 }
 
-\caption{Viento meridional medio.{fig:v-ncep}}\label{fig:v-ncep}
+\caption{Viento meridional medio. - fig:v-ncep}\label{fig:v-ncep}
 \end{figure}
 
-Cosas para ver:\\
-No mucha actividad salvo por la onda 1 en niveles altos (consistente con
-la onda 1 de geopotenical).
+Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}. En
+invierno, existe evidencia de un tren de ondas de Rossby que se propaga
+desde el Índico occidental sudeste llegando a su máxima latutud en 150°O
+donde comienza a propagarse hacia el norte hasta llegar al sur de
+Sudamérica. Este tren de ondas puede identificarse con mayor dificultad
+en el campo de geopotencial (\autoref{fig:ghz-ncep}) debido a la
+interferencia de la onda 1.
 
-La anomalía zonal es casi igual. No poner gráfico pero aclarar que es no
-hay casi diferencia ya que la media zonal es casi cero en casi todo el
-dominio.
+También en invierno, en los trópicos se puede observar el viento
+meridional hacia el norte en 850hPa en la costa oeste de África asociado
+al monzón de la India. El monzón sudamericano, por su parte, se evidenia
+por un aumento de la intensidad de los vientos del norte en verano sobre
+el continente americano. En altura, el monzón de la India se muestra
+como viento hacia el sur producto de la divergencia de niveles altos
+generada por la convección anómala. El sudamérica, la alta de Bolivia
+genera viento hacia el nort y hacia el sur al este y al oeste de Bolivia
+respectivamente.
+
+La anomalía zonal de V es prácticamente idéntica al campo total ya que
+la media zonal es casi nula en gran parte del dominio
+(\autoref{fig:v-ncep-corte}); por lo tanto, no se muestra.
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/ghminus1-ncep-1} \caption{Z* menos onda 1. - fig:ghminus1-ncep - SÓLO BORRADOR}\label{fig:ghminus1-ncep}
+\end{figure}
+
+hasta acá
 
 \section{Gradiente meridional de vorticidad
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
@@ -384,7 +436,7 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 
 }
 
-\caption{Gradiente meridional de vorticidad absoluta.{fig:etady-ncep}}\label{fig:etady-ncep}
+\caption{Gradiente meridional de vorticidad absoluta. - fig:etady-ncep}\label{fig:etady-ncep}
 \end{figure}
 
 \section{Número de onda estacionaria}\label{numero-de-onda-estacionaria}
@@ -458,7 +510,7 @@ amplitud de QS 3 y donde su R2 es mayor que la de QS 1.
 \section{Características típicas}\label{caracteristicas-tipicas}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-1} \caption{Media de reconstrucción de onda 3.{fig:qs3-ncep}}\label{fig:qs3-ncep}
+\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-1} \caption{Media de reconstrucción de onda 3. - fig:qs3-ncep}\label{fig:qs3-ncep}
 \end{figure*}
 
 Cosas para ver:\\
@@ -483,7 +535,7 @@ por la variabilidad en la fase, ya que en el corte de amplitud se ve que
 la amplitud es mayor en altura incluso que en otoño.
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3.{fig:qs3sd-ncep}}\label{fig:qs3sd-ncep}
+\includegraphics[width=150mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3. - fig:qs3sd-ncep}\label{fig:qs3sd-ncep}
 \end{figure*}
 
 No tengo idea de cómo interpretar esto\ldots{}
@@ -591,7 +643,7 @@ máxima pero en 2008 está más ``concentrada''. Casos donde la actividad
 está ligeramente fuera de la caja (2000-09-01).
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas.{fig:ghz-ncep-select}}\label{fig:ghz-ncep-select}
+\includegraphics[width=150mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas. - fig:ghz-ncep-select}\label{fig:ghz-ncep-select}
 \end{figure*}
 
 Cosas para ver:\\
@@ -825,7 +877,7 @@ de SAM positivo y negativo respectivamente.
 
 }
 
-\caption{Regresión de Psi con la amplitud.{fig:regr-psi-ncep}}\label{fig:regr-psi-ncep}
+\caption{Regresión de Psi con la amplitud. - fig:regr-psi-ncep}\label{fig:regr-psi-ncep}
 \end{figure}
 
 \section{Composición de campos.}\label{composicion-de-campos.}
@@ -1041,7 +1093,7 @@ ligeras anomalías que no se observan en las observaciones.
 
 }
 
-\caption{Viento zonal medio (speedy contornos, ncep sombreado).{fig:u-sp-nc-corte}}\label{fig:u-sp-nc-corte}
+\caption{Viento zonal medio (speedy contornos, ncep sombreado). - fig:u-sp-nc-corte}\label{fig:u-sp-nc-corte}
 \end{figure}
 
 Cosas para ver:\\
@@ -1150,7 +1202,7 @@ Comparación entre corridas \#\#\# Altura geopotencial
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Control - corrida para Z*{fig:ghz-dif-sp-runs}}\label{fig:ghz-dif-sp-runs}
+\includegraphics[ ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Control - corrida para Z* - fig:ghz-dif-sp-runs}\label{fig:ghz-dif-sp-runs}
 \end{figure}
 
 \subsection{Temperatura}\label{temperatura-2}
@@ -1171,7 +1223,7 @@ ONo hay casi diferencia entre las corridas.
 
 }
 
-\caption{Diferencia Control - corrida para T*{fig:tz-dif-sp-runs}}\label{fig:tz-dif-sp-runs}
+\caption{Diferencia Control - corrida para T* - fig:tz-dif-sp-runs}\label{fig:tz-dif-sp-runs}
 \end{figure}
 
 \subsection{Viento zonal}\label{viento-zonal-2}
@@ -1186,7 +1238,7 @@ ONo hay casi diferencia entre las corridas.
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/u-dif-sp-runs-1} \caption{Diferencia control - corrida para U.{fig:u-dif-sp-runs}}\label{fig:u-dif-sp-runs}
+\includegraphics[ ]{fig/tesis/u-dif-sp-runs-1} \caption{Diferencia control - corrida para U. - fig:u-dif-sp-runs}\label{fig:u-dif-sp-runs}
 \end{figure}
 
 \subsection{Función corriente}\label{funcion-corriente-3}
@@ -1221,7 +1273,7 @@ ONo hay casi diferencia entre las corridas.
 \section{Regresión}\label{regresion}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/regr-psi-sp-runs-1} \caption{Regresión en función corriente.{fig:regr-psi-sp-runs}}\label{fig:regr-psi-sp-runs}
+\includegraphics[ ]{fig/tesis/regr-psi-sp-runs-1} \caption{Regresión en función corriente. - fig:regr-psi-sp-runs}\label{fig:regr-psi-sp-runs}
 \end{figure}
 
 \section{Cosas inesperadas\ldots{}}\label{cosas-inesperadas}
@@ -1242,6 +1294,17 @@ ONo hay casi diferencia entre las corridas.
 \addcontentsline{toc}{chapter}{Referencias}
 
 \hypertarget{refs}{}
+\hypertarget{ref-Quintanar1995}{}
+Quintanar, Arturo I., y Carlos R. Mechoso. 1995. «Quasi-Stationary Waves
+in the Southern Hemisphere. Part II: Generation Mechanisms».
+\emph{Journal of Climate} 8 (11): 2673-90.
+doi:\href{https://doi.org/10.1175/1520-0442(1995)008\%3C2673:QSWITS\%3E2.0.CO;2}{10.1175/1520-0442(1995)008\textless{}2673:QSWITS\textgreater{}2.0.CO;2}.
+
+\hypertarget{ref-Trenberth1985}{}
+Trenberth, Kevin E., y K. C. Mo. 1985. «Blocking in the Southern
+Hemisphere».
+doi:\href{https://doi.org/10.1175/1520-0493(1985)113\%3C0003:BITSH\%3E2.0.CO;2}{10.1175/1520-0493(1985)113\textless{}0003:BITSH\textgreater{}2.0.CO;2}.
+
 \hypertarget{ref-Vera2004}{}
 Vera, Carolina, Gabriel Silvestri, Vicente Barros, y Andrea Carril.
 2004. «Differences in El Niño response over the Southern Hemisphere».
