@@ -844,6 +844,17 @@ PeriodicWavelet <- function(x, k) {
     return(res)
 }
 
+ReconstructWavelet <- function(x, k) {
+    period <- length(x)/k
+    x1 <- rep(x, 3)
+    keep <- (length(x)+1):(2*length(x))
+    w <- WaveletComp::analyze.wavelet(data.frame(x1), make.pval = F,
+                                      loess.span = 0, verbose = F)
+    r <- WaveletComp::reconstruct(w, sel.period = period,
+                                  plot.rec = F, verbose = F)$series$x1.r
+    r[keep]
+}
+
 
 greater <- function(x, N) {
     r <- frank(-x, ties.method = "first")
