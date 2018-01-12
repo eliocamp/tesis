@@ -122,7 +122,7 @@ Esto es para probar una referencia bibliográfica: Vera et~al.
 (\protect\hyperlink{ref-Vera2004}{2004}) y (Vera et~al.
 \protect\hyperlink{ref-Vera2004}{2004})
 
-\chapter{Métodos y Materiales}\label{metodos-y-materiales}
+\chapter{Métodos y Materiales}\label{sec:metodos}
 
 \section{Conceptos básicos}\label{conceptos-basicos}
 
@@ -142,7 +142,7 @@ Ejemplo:
 
 Cosas para ver de \autoref{fig:fourier-ejemplo}:\\
 Descripción del ``rol'' de cada número de onda en generar el campo
-final. La onda 1 es la principal, marcando altas presiones al sur del
+final. La QS1 es la principal, marcando altas presiones al sur del
 pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple
 haciendo que los máximos y mínimos no sean contínuos.
 
@@ -288,11 +288,11 @@ ve claramente incluso en el campo total, particularmente en primavera.
 \end{figure}
 
 Como se puede apreciar en el campo de T* (\autoref{fig:tz-ncep}), en
-invierno y primavera, los niveles altos están dominados por una onda 1
-con máximo en el sur de Autralia y mínimo en el Atlántico sur. En
-niveles más bajos, la onda se defasa hacia el este y queda casi en
-cuadratura (\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en
-Antártida occidental.
+invierno y primavera, los niveles altos están dominados por una QS1 con
+máximo en el sur de Autralia y mínimo en el Atlántico sur. En niveles
+más bajos, la onda se defasa hacia el este y queda casi en cuadratura
+(\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en Antártida
+occidental.
 
 En los trópicos, las anomlaías de temperatura presentan un patrón de
 onda 3 con máximos en los continentes y mínimos en los océanos que se
@@ -405,7 +405,7 @@ desde el Índico occidental sudeste llegando a su máxima latutud en 150°O
 donde comienza a propagarse hacia el norte hasta llegar al sur de
 Sudamérica. Este tren de ondas puede identificarse con mayor dificultad
 en el campo de geopotencial (\autoref{fig:ghz-ncep}) debido a la
-interferencia de la onda 1.
+interferencia de la QS1.
 
 También en invierno, en los trópicos se puede observar el viento
 meridional hacia el norte en 850hPa en la costa oeste de África asociado
@@ -422,13 +422,20 @@ la media zonal es casi nula en gran parte del dominio
 (\autoref{fig:v-ncep-corte}); por lo tanto, no se muestra.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ghminus1-ncep-1} \caption{Z* menos onda 1. - fig:ghminus1-ncep - SÓLO BORRADOR}\label{fig:ghminus1-ncep}
-\end{figure}
 
-hasta acá
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghminus1-ncep-1} 
+
+}
+
+\caption{Z* menos QS1. - fig:ghminus1-ncep - SÓLO BORRADOR}\label{fig:ghminus1-ncep}
+\end{figure}
 
 \section{Gradiente meridional de vorticidad
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
+
+En la teoría de propagación meridional de ondas de Rossby, el gradiente
+meridional de vorticidad absoluta (\(\psi_y\))\ldots{} es importante
+porque blavalbla ¿Resumen de la deducción en James?
 
 \begin{figure}
 
@@ -436,13 +443,40 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 
 }
 
-\caption{Gradiente meridional de vorticidad absoluta. - fig:etady-ncep}\label{fig:etady-ncep}
+\caption{Gradiente meridional de vorticidad absoluta * 1e11 - fig:etady-ncep}\label{fig:etady-ncep}
 \end{figure}
+
+La \autoref{fig:etady-ncep} muestra que el campo de \(\psi_y\) impide la
+propagación meridional de ondas de Rossby en una \emph{región prohibida}
+acotada centrada sobre Nueva Zelanda principalmente en invierno entre
+300 y 200 hPa. Ésta coincide con la región de bloqueos que, en invierno
+está franqueada por el jet intenso, dando lugar a gradientes
+meridionales de U negativos más intensos que \(\beta\). Estas figuras
+extienden el restulado de Berbery, Nogués-Paegle, y Horel
+(\protect\hyperlink{ref-Berbery1992}{1992}) (su Figura 3) utilizando 5
+años de análisis objetivo del Centro Europeo de Predicción a Plazo Medio
+(ECMWF).
 
 \section{Número de onda estacionaria}\label{numero-de-onda-estacionaria}
 
+Aún con \(\psi_y\) positivo, las ondas de Rossby sólo se pueden propagar
+si su número de onda zonal es menor que el número de onda estacionario
+({\textbf{???}}). En la \autoref{fig:ks-ncep} se muestra el número de
+onda estacionario para el nivel de 200hPa y en la
+\autoref{fig:ks-ncep-corte} se muestra un corte en 180°. Además de la
+\emph{región prohibida}, las ondas cortas no pueden propagarse
+meridionalmente en latitudes altas. Las ondas largas con k \textless{} 3
+pueden propagarse meridionalmente libremente en verano al norte de los
+60°S aproximadamente, pero quedan atrapadas al sur de 45°S en toda una
+franja de longitudes entre 60°E y 120°O durante el resto del año.
+
+El corte de \(\psi_y\) en 180° evidencia que la onda 3 sólo puede
+propagarse meridionalmente dentro de una franja angosta de latitudes,
+entre 60°S y 50°S. Una región donde este modo muestra un máximo de
+amplitud (\autoref{fig:ampl-ncep}).
+
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa.{fig:ks-ncep}}\label{fig:ks-ncep}
+\includegraphics[ ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa. - fig:ks-ncep}\label{fig:ks-ncep}
 \end{figure}
 
 \begin{figure}
@@ -451,13 +485,12 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 
 }
 
-\caption{Número de onda estacionario medio por círculo de latitud.{fig:ks-ncep-corte}}\label{fig:ks-ncep-corte}
+\caption{Número de onda estacionario medio por círculo de latitud. - fig:ks-ncep-corte}\label{fig:ks-ncep-corte}
 \end{figure}
 
-Cosas para ver:\\
-Máximos asociado con los flancos del jet. Zona ``prohibida'' en 200 y
-300 hPa.\\
-La onda 3 es estacionaria en -60°.
+\begin{figure}
+\includegraphics[ ]{fig/tesis/ks-ncep-cortelev-1} \caption{Número de onda estacionario en 180° - fig:ks-ncep-cortelev - SÓLO BORRADOR}\label{fig:ks-ncep-cortelev}
+\end{figure}
 
 \section{Función corriente}\label{funcion-corriente}
 
@@ -467,16 +500,31 @@ La onda 3 es estacionaria en -60°.
 
 }
 
-\caption{Función corriente x 1099{fig:psi-ncep}}\label{fig:psi-ncep}
+\caption{Función corriente x 1099 - fig:psi-ncep}\label{fig:psi-ncep}
 \end{figure}
+
+No sé bien qué decir de la \autoref{fig:psi-ncep} :(.
 
 \section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
 
-\begin{itemize}
-\tightlist
-\item
-  Fourier
-\end{itemize}
+Como se describió en \autoref{sec:metodos}, el análisis estacional de la
+amplitud y \(r^2\) de Fourier puede hacerse a partir de la media delos
+campos mensuales o aplicando Fourier a los campos estacionales. En el
+caso de los datos de NCEP existe poca diferencia, por lo que sólo se
+muestran los resultados conseguidos mediante esta última metodología.
+
+El campo de Z* está caracterizado principalmente por un patrón de QS1 en
+altas latidues latitudes (\autoref{fig:ghz-ncep}). No es sorprendente,
+entonces, que la QS1 explica la mayor parte de la variabilidad del
+geopotencial en virtualmente todo el dominio al sur de los
+45°S(\autoref{fig:r2-ncep}). La QS2 es preponderante en la estratósfera
+ecuatorial, en la costa antártica y al rederor de 35°S, donde es el modo
+dominante en toda la columna de aire en verano. La QS3, a diferencia de
+las ondas anteriores es importante en una región reducidda. Explica una
+parte substancial de la varianza en niveles bajos al rededor de los 45°S
+y mayormente en invierno. La QS4 explica muy poca varianza a excepción
+de cerca de superficie entre 15°S y 30°S. Ondas más cortas son aún menos
+importantes (no se muestra).
 
 \begin{figure}
 
@@ -484,12 +532,38 @@ La onda 3 es estacionaria en -60°.
 
 }
 
-\caption{$R^2$ de Fourier.{fig:r2-ncep}}\label{fig:r2-ncep}
+\caption{$R^2$ de Fourier. - fig:r2-ncep}\label{fig:r2-ncep}
 \end{figure}
 
-Cosas para ver:\\
-Estructura. Zona donde onda 3 explica más que la onda 1 (zona marcada en
-negro)
+El \(r^2\) permite analizar la importancia relativa de cada modo con
+respecto a la variabilidad total, pero lo que importa desde el punto de
+vista físico es la amplitud de la onda
+\footnote{Esto está muy mal escrito, hay que mejorar}. Las diferencias
+entre los campos de \(r^2\) y los de amplitud son evidentes comparando
+las figuras \ref{fig:r2-ncep} y \ref{fig:ampl-ncep} (notar la escala
+logarítima en los colores). La amplitud de la QS1 muestra un máximo bien
+definido centrado en 60°S que en verano se encuentra en niveles más
+bajos que en las otras estaciones. También existe un máximo relativo
+entre 15°S y 30°S en verano que migra a latitudes más altas en invierno
+y primavera. El mismo está presente tambień en las otras ondas
+estacionarias.
+
+En el caso de la QS2, se evidencia que a pesar de tener máximos de
+\(r^2\) en la estratósfera al norte de 45°S, alcanza su máxima amplitud
+al sur de esa latitud y en 200hPa en verano y en 30hPa en invierno. Su
+actividad en la costa antártica se extiende en toda la tropósfera en
+invierno (a pesar de que en \(r^2\) pierde importancia por encima de los
+200hPa)
+
+La región de amplitud máxima de la QS3, coincide aproximadamente con la
+región de máximo \(r^2\) entre y otoño y primavera, aunque con menos
+actividad en superficie y extensión en toda la columna. En verano, en
+cambio aparece un máximo de amplitud importante que no se observa en el
+campo de \(r^2\).
+
+Finalmente, fuera de la superficie, la QS4 presenta un máxmimo de
+amplitud bien definido sólo en verano. El máximo entre 15°S y 30°S sigue
+presente.
 
 \begin{figure}
 
@@ -497,13 +571,10 @@ negro)
 
 }
 
-\caption{Ampllitud de Fourier.{fig:ampl-ncep}}\label{fig:ampl-ncep}
+\caption{Ampllitud de Fourier. - fig:ampl-ncep}\label{fig:ampl-ncep}
 \end{figure}
 
-Cosas para ver:\\
-Onda 1 y 2 principalmente en estratósfera pero baja, salvo en verano.
-Onda 3 y 4 más de atmósfera media/alta. Región recuadrada: máximo de
-amplitud de QS 3 y donde su R2 es mayor que la de QS 1.
+hasta acá.
 
 \chapter{Onda 3}\label{onda-3}
 
@@ -629,7 +700,7 @@ entre campo teórico y observado.
 \subsection{Máximo o media.}\label{maximo-o-media.}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.{fig:ampl-max-mean}}\label{fig:ampl-max-mean}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media. - fig:ampl-max-mean}\label{fig:ampl-max-mean}
 \end{figure*}
 
 \begin{figure*}
@@ -1294,6 +1365,11 @@ ONo hay casi diferencia entre las corridas.
 \addcontentsline{toc}{chapter}{Referencias}
 
 \hypertarget{refs}{}
+\hypertarget{ref-Berbery1992}{}
+Berbery, E H, J Nogués-Paegle, y J D Horel. 1992. «Wavelike southern
+hemisphere extratropical teleconnections».
+doi:\href{https://doi.org/DOI:\%2010.1175/1520-0469(1992)049\%3C0155:WSHET\%3E2.0.CO;2}{DOI: 10.1175/1520-0469(1992)049\textless{}0155:WSHET\textgreater{}2.0.CO;2}.
+
 \hypertarget{ref-Quintanar1995}{}
 Quintanar, Arturo I., y Carlos R. Mechoso. 1995. «Quasi-Stationary Waves
 in the Southern Hemisphere. Part II: Generation Mechanisms».

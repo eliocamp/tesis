@@ -60,10 +60,10 @@ knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"),
 
 source("scripts/helperfun.R")
 
-map.world <- BuildMap(res = 1, smooth = 1)
-map.SH <- map.world[lat %b% c(-90, 0)]
-map.world <- geom_map2(map.world)
-map.SH <- geom_map2(map.SH)
+data.world <- BuildMap(res = 1, smooth = 1)
+map.world <- geom_map2(data.world)
+map.SH <- geom_map2(data.world[lat %b% c(-90, 0)])
+
 
 pres <- ReadNetCDF("DATA/NCEP/srfp.mon.mean.nc")
 pres.mean <- pres[, .(pres = median(pres)), by = lat]
@@ -77,6 +77,7 @@ pres <- pres[, .(pres = mean(pres)), by = .(lon, lat)]
 theme_elio <- theme_minimal(base_size = 11) +
     theme(legend.position = "bottom", legend.box = "vertical",
           panel.spacing.y = unit(5, "mm"),
+          panel.spacing.x = unit(5, "mm"),
           legend.spacing = unit(2, "mm"),
           plot.margin = grid::unit(rep(3, 4), "mm"),
           legend.title = element_blank(),
@@ -210,7 +211,7 @@ Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre
 
 Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
 
-# Métodos y Materiales
+# Métodos y Materiales {#sec:metodos}
 
 ## Conceptos básicos
 
@@ -219,7 +220,7 @@ Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
 
 
 ```{r fitqs-ncep}
-ncep.qs <- ncep[, FitQsWave(gh, k = 1:4), by = .(lat, lev, date)]
+ncep.qs.all <- ncep[, FitQsWave(gh, k = 1:4), by = .(lat, lev, date)]
 ```
 
 
@@ -234,7 +235,7 @@ wave[, gh.z := Anomaly(gh), by = .(lat)][
     , k := "campo"]
 
 lons <- unique(ncep$lon)
-qs.wave <- ncep.qs[date == select.date & lev == 300 & k < 4, 
+qs.wave <- ncep.qs.all[date == select.date & lev == 300 & k < 4, 
                    .(lon = lons, 
                      gh.z = amplitude*cos(k*(lons*pi/180 - phase))),
                    by = .(lat, date, k)]
@@ -261,7 +262,7 @@ ggplot(RepeatLon(wave), aes(lon, lat)) +
 
 Cosas para ver de \autoref{fig:fourier-ejemplo}:   
 Descripción del "rol" de cada número de onda en generar el campo final. 
-La onda 1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean contínuos.
+La QS1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean contínuos.
 
 
 * Wavelets 
@@ -516,7 +517,7 @@ ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)],
 ```
 
 
-Como se puede apreciar en el campo de T* (\autoref{fig:tz-ncep}), en invierno y primavera, los niveles altos están dominados por una onda 1 con máximo en el sur de Autralia y mínimo en el Atlántico sur. En niveles más bajos, la onda se defasa hacia el este y queda casi en cuadratura (\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en Antártida occidental. 
+Como se puede apreciar en el campo de T* (\autoref{fig:tz-ncep}), en invierno y primavera, los niveles altos están dominados por una QS1 con máximo en el sur de Autralia y mínimo en el Atlántico sur. En niveles más bajos, la onda se defasa hacia el este y queda casi en cuadratura (\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en Antártida occidental. 
 
 
 
@@ -628,13 +629,13 @@ ggplot(ncep.mean.season[lev %in% c(850, plot.levs)], aes(lon, lat)) +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}. En invierno, existe evidencia de un tren de ondas de Rossby que se propaga desde el Índico occidental sudeste llegando a su máxima latutud en 150°O donde comienza a propagarse hacia el norte hasta llegar al sur de Sudamérica. Este tren de ondas puede identificarse con mayor dificultad en el campo de geopotencial (\autoref{fig:ghz-ncep}) debido a la interferencia de la onda 1. 
+Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}. En invierno, existe evidencia de un tren de ondas de Rossby que se propaga desde el Índico occidental sudeste llegando a su máxima latutud en 150°O donde comienza a propagarse hacia el norte hasta llegar al sur de Sudamérica. Este tren de ondas puede identificarse con mayor dificultad en el campo de geopotencial (\autoref{fig:ghz-ncep}) debido a la interferencia de la QS1. 
 
 También en invierno, en los trópicos se puede observar el viento meridional hacia el norte en 850hPa en la costa oeste de África asociado al monzón de la India. El monzón sudamericano, por su parte, se evidenia por un aumento de la intensidad de los vientos del norte en verano sobre el continente americano. En altura, el monzón de la India se muestra como viento hacia el sur producto de la divergencia de niveles altos generada por la convección anómala. El sudamérica, la alta de Bolivia genera viento hacia el nort y hacia el sur al este y al oeste de Bolivia respectivamente. 
 
 La anomalía zonal de V es prácticamente idéntica al campo total ya que la media zonal es casi nula en gran parte del dominio (\autoref{fig:v-ncep-corte}); por lo tanto, no se muestra. 
 
-```{r ghminus1-ncep, fig.publish = FALSE, fig.cap = "Z* menos onda 1."}
+```{r ghminus1-ncep, fig.class = "fullpage", fig.publish = FALSE, fig.cap = "Z* menos QS1."}
 ncep.mean.season %>% 
     .[, c("ampl", "phase") := FitQsWave(gh, k = 1)[1:2], 
       by = .(lat, lev, season)] %>%
@@ -649,10 +650,9 @@ ncep.mean.season %>%
     facet_grid(lev~season)
 ```
 
-
-hasta acá
-
 ## Gradiente meridional de vorticidad absoluta
+
+En la teoría de propagación meridional de ondas de Rossby, el gradiente meridional de vorticidad absoluta ($\psi_y$)... es importante porque blavalbla ¿Resumen de la deducción en James?
 
 ```{r calc-eta-ncep}
 ncep.mean.season[, zeta := Vorticity(u + v ~ lon + lat, cyclical = TRUE,
@@ -667,13 +667,15 @@ ncep.mean.season[, eta.dy := zeta.dy + f.dy(lat)]
 ncep.mean.season <- ncep.mean.season
 ```
 
-```{r etady-ncep, fig.class = "fullpage", fig.cap = "Gradiente meridional de vorticidad absoluta."}
-binwidth <- 1e-11
-ggplot(ncep.mean.season[lev %in% plot.levs & lat > -85], aes(lon, lat)) +
-    stat_contour_fill(aes(z = eta.dy), binwidth = binwidth) +
-    stat_contour_fill(aes(z = eta.dy), breaks = 0, 
-                      fill = "grey50", alpha = 0.5, complete = FALSE) +
-    geom_contour_fine(aes(z = eta.dy), breaks = 0, color = "black") +
+```{r etady-ncep, fig.class = "fullpage", fig.cap = "Gradiente meridional de vorticidad absoluta * 1e11"}
+mult <- 1e11
+binwidth <- 1e-11*mult
+ggplot(ncep.mean.season[lev %in% plot.levs & lat > -85], 
+       aes(lon, lat, z = eta.dy*mult)) +
+    stat_contour_fill(binwidth = binwidth) +
+    stat_contour_fill(breaks = 0, 
+                      fill = "grey80", alpha = 0.5, complete = FALSE) +
+    geom_contour_fine(breaks = 0, color = "black") +
     # stat_contour(aes(z = eta.dy), breaks = 0, geom = "polygon",
     # fill = "grey50", alpha = 0.5) +
     map.SH +
@@ -687,17 +689,21 @@ ggplot(ncep.mean.season[lev %in% plot.levs & lat > -85], aes(lon, lat)) +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab))
 ```
 
+La \autoref{fig:etady-ncep} muestra que el campo de $\psi_y$ impide la propagación meridional de ondas de Rossby en una *región prohibida* acotada centrada sobre Nueva Zelanda principalmente en invierno entre 300 y 200 hPa. Ésta coincide con la región de bloqueos que, en invierno está franqueada por el jet intenso, dando lugar a gradientes meridionales de U negativos más intensos que $\beta$. Estas figuras extienden el restulado de @Berbery1992 (su Figura 3) utilizando 5 años de análisis objetivo del Centro Europeo de Predicción a Plazo Medio (ECMWF). 
+
 ## Número de onda estacionaria
+
+Aún con $\psi_y$ positivo, las ondas de Rossby sólo se pueden propagar si su número de onda zonal es menor que el número de onda estacionario [@James]. En la \autoref{fig:ks-ncep} se muestra el número de onda estacionario para el nivel de 200hPa y en la \autoref{fig:ks-ncep-corte} se muestra un corte en 180°. Además de la *región prohibida*, las ondas cortas no pueden propagarse meridionalmente en latitudes altas. Las ondas largas con k < 3 pueden propagarse meridionalmente libremente en verano al norte de los 60°S aproximadamente, pero quedan atrapadas al sur de 45°S en toda una franja de longitudes entre 60°E y 120°O durante el resto del año. 
+
+El corte de $\psi_y$ en 180° evidencia que la onda 3 sólo puede propagarse meridionalmente dentro de una franja angosta de latitudes, entre 60°S y 50°S. Una región donde este modo muestra un máximo de amplitud (\autoref{fig:ampl-ncep}).
 
 ```{r ks-ncep, fig.cap = "Número de onda estacionario en 200hPa.", fig.height = 6}
 a <- 6371000
 
-ks <- ncep.mean.season[lev == 200, 
-                       .(k = sqrt(eta.dy/u)*(a*cos(lat*pi/180))), 
-                       by = .(lon, lat, lev, season)] 
-ks[ , k.full := ifelse(is.na(k) | k > 10, -1, k)]
+ncep.mean.season[, k := sqrt(eta.dy/u)*(a*cos(lat*pi/180))]
+ncep.mean.season[, k.full := ifelse(is.na(k) | k > 10, -1, k)]
 
-ggplot(ks, aes(lon, lat)) +
+ggplot(ncep.mean.season[lev == 200], aes(lon, lat)) +
     geom_contour_fine(aes(z = k), breaks = 0:9, color = "black") +
     geom_label_contour2(aes(z = k, label = ..level..),
                         breaks = 0:9, skip = 0) +
@@ -705,28 +711,36 @@ ggplot(ks, aes(lon, lat)) +
                 fill = "gray50") +
     map.SH +
     scale_s_map() +
-    scale_fill_viridis_c(breaks = 1:9, guide = guide_colorstrip_bottom()) +
     coord_quickmap() +
     facet_wrap(~season)
 ```
 
 ```{r ks-ncep-corte, fig.class = "textwidth", fig.cap = "Número de onda estacionario medio por círculo de latitud."}
-ggplot(ks[lon %~% 180], aes(lat, k)) +
+ggplot(ncep.mean.season[lon %~% 180 & lev == 200], aes(lat, k)) +
     geom_line() +
     scale_y_continuous(name = "Número de onda estacionaria", breaks = 1:9,
                        limits = c(1, 9)) +
-    scale_x_latitude(name = "Latitud", ticks = 15) +
+    scale_x_latitude(name = "Latitud", ticks = 20) +
     scale_color_brewer(palette = "Set1") +
     facet_wrap(~season) +
     coord_flip()
 ```
 
-Cosas para ver:    
-Máximos asociado con los flancos del jet. Zona "prohibida" en 200 y 300 hPa.    
-La onda 3 es estacionaria en -60°.
+```{r ks-ncep-cortelev, fig.publish = FALSE, fig.cap = "Número de onda estacionario en 180°"}
+ggplot(ncep.mean.season[lon %~% 180], aes(lat, lev))+
+    geom_contour_fine(aes(z = k), breaks = 0:9, color = "black") +
+    geom_label_contour2(aes(z = k, label = ..level..),
+                        breaks = 0:9, skip = 0) +
+    geom_contour_fill(aes(z = k.full), breaks = c(0, -0.5), 
+                      complete = F, fill = "gray80") +
+    surface +
+    scale_y_level(breaks = plot.levs) +
+    scale_x_latitude(trans = "reverse") +
+    facet_wrap(~season) 
+```
+
 
 ## Función corriente
-
 
 ```{r read-psi}
 stream <- ReadNetCDF("DATA/NCEP/stream.mon.mean.nc") %>% 
@@ -749,43 +763,33 @@ ggplot(stream.mean.season, aes(lon, lat)) +
     geom_contour_fine(aes(z = psi*10^(-9)), color = "black", binwidth = 0.02) +
     geom_vector(aes(dx = f.lon, dy = f.lat), skip = 3, min.mag = 0.05, 
                 scale = 50) +
-    map.SH +
+    geom_map2(data.world[lat < 30]) +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(0.005, 0), 
                          guide = guide_colorstrip_bottom(15)) +
     facet_wrap(~season, ncol = 2) +
     theme(axis.title = element_blank()) + 
-    coord_quickmap()
+    coord_quickmap(ylim = c(-90, 30))
 ```
+
+No sé bien qué decir de la \autoref{fig:psi-ncep} :(.
 
 ## Ondas Quasiestacionarias
 
-* Fourier
+Como se describió en \autoref{sec:metodos}, el análisis estacional de la amplitud y $r^2$ de Fourier puede hacerse a partir de la media delos campos mensuales o aplicando Fourier a los campos estacionales. En el caso de los datos de NCEP existe poca diferencia, por lo que sólo se muestran los resultados conseguidos mediante esta última metodología. 
+
+El campo de Z* está caracterizado principalmente por un patrón de QS1 en altas latidues latitudes (\autoref{fig:ghz-ncep}). No es sorprendente, entonces, que la QS1 explica la mayor parte de la variabilidad del geopotencial en virtualmente todo el dominio al sur de los 45°S(\autoref{fig:r2-ncep}). La QS2 es preponderante en la estratósfera ecuatorial, en la costa antártica y al rederor de 35°S, donde es el modo dominante en toda la columna de aire en verano. La QS3, a diferencia de las ondas anteriores es importante en una región reducidda. Explica una parte substancial de la varianza en niveles bajos al rededor de los 45°S y mayormente en invierno. La QS4 explica muy poca varianza a excepción de cerca de superficie entre 15°S y 30°S. Ondas más cortas son aún menos importantes (no se muestra). 
 
 ```{r r2-ncep, fig.class = "fullpage", fig.cap = "$R^2$ de Fourier."}
-binwidth <- 0.1
-
 rect.annotation <- data.frame(latmin = -65, latmax = -40,
                               levmin = 100, levmax = 700, 
                               k = 3)
-
-r2.mean <- ncep.qs[, .(r2 = mean(r2)), 
-                   by = .(lat, lev, k, season(month(date)))]
-
-r2.diff <- r2.mean[, .(r2.ratio = r2[k == 3]/r2[k == 1]), 
-                   by = .(lat, lev, season)]
-r2.diff <- rbind(r2.diff[, k := 1], copy(r2.diff)[, k := 3])
-
-
-ggplot(r2.mean, aes(lat, lev)) +
-    stat_contour_fill(aes(z = r2), binwidth = binwidth) +
-    stat_contour_fill(aes(z = r2.ratio), data = r2.diff, breaks = 1, 
-                      color = "black", size = 0.5, complete = F,
-                      fill = "gray20", alpha = 0.2) +
+ncep.qs2 <- ncep.mean.season[, FitQsWave(gh, k = 1:4), 
+                             by = .(lat, lev, season)] 
+binwidth <- 0.1
+ggplot(ncep.qs2, aes(lat, lev)) +
+    stat_contour_fill(aes(z = r2), binwidth = binwidth, na.rm = T) +
     surface +
-    # geom_rect(aes(xmin = latmin, xmax = latmax, ymin = levmin, ymax = levmax),
-    #           data = rect.annotation, inherit.aes = F,
-    #           fill = NA, color = "black", size = 0.4) +
     geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = expression(R^2), limits = c(0, 1),
                          breaks = MakeBreaks(binwidth), 
@@ -797,20 +801,25 @@ ggplot(r2.mean, aes(lat, lev)) +
     facet_grid(k ~ season, labeller = labeller(k = qs.lab))
 ```
 
-Cosas para ver:    
-Estructura. Zona donde onda 3 explica más que la onda 1 (zona marcada en negro) 
+El $r^2$ permite analizar la importancia relativa de cada modo con respecto a la variabilidad total, pero lo que importa desde el punto de vista físico es la amplitud de la onda \footnote{Esto está muy mal escrito, hay que mejorar}. Las diferencias entre los campos de $r^2$ y los de amplitud son evidentes comparando las figuras \ref{fig:r2-ncep} y \ref{fig:ampl-ncep} (notar la escala logarítima en los colores). La amplitud de la QS1 muestra un máximo bien definido centrado en 60°S que en verano se encuentra en niveles más bajos que en las otras estaciones. También existe un máximo relativo entre 15°S y 30°S en verano que migra a latitudes más altas en invierno y primavera. El mismo está presente tambień en las otras ondas estacionarias. 
+
+En el caso de la QS2, se evidencia que a pesar de tener máximos de $r^2$ en la estratósfera al norte de 45°S, alcanza su máxima amplitud al sur de esa latitud y en 200hPa en verano y en 30hPa en invierno. Su actividad en la costa antártica se extiende en toda la tropósfera en invierno (a pesar de que en $r^2$ pierde importancia por encima de los 200hPa)
+
+La región de amplitud máxima de la QS3, coincide aproximadamente con la región de máximo $r^2$ entre y otoño y primavera, aunque con menos actividad en superficie y extensión en toda la columna. En verano, en cambio aparece un máximo de amplitud importante que no se observa en el campo de $r^2$. 
+
+Finalmente, fuera de la superficie, la QS4 presenta un máxmimo de amplitud bien definido sólo en verano. El máximo entre 15°S y 30°S sigue presente. 
+
+
 
 ```{r ampl-ncep, fig.class = "fullpage", fig.cap = "Ampllitud de Fourier."}
-
-ampl.mean <- ncep.qs[, .(amplitude = mean(amplitude)), 
-                     by = .(lat, lev, k, season(month(date)))]
-breaks <- 2^seq(0, log2(650), by = 0.5)
-ggplot(ampl.mean, aes(lat, lev)) +
+breaks <- 2^seq(0, log2(650), by = 1)
+ggplot(ncep.qs2, aes(lat, lev)) +
     stat_contour_fill(aes(z = amplitude), 
                       breaks = breaks) +
     surface +
     geom_index.region(rect.annotation) +
-    scale_fill_viridis_c(name = "Amplitud (escala logarítmica)", trans = "log2",
+    scale_fill_viridis_c(name = "Amplitud (escala logarítmica)", 
+                         trans = "log2",
                          breaks = breaks,
                          labels = round(breaks, 1),
                          guide = guide_colorstrip_bottom(),
@@ -821,8 +830,7 @@ ggplot(ampl.mean, aes(lat, lev)) +
     facet_grid(k ~ season, labeller = labeller(k = qs.lab))
 ```
 
-Cosas para ver:    
-Onda 1 y 2 principalmente en estratósfera pero baja, salvo en verano. Onda 3 y 4 más de atmósfera media/alta. Región recuadrada: máximo de amplitud de QS 3 y donde su R2 es mayor que la de QS 1.
+hasta acá.
 
 # Onda 3
 
@@ -830,7 +838,7 @@ Onda 1 y 2 principalmente en estratósfera pero baja, salvo en verano. Onda 3 y 
 
 ```{r calc-qs3-ncep}
 lons <- unique(ncep$lon)
-qs.wave <- ncep.qs[k == 3, .(lon = lons, 
+qs.wave <- ncep.qs.all[k == 3, .(lon = lons, 
                              QS3 = amplitude*cos(3*(lons*pi/180 - phase))),
                    by = .(lat, lev, date)]
 qs.wave.season <- qs.wave[, .(mean = mean(QS3),
@@ -1006,9 +1014,9 @@ Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la región
 ```{r calc-indice-ncep}
 lats.index <- c(-65, -40)
 levs.index <- c(100, 700)
-ncep.qs <- ncep.qs[, index.region := (lev %b% levs.index) & (lat %b% lats.index)]
+ncep.qs.all <- ncep.qs.all[, index.region := (lev %b% levs.index) & (lat %b% lats.index)]
 
-index <- ncep.qs[index.region == TRUE & k == 3, 
+index <- ncep.qs.all[index.region == TRUE & k == 3, 
                  .(amplitude   = mean(amplitude),
                    m.amplitude = max(amplitude),
                    r2          = mean(r2),
@@ -1018,7 +1026,7 @@ index <- ncep.qs[index.region == TRUE & k == 3,
                    lon         = phase[which.max(amplitude)]*180/pi,
                    lev         = lev[which.max(amplitude)]),
                  by = date]
-index <- ncep.qs[index.region == TRUE & k == 3] %>% 
+index <- ncep.qs.all[index.region == TRUE & k == 3] %>% 
     group_by(date) %>% 
     filter(abs(phase - mode(phase)) < 5*pi/180) %>% 
     setDT(.) %>% 
@@ -1035,8 +1043,8 @@ index <- index[cor.index, on = "date"]
 
 ```{r ampl-max-mean, fig.cap = "Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.", fig.height = 4, fig.class = "pagewidth"}
 set.seed(44)
-select.dates <- sample(ncep.qs$date, 12)
-gdata <- ncep.qs[k == 3 & date %in% select.dates]
+select.dates <- sample(ncep.qs.all$date, 12)
+gdata <- ncep.qs.all[k == 3 & date %in% select.dates]
 ggplot(gdata[index.region == TRUE], aes(amplitude)) + 
     # geom_density() +
     geom_vline(aes(xintercept = m.amplitude), color = "red", size = 0.4,
