@@ -772,7 +772,11 @@ guide_colorstrip_bottom <- function(width = 25, height = 0.5, ...) {
                      barwidth = width, ...)
 }
 
-scale_s_map <- function() list(scale_y_latitude(), scale_x_longitude())
+scale_x_longitude <- function(...) metR::scale_x_longitude(ticks = 30, ...)
+scale_s_map <- function(limits.lat = c(-90, 0),
+                        limits.lon = c(0, 360)) list(scale_y_latitude(limits = limits.lat),
+                               scale_x_longitude(limits = limits.lon))
+
 
 AddSuffix <- function(suffix = "") {
     function(string) {
@@ -933,3 +937,13 @@ geom_label_contour_back <- function(...) {
 
 geom_contour_fine <- function(...) geom_contour(..., size = 0.4)
 stat_contour_fine <- function(...) stat_contour(..., size = 0.4)
+
+
+labeller.date <- function(sep = " - ") {
+    function(s) {
+        s <- as.Date(s)
+        m <- month(s)
+        y <- year(s)
+        paste0(month.abb_sp[m], sep, y)
+    }
+}

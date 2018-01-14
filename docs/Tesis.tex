@@ -21,7 +21,7 @@
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[inner = 3cm, outer = 2cm, top = 2.5cm, bottom = 2.5cm]{geometry}
+\usepackage[inner = 5cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={Tesis},
@@ -94,6 +94,8 @@
 \usepackage{hyperref}
 \usepackage{marginnote}
 \usepackage[nomarkers,figuresonly]{endfloat}
+\usepackage[spanish]{todonotes}
+\usepackage{wrapfig}
 
 \begin{document}
 \maketitle
@@ -103,6 +105,9 @@
 \tableofcontents
 }
 Resumen.
+
+\todo[inline]{Listado de abreviaturas}
+\todo[inline]{Revisar TODOS los epígrafes}
 
 \chapter{Introducción}\label{introduccion}
 
@@ -122,7 +127,7 @@ Esto es para probar una referencia bibliográfica: Vera et~al.
 (\protect\hyperlink{ref-Vera2004}{2004}) y (Vera et~al.
 \protect\hyperlink{ref-Vera2004}{2004})
 
-\chapter{Métodos y Materiales}\label{sec:metodos}
+\chapter{Métodos y Materiales}\label{metodos-y-materiales}
 
 \section{Conceptos básicos}\label{conceptos-basicos}
 
@@ -132,7 +137,11 @@ Esto es para probar una referencia bibliográfica: Vera et~al.
   Ondas cuasiestacionarias
 \item
   Fourier
+\item
+  wavelets
 \end{itemize}
+
+\todo[inline]{chequear este paper: https://link.springer.com/article/10.1007/s00024-012-0635-9}
 
 Ejemplo:
 
@@ -212,12 +221,12 @@ Salvo en verano, la inclinación hacia el oeste en la horizontal y en la
 vertical indica que las perturbaciones estacionarias están asociadas con
 transporte hacia el polo tanto de cantidad de movimiento zonal como de
 temperatura.
-\footnote{¿Debería agregar una justificaicón de esto? ¿Un resumen del desarrollo matemático que está en el James?}
+\todo[inline]{¿Debería agregar una justificaicón de esto? ¿Un resumen del desarrollo matemático que está en el James?}
 
 En verano, las anomalías zonales tienen una estructura barotrópica
 equivalente y carecen de inclinación en la horizontal. Consecuentemente,
 los transportes meridionales asociados se reducen considerablemente.
-\footnote{¿Por qué?}
+\todo{¿Por qué?}
 
 \begin{figure}
 
@@ -235,7 +244,7 @@ los transportes meridionales asociados se reducen considerablemente.
 El ciclo anual de la amplitud de las ondas estacionarias se observa en
 \autoref{fig:sd-gh-ncep}, donde se muestra el desvío estándar de Z por
 círculo de latitud para cada mes
-\footnote{¿Explicar la relación de esto con la amplitud de la onda?}. La
+\todo{¿Explicar la relación de esto con la amplitud de la onda?}. La
 mayor amplitud se enuentra centrado al rededor de los 60°S, como ya se
 vio en la \autoref{fig:ghz-ncep} y alcanza su máximo entre agosto y
 octubre, y el mínimo entre febrero y abril, según el nivel.
@@ -264,10 +273,10 @@ En la tropósfera, la temperatura (\autoref{fig:t-ncep}) presenta una
 estructura zonal con mayor baroclinicidad en invierno. En 200 hPa los
 gradientes meridionales son mínimos y por encima de ese nivel éstos se
 revierten, dando lugar a tempearturas ecuatoriales menores que las
-polares (\autoref{fig:t-ncep-corte}). Por encima de 100 hPa de invierno
+polares (\autoref{fig:tz-ncep-corte}). Por encima de 100 hPa de invierno
 y primavera, hay un máximo relativo en \textasciitilde{}45°
-\footnote{¿Por qué?} y una región de anomalías zonales positivas que se
-ve claramente incluso en el campo total, particularmente en primavera.
+\todo{¿Por qué?} y una región de anomalías zonales positivas que se ve
+claramente incluso en el campo total, particularmente en primavera.
 
 \begin{figure}
 
@@ -294,11 +303,13 @@ más bajos, la onda se defasa hacia el este y queda casi en cuadratura
 (\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en Antártida
 occidental.
 
+\todo[inline]{¿Más detalle?}
+
 En los trópicos, las anomlaías de temperatura presentan un patrón de
 onda 3 con máximos en los continentes y mínimos en los océanos que se
 revierten de signo en 100hPa. Estas características tienen su correlato
 en la altura geopotencial y corresponden a circulaciones tipo Walker
-\footnote{¿Es así?}.
+\todo{¿Es así?}.
 
 \begin{figure}
 
@@ -308,9 +319,6 @@ en la altura geopotencial y corresponden a circulaciones tipo Walker
 
 \caption{Corte zonal de anomalía de temperatura en -60°. - fig:tz-ncep-corte60}\label{fig:tz-ncep-corte60}
 \end{figure}
-
-Cosas para ver:\\
-Coincidencia entre la onda estacionaria 1 en gh y de t (en primavera).
 
 \section{Viento zonal}\label{viento-zonal}
 
@@ -434,8 +442,8 @@ la media zonal es casi nula en gran parte del dominio
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 
 En la teoría de propagación meridional de ondas de Rossby, el gradiente
-meridional de vorticidad absoluta (\(\psi_y\))\ldots{} es importante
-porque blavalbla ¿Resumen de la deducción en James?
+meridional de vorticidad absoluta (\(\psi_y\))
+\todo[inline]{es importante porque blavalbla ¿Resumen de la deducción en James?}
 
 \begin{figure}
 
@@ -461,9 +469,9 @@ años de análisis objetivo del Centro Europeo de Predicción a Plazo Medio
 
 Aún con \(\psi_y\) positivo, las ondas de Rossby sólo se pueden propagar
 si su número de onda zonal es menor que el número de onda estacionario
-({\textbf{???}}). En la \autoref{fig:ks-ncep} se muestra el número de
-onda estacionario para el nivel de 200hPa y en la
-\autoref{fig:ks-ncep-corte} se muestra un corte en 180°. Además de la
+(James \protect\hyperlink{ref-James}{1994}). En la \autoref{fig:ks-ncep}
+se muestra el número de onda estacionario para el nivel de 200hPa y en
+la \autoref{fig:ks-ncep-corte} se muestra un corte en 180°. Además de la
 \emph{región prohibida}, las ondas cortas no pueden propagarse
 meridionalmente en latitudes altas. Las ondas largas con k \textless{} 3
 pueden propagarse meridionalmente libremente en verano al norte de los
@@ -507,11 +515,12 @@ No sé bien qué decir de la \autoref{fig:psi-ncep} :(.
 
 \section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
 
-Como se describió en \autoref{sec:metodos}, el análisis estacional de la
-amplitud y \(r^2\) de Fourier puede hacerse a partir de la media delos
-campos mensuales o aplicando Fourier a los campos estacionales. En el
-caso de los datos de NCEP existe poca diferencia, por lo que sólo se
-muestran los resultados conseguidos mediante esta última metodología.
+Como se describió en \autoref{metodos-y-materiales}, el análisis
+estacional de la amplitud y \(r^2\) de Fourier puede hacerse a partir de
+la media delos campos mensuales o aplicando Fourier a los campos
+estacionales. En el caso de los datos de NCEP existe poca diferencia,
+por lo que sólo se muestran los resultados conseguidos mediante esta
+última metodología.
 
 El campo de Z* está caracterizado principalmente por un patrón de QS1 en
 altas latidues latitudes (\autoref{fig:ghz-ncep}). No es sorprendente,
@@ -538,9 +547,9 @@ importantes (no se muestra).
 El \(r^2\) permite analizar la importancia relativa de cada modo con
 respecto a la variabilidad total, pero lo que importa desde el punto de
 vista físico es la amplitud de la onda
-\footnote{Esto está muy mal escrito, hay que mejorar}. Las diferencias
-entre los campos de \(r^2\) y los de amplitud son evidentes comparando
-las figuras \ref{fig:r2-ncep} y \ref{fig:ampl-ncep} (notar la escala
+\todo{Esto está muy mal escrito, hay que mejorar}. Las diferencias entre
+los campos de \(r^2\) y los de amplitud son evidentes comparando las
+figuras \ref{fig:r2-ncep} y \ref{fig:ampl-ncep} (notar la escala
 logarítima en los colores). La amplitud de la QS1 muestra un máximo bien
 definido centrado en 60°S que en verano se encuentra en niveles más
 bajos que en las otras estaciones. También existe un máximo relativo
@@ -574,9 +583,11 @@ presente.
 \caption{Ampllitud de Fourier. - fig:ampl-ncep}\label{fig:ampl-ncep}
 \end{figure}
 
-hasta acá.
+\todo[inline]{Acá podría poner alguna reflexión general de lo que se ve. Por ejemplo, cómo en verano la variabilidad está más acotada a la tropóstera mientras que en invierno y primavera hay más contacto con la estratósfera.}
 
 \chapter{Onda 3}\label{onda-3}
+
+\todo[inline]{introducción a QS3; decir que esto es una onda reconstruida a partir de Fourier}
 
 \section{Características típicas}\label{caracteristicas-tipicas}
 
@@ -584,40 +595,55 @@ hasta acá.
 \includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-1} \caption{Media de reconstrucción de onda 3. - fig:qs3-ncep}\label{fig:qs3-ncep}
 \end{figure*}
 
-Cosas para ver:\\
-Solo en 300 porque la estructura es barotrópica (no se gana mucho
-mirando varios niveles). Localización de los centros de altas y bajas.
-Corrimiento de fase verano/invierno. Aparente ciclo anual con mínimo en
-primavera, que luego se ve que no es tan así, parece mínimo porque la
-fase varía mucho y el promedio se desdibuja mucho.
+En la \autoref{fig:qs3-ncep} se muestra el campo de geopotencial
+reconstruido sólo a partir de la QS3 en 300 hPa, que ilustra lo que
+sucede en todos los niveles dado que su estructura es barotrópica
+equivalente (\autoref{fig:qs3-ncep-corte}. Se reproduen las
+caracterísicas de la amplitud ya vistas en la \autoref{fig:ampl-ncep}
+(máximo entre 60°S y 45°S con menor intensidad en primavera, mayor
+amplitud en 300hPa con mayor desarrollo vertical en otoño y verano) pero
+además permite observar el efecto de la variación de la fase. Se obseva
+que existe un corrimiento de la fase entre verano e invierno de poco más
+de 15° (algo ya observado por
+??\todo{buscar referencia. Raphael referencia este movimiento, pero no lo encuentro en los papers que cita.})
+anticipando que el efecto de la QS3 sobre cada lugar \todo{mal escrito}
+pueda tener una componente estacional.
 
-Esto es el promedio de las ondas 3, pero es idéntico a la onda 3 del
-promedio.
+La inclinación meridinal de las pertubaciones de geopotencial asociadas
+a la QS3 sugieren que ésta está asociada a transportes de cantidad de
+movimiento hacia el polo en las estaciones de transición, pero en menor
+medida en verano.
+
+\begin{verbatim}
+## % latex table generated in R 3.4.3 by xtable 1.8-2 package
+## % Sun Jan 14 00:51:11 2018
+## \begin{table}[ht]
+## \centering
+## \begin{wraptable}{rlr}
+##   \hline
+##  & season & uv \\ 
+##   \hline
+## 1 & Verano & -0.100 \\ 
+##   2 & Otoño & -0.431 \\ 
+##   3 & Invierno & -0.016 \\ 
+##   4 & Primavera & -0.163 \\ 
+##    \hline
+## \end{wraptable}
+## \caption{Transporte meridinoal de cantidad de viento zonal NO SE PUBLICA} 
+## \end{table}
+\end{verbatim}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte{fig:qs3-ncep-corte}}\label{fig:qs3-ncep-corte}
+\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte - fig:qs3-ncep-corte}\label{fig:qs3-ncep-corte}
 \end{figure*}
-
-Cosas para ver:\\
-Estrucutra vertical barotrópica equivalente. Ciclo anual en la extensión
-vertical (se ve también en los cortes de amplitud). Aunque notar que en
-este corte la extensión en primavera parece la menor, pero de nuevo es
-por la variabilidad en la fase, ya que en el corte de amplitud se ve que
-la amplitud es mayor en altura incluso que en otoño.
 
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3. - fig:qs3sd-ncep}\label{fig:qs3sd-ncep}
 \end{figure*}
 
-No tengo idea de cómo interpretar esto\ldots{}
+\todo[inline]{No tengo idea de cómo interpretar la \autoref{fig:qs3sd-ncep}. Quizás hablar de que la variabilidad asociada a la onda 3 se da pricipalmente en los nodos y que entonces ahí es donde hay que ver la variación del efecto? no sé... }
 
-\begin{itemize}
-\tightlist
-\item
-  Wavelets
-\end{itemize}
-
-La amplitud media obtenida mediante wavelets es virtualmente idéntica
+\subsection{Wavelets}\label{wavelets}
 
 \begin{figure}
 
@@ -625,23 +651,50 @@ La amplitud media obtenida mediante wavelets es virtualmente idéntica
 
 }
 
-\caption{Amplitud de wavelets (sombreados) y de fourier (contornos){fig:wavelet-fourier-ncep}}\label{fig:wavelet-fourier-ncep}
+\caption{Amplitud de wavelets (sombreados) y de fourier (contornos) - fig:wavelet-fourier-ncep}\label{fig:wavelet-fourier-ncep}
 \end{figure}
+
+Para la QS3, la amplitud media obtenida mediante Wavelets
+\todo{agregar referencia a sección} es virtualmente idéntica a la
+amplitud obtenida con Fourier (\autoref{wavelet-fourier-ncep}). Sin
+embargo, también permite obtener información de la variación meridional
+de la amplitud de la QS3. Al igual que con Fourier, esto puede hacerse
+promediando estacionalmente la amplitud de los campos mensuales o
+calculando la amplitud de los campos estacionales. Pero a diferencia de
+Fourier, los resultados de cada metodología son opuestos. Esto es
+evidente en la \autoref{fig:waveletz-ncep} donde se muestra el campo de
+amplitud de la QS3 según wavelets en líneas y su anomalía zonal en
+sombreado. Los valores positivos representan regiones donde la amplitud
+de la QS3 es mayor que la media zonal y viceversa.
+
+No existe mucha diferencia en la amplitud media zonal entre ambas
+metodologías a excepción de que la primera siempre es mayor que la
+segunda
+\todo{Esta es una propiedad general que SIEMPRE se cumple. En realidad podría ir en metodología}.
+Las principales diferencias se dan en las anomalías zonales.
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/waveletz-ncep-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/waveletz-ncep-1} 
 
 }
 
-\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa.{fig:waveletz-ncep}}\label{fig:waveletz-ncep}
+\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
 \end{figure}
 
-Cosas para ver:\\
-* La amplitud de la onda 3 es bastante zonal, pero tiene asimetrías
-consistentes. En \textasciitilde{}60°S, la máxima amplitude se da en el
-hemisferio oeste, mientras que en \textasciitilde{}50°S se da en el
-hemisferio este.
+Las anomalías zonales presentan, en todas las estaciones, un máximo al
+sur del Índico centrado en 45°S que se desplaza hacia el este en
+latitudes más altas. Existe un segundo máximo en altas latitudes que en
+otoño y primavera se encuentran en 120°E y en invierno se encuentra en
+180°. En verano éste no aparece, pero sí existe un máximo centrado en
+15°S y 120°O.
+
+La principal diferencia con la media de la amplitud es que las mayores
+anomalías zonales se dan en latitudes altas (al rededor de 60°S) con un
+mínimo al sur del Índico en vez de un máximo. Al norte de 30°S, las
+diferencias son menores.
+
+\todo{Estoy pensando en no poner la \autoref{fig:wavelet-ncep-corte} porque no encuentro mucho para decir y no veo que se gane demasiado. Queda para el doctorado? :P}
 
 \begin{figure}
 
@@ -649,7 +702,7 @@ hemisferio este.
 
 }
 
-\caption{Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado).{fig:wavelet-ncep-corte}}\label{fig:wavelet-ncep-corte}
+\caption{Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado). - fig:wavelet-ncep-corte}\label{fig:wavelet-ncep-corte}
 \end{figure}
 
 Cosas para ver:\\
@@ -661,7 +714,71 @@ complejo. En verano y otoño, la máxima amplitud sigue en 300hPa, pero
 120°O. Además, durante estas estaciones hay indicación de que el máximo
 cambia de latitud con la altura.
 
-Venajas y desventajas. Justificaicón de decisión.
+\begin{verbatim}
+## <ggproto object: Class CoordFlip, CoordCartesian, Coord, gg>
+##     aspect: function
+##     default: FALSE
+##     distance: function
+##     expand: TRUE
+##     is_linear: function
+##     labels: function
+##     limits: list
+##     modify_scales: function
+##     range: function
+##     render_axis_h: function
+##     render_axis_v: function
+##     render_bg: function
+##     render_fg: function
+##     setup_data: function
+##     setup_layout: function
+##     setup_panel_params: function
+##     setup_params: function
+##     transform: function
+##     super:  <ggproto object: Class CoordFlip, CoordCartesian, Coord, gg>
+\end{verbatim}
+
+\begin{figure}
+\subfloat[campo\label{fig:estacionaridad1}]{\includegraphics[ ]{fig/tesis/estacionaridad-1} }\newline\subfloat[media zonal\label{fig:estacionaridad2}]{\includegraphics[ ]{fig/tesis/estacionaridad-2} }\caption{Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?) - fig:estacionaridad - SÓLO BORRADOR}\label{fig:estacionaridad}
+\end{figure}
+
+Las diferencias vistas en la \autoref{fig:waveletz-ncep} están
+relacionadas con la estacionariedad\todo{¿Es una palabra?} de las ondas
+\todo{de nuevo, esto es general para la metodología, la explicación va en métodos},
+se puede utilizar la relación entre ambas para generar un \emph{índice
+de estacionariedad} \todo{¿Estoy seguro de que esto es así?}. Cuanto más
+similar sea el resutlado, más estacionarias son las ondas. Así, la
+estacionariedad sería máxima en latitudes bajas y al rederor de 50°S
+--principalmente en verano-- y mínima en dos franjas angostas cerca de
+30°S y 75°S. \todo{¿Mostrar el gŕafico \ref{fig:estacionaridad}?}
+\todo[inline]{Esta discusión también aplica a fourier (\autoref{fig:estacionaridad-fourier}), en realidad, pero ahí no estoy mostrando ambos resultados porque da parecido. Quizás este párrafo se puede mover.. o borrar todo si resulta puro sinsentido.}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/estacionaridad-fourier-1} \caption{Estacionaridad según fourier - fig:estacionaridad-fourier - SÓLO BORRADOR}\label{fig:estacionaridad-fourier}
+\end{figure}
+
+Estas observaciones destacan la utilidad de wavelets en el análisis de
+ondas cuasiestacionarias. Mientras que el tratamiento con fourier asume
+a las ondas como una propiedad media de cada círculo de latitud,
+wavelets permite reconocer su heterogeneidad meridional. Evaluando esta
+heterogeneidad, sería posible distinguir entre campos donde una onda con
+un determinado número de onda está presente en todo un círuclo de
+latitud de campos donde ésta está localizada en una región acotada.
+
+Por otro lado, la no ortogonalidad de los wavelets complejizan la
+interpretación de los resultados ya que no es posible la separación de
+un campo en modos oscilatorios con distinto número de onda. El análisis
+de una QS específica, por lo tanto está contaminado por la actividad de
+otras QS con longitud de onda cercana.
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/wavelet-reconstr-1} \caption{Reconstrucción de QS3 usando wavelets - fig:wavelet-reconstr - SÓLO BORRADOR}\label{fig:wavelet-reconstr}
+\end{figure}
+
+Wavelets, en resumen, puede entenderse como una \emph{corrección} a
+fourier que agrega información de asimetrías zonales. Dado que la
+variabilidad zonal es del orden de un 10\% de la amplitud media, en lo
+que sigue de la tesis se utilizará sólo fourier, dejando el análisis e
+interpretación de wavelets para futuros trabajos.
 
 \section{Antecedentes}\label{antecedentes}
 
@@ -699,39 +816,82 @@ entre campo teórico y observado.
 
 \subsection{Máximo o media.}\label{maximo-o-media.}
 
+Existen varios estadísticos que podrían utilizarse para representar la
+amplitud de la QS3 en una región extendida. La media, la máxima, la
+moda, la mediana, etc\ldots{} En este caso, se estudió la posibilidad de
+representarla con la media o la
+máxima.\todo{esto fue escrito a las 23:30 luego de un largo día de mirar campos y números... es un delirio.}
+
+\todo[inline]{Fijarse acá (en el código), ver el tema de usar el paquete circular para la fase.}
+
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media. - fig:ampl-max-mean}\label{fig:ampl-max-mean}
 \end{figure*}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-corte-1} \caption{Corte vertical de amplitud{fig:ampl-max-mean-corte}}\label{fig:ampl-max-mean-corte}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-corte-1} \caption{Corte vertical de amplitud - fig:ampl-max-mean-corte}\label{fig:ampl-max-mean-corte}
 \end{figure*}
-
-Cosas para ver:\\
-Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs
-1988-07-01 o ). 1987-11-01 vs 2008-01-01 muestra el caso: igual amplitud
-máxima pero en 2008 está más ``concentrada''. Casos donde la actividad
-está ligeramente fuera de la caja (2000-09-01).
 
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas. - fig:ghz-ncep-select}\label{fig:ghz-ncep-select}
 \end{figure*}
 
-Cosas para ver:\\
-Analizar nivel de similitud entre los campos y similitud entre la
-estructura de la ampltiud.
+Se seleccionaron manualmente 9 casos que representan distintas
+características de la amplitud media la máxima. Sus valores se muestran
+en la \autoref{fig:ampl-max-mean}, los cortes meridionales de amplitud,
+en la \autoref{fig:ampl-mac-mean-corte} y los camps de Z* (con las QS1 y
+QS2 restadas) en la \autoref{fig:ghz-ncep-select}.
+
+Comparando mayo de 1997 con abril de 2012, ambos tienen una media muy
+similar, pero la máxima del primero es menor que la del segundo.
+Observando el campo de geopotencial, la QS3 se aprecia mucho más
+claramente en 2012 que en 1997.
+
+Enero de 1985 y julio de 1988 son un caso similar en cuanto a la
+relación de las métricas de amplitud, pero en este
+caso\todo{repite "caso"} ambos campos de Z* son muy similares en cuanto
+a intensidad y claridad de la QS3. Los dos meses presentan un tren de
+ondas que ocupan aproximadamente 1/3 de círculo de latitud. A pesar de
+que la amplitud máxima de 1985 es menor que la de 1988, el tren de ondas
+de 1988 se ve algo más claro que el de 1985.
+
+El par septiembre de 2000 y diciembre de 1990 es más claro. Ambas
+medidas de amplitud son mayores en 1990 y, en efecto, el campo de Z*
+tiene una estructura de QS3 zonal más clara que el de 2000. Sin embargo,
+las anomalías sí están presentes en 1990 --un tren de ondas similar al
+de enero de 1985, aunque con distinta fase-- son más intensas, por lo
+que su efecto local puede ser mayor que las de 2000.
+
+Más extrema aún es la diferencia entre septiembre de 2000 y octubre de
+2003. Ambos meses tienen una métrica de amplitud similares, pero la QS3
+es apenas distinguible en el segundo mes.
+
+Estos casos ilustran algunas limitaciones del análisis que continua.
+Algunos problemas son inherentes al intentar representar una estructura
+con variabilidad espacial a partir de un sólo número y otros están
+atados a la limitación de la descomposición de Fourier que trata toda
+onda como una onda
+planetaria.\todo{Aclarar qué comparación ilustra qué problema}
 
 \begin{figure}
 \includegraphics[ ]{fig/tesis/cor-mean-max-1} \caption{Correlación entre amplitud máxima y media.{fig:cor-mean-max}}\label{fig:cor-mean-max}
 \end{figure}
 
-Cosas para ver:\\
-Relación lineal entre ambas. Ergo, da más o menso igual usar cualquiera.
+Es importante tener encuenta que estos 9 casos fueron seleccionados
+específicamente para ilustrar estas limitaciones y que no son
+necesariamente representativos de la totalidad de casos posibles. Como
+se muestra en la \autoref{fig:cor-mean-max}, la amplitud media máxima
+tienen una excelente correlación (\(r^2>0.9\)) y una relación lineal.
+Debido a esto, a fines estadísticos la elección de una métrica o la otra
+no tiene una influencia importante. Desde este momento se usará la
+amplitud media\todo{expresar mejor esto}.
 
-Luego\ldots{} concluir que vamos a usar la media.
+El ciclo anual de la amplitud media se muestra en la
+\autoref{fig:ampl-ts1} donde los puntos son datos puntuales.
+\todo{hasta acá}
 
 \begin{figure*}
-\subfloat[Serie temporal\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Ciclo anual\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media - fig:ampl-ts}\label{fig:ampl-ts}
+\subfloat[Ciclo anual\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media - fig:ampl-ts}\label{fig:ampl-ts}
 \end{figure*}
 
 \section{Fase}\label{fase}
@@ -1369,6 +1529,11 @@ ONo hay casi diferencia entre las corridas.
 Berbery, E H, J Nogués-Paegle, y J D Horel. 1992. «Wavelike southern
 hemisphere extratropical teleconnections».
 doi:\href{https://doi.org/DOI:\%2010.1175/1520-0469(1992)049\%3C0155:WSHET\%3E2.0.CO;2}{DOI: 10.1175/1520-0469(1992)049\textless{}0155:WSHET\textgreater{}2.0.CO;2}.
+
+\hypertarget{ref-James}{}
+James, I. N. 1994. \emph{Introduction to circulating atmospheres}.
+Cambridge: Cambridge University Press.
+doi:\href{https://doi.org/10.1017/CBO9780511622977}{10.1017/CBO9780511622977}.
 
 \hypertarget{ref-Quintanar1995}{}
 Quintanar, Arturo I., y Carlos R. Mechoso. 1995. «Quasi-Stationary Waves

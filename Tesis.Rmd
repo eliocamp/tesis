@@ -5,7 +5,7 @@ author: "Elio Campitelli"
 date: ""
 lang: es-AR
 bibliography: [Papers/Biblio.bib, Papers/packages.bib]
-geometry: "inner = 3cm, outer = 2cm, top = 2.5cm, bottom = 2.5cm"
+geometry: "inner = 5cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm"
 documentclass: book
 classoption: a4paper
 knit: (function(file, encoding, ...) {
@@ -27,6 +27,7 @@ header-includes:
     - \usepackage{marginnote}
     - \usepackage[nomarkers,figuresonly]{endfloat}
     - \usepackage[spanish]{todonotes}
+    - \usepackage{wrapfig}
 link-citations: yes
 params: 
     draft: TRUE
@@ -171,8 +172,6 @@ DefineClass(fig.class)
 setDTthreads(3)
 ```
 
-\todotoc
-\listoftodos
 
 Resumen.
 
@@ -218,7 +217,7 @@ Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre
 
 Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
 
-# Métodos y Materiales {#sec:metodos}
+# Métodos y Materiales
 
 ## Conceptos básicos
 
@@ -489,7 +488,7 @@ ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], aes(lon, lat)) +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-En la tropósfera, la temperatura (\autoref{fig:t-ncep}) presenta una estructura zonal con mayor baroclinicidad en invierno. En 200 hPa los gradientes meridionales son mínimos y por encima de ese nivel éstos se revierten, dando lugar a tempearturas ecuatoriales menores que las polares (\autoref{fig:t-ncep-corte}). Por encima de 100 hPa de invierno y primavera, hay un máximo relativo en ~45° \todo{¿Por qué?} y una región de anomalías zonales positivas que se ve claramente incluso en el campo total, particularmente en primavera. 
+En la tropósfera, la temperatura (\autoref{fig:t-ncep}) presenta una estructura zonal con mayor baroclinicidad en invierno. En 200 hPa los gradientes meridionales son mínimos y por encima de ese nivel éstos se revierten, dando lugar a tempearturas ecuatoriales menores que las polares (\autoref{fig:tz-ncep-corte}). Por encima de 100 hPa de invierno y primavera, hay un máximo relativo en ~45° \todo{¿Por qué?} y una región de anomalías zonales positivas que se ve claramente incluso en el campo total, particularmente en primavera. 
 
 ```{r tz-ncep-corte, fig.class = "textwidth", fig.cap = "Corte meridional de temperatura media."}
 binwidth <- 5
@@ -658,7 +657,7 @@ ncep.mean.season %>%
 
 ## Gradiente meridional de vorticidad absoluta
 
-En la teoría de propagación meridional de ondas de Rossby, el gradiente meridional de vorticidad absoluta ($\psi_y$)... es importante porque blavalbla ¿Resumen de la deducción en James?
+En la teoría de propagación meridional de ondas de Rossby, el gradiente meridional de vorticidad absoluta ($\psi_y$) \todo[inline]{es importante porque blavalbla ¿Resumen de la deducción en James?}
 
 ```{r calc-eta-ncep}
 ncep.mean.season[, zeta := Vorticity(u + v ~ lon + lat, cyclical = TRUE,
@@ -782,7 +781,7 @@ No sé bien qué decir de la \autoref{fig:psi-ncep} :(.
 
 ## Ondas Quasiestacionarias
 
-Como se describió en \autoref{sec:metodos}, el análisis estacional de la amplitud y $r^2$ de Fourier puede hacerse a partir de la media delos campos mensuales o aplicando Fourier a los campos estacionales. En el caso de los datos de NCEP existe poca diferencia, por lo que sólo se muestran los resultados conseguidos mediante esta última metodología. 
+Como se describió en \autoref{metodos-y-materiales}, el análisis estacional de la amplitud y $r^2$ de Fourier puede hacerse a partir de la media delos campos mensuales o aplicando Fourier a los campos estacionales. En el caso de los datos de NCEP existe poca diferencia, por lo que sólo se muestran los resultados conseguidos mediante esta última metodología. 
 
 El campo de Z* está caracterizado principalmente por un patrón de QS1 en altas latidues latitudes (\autoref{fig:ghz-ncep}). No es sorprendente, entonces, que la QS1 explica la mayor parte de la variabilidad del geopotencial en virtualmente todo el dominio al sur de los 45°S(\autoref{fig:r2-ncep}). La QS2 es preponderante en la estratósfera ecuatorial, en la costa antártica y al rederor de 35°S, donde es el modo dominante en toda la columna de aire en verano. La QS3, a diferencia de las ondas anteriores es importante en una región reducidda. Explica una parte substancial de la varianza en niveles bajos al rededor de los 45°S y mayormente en invierno. La QS4 explica muy poca varianza a excepción de cerca de superficie entre 15°S y 30°S. Ondas más cortas son aún menos importantes (no se muestra). 
 
@@ -871,14 +870,20 @@ ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
     coord_quickmap()
 ```
 
-La estructura de la QS3 
+En la \autoref{fig:qs3-ncep} se muestra el campo de geopotencial reconstruido sólo a partir de la QS3 en 300 hPa, que ilustra lo que sucede en todos los niveles dado que su estructura es barotrópica equivalente (\autoref{fig:qs3-ncep-corte}. Se reproduen las caracterísicas de la amplitud ya vistas en la \autoref{fig:ampl-ncep} (máximo entre 60°S y 45°S con menor intensidad en primavera, mayor amplitud en 300hPa con mayor desarrollo vertical en otoño y verano) pero además permite observar el efecto de la variación de la fase. Se obseva que existe un corrimiento de la fase entre verano e invierno de poco más de 15° (algo ya observado por ??\todo{buscar referencia. Raphael referencia este movimiento, pero no lo encuentro en los papers que cita.}) anticipando que el efecto de la QS3 sobre cada lugar \todo{mal escrito} pueda tener una componente estacional. 
 
+La inclinación meridinal de las pertubaciones de geopotencial asociadas a la QS3 sugieren que ésta está asociada a transportes de cantidad de movimiento hacia el polo en las estaciones de transición, pero en menor medida en verano.
 
-Cosas para ver:   
-Solo en 300 porque la estructura es barotrópica (no se gana mucho mirando varios niveles). Localización de los centros de altas y bajas. Corrimiento de fase verano/invierno. Aparente ciclo anual con mínimo en primavera, que luego se ve que no es tan así, parece mínimo porque la fase varía mucho y el promedio se desdibuja mucho. 
-
-Esto es el promedio de las ondas 3, pero es idéntico a la onda 3 del promedio. 
-
+```{r uv-qs2-ncep, include = params$draft}
+qs.wave.season[, 
+               c("ug", "vg") := GeostrophicWind(mean, lon, lat, 
+                                                cyclical = TRUE), 
+               by = .(lev, season)] %>% 
+    .[lev == 300, 
+      .(uv = mean(ug*vg, na.rm = T)), by = .(season)] %>% 
+    xtable::xtable(col.names = c("Estación", "[u*v*]"), digits = 3, caption = "Transporte meridinoal de cantidad de viento zonal NO SE PUBLICA") %>% 
+    print(tabular.environment = "wraptable")
+```
 
 ```{r qs3-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte", fig.height = 4}
 ggplot(qs.wave.season[lat %~% cutlat$lat[1]], aes(lon, lev)) +
@@ -891,8 +896,6 @@ ggplot(qs.wave.season[lat %~% cutlat$lat[1]], aes(lon, lev)) +
     facet_wrap(~season, ncol = 2) 
 ```
 
-Cosas para ver:    
-Estrucutra vertical barotrópica equivalente. Ciclo anual en la extensión vertical (se ve también en los cortes de amplitud). Aunque notar que en este corte la extensión en primavera parece la menor, pero de nuevo es por la variabilidad en la fase, ya que en el corte de amplitud se ve que la amplitud es mayor en altura incluso que en otoño. 
 
 ```{r qs3sd-ncep, fig.class = "pagewidth", fig.cap = "Desvío estándar de la reconstrucción de QS3.",  fig.height = 6}
 binwidth <- 5
@@ -909,13 +912,7 @@ ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
     coord_quickmap()
 ```
 
-
-No tengo idea de cómo interpretar esto...
-
-
-
-
-
+\todo[inline]{No tengo idea de cómo interpretar la \autoref{fig:qs3sd-ncep}. Quizás hablar de que la variabilidad asociada a la onda 3 se da pricipalmente en los nodos y que entonces ahí es donde hay que ver la variación del efecto? no sé... }
 
 ### Wavelets
 
@@ -960,7 +957,7 @@ wv.mean.season[, .(amplitude = mean(amplitude)),
     facet_wrap(~season)
 ```
 
-Para la QS3, la amplitud media obtenida mediante Wavelets \todo{agregar referencia a sección} es virtualmente idéntica a la amplitud obtenida con Fourier (\autoref{wavelet-fourier-ncep}). Sin embargo, también permite obtener información de la variación meridional de la amplitud de la QS3. Al igual que con Fourier, esto puede hacerse promediando estacionalmente la amplitud de los campos mensuales o calculando la amplitud de los campos estacionales. Pero a diferencia de Fourier, los resultados de cada metodología son opuestos. Esto es evidente en la \autoref{fig:waveletz-ncep} donde se muestra el campo de amplitud de la QS3 según wavelets en líneas y su anomalía zonal en sombreado. Los valores positivos representan regiones donde la amplitud de la QS3 es mayor que la media zonal y viceversa. 
+Para la QS3, la amplitud media obtenida mediante Wavelets \todo{agregar referencia a sección} es virtualmente idéntica a la amplitud obtenida con Fourier (\autoref{fig:wavelet-fourier-ncep}). Sin embargo, también permite obtener información de la variación meridional de la amplitud de la QS3. Al igual que con Fourier, esto puede hacerse promediando estacionalmente la amplitud de los campos mensuales o calculando la amplitud de los campos estacionales. Pero a diferencia de Fourier, los resultados de cada metodología son opuestos. Esto es evidente en la \autoref{fig:waveletz-ncep} donde se muestra el campo de amplitud de la QS3 según wavelets en líneas y su anomalía zonal en sombreado. Los valores positivos representan regiones donde la amplitud de la QS3 es mayor que la media zonal y viceversa. 
 
 No existe mucha diferencia en la amplitud media zonal entre ambas metodologías a excepción de que la primera siempre es mayor que la segunda \todo{Esta es una propiedad general que SIEMPRE se cumple. En realidad podría ir en metodología}. Las principales diferencias se dan en las anomalías zonales.
 
@@ -1011,7 +1008,7 @@ ggplot(wv.comp[lat %~% -60], aes(lon, lev)) +
 ```
 
 Cosas para ver:    
-* Si bien el máximo medio de la amplitud se da en ~300hPa (Fig \autoref{fig:wavelet_fourier_comp}) igual que en fourier, el análisis por longitud muestra algo un poco más complejo. En verano y otoño, la máxima amplitud sigue en 300hPa, pero ésta asciente a entre 100 y 50hPa en invierno y primavera al rederor de 120°O. Además, durante estas estaciones hay indicación de que el máximo cambia de latitud con la altura. 
+* Si bien el máximo medio de la amplitud se da en ~300hPa (\autoref{fig:wavelet-fourier-ncep}) igual que en fourier, el análisis por longitud muestra algo un poco más complejo. En verano y otoño, la máxima amplitud sigue en 300hPa, pero ésta asciente a entre 100 y 50hPa en invierno y primavera al rederor de 120°O. Además, durante estas estaciones hay indicación de que el máximo cambia de latitud con la altura. 
 
 ```{r estacionaridad, fig.cap = "Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?)", fig.subcap = c("campo", "media zonal"), fig.publish = FALSE, fig.ncol = 1}
 copy(wv.mean.season) %>% 
@@ -1029,7 +1026,7 @@ wv.mean.season[lev == 300, .(mean(amplitude/i.amplitude)),
     ggplot(aes(lat, V1)) +
     geom_line(aes(color = season)) +
     scale_x_latitude() +
-    scale_y_continuous(name = "estacionaridad")
+    scale_y_continuous(name = "estacionaridad") + 
     coord_flip()
 ```
 
@@ -1076,6 +1073,7 @@ ncep.mean.season[lev == 300, wavelet3 := ReconstructWavelet(gh.z, 3),
 ggplot(ncep.mean.season[lev == 300], aes(lon, lat)) +
     geom_contour_fill(aes(z = wavelet3), binwidth = 25, exclude = 0) +
     scale_fill_divergent() +
+    map.SH +
     facet_wrap(~season)
 
 ```
@@ -1101,6 +1099,10 @@ Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la región
 ## Amplitud
 
 ### Máximo o media. 
+
+Existen varios estadísticos que podrían utilizarse para representar la amplitud de la QS3 en una región extendida. La media, la máxima, la moda, la mediana, etc... En este caso, se estudió la posibilidad de representarla con la media o la máxima.\todo{esto fue escrito a las 23:30 luego de un largo día de mirar campos y números... es un delirio.}
+
+\todo[inline]{Fijarse acá (en el código), ver el tema de usar el paquete circular para la fase.}
 
 ```{r calc-indice-ncep}
 lats.index <- c(-65, -40)
@@ -1131,63 +1133,113 @@ index <- index[cor.index, on = "date"]
 ```
 
 
-
 ```{r ampl-max-mean, fig.cap = "Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media.", fig.height = 4, fig.class = "pagewidth"}
-set.seed(44)
-select.dates <- sample(ncep.qs.all$date, 12)
-gdata <- ncep.qs.all[k == 3 & date %in% select.dates]
-ggplot(gdata[index.region == TRUE], aes(amplitude)) + 
-    # geom_density() +
-    geom_vline(aes(xintercept = m.amplitude), color = "red", size = 0.4,
-               data = index[date %in% select.dates]) +
-    geom_vline(aes(xintercept = amplitude), color = "blue",
-               data = index[date %in% select.dates]) +
-    geom_step(stat = "bin", binwidth = 5, boundary = 0) +
-    geom_rug() +
-    scale_x_continuous() +
-    facet_wrap(~date)
+
+select.dates <- as.Date(
+    c("1997-05-01",  
+      "2012-04-01",  
+      
+      "1985-01-01", 
+      "1988-07-01",
+      
+      "1987-11-01",
+      "2008-01-01", 
+      
+      
+      
+      "2000-09-01",  
+      "1990-12-01",  
+      
+      "2003-10-01"))
+
+# select.dates <- select.dates.manual
+gdata <- ncep.qs.all[k == 3 & date %in% select.dates] %>% 
+    .[, date.f := factor(as.character(date), 
+                          levels = as.character(select.dates),
+                         ordered = T)]
+gdata.index <- index[date %in% select.dates] %>% 
+    .[, date.f := factor(as.character(date), 
+                          levels = as.character(select.dates),
+                         ordered = T)]
+
+
+melt(gdata.index[, .(date.f, amplitude, m.amplitude)], 
+     id.vars = c("date.f")) %>% 
+ggplot(aes(date.f, value)) +
+    geom_col(aes(fill = variable), width = 0.5, 
+             position = "dodge") +
+    scale_fill_brewer(palette = "Set1", 
+                      labels = c(m.amplitude = "Máxima",
+                                 amplitude = "Media"),
+                      direction = -1) +
+    scale_y_continuous(name = "Amplitud",
+                       breaks = MakeBreaks(15),
+                       expand = c(0, 0)) +
+    scale_x_discrete(name = "Fecha", 
+                     labels = labeller.date("\n"), 
+                     expand = c(0, 0)) +
+    coord_flip() +
+    theme(panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank())
 ```
 
 ```{r ampl-max-mean-corte, fig.cap = "Corte vertical de amplitud", fig.class = "pagewidth", fig.height = 4}
-M <- max(index[date %in% select.dates, m.amplitude])
+M <- max(gdata.index[date %in% select.dates, m.amplitude])
 binwidth <- 15
 ggplot(gdata, aes(lat, lev)) + 
     stat_contour_fill(aes(z = amplitude), binwidth = binwidth) +
     geom_index.region(rect.annotation) +
-    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
-                 size = 1, color = "red", 
+    geom_segment(data = gdata.index[date %in% select.dates], inherit.aes = F,
+                 size = 1, color = "#E41A1C", 
                  aes(x = -90, xend = -90, y = 1000, 
                      yend = 10^(-2/M*m.amplitude + 3))) +
-    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
-                 size = 1, color = "blue", 
+    geom_segment(data = gdata.index[date %in% select.dates], inherit.aes = F,
+                 size = 1, color = "#377EB8", 
                  aes(x = -90, xend = -90, y = 1000, 
                      yend = 10^(-2/M*amplitude + 3))) +
     surface +
     scale_y_level(name = "nivel", 
-                  sec.axis = sec_axis(~-M/2*(log10(.) - 3), name = "amplitud")) +
+                  sec.axis = sec_axis(~-M/2*(log10(.) - 3), name = "Amplitud")) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
-    scale_fill_viridis_c(guide = guide_colorstrip_bottom(15)) +
-    facet_wrap(~date)
+    scale_fill_viridis_c(guide = guide_colorstrip_bottom(),
+                         breaks = MakeBreaks(binwidth)) +
+    facet_wrap(~date.f, labeller = labeller(date.f = labeller.date()))
 ```
 
-Cosas para ver:   
-Casos donde el máximo es mayor pero la media, menor. (1985-01-01 vs 1988-07-01 o ). 1987-11-01 vs 2008-01-01 muestra el caso: igual amplitud máxima pero en 2008 está más "concentrada". 
-Casos donde la actividad está ligeramente fuera de la caja (2000-09-01). 
-
 ```{r ghz-ncep-select, fig.cap = "Anomalía zonal geopotencial en 300hPa para fechas seleccionadas.", fig.class = "pagewidth", fig.height = 6}
-ggplot(ncep[date %in% select.dates & lev == 300], aes(lon, lat)) +
-    stat_contour_fill(aes(z = gh.z), binwidth = 50) +
+lons <- unique(ncep$lon)
+ncep[lev == 300 & date %in% select.dates, 
+     FitQsWave(gh, 1:2), by = .(lat, date)] %>% 
+    .[, .(lon = lons, 
+          qs = amplitude*cos(k*((lons*pi/180) - phase))),
+      by = .(lat, date, k)] %>% 
+    .[, .(rec = sum(qs)), by = .(lon, lat, date)] %>% 
+    .[ncep[lev == 300 & date %in% select.dates], on = c("lat", "lon", "date")] %>% 
+    .[, gh.minus := gh.z - rec] %>% 
+    .[, date.f := factor(as.character(date), 
+                         levels = as.character(select.dates))] %>% 
+ggplot(aes(lon, lat)) +
+    stat_contour_fill(aes(z = gh.minus), binwidth = 25, exclude = 0) +
     map.SH + 
     scale_s_map() +
     scale_fill_divergent(guide = guide_colorstrip_bottom(15)) +
     coord_quickmap() +
-    facet_wrap(~date) +
+    facet_wrap(~date.f, labeller = labeller(date.f = labeller.date())) +
     theme(axis.title = element_blank()) 
 ```
 
-Cosas para ver:    
-Analizar nivel de similitud entre los campos y similitud entre la estructura de la ampltiud.
+Se seleccionaron manualmente 9 casos que representan distintas características de la amplitud media la máxima. Sus valores se muestran en la \autoref{fig:ampl-max-mean}, los cortes meridionales de amplitud, en la \autoref{fig:ampl-mac-mean-corte} y los camps de Z* (con las QS1 y QS2 restadas) en la \autoref{fig:ghz-ncep-select}. 
 
+
+Comparando mayo de 1997 con abril de 2012, ambos tienen una media muy similar, pero la máxima del primero es menor que la del segundo. Observando el campo de geopotencial, la QS3 se aprecia mucho más claramente en 2012 que en 1997. 
+
+Enero de 1985 y julio de 1988 son un caso similar en cuanto a la relación de las métricas de amplitud, pero en este caso\todo{repite "caso"} ambos campos de Z* son muy similares en cuanto a intensidad y claridad de la QS3. Los dos meses presentan un tren de ondas que ocupan aproximadamente 1/3 de círculo de latitud. A pesar de que la amplitud máxima de 1985 es menor que la de 1988, el tren de ondas de 1988 se ve algo más claro que el de 1985. 
+
+El par septiembre de 2000 y diciembre de 1990 es más claro. Ambas medidas de amplitud son mayores en 1990 y, en efecto, el campo de Z* tiene una estructura de QS3 zonal más clara que el de 2000. Sin embargo, las anomalías sí están presentes en 1990 --un tren de ondas similar al de enero de 1985, aunque con distinta fase-- son más intensas, por lo que su efecto local puede ser mayor que las de 2000. 
+
+Más extrema aún es la diferencia entre septiembre de 2000 y octubre de 2003. Ambos meses tienen una métrica de amplitud similares, pero la QS3 es apenas distinguible en el segundo mes. 
+
+Estos casos ilustran algunas limitaciones del análisis que continua. Algunos problemas son inherentes al intentar representar una estructura con variabilidad espacial a partir de un sólo número y otros están atados a la limitación de la descomposición de Fourier que trata toda onda como una onda planetaria.\todo{Aclarar qué comparación ilustra qué problema} 
 
 ```{r cor-mean-max, fig.cap = "Correlación entre amplitud máxima y media."}
 r2.ampl <- index[, cor(m.amplitude, amplitude)]^2
@@ -1202,26 +1254,28 @@ ggplot(index, aes(m.amplitude, amplitude)) +
     coord_equal()
 ```
 
-Cosas para ver:    
-Relación lineal entre ambas. Ergo, da más o menso igual usar cualquiera. 
-
-Luego... concluir que vamos a usar la media. 
+Es importante tener encuenta que estos 9 casos fueron seleccionados específicamente para ilustrar estas limitaciones y que no son necesariamente representativos de la totalidad de casos posibles. Como se muestra en la \autoref{fig:cor-mean-max}, la amplitud media máxima tienen una excelente correlación ($r^2>0.9$) y una relación lineal. Debido a esto, a fines estadísticos la elección de una métrica o la otra no tiene una influencia importante. Desde este momento se usará la amplitud media\todo{expresar mejor esto}.
 
 ```{r cleanup2}
 index[, m.amplitude := NULL]
 ```
 
-```{r ampl-ts, fig.class = "pagewidth", fig.cap = "Amplitud media", fig.subcap = c("Serie temporal", "Ciclo anual"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1}
+El ciclo anual de la amplitud media se muestra en la \todo{fijarse que autoref no anda con subfig} \autoref{fig:ampl-ts1} donde los puntos son datos puntuales. \todo{hasta acá}  
+
+
+```{r ampl-ts, fig.class = "pagewidth", fig.cap = "Amplitud media", fig.subcap = c("Ciclo anual", "Serie temporal"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1}
+ggplot(index, aes(factor(month(date)), amplitude)) +
+    geom_boxplot(outlier.alpha = 0) +
+    geom_point(position = position_jitter(width = 0.2),
+               alpha = 0.5, size = 0.7) +
+    scale_x_discrete(name = "Mes", labels = month.abb_sp) +
+    scale_y_continuous(name = "Amplitud")
+
 g <- ggplot(index, aes(date, amplitude)) +
     geom_line() +
     geom_hline(yintercept = mean(index$amplitude), linetype = 3) +
-    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%C")
+    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%y")
 DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "Amplitud")
-
-ggplot(index, aes(factor(month(date)), amplitude)) +
-    geom_boxplot() +
-    scale_x_discrete(name = "Mes", labels = month.abb_sp) +
-    scale_y_continuous(name = "Amplitud")
 ```
 
 ## Fase
