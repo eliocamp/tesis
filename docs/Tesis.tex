@@ -35,6 +35,7 @@
   \usepackage{polyglossia}
   \setmainlanguage[]{spanish}
 \fi
+\usepackage{longtable,booktabs}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -128,6 +129,8 @@ Esto es para probar una referencia bibliográfica: Vera et~al.
 \protect\hyperlink{ref-Vera2004}{2004})
 
 \chapter{Métodos y Materiales}\label{metodos-y-materiales}
+
+\todo[inline]{Agregar en algún lugar algo sobre las estadísticas circulares}
 
 \section{Conceptos básicos}\label{conceptos-basicos}
 
@@ -614,24 +617,23 @@ a la QS3 sugieren que ésta está asociada a transportes de cantidad de
 movimiento hacia el polo en las estaciones de transición, pero en menor
 medida en verano.
 
-\begin{verbatim}
-## % latex table generated in R 3.4.3 by xtable 1.8-2 package
-## % Sun Jan 14 00:51:11 2018
-## \begin{table}[ht]
-## \centering
-## \begin{wraptable}{rlr}
-##   \hline
-##  & season & uv \\ 
-##   \hline
-## 1 & Verano & -0.100 \\ 
-##   2 & Otoño & -0.431 \\ 
-##   3 & Invierno & -0.016 \\ 
-##   4 & Primavera & -0.163 \\ 
-##    \hline
-## \end{wraptable}
-## \caption{Transporte meridinoal de cantidad de viento zonal NO SE PUBLICA} 
-## \end{table}
-\end{verbatim}
+\begin{longtable}[]{@{}lr@{}}
+\caption{Transporte meridinoal de cantidad de viento zonal NO SE
+PUBLICA}\tabularnewline
+\toprule
+Estación & {[}u\emph{v}{]}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Estación & {[}u\emph{v}{]}\tabularnewline
+\midrule
+\endhead
+Verano & -0.100\tabularnewline
+Otoño & -0.431\tabularnewline
+Invierno & -0.016\tabularnewline
+Primavera & -0.163\tabularnewline
+\bottomrule
+\end{longtable}
 
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte - fig:qs3-ncep-corte}\label{fig:qs3-ncep-corte}
@@ -656,7 +658,7 @@ medida en verano.
 
 Para la QS3, la amplitud media obtenida mediante Wavelets
 \todo{agregar referencia a sección} es virtualmente idéntica a la
-amplitud obtenida con Fourier (\autoref{wavelet-fourier-ncep}). Sin
+amplitud obtenida con Fourier (\autoref{fig:wavelet-fourier-ncep}). Sin
 embargo, también permite obtener información de la variación meridional
 de la amplitud de la QS3. Al igual que con Fourier, esto puede hacerse
 promediando estacionalmente la amplitud de los campos mensuales o
@@ -707,35 +709,12 @@ diferencias son menores.
 
 Cosas para ver:\\
 * Si bien el máximo medio de la amplitud se da en
-\textasciitilde{}300hPa (Fig \autoref{fig:wavelet_fourier_comp}) igual
-que en fourier, el análisis por longitud muestra algo un poco más
-complejo. En verano y otoño, la máxima amplitud sigue en 300hPa, pero
-ésta asciente a entre 100 y 50hPa en invierno y primavera al rederor de
+\textasciitilde{}300hPa (\autoref{fig:wavelet-fourier-ncep}) igual que
+en fourier, el análisis por longitud muestra algo un poco más complejo.
+En verano y otoño, la máxima amplitud sigue en 300hPa, pero ésta
+asciente a entre 100 y 50hPa en invierno y primavera al rederor de
 120°O. Además, durante estas estaciones hay indicación de que el máximo
 cambia de latitud con la altura.
-
-\begin{verbatim}
-## <ggproto object: Class CoordFlip, CoordCartesian, Coord, gg>
-##     aspect: function
-##     default: FALSE
-##     distance: function
-##     expand: TRUE
-##     is_linear: function
-##     labels: function
-##     limits: list
-##     modify_scales: function
-##     range: function
-##     render_axis_h: function
-##     render_axis_v: function
-##     render_bg: function
-##     render_fg: function
-##     setup_data: function
-##     setup_layout: function
-##     setup_panel_params: function
-##     setup_params: function
-##     transform: function
-##     super:  <ggproto object: Class CoordFlip, CoordCartesian, Coord, gg>
-\end{verbatim}
 
 \begin{figure}
 \subfloat[campo\label{fig:estacionaridad1}]{\includegraphics[ ]{fig/tesis/estacionaridad-1} }\newline\subfloat[media zonal\label{fig:estacionaridad2}]{\includegraphics[ ]{fig/tesis/estacionaridad-2} }\caption{Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?) - fig:estacionaridad - SÓLO BORRADOR}\label{fig:estacionaridad}
@@ -822,8 +801,6 @@ moda, la mediana, etc\ldots{} En este caso, se estudió la posibilidad de
 representarla con la media o la
 máxima.\todo{esto fue escrito a las 23:30 luego de un largo día de mirar campos y números... es un delirio.}
 
-\todo[inline]{Fijarse acá (en el código), ver el tema de usar el paquete circular para la fase.}
-
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media. - fig:ampl-max-mean}\label{fig:ampl-max-mean}
 \end{figure*}
@@ -887,68 +864,93 @@ no tiene una influencia importante. Desde este momento se usará la
 amplitud media\todo{expresar mejor esto}.
 
 El ciclo anual de la amplitud media se muestra en la
-\autoref{fig:ampl-ts1} donde los puntos son datos puntuales.
-\todo{hasta acá}
+Figura~\ref{fig:ampl-ts1} donde los puntos son datos puntuales. La
+amplitud máxima en invierno es evidente, así como la mayor variabilidad.
+Esto es de esperarse en una variable definida positiva que toma valores
+cercanos a cero. Notar que la amplitud media no es mínima en primavera,
+en contraste con lo observado en el análisis climatológico
+(\autoref{fig:ampl-ncep}) y los campos reconstruidos
+(\autoref{fig:qs3-ncep}). La resolución a este problema radica en el
+análisis de la fase (\autoref{fase}).
+
+La serie temporal de la amplitud media se muestra en la
+Figura~\ref{fig:ampl-ts2} donde en líneas horizontales se marca la
+amplitud media anual para cada año. No hay evidencia clara de
+periodicidades aunque se puede observar indicios de un ciclo de dos años
+en la anticorrelación de los promedios anuales. Dicha periodicidad no es
+estadísticamente significativa (no se muestra\todo{¿no se muestra?})
 
 \begin{figure*}
 \subfloat[Ciclo anual\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media - fig:ampl-ts}\label{fig:ampl-ts}
 \end{figure*}
 
+\begin{figure}
+\includegraphics[ ]{fig/tesis/acf-ampl-1} \caption{Función de autocorrelación para la amplitud media anual de la onda 3 - fig:acf-ampl - SÓLO BORRADOR}\label{fig:acf-ampl}
+\end{figure}
+
 \section{Fase}\label{fase}
 
-Además de eso, tengo la fase. Puedo tomar la fase media en la región o
-la fase correspondiente a donde está el máximo de la amplitud (lo que
-equivale al centro del anticiclón) o la moda de la fase.
-
-(más explicación\ldots{})
-
-¿Cuál usar?
-
 \begin{figure}
-
-{\centering \includegraphics[width=130mm, ]{fig/tesis/lon-phase-1} 
-
-}
-
-\caption{Fase promedio vs Fase del máximo{fig:lon-phase}}\label{fig:lon-phase}
+\includegraphics[ ]{fig/tesis/fase-boxplot-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes) - fig:fase-boxplot}\label{fig:fase-boxplot}
 \end{figure}
 
-Cosas para ver:\\
-Se ve que hay muchos casos donde coinciden bastante bien, pero otros que
-se alejan mucho. La razón es que al tomar el promedio, puede quedar
-cualquier cosa si la estructura cambia mucho con la latitud. Por
-ejemplo, los casos marcados en rojo.
+\begin{longtable}[]{@{}lr@{}}
+\caption{Desvío estándar de la fase para cada estación - NO SE
+PUBLICA}\tabularnewline
+\toprule
+Estación & SD\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Estación & SD\tabularnewline
+\midrule
+\endhead
+Verano & 21.20765\tabularnewline
+Otoño & 22.25817\tabularnewline
+Invierno & 25.08954\tabularnewline
+Primavera & 29.41456\tabularnewline
+\bottomrule
+\end{longtable}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/fase-mal-1} \caption{Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.{fig:fase-mal}}\label{fig:fase-mal}
-\end{figure}
+Además de la amplitud, las sondas planterias se caracterizan por su
+fase. La \autoref{fig:fase-boxplot} muestra la fase media y el rango
+delimitado por \(\pm\) 1 desvío estándar para cada mes (notar que la
+variación en latitud es únicamente a modo de separar los meses). En la
+\autoref{fig:qs3-ncep} ya se observada el ciclo anual de la fase, pero
+en la \autoref{fig:fase-boxplot} también brinda una idea de la
+variabilidad existente año a año.
 
-En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo
-que hace que la fase oscile entre valores cercanos a 0° y a 120° en
-distintas latitudes a pesar de que representan el mismo centro de
-máxima. El promedio, por lo tanto, queda en el centro y termina estando
-en una región donde el campo de geopotencial de onda 3 es nulo. Si bien
-la fase de la amplitud máxima y la moda de la fase parecen ser muy
-distintas, la naturaleza cíclica de la fase implica que representan
-aproximadamente el mismo punto.
+La gran variabilidad presente durante los meses de primavera, en
+comparación con el resto del año, explica pór qué en los campos medios
+la QS3 aparece débil a pesar de que su amplitud mensual no es menor. Al
+hacer el promedio, los campos que están defasados en entre 1/4 y 3/4 de
+longitud de onda (entre 30° y 90° en el caso de la QS3) interfieren
+destructivamente entre ellos, eliminando la señal en los campos medios.
+En primavera, más del 30\% de los meses tienen generan algún nivel de
+interferencia destructiva con el campo medio, comparado con el 13\% en
+verano.
 
-En tercer caso la estructura de onda 3 es de dos centros a distintas
-latitudes. La fase promedio de ambas (punto negro) representa el punto
-medio y, por lo tanto, está más cerca del mínimo de geopotencial que del
-máximo. En este caso la moda de la fase es una mejor representación del
-campo de onda 3 que la fase del máximo.
+\todo[inline]{Hasta acá.}
 
-En el caso del medio, todo anda bien y los tres puntos coinciden.
+\begin{longtable}[]{@{}lr@{}}
+\caption{Porcentaje de meses con interferencia destructiva - NO SE
+PUBLICA}\tabularnewline
+\toprule
+season & V1\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+season & V1\tabularnewline
+\midrule
+\endhead
+Verano & 12.903\tabularnewline
+Otoño & 18.280\tabularnewline
+Invierno & 26.882\tabularnewline
+Primavera & 31.183\tabularnewline
+\bottomrule
+\end{longtable}
 
-Conclusión: vamos a usar la moda de la fase.
-
-Ciclo anual de la fase.
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/fase-boxplot-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes){fig:fase-boxplot}}\label{fig:fase-boxplot}
-\end{figure}
-
-Cosas para ver:\\
+Ciclo anual de la fase. Cosas para ver:\\
 Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay
 mucha variabilidad.\\
 Recordar que este es aproximadamente el centro del máximo de

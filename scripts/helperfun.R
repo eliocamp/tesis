@@ -348,7 +348,8 @@ Interpolate.DT <- function(z, x, y, yo = unique(y), xo = unique(x), ...){
 }
 
 # Función que hace autocorrelograma y su test según Anderson o large lag.
-acf.sig <- function(x, lag.max=0.3*length(x), alpha = 0.05, method=c("anderson","large.lag", "salas"), sided="one") {
+acf.sig <- function(x, lag.max=0.3*length(x), alpha = 0.05,
+                    method=c("anderson","large.lag", "salas"), sided="one") {
     autocor <- acf(x, lag.max=lag.max, plot = F)$acf
     N <- length(x)
     e <- -1/(N-1)
@@ -373,13 +374,13 @@ acf.sig <- function(x, lag.max=0.3*length(x), alpha = 0.05, method=c("anderson",
         a <- alpha
         q <- qnorm(a, lower.tail=F)
         sigupp <- e + sqrt(var)*q
-        ret <- data.frame(lag=0:lag.max, acf=autocor, sig.cut=sigupp)
+        ret <- data.table(lag=0:lag.max, acf=autocor, sig.cut=sigupp)
     } else if (sided == "two"){
         a <- alpha/2
         q <- qnorm(a, lower.tail=F)
         sigupp <- e+sqrt(var)*q
         siginf <- e-sqrt(var)*q
-        ret <- data.frame(lag=0:lag.max, acf=autocor, upp.sig.cut=sigupp, low.sig.cut=siginf)
+        ret <- data.table(lag=0:lag.max, acf=autocor, upp.sig.cut=sigupp, low.sig.cut=siginf)
     }
     ret
 }
@@ -772,7 +773,7 @@ guide_colorstrip_bottom <- function(width = 25, height = 0.5, ...) {
                      barwidth = width, ...)
 }
 
-scale_x_longitude <- function(...) metR::scale_x_longitude(ticks = 30, ...)
+scale_x_longitude <- function(ticks = 30, ...) metR::scale_x_longitude(ticks = ticks, ...)
 scale_s_map <- function(limits.lat = c(-90, 0),
                         limits.lon = c(0, 360)) list(scale_y_latitude(limits = limits.lat),
                                scale_x_longitude(limits = limits.lon))
@@ -826,6 +827,12 @@ yearmonth <- function(date, day = 1) {
     lubridate::ymd(paste(years, months, day, sep = "-"))
 }
 
+yearly <- function(date, day = 182) {
+    years <- lubridate::year(date)
+    d <- lubridate::ymd(paste(years, "01", "01", sep = "-"))
+    yday(d) <- day
+    d
+}
 
 geom_index.region <- function(data) {
     geom_rect(data = data, aes(xmin = latmin, xmax = latmax,
@@ -904,10 +911,14 @@ cache.file <- function(file, expression) {
     }
 }
 
-mode <- function(x) {
+mode.circular <- function(x, limits = c(0, 2/3*pi)) {
     if (length(x) > 1) {
-        d <- density(x)
-        x[x %~% d$x[which.max(d$y)]]
+        x1 <- c(x - limits[2], x, x + limits[2])
+        keep <- (length(x) + 1):(2*length(x))
+        d <- density(x1)
+        y <- d$y[d$x %b% limits]
+        x2 <- d$x[d$x %b% limits]
+        x2[which.max(y)]
     } else {
         x
     }

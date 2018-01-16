@@ -42,7 +42,7 @@ knitr::opts_chunk$set(tidy = FALSE,
                       fig.calss = "pagewidth",
                       fig.ncol = 1,
                       fig.publish = TRUE,
-                      # cache.lazy = TRUE,
+                      cache.lazy = TRUE,
                       cache.path = "cache/tesis/",
                       fig.path = "fig/tesis/",
                       out.extra = " ",
@@ -56,6 +56,7 @@ library(dplyr)
 library(metR) 
 library(WaveletComp)
 library(patchwork)
+library(circular)
 
 knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"), 
                  file = "Papers/packages.bib")
@@ -207,6 +208,8 @@ ncep.mean.season <- ncep.mean[, lapply(.SD, mean),
 \todo[inline]{Listado de abreviaturas}
 \todo[inline]{Revisar TODOS los epígrafes}
 
+
+
 # Introducción
 
 
@@ -218,6 +221,8 @@ Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre
 Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
 
 # Métodos y Materiales
+
+\todo[inline]{Agregar en algún lugar algo sobre las estadísticas circulares}
 
 ## Conceptos básicos
 
@@ -881,8 +886,7 @@ qs.wave.season[,
                by = .(lev, season)] %>% 
     .[lev == 300, 
       .(uv = mean(ug*vg, na.rm = T)), by = .(season)] %>% 
-    xtable::xtable(col.names = c("Estación", "[u*v*]"), digits = 3, caption = "Transporte meridinoal de cantidad de viento zonal NO SE PUBLICA") %>% 
-    print(tabular.environment = "wraptable")
+    knitr::kable(col.names = c("Estación", "[u*v*]"), digits = 3, caption = "Transporte meridinoal de cantidad de viento zonal NO SE PUBLICA")
 ```
 
 ```{r qs3-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte", fig.height = 4}
@@ -973,9 +977,9 @@ wv.comp[lev == 300] %>%
     geom_contour_fine(aes(z = value), binwidth = 10,
                       color = "black") +
     # stat_contour(aes(z = mean), breaks = c(1, -1)*20, color = "black",
-                 # size = 0.5, data = qs.wave.season[lev == 300]) +
+    # size = 0.5, data = qs.wave.season[lev == 300]) +
     # geom_text_contour(aes(z = amplitude, label = ..level..), binwidth = 10,
-                      # color = "black") +
+    # color = "black") +
     geom_label_contour2(aes(z = value, label = ..level..), binwidth = 10, 
                         color = "black") +
     map.SH +
@@ -1013,9 +1017,9 @@ Cosas para ver:
 ```{r estacionaridad, fig.cap = "Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?)", fig.subcap = c("campo", "media zonal"), fig.publish = FALSE, fig.ncol = 1}
 copy(wv.mean.season) %>% 
     .[, a.z := Anomaly(amplitude/i.amplitude),
-               by = .(lat, season)] %>% 
+      by = .(lat, season)] %>% 
     .[lev == 300] %>% 
-ggplot(aes(lon, lat)) +
+    ggplot(aes(lon, lat)) +
     geom_contour_fill(aes(z = amplitude/i.amplitude)) +
     map.SH +
     scale_fill_viridis_c() +
@@ -1036,7 +1040,7 @@ Las diferencias vistas en la \autoref{fig:waveletz-ncep} están relacionadas con
 ```{r estacionaridad-fourier, fig.cap = "Estacionaridad según fourier", fig.publish = FALSE}
 ncep.qs.all %>% 
     .[k == 3, .(amplitude = mean(amplitude)), 
-            by = .(lat, lev, season(date))] %>% 
+      by = .(lat, lev, season(date))] %>% 
     .[ncep.qs[k == 3], on = c("lat", "lev", "season")] %>%
     ggplot(aes(lat, lev)) +
     geom_contour_fill(aes(z = i.amplitude/amplitude), na.rm = T) +
@@ -1102,29 +1106,18 @@ Quiero hacer el íncide a partir de la actividad de la onda 3 tomando la región
 
 Existen varios estadísticos que podrían utilizarse para representar la amplitud de la QS3 en una región extendida. La media, la máxima, la moda, la mediana, etc... En este caso, se estudió la posibilidad de representarla con la media o la máxima.\todo{esto fue escrito a las 23:30 luego de un largo día de mirar campos y números... es un delirio.}
 
-\todo[inline]{Fijarse acá (en el código), ver el tema de usar el paquete circular para la fase.}
-
 ```{r calc-indice-ncep}
 lats.index <- c(-65, -40)
 levs.index <- c(100, 700)
 ncep.qs.all <- ncep.qs.all[, index.region := (lev %b% levs.index) & (lat %b% lats.index)]
 
+ncep.qs.all[, phase.c := circular(phase*k, modulo = "2pi")]
 index <- ncep.qs.all[index.region == TRUE & k == 3, 
                      .(amplitude   = mean(amplitude),
                        m.amplitude = max(amplitude),
                        r2          = mean(r2),
-                       phase       = mean(phase),
-                       phase.mode  = mode(phase),
-                       lat         = lat[which.max(amplitude)],
-                       lon         = phase[which.max(amplitude)]*180/pi,
-                       lev         = lev[which.max(amplitude)]),
+                       phase       = mean.circular(phase.c)/3),
                      by = date]
-index <- ncep.qs.all[index.region == TRUE & k == 3] %>% 
-    group_by(date) %>% 
-    filter(abs(phase - mode(phase)) < 5*pi/180) %>% 
-    setDT(.) %>% 
-    .[, .(lat.mode = lat[which.max(amplitude)]), by = date] %>% 
-    index[., on = "date"]
 
 fields <- ncep[lev %b% levs.index, .(lon, lat, date, lev, gh, gh.z)][
     qs.wave[lev %b% levs.index], on = c("lat", "lon", "date", "lev")]
@@ -1145,8 +1138,6 @@ select.dates <- as.Date(
       "1987-11-01",
       "2008-01-01", 
       
-      
-      
       "2000-09-01",  
       "1990-12-01",  
       
@@ -1155,17 +1146,17 @@ select.dates <- as.Date(
 # select.dates <- select.dates.manual
 gdata <- ncep.qs.all[k == 3 & date %in% select.dates] %>% 
     .[, date.f := factor(as.character(date), 
-                          levels = as.character(select.dates),
+                         levels = as.character(select.dates),
                          ordered = T)]
 gdata.index <- index[date %in% select.dates] %>% 
     .[, date.f := factor(as.character(date), 
-                          levels = as.character(select.dates),
+                         levels = as.character(select.dates),
                          ordered = T)]
 
 
 melt(gdata.index[, .(date.f, amplitude, m.amplitude)], 
      id.vars = c("date.f")) %>% 
-ggplot(aes(date.f, value)) +
+    ggplot(aes(date.f, value)) +
     geom_col(aes(fill = variable), width = 0.5, 
              position = "dodge") +
     scale_fill_brewer(palette = "Set1", 
@@ -1218,7 +1209,7 @@ ncep[lev == 300 & date %in% select.dates,
     .[, gh.minus := gh.z - rec] %>% 
     .[, date.f := factor(as.character(date), 
                          levels = as.character(select.dates))] %>% 
-ggplot(aes(lon, lat)) +
+    ggplot(aes(lon, lat)) +
     stat_contour_fill(aes(z = gh.minus), binwidth = 25, exclude = 0) +
     map.SH + 
     scale_s_map() +
@@ -1260,102 +1251,113 @@ Es importante tener encuenta que estos 9 casos fueron seleccionados específicam
 index[, m.amplitude := NULL]
 ```
 
-El ciclo anual de la amplitud media se muestra en la \todo{fijarse que autoref no anda con subfig} \autoref{fig:ampl-ts1} donde los puntos son datos puntuales. \todo{hasta acá}  
+El ciclo anual de la amplitud media se muestra en la Figura\ \ref{fig:ampl-ts1} donde los puntos son datos puntuales. La amplitud máxima en invierno es evidente, así como la mayor variabilidad. Esto es de esperarse en una variable definida positiva que toma valores cercanos a cero. Notar que la amplitud media no es mínima en primavera, en contraste con lo observado en el análisis climatológico (\autoref{fig:ampl-ncep}) y los campos reconstruidos (\autoref{fig:qs3-ncep}). La resolución a este problema radica en el análisis de la fase (\autoref{fase}).
 
+La serie temporal de la amplitud media se muestra en la Figura\ \ref{fig:ampl-ts2} donde en líneas horizontales se marca la amplitud media anual para cada año. No hay evidencia clara de periodicidades aunque se puede observar indicios de un ciclo de dos años en la anticorrelación de los promedios anuales. Dicha periodicidad no es estadísticamente significativa (no se muestra\todo{¿no se muestra?})
 
 ```{r ampl-ts, fig.class = "pagewidth", fig.cap = "Amplitud media", fig.subcap = c("Ciclo anual", "Serie temporal"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1}
 ggplot(index, aes(factor(month(date)), amplitude)) +
+    # geom_violin() +
     geom_boxplot(outlier.alpha = 0) +
     geom_point(position = position_jitter(width = 0.2),
                alpha = 0.5, size = 0.7) +
     scale_x_discrete(name = "Mes", labels = month.abb_sp) +
     scale_y_continuous(name = "Amplitud")
 
-g <- ggplot(index, aes(date, amplitude)) +
+
+g <- copy(index) %>% 
+    .[, amplitude.mean := mean(amplitude), by = .(year(date))] %>% 
+    ggplot(aes(date, amplitude)) +
+    geom_line(aes(y = amplitude.mean, group = year(date)),
+              color = "gray50") +
     geom_line() +
+    # geom_smooth(span = 5*12/372) +
     geom_hline(yintercept = mean(index$amplitude), linetype = 3) +
-    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%y")
+    scale_x_date(date_breaks = "1 years", expand = c(0, 0), 
+                 date_labels = "%y", date_minor_breaks = "3 months")  
 DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "Amplitud")
 ```
 
+```{r calc-wavelet-dt}
+index <- index[, amplitude.t := Anomaly(amplitude), 
+               by = .(month(date))]
+invisible(capture.output(w <- analyze.wavelet(index, "amplitude.t", 
+                                              verbose = FALSE, n.sim = 500)))
+```
+
+```{r wavelet-period, fig.cap = "Análisis de wavelet para la amplitud de la onda 3.", fig.publish = FALSE}
+ampl <- w$Ampl
+dimnames(ampl) <- list(period = w$Period, date = as.character(index$date)) 
+g <- cowplot::plot_grid(
+{
+    melt(ampl, value.name = "amplitude") %>%
+    as.data.table(.) %>% 
+    .[, date := as.Date(date)] %>% 
+    .[, p.val := c(w$Power.pval)] %>% 
+    # .[, amplitude := ecdf(amplitude)(amplitude)] %>% 
+    ggplot(aes(date, period)) +
+    geom_contour_fill(aes(z = amplitude), breaks = c()) +
+    geom_contour(aes(z = p.val), breaks = 0.01) +
+    scale_y_continuous(trans = "log2", expand = c(0, 0),
+                       breaks = 2^(seq(0, 7, by = 1))) +
+    geom_hline(yintercept = c(12, 24)) +
+    scale_x_date(date_breaks = "5 years", date_labels = "%y", 
+                 expand = c(0, 0)) +
+    # scale_fill_distiller(palette = "Spectral")
+    scale_fill_viridis_c()
+}, 
+{
+    with(w, 
+           data.table(period = Period, power = Power.avg, pval = Power.avg.pval)) %>% 
+    ggplot(aes(period, power)) +
+    geom_line() +
+    stat_filter(aes(filter = pval < 0.01), geom = "point") +
+    scale_x_continuous(trans = "log2", expand = c(0, 0),
+                       breaks = 2^(seq(0, 7, by = 1))) +
+    coord_flip() +
+    theme(axis.title.y = element_blank(),
+          axis.text.y = element_blank())
+}, align = "h", axis = "tblr", rel_widths = c(4, 1))
+```
+
+```{r acf-ampl, fig.cap = "Función de autocorrelación para la amplitud media anual de la onda 3", fig.publish = FALSE}
+copy(index) %>% 
+    .[, mean(amplitude), by = year(date)] %>% 
+    .[, V1] %>% 
+    acf.sig(alpha = 0.01, lag.max = 12*2, sided = "two") %>%
+    ggplot(aes(lag, acf)) +
+    geom_col(fill = "black", width = 0.3) +
+    geom_line(aes(y = upp.sig.cut)) +
+    geom_line(aes(y = low.sig.cut)) +
+    scale_x_continuous(name = "lag (años)")
+```
+
+
 ## Fase
-
-Además de eso, tengo la fase. Puedo tomar la fase media en la región o la fase correspondiente a donde está el máximo de la amplitud (lo que equivale al centro del anticiclón) o la moda de la fase. 
-
-(más explicación...)
-
-¿Cuál usar? 
-
-```{r lon-phase, fig.cap = "Fase promedio vs Fase del máximo", fig.class = "textwidth"}
-
-dates <- c(as.Date("2013-06-01"),
-           index[, date[which.max(abs(lon - phase*180/pi))]],
-           index[, date[which.min(abs(lon - phase*180/pi))]])
-ggplot(index, aes(lon, phase*180/pi)) +
-    geom_point(size = 0.5) +
-    geom_point(data = index[date %in% dates], size = 3, 
-               shape = 21, fill = NA, color = "red") +
-    geom_abline(linetype = 3) +
-    scale_x_continuous(name = "Fase de amplitud máxima") +
-    scale_y_continuous(name = "Fase promedio") +
-    coord_fixed() 
-```
-
-Cosas para ver:   
-Se ve que hay muchos casos donde coinciden bastante bien, pero otros que se alejan mucho. La razón es que al tomar el promedio, puede quedar cualquier cosa si la estructura cambia mucho con la latitud. Por ejemplo, los casos marcados en rojo.
-
-
-```{r fase-mal, fig.cap = "Campo de onda 3 reconstruido para junio de 2013. El punto rojo es la fase en la latitud de amplitud máxima; el punto negro, la fase promedio; el punto azul, la moda de la fase. El rectángulo la región donde puede encontrarse la fase. Los límites meridionales definidos por la región donde se calcula el índice y los zonales por 360/3.", fig.height = 6}
-ggplot(fields[lev == 300 & date %in% dates], 
-       aes(lon, lat)) +
-    stat_contour_fill(aes(z = QS3), exclude = 0, complete = F, binwidth = 10) +
-    geom_point(data = index[date %in% dates], aes(x = lon),
-               color = "red") +
-    geom_point(data = index[date %in% dates], 
-               aes(x = phase*180/pi)) +
-    geom_point(data = index[date %in% dates],
-               aes(x = phase.mode*180/pi, y = lat.mode), 
-               color = "blue") +
-    annotate(geom = "rect", xmin = 0, xmax = 120, 
-             ymin = rect.annotation$latmin, ymax = rect.annotation$latmax,
-             fill = NA, linetype = 3, color = "black") +
-    map.SH +
-    scale_s_map() +
-    scale_fill_divergent(breaks = MakeBreaks(10),
-                         guide = guide_colorstrip_bottom()) +
-    coord_quickmap() +
-    facet_wrap(~date, ncol = 1)
-```
-
-En el primer caso el máximo de geopotencial se encuentra cercano a 0° lo que hace que la fase oscile entre valores cercanos a 0° y a 120° en distintas latitudes a pesar de que representan el mismo centro de máxima. El promedio, por lo tanto, queda en el centro y termina estando en una región donde el campo de geopotencial de onda 3 es nulo. Si bien la fase de la amplitud máxima y la moda de la fase parecen ser muy distintas, la naturaleza cíclica de la fase implica que representan aproximadamente el mismo punto. 
-
-En tercer caso la estructura de onda 3 es de dos centros a distintas latitudes. La fase promedio de ambas (punto negro) representa el punto medio y, por lo tanto, está más cerca del mínimo de geopotencial que del máximo. En este caso la moda de la fase es una mejor representación del campo de onda 3 que la fase del máximo. 
-
-En el caso del medio, todo anda bien y los tres puntos coinciden. 
-
-Conclusión: vamos a usar la moda de la fase. 
-
-
-```{r cleanup3}
-index <- index[, c("lon", "phase", "lat") := NULL]
-setnames(index, c("phase.mode", "lat.mode"), c("phase", "lat"))
-```
-
-Ciclo anual de la fase. 
 
 ```{r fase-boxplot, fig.cap = "Ciclo anual de la fase (20 mayores amplitudes para cada mes)"}
 lat.lims <- c(-70, -22)
 lon.lims <- c(230, 360)
 map.arg <- geom_map2(BuildMap(countries = T)[lat %b% lat.lims & 
                                                  long %b% lon.lims])
+index <- index[, phase.c := circular(phase*3, modulo = "2pi")]
 index %>% 
     group_by(month = month(date)) %>% 
     filter(greater(amplitude, 20)) %>% 
-    ggplot() +
-    map.arg + 
-    ggstance::geom_boxploth(aes(phase*180/pi + 240, 
-                                (-month(date) + 6)*2.4 - 45, 
-                                group = as.factor(month(date)))) +
+    as.data.table() %>% 
+    .[, .(phase = mean.circular(phase.c)/3,
+          phase.sd = sd.circular(phase.c)/3),
+      by = .(month(date))] %>% 
+    ggplot(aes(y = (-month + 6)*2.4 - 45)) +
+    map.arg +
+    geom_point(data = index %>% 
+                   group_by(month = month(date)) %>% 
+                   filter(greater(amplitude, 20)), 
+               aes(phase*180/pi +240),
+               alpha = 0.5, size = 0.5) +
+    geom_point(aes(phase*180/pi + 240)) +
+    geom_errorbarh(aes(xmin = (phase*180/pi + 240 - phase.sd*180/pi), 
+                       xmax = (phase*180/pi + 240 + phase.sd*180/pi))) +
     annotate(geom = "text", x = rep(237, 12), y = (-(1:12) + 6)*2.4 - 45, 
              label = month.abb_sp, size = 3, hjust = 1) +
     geom_vline(xintercept = c(240, 360), linetype = 3) +
@@ -1367,6 +1369,28 @@ index %>%
     coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims)
 ```
 
+```{r phase-sd, include = params$draft}
+index[, .(sd = sd(phase.c)/3*180/pi),
+      by = season(date)] %>% 
+    knitr::kable(digis = 2, col.names = c("Estación", "SD"),
+                 caption = "Desvío estándar de la fase para cada estación - NO SE PUBLICA")
+```
+
+Además de la amplitud, las sondas planterias se caracterizan por su fase. La \autoref{fig:fase-boxplot} muestra la fase media y el rango delimitado por $\pm$ 1 desvío estándar para cada mes (notar que la variación en latitud es únicamente a modo de separar los meses). En la \autoref{fig:qs3-ncep} ya se observada el ciclo anual de la fase, pero en la \autoref{fig:fase-boxplot} también brinda una idea de la variabilidad existente año a año. 
+
+La gran variabilidad presente durante los meses de primavera, en comparación con el resto del año, explica pór qué en los campos medios la QS3 aparece débil a pesar de que su amplitud mensual no es menor. Al hacer el promedio, los campos que están defasados en entre 1/4 y 3/4 de longitud de onda (entre 30° y 90° en el caso de la QS3) interfieren destructivamente entre ellos, eliminando la señal en los campos medios. En primavera, más del 30% de los meses tienen generan algún nivel de interferencia destructiva con el campo medio, comparado con el 13% en verano.  
+
+\todo[inline]{Hasta acá.}
+
+```{r destructiva, include = params$draft}
+index[, mean(abs(phase.c - mean(phase.c)) %between% (c(1/4, 3/4)*2*pi))*100, 
+      by = season(date)] %>% 
+    knitr::kable(caption = "Porcentaje de meses con interferencia destructiva - NO SE PUBLICA",
+                 digits = 3)
+```
+
+
+Ciclo anual de la fase. 
 Cosas para ver:    
 Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay mucha variabilidad.    
 Recordar que este es aproximadamente el centro del máximo de geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso implica que en los casos donde hay puntos cerca de -120° o 0°, hay el centro de mínima está en ~-60°.    
@@ -1568,7 +1592,7 @@ g <- ggplot(gdata, aes(date, r2)) +
     geom_line(aes(color = tipo)) +
     geom_hline(data = gdata[, .(m = mean(r2)), by = tipo],
                aes(yintercept = m, color = tipo), linetype = 3) +
-    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%C") +
+    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%y") +
     scale_color_brewer(palette = "Set1")
 DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "R2")
 
@@ -2637,7 +2661,7 @@ sp.index <- speedy[(lev %b% levs.index) &
                        lon == 0,
                    .(amplitude   = mean(amplitude),
                      r2          = mean(r2),
-                     phase  = mode(phase)),
+                     phase  = mode.circular(phase)),
                    by = .(date, run)]
 ```
 
