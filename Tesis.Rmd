@@ -860,13 +860,13 @@ qs.wave.season <- qs.wave[, .(mean = mean(QS3),
 
 ```{r qs3-ncep, fig.class = "pagewidth", fig.cap = "Media de reconstrucción de onda 3.", fig.height = 6}
 binwidth <- 10
-cutlat <- data.frame(lat = c(-52.5, rep(NA, 3)), 
+cutlat <- data.frame(lat = c(-52.5, rep(NA, 3)),
                      season = c("Verano", "Invierno", "Otoño", "Primavera"))
 ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
     geom_contour_fill(aes(z = mean), binwidth = binwidth, 
                       exclude = 0) +
-    geom_hline(data = cutlat, aes(yintercept = lat),
-               linetype = 2, size = 0.3, color = "gray50") +
+    # geom_hline(data = cutlat, aes(yintercept = lat),
+               # linetype = 2, size = 0.3, color = "gray50") +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(binwidth = binwidth, name = "QS3",
@@ -886,7 +886,7 @@ qs.wave.season[,
                by = .(lev, season)] %>% 
     .[lev == 300, 
       .(uv = mean(ug*vg, na.rm = T)), by = .(season)] %>% 
-    knitr::kable(col.names = c("Estación", "[u*v*]"), digits = 3, caption = "Transporte meridinoal de cantidad de viento zonal NO SE PUBLICA")
+    knitr::kable(col.names = c("Estación", "[u\\*v\\*]"), digits = 3, caption = "Transporte meridinoal de cantidad de viento zonal NO SE PUBLICA")
 ```
 
 ```{r qs3-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte", fig.height = 4}
@@ -903,7 +903,7 @@ ggplot(qs.wave.season[lat %~% cutlat$lat[1]], aes(lon, lev)) +
 
 ```{r qs3sd-ncep, fig.class = "pagewidth", fig.cap = "Desvío estándar de la reconstrucción de QS3.",  fig.height = 6}
 binwidth <- 5
-# cutlat <- -52.5
+cutlat <- -52.5
 ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
     stat_contour(aes(z = mean), breaks = c(1, -1)*20, color = "black", 
                  size = 0.5) +
@@ -965,7 +965,7 @@ Para la QS3, la amplitud media obtenida mediante Wavelets \todo{agregar referenc
 
 No existe mucha diferencia en la amplitud media zonal entre ambas metodologías a excepción de que la primera siempre es mayor que la segunda \todo{Esta es una propiedad general que SIEMPRE se cumple. En realidad podría ir en metodología}. Las principales diferencias se dan en las anomalías zonales.
 
-```{r waveletz-ncep, fig.class = "vfullpage", fig.cap = "Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa."}
+```{r waveletz-ncep, fig.class = "fullpage", fig.cap = "Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa."}
 wv.comp <- copy(wv.mean.season) %>% 
     setnames(c("amplitude", "i.amplitude"), c("Amplitud de \nla Media", "Media de \nla Amplitud")) %>% 
     melt(id.vars = c("lon", "lat", "lev", "season"), variable.name = "method") %>% 
@@ -1116,13 +1116,15 @@ index <- ncep.qs.all[index.region == TRUE & k == 3,
                      .(amplitude   = mean(amplitude),
                        m.amplitude = max(amplitude),
                        r2          = mean(r2),
-                       phase       = mean.circular(phase.c)/3),
+                       phase       = mean.circular(phase.c)/3,
+                       lat         = lat[which.max(amplitude)]),
                      by = date]
-
+index[, phase.c := circular(phase*3, modulo = "2pi")]
 fields <- ncep[lev %b% levs.index, .(lon, lat, date, lev, gh, gh.z)][
     qs.wave[lev %b% levs.index], on = c("lat", "lon", "date", "lev")]
 cor.index <- fields[, .(cor = cor(gh.z, QS3)^2), by = .(date)]
 index <- index[cor.index, on = "date"]
+
 ```
 
 
@@ -1288,7 +1290,7 @@ invisible(capture.output(w <- analyze.wavelet(index, "amplitude.t",
 ```{r wavelet-period, fig.cap = "Análisis de wavelet para la amplitud de la onda 3.", fig.publish = FALSE}
 ampl <- w$Ampl
 dimnames(ampl) <- list(period = w$Period, date = as.character(index$date)) 
-g <- cowplot::plot_grid(
+cowplot::plot_grid(
 {
     melt(ampl, value.name = "amplitude") %>%
     as.data.table(.) %>% 
@@ -1335,12 +1337,18 @@ copy(index) %>%
 
 ## Fase
 
-```{r fase-boxplot, fig.cap = "Ciclo anual de la fase (20 mayores amplitudes para cada mes)"}
+Además de la amplitud, las sondas planterias se caracterizan por su fase.
+\todo[inline]{intro sobre la fase}
+
+```{r fase-boxplot, fig.cap = "Ciclo anual de la fase (20 mayores amplitudes para cada mes)", fig.class = "fullpage"}
 lat.lims <- c(-70, -22)
-lon.lims <- c(230, 360)
+lon.lims <- c(240, 360)
 map.arg <- geom_map2(BuildMap(countries = T)[lat %b% lat.lims & 
-                                                 long %b% lon.lims])
-index <- index[, phase.c := circular(phase*3, modulo = "2pi")]
+                                                 long %b% lon.lims],
+                     color = "gray50")
+nudge <- 0.54
+size <- 2
+index[, phase.c := circular(phase*3, modulo = "2pi")]
 index %>% 
     group_by(month = month(date)) %>% 
     filter(greater(amplitude, 20)) %>% 
@@ -1348,26 +1356,56 @@ index %>%
     .[, .(phase = mean.circular(phase.c)/3,
           phase.sd = sd.circular(phase.c)/3),
       by = .(month(date))] %>% 
-    ggplot(aes(y = (-month + 6)*2.4 - 45)) +
+    ggplot(aes(y = (-month + 6)*2.6 - 45)) +
     map.arg +
     geom_point(data = index %>% 
                    group_by(month = month(date)) %>% 
                    filter(greater(amplitude, 20)), 
                aes(phase*180/pi +240),
-               alpha = 0.5, size = 0.5) +
+               alpha = 0.5, size = size, color = "red",
+               position = position_nudge(y = -nudge)) +
+    geom_point(data = index %>%
+                   group_by(month = month(date)) %>%
+                   filter(greater(amplitude, 20)),
+               aes(ifelse(phase*180/pi + 240 - 60 < 240, NA,
+                          phase*180/pi + 240 - 60)),
+               alpha = 0.5, size = size, color = "blue",
+               position = position_nudge(y = nudge)) +
+    geom_point(data = index %>% 
+                   group_by(month = month(date)) %>% 
+                   filter(greater(amplitude, 20)), 
+               aes(ifelse(phase*180/pi + 240 + 60 > 360, NA,
+                          phase*180/pi + 240 + 60)),
+               alpha = 0.5, size = size, color = "blue",
+               position = position_nudge(y = nudge)) +
+    # geom_point(aes(phase*180/pi + 240 + 60), color = "blue") +
     geom_point(aes(phase*180/pi + 240)) +
+
     geom_errorbarh(aes(xmin = (phase*180/pi + 240 - phase.sd*180/pi), 
                        xmax = (phase*180/pi + 240 + phase.sd*180/pi))) +
-    annotate(geom = "text", x = rep(237, 12), y = (-(1:12) + 6)*2.4 - 45, 
-             label = month.abb_sp, size = 3, hjust = 1) +
+    geom_errorbarh(aes(xmin = (phase*180/pi + 240 - phase.sd*180/pi) + 120, 
+                       xmax = (phase*180/pi + 240 + phase.sd*180/pi) + 120)) +
+    # annotate(geom = "label", x = rep(237, 12), y = (-(1:12) + 6)*2.6 - 45, 
+    #          label = month.abb_sp, size = 3, hjust = 0.5) +
     geom_vline(xintercept = c(240, 360), linetype = 3) +
     # map.SH.3 +
-    scale_x_longitude(ticks = 20) +
-    scale_y_latitude(ticks = 10) +
-    ylab("lat") +
-    # coord_quickmap(xlim = lon.lims, ylim = lat.lims) +
-    coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims)
+    scale_x_longitude(ticks = 20, name = "Longitud") +
+    scale_y_continuous(breaks = (-(1:12) + 6)*2.6 - 45, 
+                       minor_breaks = NULL,
+                       labels = month.abb_sp, 
+                       name = "Mes", expand = c(0, 0)) +
+    # coord_quickmap()
+    coord_quickmap(xlim = lon.lims, ylim = lat.lims) 
+    # coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims)
 ```
+
+La \autoref{fig:fase-boxplot} muestra la fase media (localización media del máximo de geopotencial) y el rango delimitado por $\pm$ 1 desvío estándar para cada mes para los 20 años con más amplitud de cada mes. En rojo y azul se indican la localización de los centros de máxima y mínima anomalía de geopotencial respectivamente de los 10 casos más extremos. El mapa se muestra para referencia, pero notar que la posición de los puntos en el eje vertical no tiene significado geográfico. 
+
+Se observa el ciclo anual en la fase ya se podía apreciar en la \autoref{fig:qs3-ncep}. La fase media se centra en 55°O en enero y se desplaza a 90°O en junio con valores intermedios en los meses de transición. Es esperable que esta variación anual implica que circulación causada por la QS3 tenga impactos contrarios en verano comparado con invierno; alternando entre advecciones de aire del norte y del sur sobre el continente. 
+
+Superpuesto a el ciclo anual, en la \autoref{fig:fase-boxplot} también se puede apreciar la variabilidad interanual para cada mes. Ésta es considerable y de una magnitud comparable a la del ciclo anual. En particular, es notorio el aumento en la variabilidad en los meses de priavera, al punto de que en noviembre la fase prácticamente no tiene una posición predilecta. 
+
+La gran variabilidad presente durante los meses de primavera, en comparación con el resto del año, explica poór qué en los campos medios la QS3 aparece débil a pesar de que su amplitud mensual no es menor. Al hacer el promedio, los campos que están defasados en entre 1/4 y 3/4 de longitud de onda (entre 30° y 90° en el caso de la QS3) interfieren destructivamente entre ellos, eliminando la señal en los campos medios. En primavera, más del 30% de los meses tienen algún nivel de interferencia destructiva con el campo medio, comparado con el 13% en verano.  
 
 ```{r phase-sd, include = params$draft}
 index[, .(sd = sd(phase.c)/3*180/pi),
@@ -1376,12 +1414,6 @@ index[, .(sd = sd(phase.c)/3*180/pi),
                  caption = "Desvío estándar de la fase para cada estación - NO SE PUBLICA")
 ```
 
-Además de la amplitud, las sondas planterias se caracterizan por su fase. La \autoref{fig:fase-boxplot} muestra la fase media y el rango delimitado por $\pm$ 1 desvío estándar para cada mes (notar que la variación en latitud es únicamente a modo de separar los meses). En la \autoref{fig:qs3-ncep} ya se observada el ciclo anual de la fase, pero en la \autoref{fig:fase-boxplot} también brinda una idea de la variabilidad existente año a año. 
-
-La gran variabilidad presente durante los meses de primavera, en comparación con el resto del año, explica pór qué en los campos medios la QS3 aparece débil a pesar de que su amplitud mensual no es menor. Al hacer el promedio, los campos que están defasados en entre 1/4 y 3/4 de longitud de onda (entre 30° y 90° en el caso de la QS3) interfieren destructivamente entre ellos, eliminando la señal en los campos medios. En primavera, más del 30% de los meses tienen generan algún nivel de interferencia destructiva con el campo medio, comparado con el 13% en verano.  
-
-\todo[inline]{Hasta acá.}
-
 ```{r destructiva, include = params$draft}
 index[, mean(abs(phase.c - mean(phase.c)) %between% (c(1/4, 3/4)*2*pi))*100, 
       by = season(date)] %>% 
@@ -1389,117 +1421,106 @@ index[, mean(abs(phase.c - mean(phase.c)) %between% (c(1/4, 3/4)*2*pi))*100,
                  digits = 3)
 ```
 
-
-Ciclo anual de la fase. 
-Cosas para ver:    
-Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay mucha variabilidad.    
-Recordar que este es aproximadamente el centro del máximo de geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso implica que en los casos donde hay puntos cerca de -120° o 0°, hay el centro de mínima está en ~-60°.    
-También notar que, como se trata en realidad de una variable cíclica, los puntos extremos representan una situación similar.     
-¿Hay mucha diferencia entre el boxplot con todos los datos y el de sólo los 20 más intensos? Yo no veo mucha y me parece que excluir a los 10 más débiles invita más preguntas que las que responde. 
-
-```{r centros-10max, fig.cap = "Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.", fig.class = "fullpage"}
-library(scales)
-index[index[, .I[greater(amplitude, 10)], by = month(date)]$V1] %>%
-    mutate(month = month(date)) %>% 
-    ggplot(aes(phase*180/pi + 240, lat)) +
-    # geom_segment(aes(xend = ifelse(phase*180/pi > 60, 
-    #                                phase*180/pi + 240 - 60, 
-    #                                phase*180/pi + 60 + 240), 
-    #                  yend = lat)) +
-    geom_point(color = muted("red")) +
-    geom_point(aes(x = phase*180/pi + 240 - 60), color = muted("blue")) +
-    geom_point(aes(x = phase*180/pi + 240 + 60), color = muted("blue")) +
-    map.arg +
-    annotate(geom = "rect", xmin = 240, xmax = 360, 
-             ymin = rect.annotation$latmin, ymax = rect.annotation$latmax,
-             fill = NA, linetype = 3, color = "black") +
-    # map.SH.3 +
-    scale_x_longitude(ticks = 20, limits = c(240, 360)) +
-    scale_y_latitude(ticks = 10) +
-    ylab("lat") +
-    # coord_quickmap(xlim = lon.lims, ylim = lat.lims) +
-    coord_map(projection = "mollweide", xlim = lon.lims, ylim = lat.lims) +
-    facet_wrap(~month, ncol = 4, labeller = labeller(month = month.abb_sp))
-```
-
-Cosas para ver:    
-La mayoría del tiempo estamos afectados por centro de máxima, pero hay casos intensos donde hay mínima. Especialmente en junio y julio. 
+Observando ahora la distribución de los centros ciclónicos y anticiclónicos (puntos rojos y azules, respectivamente\todo{esto ya está dicho antes, pero lo aclaro de nuevo?}) se nota que, a pesar de que climatolǵoicamente la Sudamérica está afectada por un máximo de Z\* de la QS3, la variabilidad interanual implica que hay un número no despreciable de años donde el continente tiene un mínimo de Z\* asociado a esa onda. Aún sólo mirando a los 20 años más intensos de cada mes, en noviembre hay 5 casos y en diciembre, 4. 
 
 ## Estaciones
 
+En las secciones anteriores se mostraron campos medios estacionales utilizando la definición tradicional de las estaciones climatológicas (verano = DEF, otoño = MAM, invierno = JJA, primavera = SON). Sin embargo, como éstas son definidas a partir del ciclo anual de temperatura en latitudes medias no constituyen necesariamente el mejor agrupamiento de los datos para otras variables u otras latitudes (por ejemplo, la Antártida \todo{cita de King}). 
 
-¿Cómo establecer una "estacionalidad"? Algún criterio para agrupar meses. Claramente las estaciones climatológicas de siempre no sirven. 
+Una metodología muy utilizada para la clasificación de campos es el análisis de componentes principales (PCA)\todo{citas de PCA}\todo{asumo que no hace falta explicar PCA}. 
 
-Una forma es, a partir del índice, agrupar los meses según su amplitud y fase media:
+La tabla xx \ref{eoftabla}\todo{cómo referenciar tablas?} muestra la varianza explicada de cada componente principal obtenida a partir de los campos reconstruidos de QS3. Las primeras dos componentes explican más del 80% de la varianza y cada una explica una parte similar de la varianza, indicando que se trata de autovalores degenrados\todo{buscar cita de esto}. Sabiendo, además, que los campos de QS3 prácticamente sólo tienen dos grados de libertad (amplitud y fase), la elección de seleccionar las dos primera componentes es natural además de justificada por la tabla \ref{eoftabla}.
 
-```{r ampl-vs-fase, fig.cap = "Amplitud y fase media para cada mes."}
-index[, .(amplitude = mean(amplitude), 
-          phase = mean(phase)),
-      by = month(date)] %>% 
-    ggplot(aes(phase, amplitude)) +
-    ggforce::geom_link2(aes(color = qs.season(month), group = 1),
-                        alpha = 0.5) +
-    # geom_path(alpha = 0.5, aes(color = qs.season(month), group = 1)) +
-    geom_point(aes(color = qs.season(month))) +
-    ggrepel::geom_text_repel(aes(label = month.abb_sp[month]))  +
-    scale_y_continuous(name = "Amplitud") +
-    scale_x_continuous(name = "Fase")
-# coord_polar(theta = "y", start = -180*pi/180)
+
+```{r eoftabla}
+qs.eof <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", 
+                   n = 1:5)
+qs.eof$sdev[, .(PC, r.squared)] %>% 
+    knitr::kable(digits = 3, 
+                 caption = "Varianza explicada por las 5 primeras componentes principales de los campos de QS3 reconstruidos.", col.names = c("PC", "$R^2$"))
 ```
 
-Otro ejemplo podría usar SVD:
 
-```{r eof, fig.cap = "Análisis SVD de QS3.probablemente basura", fig.ncol = 1, fig.show = "hold", fig.subcap = c("Varianza explicada de cada componente", "Campo asociado a las primeras 2 componentes", "Factor de peso para cada mes")}
-qs.eof.full <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", 
-                   n = 1:10)
-
+```{r eof, fig.cap = "Primeras dos componentes principales del campo de QS3"}
 qs.eof <- EOF(fields[lev == 300], lon + lat ~ date, value.var = "QS3", n = 1:2)
 
-ggplot(qs.eof.full$sdev, aes(PC, r.squared)) +
-    geom_point() +
-    scale_x_continuous(breaks = 1:10) 
-
 ggplot(qs.eof$left, aes(lon, lat)) + 
-    stat_contour(aes(z = -value, color = ..level..)) +
+    stat_contour_fill(aes(z = -value), binwidth = 0.01,
+                      exclude = 0) +
     map.SH +
-    scale_color_divergent() +
-    facet_wrap(~PC)
+    scale_fill_divergent(breaks = MakeBreaks(0.01),
+                         guide = "none") +
+    scale_s_map() +
+    coord_quickmap() + 
+    facet_wrap(~PC, ncol = 2, labeller = labeller(PC = AddPreffix("PC")))
 
-ggplot(qs.eof$right, aes(month(date), -value)) +
-    geom_boxplot(aes(color =  paste0("PC", PC), 
-                     group = interaction(PC, month(date)))) +
-    annotate("errorbarh", y = 0.15, height = 0.01, alpha = 0.5,
-             xmin = c(-1, 4, 6, 8, 12) - 0.4, 
-             xmax = c(3, 5, 7, 11, 14) + 0.3, 
-             color = 1) +
-    scale_x_continuous(name = "Mes", breaks = 1:12, labels = month.abb_sp) +
-    scale_y_continuous(name = "PC") +
-    coord_cartesian(xlim = c(1, 12))
+# ggplot(qs.eof$right, aes(month(date), -value)) +
+#     geom_boxplot(aes(color =  paste0("PC", PC),
+#                      group = interaction(PC, month(date)))) +
+#     annotate("errorbarh", y = 0.15, height = 0.01, alpha = 0.5,
+#              xmin = c(-1, 4, 6, 8, 12) - 0.4,
+#              xmax = c(3, 5, 7, 11, 14) + 0.3,
+#              color = 1) +
+#     scale_x_continuous(name = "Mes", breaks = 1:12, labels = month.abb_sp) +
+#     scale_y_continuous(name = "PC") +
+#     scale_color_brewer(palette = "Set1") +
+#     coord_cartesian(xlim = c(1, 12))
 ```
 
-```{r eof1-eof2, fig.cap = "'Magnitud' y 'Fase' de cada mes a partir de las componentes principales"}
-dcast(qs.eof$right, ... ~ paste0("PC", PC)) %>% 
-    .[, .(dif = mean(PC2 - PC1), mag = mean(sqrt(PC2^2 + PC2^2))),
-      by = .(month(date))] %>% 
-    ggplot(aes(dif, mag)) +
+La forma de las dos primeras componentes principales del campo de QS3 (\autoref{fig:eof-field}) son dos QS3 en cuadratura cuya combinación lineal resulta en otra QS3 cuya fase depende de la amplitud relativa de cada componente. En verano predomina la PC1, mientras que en invierno predomina la PC2 como se muestra en la \autoref{fig:pc1-pc2}. En este diagrama se puede mapear aproximadamente la amplitud y la fase media de cada mes a la distancia y el ángulo con respecto al origen.
+
+En la \autoref{fig:pc1-pc2} también se hace una posible modificación de las estaciones clásicas adaptada para el análisis de la QS3 basada en la posición media de cada mes en el espacio de componentes principales. Enero, febrero y marzo tienen preponderancia del PC1 y casi nulo PC2, abril, mayo, agosto, septiembre y octubre tienen una mezcla similar de componentes, pero es conveniente separar los dos primeros para respetar la progresión temporal. Junio y julio no están tan juntos como los demás meses, pero se los puede agrupar por tener gran magnitud de PC2. Finalmente, noviembre y diciembre aparecen como *outliers* en este diagrama debido a que su mayor variabilidad (como se notó en la \autoref{fase}) hace que no predomine ninguna componente princpal. Es posible clasificarlos juntos como meses de "no estacionaridad" indicando que se trata de una época del año donde la QS3 no está presente. 
+
+
+```{r pc1-pc2, fig.cap = "Valor medio de las dos primeras componentes principales del campo de QS3", fig.height = 5}
+qs.eof$right[, .(value = -mean(value)), by = .(PC, month(date))] %>% 
+    dcast(... ~ paste0("PC", PC)) %>% 
+    # .[, .(dif = mean(PC2 - PC1), mag = mean(sqrt(PC2^2 + PC2^2))),
+      # by = .(month(date))] %>% 
+    ggplot(aes(PC1, PC2)) +
+    geom_hline(yintercept = 0, linetype = 1, color = "gray50") +
+    geom_vline(xintercept = 0, linetype = 1, color = "gray50") +
     ggforce::geom_link2(aes(color = qs.season(month), group = 1),
                         alpha = 0.5) +
     geom_point(aes(color = qs.season(month))) +
-    ggrepel::geom_text_repel(aes(label = month.abb_sp[month]))  +
-    scale_x_continuous(name = "PC2 - PC1") +
-    scale_y_continuous(name = "sqrt(PC1^2 + PC2^2)")
+    ggrepel::geom_text_repel(aes(label = month.abb_sp[month])) +
+    scale_color_brewer(palette = "Set1", na.translate = F) +
+    coord_equal()
 ```
 
-Cosas para ver:    
-Los campos son descriptos bien por sólo 2 componentes principales de igual magnitud que esencialmente describen el corrimiento de fase de la onda. La "magnitud" del vector de componentes mapea bien a la amplitud de fourier y la diferencia mapea bien a la fasae. 
-No hay nada nuevo por acá. 
+El efecto de esta nueva clasificación en los campos medios se presenta en las figuras \ref{fig:qs3-qsseason-ncep} y \ref{qs3-qsseason-ncep}. Comparando con las figuras \ref{fig:qs3-season-ncep} y \ref{qs3-season-ncep} de la sección \ref{onda-3} se ve que los campos de las estaciones de transición (AM y ASO) son más similares entre ellas tanto en el campo horizontal como en el corte meridional. Los meses no estacionarios (ND), por su parte, prácticamente carecen de QS3. 
 
+```{r qs3-qsseason-ncep, fig.class = "pagewidth", fig.cap = "Media de reconstrucción de onda 3 en 300hPa", fig.height = 6}
+qs.qs.season <- qs.wave[, 
+                        .(QS3 = mean(QS3)),
+                        by = .(lon, lat, lev, qs.season(date))] 
 
-Grupos:
-* Enero + Febrero + Marzo es un grupo bastante seguro. Se ven juntos en el diagrama amplitud-fase, tienne alta correlación entre ellos y en componentes principales tienen PC1 significativamente mayor que PC2. 
-* Junio + Julio parecen ir por su cuenta. Tienen mucha correlación entre ellos y ambos tienen PC2 mayor que PC1 aunque su fase difiere bastante. 
+binwidth <- 10
+ggplot(qs.qs.season[lev == 300], aes(lon, lat)) +
+    geom_contour_fill(aes(z = QS3), binwidth = binwidth, 
+                      exclude = 0) +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(binwidth = binwidth, name = "QS3",
+                         guide = guide_colorstrip_bottom()) +
+    facet_wrap(~qs.season, ncol = 2) +
+    coord_quickmap()
+```
 
-Los otros meses quedan medio mezclados, pero pueden agruparse como meses de "transición". 
+```{r qs3-qsseason-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte", fig.height = 4}
+ggplot(qs.qs.season[lat %~% -52.5], aes(lon, lev)) +
+    # stat_contour_fill(aes(z = sd), binwidth = 10) +
+    geom_contour_fill(aes(z = QS3), binwidth = binwidth, exclude = 0) +
+    scale_y_level(breaks = plot.levs) +
+    scale_x_longitude(name = "longitud") +
+    scale_fill_divergent(binwidth = binwidth, name = "QS3",
+                         guide = guide_colorstrip_bottom()) +
+    facet_wrap(~qs.season, ncol = 2) 
+```
+
+El uso de componentes principales para el análisis de una onda que cambia de fase es similar a la metodología utilizada para el monitoreo de la MJO\todo{cita de MJO} por lo que sería posible su utilización como indicador de la actividad de la QS3 distinto de la amplitud media de Fourier. La exploración de dicho indicador está por fuera del objetivo de este trabajo. 
+
+Una desventaja de esta clasificación es que no todas las estaciones tienen la misma cantidad de meses, lo cual dificulta la comparación estadísica entre distintas estaciones. 
 
 ## Persistencia (ver dónde va)
 
@@ -1533,7 +1554,8 @@ ggplot(qs.croscor[lag != 0], aes(month2, month)) +
     scale_x_continuous(name = "Mes siguiente", expand = c(0, 0),
                        breaks = 1:12, labels = month.abb_sp) +
     scale_fill_divergent(breaks = MakeBreaks(0.1), 
-                         guide = "none")
+                         guide = "none") +
+    theme(panel.ontop = F)
 ```
 
 ## R2
@@ -1660,7 +1682,7 @@ regression <- cache.file(file, {
 })
 ```
 
-```{r regr-gh-ncep, fig.cap = "Regresión sobre amplitud.", fig.class = "vfullpage"}
+```{r regr-gh-ncep, fig.cap = "Regresión sobre amplitud.", fig.class = "fullpage"}
 binwidth <- 10
 ggplot(regression[regressor == "amplitude"], aes(lon, lat)) +
     stat_contour(aes(z = estimate, color = ..level..), binwidth = binwidth) +
@@ -1737,7 +1759,7 @@ stream.reg <- cache.file(file, {
 ```
 
 
-```{r regr-psi-ncep, fig.cap = "Regresión de Psi con la amplitud.", fig.class = "vfullpage"}
+```{r regr-psi-ncep, fig.cap = "Regresión de Psi con la amplitud.", fig.class = "fullpage"}
 binwidth <- 1e6
 scale <- 600
 
@@ -1898,12 +1920,12 @@ tempplot <- function(m) {
 ```
 
 
-```{r gh-qs3-select-ene, fig.cap = "Campos para los 10 eneros seleccionados.", fig.class = "vfullpage"}
+```{r gh-qs3-select-ene, fig.cap = "Campos para los 10 eneros seleccionados.", fig.class = "fullpage"}
 tempplot(1)
 
 ```
 
-```{r gh-qs3-select-sep, fig.cap = "Campos para los 10 septiembres seleccionados.", fig.class = "vfullpage"}
+```{r gh-qs3-select-sep, fig.cap = "Campos para los 10 septiembres seleccionados.", fig.class = "fullpage"}
 tempplot(9)
 
 ```

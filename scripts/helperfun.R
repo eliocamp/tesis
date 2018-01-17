@@ -925,7 +925,7 @@ mode.circular <- function(x, limits = c(0, 2/3*pi)) {
 }
 
 # "Estaciones" en base a la amplitud y fase de la onda 3.
-qs.season <- function(month) {
+qs.season2 <- function(month) {
     if (metR:::.is.somedate(month)) month <- lubridate::month(month)
 
     qs.seasons <- factor(c(rep("Verano", 3),
@@ -933,11 +933,24 @@ qs.season <- function(month) {
                            rep("Invierno", 2),
                            rep("Primavera", 4),
                            "Verano"))
-    # seasons <- c(sum, sum, sum,rep(c(aut, win, spr), each = 3), sum)
 
     return(factor(qs.seasons[month], levels = c("Verano", "Oto\u00f1o",
                                                 "Invierno", "Primavera")))
 }
+
+qs.season <- function(month) {
+    if (metR:::.is.somedate(month)) month <- lubridate::month(month)
+
+    qs.seasons <- factor(c(rep("EFM", 3),
+                           rep("AM", 2),
+                           rep("JJ", 2),
+                           rep("ASO", 3),
+                           rep("ND", 2)))
+
+    return(factor(qs.seasons[month], levels = c("EFM", "AM", "JJ",
+                                                "ASO", "ND")))
+}
+
 
 geom_contour_back <- function(...) {
     geom_contour(..., color = "black", size = 0.2, alpha = 0.5)

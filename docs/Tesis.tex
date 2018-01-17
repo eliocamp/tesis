@@ -621,11 +621,11 @@ medida en verano.
 \caption{Transporte meridinoal de cantidad de viento zonal NO SE
 PUBLICA}\tabularnewline
 \toprule
-Estación & {[}u\emph{v}{]}\tabularnewline
+Estación & {[}u*v*{]}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-Estación & {[}u\emph{v}{]}\tabularnewline
+Estación & {[}u*v*{]}\tabularnewline
 \midrule
 \endhead
 Verano & -0.100\tabularnewline
@@ -677,7 +677,7 @@ Las principales diferencias se dan en las anomalías zonales.
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/waveletz-ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/waveletz-ncep-1} 
 
 }
 
@@ -885,14 +885,59 @@ estadísticamente significativa (no se muestra\todo{¿no se muestra?})
 \end{figure*}
 
 \begin{figure}
+\includegraphics[ ]{fig/tesis/wavelet-period-1} \caption{Análisis de wavelet para la amplitud de la onda 3. - fig:wavelet-period - SÓLO BORRADOR}\label{fig:wavelet-period}
+\end{figure}
+
+\begin{figure}
 \includegraphics[ ]{fig/tesis/acf-ampl-1} \caption{Función de autocorrelación para la amplitud media anual de la onda 3 - fig:acf-ampl - SÓLO BORRADOR}\label{fig:acf-ampl}
 \end{figure}
 
 \section{Fase}\label{fase}
 
+Además de la amplitud, las sondas planterias se caracterizan por su
+fase. \todo[inline]{intro sobre la fase}
+
 \begin{figure}
-\includegraphics[ ]{fig/tesis/fase-boxplot-1} \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes) - fig:fase-boxplot}\label{fig:fase-boxplot}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/fase-boxplot-1} 
+
+}
+
+\caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes) - fig:fase-boxplot}\label{fig:fase-boxplot}
 \end{figure}
+
+La \autoref{fig:fase-boxplot} muestra la fase media (localización media
+del máximo de geopotencial) y el rango delimitado por \(\pm\) 1 desvío
+estándar para cada mes para los 20 años con más amplitud de cada mes. En
+rojo y azul se indican la localización de los centros de máxima y mínima
+anomalía de geopotencial respectivamente de los 10 casos más extremos.
+El mapa se muestra para referencia, pero notar que la posición de los
+puntos en el eje vertical no tiene significado geográfico.
+
+Se observa el ciclo anual en la fase ya se podía apreciar en la
+\autoref{fig:qs3-ncep}. La fase media se centra en 55°O en enero y se
+desplaza a 90°O en junio con valores intermedios en los meses de
+transición. Es esperable que esta variación anual implica que
+circulación causada por la QS3 tenga impactos contrarios en verano
+comparado con invierno; alternando entre advecciones de aire del norte y
+del sur sobre el continente.
+
+Superpuesto a el ciclo anual, en la \autoref{fig:fase-boxplot} también
+se puede apreciar la variabilidad interanual para cada mes. Ésta es
+considerable y de una magnitud comparable a la del ciclo anual. En
+particular, es notorio el aumento en la variabilidad en los meses de
+priavera, al punto de que en noviembre la fase prácticamente no tiene
+una posición predilecta.
+
+La gran variabilidad presente durante los meses de primavera, en
+comparación con el resto del año, explica poór qué en los campos medios
+la QS3 aparece débil a pesar de que su amplitud mensual no es menor. Al
+hacer el promedio, los campos que están defasados en entre 1/4 y 3/4 de
+longitud de onda (entre 30° y 90° en el caso de la QS3) interfieren
+destructivamente entre ellos, eliminando la señal en los campos medios.
+En primavera, más del 30\% de los meses tienen algún nivel de
+interferencia destructiva con el campo medio, comparado con el 13\% en
+verano.
 
 \begin{longtable}[]{@{}lr@{}}
 \caption{Desvío estándar de la fase para cada estación - NO SE
@@ -912,26 +957,6 @@ Primavera & 29.41456\tabularnewline
 \bottomrule
 \end{longtable}
 
-Además de la amplitud, las sondas planterias se caracterizan por su
-fase. La \autoref{fig:fase-boxplot} muestra la fase media y el rango
-delimitado por \(\pm\) 1 desvío estándar para cada mes (notar que la
-variación en latitud es únicamente a modo de separar los meses). En la
-\autoref{fig:qs3-ncep} ya se observada el ciclo anual de la fase, pero
-en la \autoref{fig:fase-boxplot} también brinda una idea de la
-variabilidad existente año a año.
-
-La gran variabilidad presente durante los meses de primavera, en
-comparación con el resto del año, explica pór qué en los campos medios
-la QS3 aparece débil a pesar de que su amplitud mensual no es menor. Al
-hacer el promedio, los campos que están defasados en entre 1/4 y 3/4 de
-longitud de onda (entre 30° y 90° en el caso de la QS3) interfieren
-destructivamente entre ellos, eliminando la señal en los campos medios.
-En primavera, más del 30\% de los meses tienen generan algún nivel de
-interferencia destructiva con el campo medio, comparado con el 13\% en
-verano.
-
-\todo[inline]{Hasta acá.}
-
 \begin{longtable}[]{@{}lr@{}}
 \caption{Porcentaje de meses con interferencia destructiva - NO SE
 PUBLICA}\tabularnewline
@@ -950,75 +975,121 @@ Primavera & 31.183\tabularnewline
 \bottomrule
 \end{longtable}
 
-Ciclo anual de la fase. Cosas para ver:\\
-Se ve el ciclo anual que ya se veía en una figura anterior. Pero hay
-mucha variabilidad.\\
-Recordar que este es aproximadamente el centro del máximo de
-geopotencial y que, por construcción, hay un centro de mínima a 60°. Eso
-implica que en los casos donde hay puntos cerca de -120° o 0°, hay el
-centro de mínima está en \textasciitilde{}-60°.\\
-También notar que, como se trata en realidad de una variable cíclica,
-los puntos extremos representan una situación similar.\\
-¿Hay mucha diferencia entre el boxplot con todos los datos y el de sólo
-los 20 más intensos? Yo no veo mucha y me parece que excluir a los 10
-más débiles invita más preguntas que las que responde.
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/centros-10max-1} 
-
-}
-
-\caption{Centros de máxima (puntos rojos) y mínima (puntos azules) para los 10 años con mayor amplitud de la onda 3, para cada mes.{fig:centros-10max}}\label{fig:centros-10max}
-\end{figure}
-
-Cosas para ver:\\
-La mayoría del tiempo estamos afectados por centro de máxima, pero hay
-casos intensos donde hay mínima. Especialmente en junio y julio.
+Observando ahora la distribución de los centros ciclónicos y
+anticiclónicos (puntos rojos y azules,
+respectivamente\todo{esto ya está dicho antes, pero lo aclaro de nuevo?})
+se nota que, a pesar de que climatolǵoicamente la Sudamérica está
+afectada por un máximo de Z* de la QS3, la variabilidad interanual
+implica que hay un número no despreciable de años donde el continente
+tiene un mínimo de Z* asociado a esa onda. Aún sólo mirando a los 20
+años más intensos de cada mes, en noviembre hay 5 casos y en diciembre,
+4.
 
 \section{Estaciones}\label{estaciones}
 
-¿Cómo establecer una ``estacionalidad''? Algún criterio para agrupar
-meses. Claramente las estaciones climatológicas de siempre no sirven.
+En las secciones anteriores se mostraron campos medios estacionales
+utilizando la definición tradicional de las estaciones climatológicas
+(verano = DEF, otoño = MAM, invierno = JJA, primavera = SON). Sin
+embargo, como éstas son definidas a partir del ciclo anual de
+temperatura en latitudes medias no constituyen necesariamente el mejor
+agrupamiento de los datos para otras variables u otras latitudes (por
+ejemplo, la Antártida \todo{cita de King}).
 
-Una forma es, a partir del índice, agrupar los meses según su amplitud y
-fase media:
+Una metodología muy utilizada para la clasificación de campos es el
+análisis de componentes principales
+(PCA)\todo{citas de PCA}\todo{asumo que no hace falta explicar PCA}.
+
+La tabla xx \ref{eoftabla}\todo{cómo referenciar tablas?} muestra la
+varianza explicada de cada componente principal obtenida a partir de los
+campos reconstruidos de QS3. Las primeras dos componentes explican más
+del 80\% de la varianza y cada una explica una parte similar de la
+varianza, indicando que se trata de autovalores
+degenrados\todo{buscar cita de esto}. Sabiendo, además, que los campos
+de QS3 prácticamente sólo tienen dos grados de libertad (amplitud y
+fase), la elección de seleccionar las dos primera componentes es natural
+además de justificada por la tabla \ref{eoftabla}.
+
+\begin{longtable}[]{@{}rr@{}}
+\caption{Varianza explicada por las 5 primeras componentes principales
+de los campos de QS3 reconstruidos.}\tabularnewline
+\toprule
+PC & \(R^2\)\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+PC & \(R^2\)\tabularnewline
+\midrule
+\endhead
+1 & 0.436\tabularnewline
+2 & 0.397\tabularnewline
+3 & 0.054\tabularnewline
+4 & 0.038\tabularnewline
+5 & 0.026\tabularnewline
+\bottomrule
+\end{longtable}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ampl-vs-fase-1} \caption{Amplitud y fase media para cada mes.{fig:ampl-vs-fase}}\label{fig:ampl-vs-fase}
+\includegraphics[ ]{fig/tesis/eof-1} \caption{Primeras dos componentes principales del campo de QS3 - fig:eof}\label{fig:eof}
 \end{figure}
 
-Otro ejemplo podría usar SVD:
+La forma de las dos primeras componentes principales del campo de QS3
+(\autoref{fig:eof-field}) son dos QS3 en cuadratura cuya combinación
+lineal resulta en otra QS3 cuya fase depende de la amplitud relativa de
+cada componente. En verano predomina la PC1, mientras que en invierno
+predomina la PC2 como se muestra en la \autoref{fig:pc1-pc2}. En este
+diagrama se puede mapear aproximadamente la amplitud y la fase media de
+cada mes a la distancia y el ángulo con respecto al origen.
+
+En la \autoref{fig:pc1-pc2} también se hace una posible modificación de
+las estaciones clásicas adaptada para el análisis de la QS3 basada en la
+posición media de cada mes en el espacio de componentes principales.
+Enero, febrero y marzo tienen preponderancia del PC1 y casi nulo PC2,
+abril, mayo, agosto, septiembre y octubre tienen una mezcla similar de
+componentes, pero es conveniente separar los dos primeros para respetar
+la progresión temporal. Junio y julio no están tan juntos como los demás
+meses, pero se los puede agrupar por tener gran magnitud de PC2.
+Finalmente, noviembre y diciembre aparecen como \emph{outliers} en este
+diagrama debido a que su mayor variabilidad (como se notó en la
+\autoref{fase}) hace que no predomine ninguna componente princpal. Es
+posible clasificarlos juntos como meses de ``no estacionaridad''
+indicando que se trata de una época del año donde la QS3 no está
+presente.
 
 \begin{figure}
-\subfloat[Varianza explicada de cada componente\label{fig:eof1}]{\includegraphics[ ]{fig/tesis/eof-1} }\newline\subfloat[Campo asociado a las primeras 2 componentes\label{fig:eof2}]{\includegraphics[ ]{fig/tesis/eof-2} }\newline\subfloat[Factor de peso para cada mes\label{fig:eof3}]{\includegraphics[ ]{fig/tesis/eof-3} }\caption{Análisis SVD de QS3.probablemente basura{fig:eof}}\label{fig:eof}
+\includegraphics[ ]{fig/tesis/pc1-pc2-1} \caption{Valor medio de las dos primeras componentes principales del campo de QS3 - fig:pc1-pc2}\label{fig:pc1-pc2}
 \end{figure}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/eof1-eof2-1} \caption{'Magnitud' y 'Fase' de cada mes a partir de las componentes principales{fig:eof1-eof2}}\label{fig:eof1-eof2}
-\end{figure}
+El efecto de esta nueva clasificación en los campos medios se presenta
+en las figuras \ref{fig:qs3-qsseason-ncep} y \ref{qs3-qsseason-ncep}.
+Comparando con las figuras \ref{fig:qs3-season-ncep} y
+\ref{qs3-season-ncep} de la sección \ref{onda-3} se ve que los campos de
+las estaciones de transición (AM y ASO) son más similares entre ellas
+tanto en el campo horizontal como en el corte meridional. Los meses no
+estacionarios (ND), por su parte, prácticamente carecen de QS3.
 
-Cosas para ver:\\
-Los campos son descriptos bien por sólo 2 componentes principales de
-igual magnitud que esencialmente describen el corrimiento de fase de la
-onda. La ``magnitud'' del vector de componentes mapea bien a la amplitud
-de fourier y la diferencia mapea bien a la fasae. No hay nada nuevo por
-acá.
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/qs3-qsseason-ncep-1} \caption{Media de reconstrucción de onda 3 en 300hPa - fig:qs3-qsseason-ncep}\label{fig:qs3-qsseason-ncep}
+\end{figure*}
 
-Grupos: * Enero + Febrero + Marzo es un grupo bastante seguro. Se ven
-juntos en el diagrama amplitud-fase, tienne alta correlación entre ellos
-y en componentes principales tienen PC1 significativamente mayor que
-PC2. * Junio + Julio parecen ir por su cuenta. Tienen mucha correlación
-entre ellos y ambos tienen PC2 mayor que PC1 aunque su fase difiere
-bastante.
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1} \caption{Corte - fig:qs3-qsseason-ncep-corte}\label{fig:qs3-qsseason-ncep-corte}
+\end{figure*}
 
-Los otros meses quedan medio mezclados, pero pueden agruparse como meses
-de ``transición''.
+El uso de componentes principales para el análisis de una onda que
+cambia de fase es similar a la metodología utilizada para el monitoreo
+de la MJO\todo{cita de MJO} por lo que sería posible su utilización como
+indicador de la actividad de la QS3 distinto de la amplitud media de
+Fourier. La exploración de dicho indicador está por fuera del objetivo
+de este trabajo.
+
+Una desventaja de esta clasificación es que no todas las estaciones
+tienen la misma cantidad de meses, lo cual dificulta la comparación
+estadísica entre distintas estaciones.
 
 \section{Persistencia (ver dónde va)}\label{persistencia-ver-donde-va}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes.{fig:lag-cor}}\label{fig:lag-cor}
+\includegraphics[ ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes. - fig:lag-cor}\label{fig:lag-cor}
 \end{figure}
 
 \section{R2}\label{r2}
@@ -1083,11 +1154,11 @@ Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/regr-gh-ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-gh-ncep-1} 
 
 }
 
-\caption{Regresión sobre amplitud.{fig:regr-gh-ncep}}\label{fig:regr-gh-ncep}
+\caption{Regresión sobre amplitud. - fig:regr-gh-ncep}\label{fig:regr-gh-ncep}
 \end{figure}
 
 Cosas para ver:\\
@@ -1106,7 +1177,7 @@ de SAM positivo y negativo respectivamente.
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/regr-psi-ncep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-psi-ncep-1} 
 
 }
 
@@ -1165,20 +1236,20 @@ no hay mucha diferencia. En efecto, las composiciones son casi iguales
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-ene-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-qs3-select-ene-1} 
 
 }
 
-\caption{Campos para los 10 eneros seleccionados.{fig:gh-qs3-select-ene}}\label{fig:gh-qs3-select-ene}
+\caption{Campos para los 10 eneros seleccionados. - fig:gh-qs3-select-ene}\label{fig:gh-qs3-select-ene}
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-sep-1} 
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-qs3-select-sep-1} 
 
 }
 
-\caption{Campos para los 10 septiembres seleccionados.{fig:gh-qs3-select-sep}}\label{fig:gh-qs3-select-sep}
+\caption{Campos para los 10 septiembres seleccionados. - fig:gh-qs3-select-sep}\label{fig:gh-qs3-select-sep}
 \end{figure}
 
 Estos gráficos me parecen importantes para ver lo que hay ``adentro'' de
