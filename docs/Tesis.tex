@@ -177,6 +177,14 @@ Cambio en el máximo. Localización en vez de un número para cada latitud.
 
 \chapter{Climatología observada}\label{climatologia-observada}
 
+En esta sección se presentan campos medios y anomalías zonales de altura
+geopotencial, temperatura, viento zonal, viento meridinal, gradiente
+meridional de vorticidad absoluta y el número de onda estacionario, y
+función corriente como introducción general al estado medio de la
+atmósfera sobre el cual se desarrollan las ondas estacionarias. Luego se
+analizan los campos de amplitud y varianza explicada por las ondas
+cuasiestacionarias (QS) en sí mismas.
+
 \section{Altura geopotencial}\label{altura-geopotencial}
 
 Campo medio:
@@ -191,12 +199,25 @@ Campo medio:
 \end{figure}
 
 El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra
-una estructura más zonal en el HS que en el HN. Es evidente la
-generación del vórtice polar en la estratósfera de invierno y primavera
-y el aumento del gradiente meridional de Z con la altura.
+una estructura más zonal en el HS que en el HN en todos los niveles y
+estaciones. En verano el gradiente meridional de Z es máximo en 200hPa,
+reduciéndose en 500hPa y por encima de 100hPa. En 50hPa el gradiente es
+prácticamente nulo y en niveles superiores, éste se invierte en
+comparación a los inferiores (no se muestra). En otoño el máximo de
+gradiente todavía se da en 200hPa, pero continua siendo intenso en
+niveles superiores. En invierno y primavera, el mayor gradiente se da en
+50hPa y es mucho más intenso que los observados en los demás niveles o
+estaciones. En contraste con el resto de los niveles, 50hPa y 100hPa
+tienen mucha más variabilidad estacional.
+
+El aumento del gradiente meridional de geopotencial en invierno y
+primavera en niveles altos está relacionado con la generación del
+vórtice polar que aisla las latitudes polares de las latitudes medias.
+En 200hPa, en cambio, es evidencia del jet subtropical, que es más
+estable a lo largo de todo el año.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ghdy-ncep-corte-1} \caption{Gradiente meridional de Z - fig:ghdy-ncep-corte}\label{fig:ghdy-ncep-corte}
+\includegraphics[ ]{fig/tesis/ghdy-ncep-corte-1} \caption{Gradiente meridional de Z - fig:ghdy-ncep-corte - SÓLO BORRADOR}\label{fig:ghdy-ncep-corte}
 \end{figure}
 
 \begin{figure}
@@ -208,28 +229,36 @@ y el aumento del gradiente meridional de Z con la altura.
 \caption{Anomalía zonal de altura geopotencial. - fig:ghz-ncep}\label{fig:ghz-ncep}
 \end{figure}
 
-Las anomalías zonales (\autoref{fig:ghz-ncep}) muestran una
-preponderancia de una onda 1 (QS1) con una amplitud máxima en la
-estratósfera de primavera y una estructura coherente en la vertical en
-60°S (\autoref{fig:ghz-ncep-corte60}). Pueden diferenciarse dos QS1
-distintas; una centrada en \textasciitilde{}60°S y con el centro
-anticiclónico al rededor de la línea de fecha, y la otra sobre la costa
-del continente y el centro anticiclónico entre 120 y 60°O. Quintanar y
-Mechoso (\protect\hyperlink{ref-Quintanar1995}{1995}) concluyó que el
-primero está asociado principalmente con forzantes de latitudes bajas
-mientras que el segundo responde a la orografía del continente
-antártico.
+Las anomalías zonales de geopotencial (Z*, \autoref{fig:ghz-ncep})
+muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima
+en la estratósfera de primavera. Pueden diferenciarse dos QS1 distintas;
+una centrada en \textasciitilde{}60°S y con el centro anticiclónico al
+rededor de la línea de fecha, y la otra sobre la costa del continente y
+el centro anticiclónico entre 120 y 60°O. Quintanar y Mechoso
+(\protect\hyperlink{ref-Quintanar1995}{1995}) concluyó que el primero
+está asociado principalmente con forzantes de latitudes bajas mientras
+que el segundo responde a la orografía del continente antártico.
 
-Salvo en verano, la inclinación hacia el oeste en la horizontal y en la
-vertical indica que las perturbaciones estacionarias están asociadas con
-transporte hacia el polo tanto de cantidad de movimiento zonal como de
-temperatura.
-\todo[inline]{¿Debería agregar una justificación de esto? ¿Un resumen del desarrollo matemático que está en el James?}
+En latitudes tropicales, en verano hay una anomalía negativa sobre el
+Pacífico este con máxima amplitud en 200hPa que está presente en las
+otras estaciones con menor intensidad. Sobre Sudamérica, en verano y
+primavera en ese mismo nivel aparece un centro anticiclónico con un
+centro ciclónico al noroeste. Estas anomalías (la alta de Bolivia y la
+baja del noroeste) son caracetrísticas del Sistema Monzónico
+Sudamericano\todo{buscar cita}.
 
-En verano, las anomalías zonales tienen una estructura barotrópica
-equivalente y carecen de inclinación en la horizontal. Consecuentemente,
-los transportes meridionales asociados se reducen considerablemente.
-\todo{¿Por qué?}
+En la \autoref{fig:ghz-ncep-corte69} se muestra un corte zonal en 60°S
+de Z*. Se aprecia la coherencia vertical de la QS1 y es evidente la
+inclinación hacia el oeste con la altura en todas las estaciones salvo
+en verano.
+
+La inclinación hacia el oeste con la latitud (\autoref{fig:ghz-ncep}) y
+con la altura (\autoref{fig:ghz-ncep-corte60}) indican que las
+perturbaciones estacionarias están asociadas con transporte hacia el
+polo tanto de cantidad de movimiento zonal como de temperatura. Como en
+verano las anomalías zonales tienen una estructura barotrópica
+equivalente y carecen de inclinación en la horizontal, los transportes
+meridionales asociados se reducen considerablemente. \todo{¿Por qué?}
 
 \begin{figure}
 
@@ -237,11 +266,11 @@ los transportes meridionales asociados se reducen considerablemente.
 
 }
 
-\caption{Corte zonal de anomalía de geopotencial en -60°.{fig:ghz-ncep-corte60}}\label{fig:ghz-ncep-corte60}
+\caption{Corte zonal de anomalía de geopotencial en -60°. - fig:ghz-ncep-corte60}\label{fig:ghz-ncep-corte60}
 \end{figure}
 
 \begin{figure}
-\subfloat[uz*vz*\label{fig:uzvz-ncep-corte1}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte - SÓLO BORRADOR}\label{fig:uzvz-ncep-corte}
+\subfloat[u*v*\label{fig:uzvz-ncep-corte1}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte - SÓLO BORRADOR}\label{fig:uzvz-ncep-corte}
 \end{figure}
 
 El ciclo anual de la amplitud de las ondas estacionarias se observa en
@@ -272,23 +301,32 @@ octubre, y el mínimo entre febrero y abril, según el nivel.
 \caption{Temperatura media. - fig:t-ncep}\label{fig:t-ncep}
 \end{figure}
 
-En la tropósfera, la temperatura (\autoref{fig:t-ncep}) presenta una
-estructura zonal con mayor baroclinicidad en invierno. En 200 hPa los
-gradientes meridionales son mínimos y por encima de ese nivel éstos se
-revierten, dando lugar a temperaturas ecuatoriales menores que las
-polares (\autoref{fig:tz-ncep-corte}). Por encima de 100 hPa de invierno
-y primavera, hay un máximo relativo en \textasciitilde{}45°
-\todo{¿Por qué?} y una región de anomalías zonales positivas que se ve
-claramente incluso en el campo total, particularmente en primavera.
+Pasando a la temperatura, en la \autoref{fig:t-ncep} puede verse que, al
+igual que el campo de geopotencial, tiene una estructura principalmente
+zonal en todos los niveles y estaciones. Por debajo de los 200hPa, donde
+el gradiente meridional de temperatura es mínimo, la temperatura
+disminuye con la latitud en todas las estaciones. Por encima de este
+nivel, en cambio, en verano la temperatura crece con la latitud, y en el
+resto de las estaciones muestra un máximo centrado en 60°S en otoño y en
+45°S en invierno y primavera. El nivel de 850hPa se ve particularmente
+deformado por los contrastes de temperatura zonales como el máximo sobre
+Australia en verano.
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/tz-ncep-corte-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/t-ncep-corte-1} 
 
 }
 
-\caption{Corte meridional de temperatura media.{fig:tz-ncep-corte}}\label{fig:tz-ncep-corte}
+\caption{Corte meridional de temperatura media. - fig:t-ncep-corte}\label{fig:t-ncep-corte}
 \end{figure}
+
+Haciendo un promedio zonal como se muestra en la
+\autoref{fig:t-ncep-corte}, se observa un mínimo de temperatura se da en
+la estatósfera tropical durante todo el año y uno en la estatósfera
+polar con amplitud, extensión y altura máxima en invierno y mínima en
+verano. El máximo relativo de tempertura observado por encima de 100hPa
+se da como consecuencia de estos dos mínimos.
 
 \begin{figure}
 
@@ -299,28 +337,31 @@ claramente incluso en el campo total, particularmente en primavera.
 \caption{Anomalía zonal de temperatura. - fig:tz-ncep}\label{fig:tz-ncep}
 \end{figure}
 
-Como se puede apreciar en el campo de T* (\autoref{fig:tz-ncep}), en
-invierno y primavera, los niveles altos están dominados por una QS1 con
-máximo en el sur de Australia y mínimo en el Atlántico sur. En niveles
-más bajos, la onda se defasa hacia el este y queda casi en cuadratura
-(\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en Antártida
-occidental.
+En la \autoref{fig:tz-ncep} se muestran las anomalías zonales de
+temperatura. En 850hPa se aprecia mejor el efecto del contraste de
+temperatura entre el suelo y el mar que en la \autoref{fig:t-ncep}. Se
+observan anomalías positivas sobre los continentes y negativas sobre los
+océanos en todas las estaciones, aunque más intensas en verano y
+primavera. En niveles más altos éstas pierden su intensidad pero
+reaparecen en 100hPa con signo invertido. Estas características tienen
+su correlato en la altura geopotencial y corresponden a circulaciones
+tipo Walker \todo{¿Es así?}.
 
-\todo[inline]{¿Más detalle?}
-
-En los trópicos, las anomalías de temperatura presentan un patrón de
-onda 3 con máximos en los continentes y mínimos en los océanos que se
-revierten de signo en 100hPa. Estas características tienen su correlato
-en la altura geopotencial y corresponden a circulaciones tipo Walker
-\todo{¿Es así?}.
+En invierno y primavera, los niveles altos están dominados por una QS1
+con máximo en el sur de Australia y mínimo en el Atlántico sur. En
+niveles más bajos, la onda disminuye su amplitid y se defasa hacia el
+este y queda casi en cuadratura (\autoref{fig:t-ncep-corte60}) con el
+máximo en 850hPa en Antártida occidental. En otoño esta onda está
+presente pero con amplitud muy reducida y máxima en niveles medios.
+Finalmente, en verano ésta desaparece por encima de 100hPa.
 
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/tz-ncep-corte60-1} 
+{\centering \includegraphics[width=130mm, ]{fig/tesis/t-ncep-corte60-1} 
 
 }
 
-\caption{Corte zonal de anomalía de temperatura en -60°. - fig:tz-ncep-corte60}\label{fig:tz-ncep-corte60}
+\caption{Corte zonal de anomalía de temperatura en -60°. - fig:t-ncep-corte60}\label{fig:t-ncep-corte60}
 \end{figure}
 
 \section{Viento zonal}\label{viento-zonal}
@@ -334,10 +375,11 @@ en la altura geopotencial y corresponden a circulaciones tipo Walker
 \caption{Viento zonal medio. - fig:u-ncep-corte}\label{fig:u-ncep-corte}
 \end{figure}
 
-La estructura meridional del viento zonal (\autoref{fig:u-ncep-corte})
-muestra la localización e intensidad de los jets subtropical y subpolar.
-El primero está presente durante todo el año aunque con mayor intensidad
-y corrido hacia latitudes más ecuatoriales en invierno y primavera. El
+La media zonal del viento zonal (\autoref{fig:u-ncep-corte}) muestra
+sendos máximos en latitudes medias en 200hPa y plares en la estatósfera,
+correspondientes al jet subtropical y subpolar respectivamene. El
+primero está presente durante todo el año aunque con mayor intensidad y
+corrido hacia latitudes más ecuatoriales en invierno y primavera. El
 segundo está presente principalmente en invierno y primavera, e
 incipiente en otoño. En la estratósfera se observan vientos del este en
 latitudes bajas que son más intensos en verano y otoño.
@@ -357,16 +399,23 @@ ecuatorial que en la región del Pacífico. El jet subtropical también
 tiene un máximo al sur de África y otro al norte de Nueva Zelanda
 --especialmente en invierno--, donde además se produce una bifurcación
 del jet. Se trata de una región de persistentes y frecuentes bloqueos
-(Trenberth y Mo \protect\hyperlink{ref-Trenberth1985}{1985}) que se
-evidencia como anomalías zonales negativas durante todo el año
-(\autoref{fig:uz-ncep}).
+(Trenberth y Mo \protect\hyperlink{ref-Trenberth1985}{1985}).
 
-Las anomalías zonales en la \autoref{fig:uz-ncep} también evidencian la
-circulación tropical forzada por la temperatura superficial del
-pacífico. Consistente con los campos de temperatura, en verano del
-pacífico central existen divergencias en niveles altos y convergencias
-en niveles bajos (no se muestra) que se traducen anomalías zonales
-positivas y negativas al este y al oeste de 180° respectivamente.
+Esta bifurcación del jet sobre Nueva Zelanda se evidencia en el campo de
+anomalías zonales de viento zonal (\autoref{fig:uz-ncep}) como anomalías
+negativas durante todo el año. Este campo también presenta varios pares
+de QS1 antisimétricos respecto a 60°S. Estas anomalías se corresponden
+con la variación meridional del jet observado en la \autoref{fig:u-ncep}
+y son consistentes con la QS1 de geopotencial observada en la
+\autoref{fig:ghz-ncep}, las cuales generan viento zonal anómalo del este
+y del oeste al norte y sur del anticiclón respectivamente.
+
+En verano, entre 300hPa y 100hPa sobre el Pacífico ecuatorial existe una
+zona de anomalías del viento zonal positivas al este y negativas al
+oeste. Consistente con los campos de temperatura, esto implica
+divergencias en niveles altos y convergencias en niveles bajos (no se
+muestra). Evidencia de la circulación tropical forzada por la
+temperatura superficial del pacífico.\todo{buscar cita.}
 
 \begin{figure}
 
@@ -377,6 +426,14 @@ positivas y negativas al este y al oeste de 180° respectivamente.
 \caption{Anomalía zonal de viento zonal. - fig:uz-ncep}\label{fig:uz-ncep}
 \end{figure}
 
+Los campos de viento zonal, temperatura y altura geopotencial están
+ligados por el balance de viento geostrófico y de viento térmico. El
+máximo del jet se encuentra en regiones de máxima baroclinicidad y
+máximo gradiente meridional de Z y donde el gradiente meridional de
+temperatura se anula.
+
+\todo[inline]{hasta acá de revisión.}
+
 \section{Viento meridional}\label{viento-meridional}
 
 \begin{figure}
@@ -385,7 +442,7 @@ positivas y negativas al este y al oeste de 180° respectivamente.
 
 }
 
-\caption{Media zonal del viento meridional.{fig:v-ncep-corte}}\label{fig:v-ncep-corte}
+\caption{Media zonal del viento meridional. - fig:v-ncep-corte}\label{fig:v-ncep-corte}
 \end{figure}
 
 En los campos medios zonales de viento meridional
@@ -873,16 +930,19 @@ en contraste con lo observado en el análisis climatológico
 (\autoref{fig:qs3-ncep}). La resolución a este problema radica en el
 análisis de la fase (\autoref{fase}).
 
-La serie temporal de la amplitud media se muestra en la
-Figura~\ref{fig:ampl-ts2} donde en líneas horizontales se marca la
-amplitud media anual para cada año. No hay evidencia clara de
-periodicidades aunque se puede observar indicios de un ciclo de dos años
-en la anticorrelación de los promedios anuales. Dicha periodicidad no es
-estadísticamente significativa (no se muestra\todo{¿no se muestra?})
-
 \begin{figure*}
 \subfloat[Ciclo anual\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media - fig:ampl-ts}\label{fig:ampl-ts}
 \end{figure*}
+
+La serie temporal de la amplitud media se muestra en la
+Figura~\ref{fig:ampl-ts2} donde en líneas horizontales se marca la
+amplitud media anual para cada año indicando en color rojo o azul si
+dicho valor está por encima o debajo de la media de la serie
+respectivamente. Se observan series de años con anomalías positivas
+consistentemente seguidos por anoamlías negativas (1985-1990, 1992-1996
+y 1999-2005) y otras con persistencia de anomalías positivas o negativas
+(2005-2009 y 2012-2015). No hay evidencia visual de periodicidades ni de
+una tendencia secular.
 
 \begin{figure}
 \includegraphics[ ]{fig/tesis/wavelet-period-1} \caption{Análisis de wavelet para la amplitud de la onda 3. - fig:wavelet-period - SÓLO BORRADOR}\label{fig:wavelet-period}
@@ -939,7 +999,7 @@ En primavera, más del 30\% de los meses tienen algún nivel de
 interferencia destructiva con el campo medio, comparado con el 13\% en
 verano.
 
-\begin{longtable}[]{@{}lr@{}}
+\begin{longtable}[]{@{}rr@{}}
 \caption{Desvío estándar de la fase para cada estación - NO SE
 PUBLICA}\tabularnewline
 \toprule
@@ -950,10 +1010,18 @@ Estación & SD\tabularnewline
 Estación & SD\tabularnewline
 \midrule
 \endhead
-Verano & 21.20765\tabularnewline
-Otoño & 22.25817\tabularnewline
-Invierno & 25.08954\tabularnewline
-Primavera & 29.41456\tabularnewline
+1 & 17.33446\tabularnewline
+2 & 14.76324\tabularnewline
+3 & 20.77567\tabularnewline
+4 & 18.05311\tabularnewline
+5 & 24.53463\tabularnewline
+6 & 22.75816\tabularnewline
+7 & 19.78503\tabularnewline
+8 & 22.25149\tabularnewline
+9 & 22.27158\tabularnewline
+10 & 27.65658\tabularnewline
+11 & 41.90526\tabularnewline
+12 & 33.14720\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1084,67 +1152,96 @@ de este trabajo.
 
 Una desventaja de esta clasificación es que no todas las estaciones
 tienen la misma cantidad de meses, lo cual dificulta la comparación
-estadística entre distintas estaciones.
-
-\section{Persistencia (ver dónde va)}\label{persistencia-ver-donde-va}
+estadística entre distintas estaciones. \#\# Persistencia (ver dónde va)
 
 \begin{figure}
 \includegraphics[ ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes. - fig:lag-cor}\label{fig:lag-cor}
 \end{figure}
 
+En la \autoref{fig:lag-cor} se muestra la correlación del campo de QS3
+de cada mes con los demás. La línea escalonada marca la separación del
+año de manera que un número a la izquierda de la misma implica
+correlación de ese mes con meses del año siguiente. Las correlaciones
+justo a la izquierda de la línea escalonada son positivas y
+relativamente altas para casi todos los meses salvo noviembre, diciembre
+y agosto. Esto implica que estos meses tienen poca similaridad de un año
+a otro. Noviembre y diciembre también presentan bajas correlaciones en
+general con los demás meses y ambas observaciones se puede comprender a
+la luz de los resultados de las secciones anteriores: al ser meses con
+actividad de la onda 3 poco estacionaria, sus campos de QS3 no son
+consistentemente similares con ningún otro mes. Esta interpretació no
+parece posible para agosto, ya que su variabilidad no es paricularmente
+alta (\autoref{fig:fase-boxplot})\todo{¿qué pasa con agosto?}.
+
+Los valores un mes a la derecha de la linea escalonada son también
+generalmente altos indicando buena concordancia entre los campos de un
+mes y el siguiente. Para esto nuevamente las excepciónes son noviembre,
+diciembre y julio. La explicación para estas bajas correlaciones
+posiblemente sea la misma que para las anteriores.
+
+Las correlaciones entre meses corridos 6 meses son bajas para los meses
+de verano e invierno y medias para los meses de transición. Es decir,
+los meses de verano son muy distintos de los de invierno, mientras que
+los de transición son medianamente parecidos a todos. Esta es una
+consecuencia del ciclo anual de la fase (\autoref{fig:fase-boxplot}).
+
 \section{R2}\label{r2}
 
-Se puede estimar de dos maneras distintas: a partir del ajuste de
-fourier para cada nivel y latitud (figura blabla) y haciendo un
-promedio, o reconstruyendo el campo tridimensional de la onda 3 y
-haciendo la correlación (global) con el campo tridimensional observado.
-Esta segunda forma da casi siempre un valor menor.
+En la \autoref{fig:ondas-quasiestacionarias}, se mostró la estructura
+vertical de la varianza explicada por la QS3 para cada estación
+(\autoref{fig:r2-ncep}). En esta sección se explora la estructura
+horizontal de dicha propiedad. Para esto, se toma como \(r^2\) la
+correlación cuadrada entre el valor de Z* y el de QS3 para cada punto de
+grilla y cada mes.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/r2-cor2-1} \caption{Relación entre R2 medio y R2 reconstruido.{fig:r2-cor2}}\label{fig:r2-cor2}
+\includegraphics[ ]{fig/tesis/cor-campo-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo}\label{fig:cor-campo}
 \end{figure}
 
-Para ver:\\
-La relación ya no es lineal y hay bastante más scatter. Ergo, hay
-diferencia en la información.\\
-Dos regímenes: Cuando el R\^{}2 es bajo, la relación es ``menor'' que
-1:1 y hay algunos casos donde el R2 reconstruido es mayor que el r2
-medio. Para R2 más grandes, la pendiente es 1. Modelar la
-relación\ldots{} ¿Cómo se interpreta?
+Los campos horizontales de \(r^2\) para 300hPa se muestran en la
+\autoref{fig:cor-camp}, con los centros de máximas anomalías marcados
+con líneas. En las cuatro estaciones la QS3 explica la mayor parte de la
+varianza en el hemiferio oeste entre 60°S y 45°S. Lejos de ser
+homogéneos, los campos muestran tres máximos localizados con cierta
+persistencia durante el año. El primero, al sur del Índico, está
+presente en verano y otoño en 60°E que se mueve hacia el este en
+invierno y primavera. Algo similar sucede on el segundo máximo al sur
+del Pacífico, que pasa de 180° a 120° entre otoño y primavera. Hay un
+tercer máximo en el Atlántico sur cuyo desplazamiento hacia el este es
+bastante menor. Finalmente, en verano y otoño hay un máximo en latitudes
+bajas en el pacífico central.
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/r2-corte-1} \caption{R2 medio{fig:r2-corte}}\label{fig:r2-corte}
-\end{figure*}
+Si se compara la posición de los máximos de \(r^2\) con los centros de
+QS3, el máximo del Índico, por ejemplo, coincide con un anticiclón en
+verano pero se encuentra entre dos centros en otoño y lo mismo pasa con
+el máximo del Atlántico. Éste último coincide con un centro
+anticiclónico en verano pero está más cerca de uno ciclónico en
+invierno. No parece haber una asociación entre los máximos de \(r^2\) y
+los centros de QS3.
 
-Cosas para ver:\\
-Comparando con las figuras anteriores, casos donde la amplitud es grande
-pero el R2 no tanto.
+Comparando con la \autoref{fig:waveletz-ncep} de campos de amplitud de
+wavelets, se puede observar cierta correspondencia entre las anomalías
+zonales de wavelets y los campos de \(r^2\). Ambos son más intensos en
+el hemisferio occidental, muestran una translación general hacia el este
+entre verano e invierno e incluso ambos presentan máximos en el pacífico
+central. Que estas características se recuperen utilizando dos
+metodologías independientes brindan robustez al resultado.
 
-\begin{figure*}
-\subfloat[Serie temporal\label{fig:r2-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-1} }\newline\subfloat[Ciclo anual\label{fig:r2-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/r2-ts-2} }\caption{R2 medio - fig:r2-ts}\label{fig:r2-ts}
-\end{figure*}
-
-Cosas para ver:\\
-El ciclo anual no es para nada tan claro. Varios outliers. La
-correlación reconstruida (azul) no tiene casi ciclo anual.
-
-Una ventaja de la correlación entre el campo real y el reconstruido es
-que puede hacerse para cada punto y analizar la variación espacial de la
-misma.
+Si se realiza un análisis análogo pero en base a las estaciones
+definidas en la \autoref{estaciones} las principales diferencias son un
+debilitamiento del los máximos durante EFM y una fuerte intensificación
+del máximo del Atlántico durante DN (no se muestra). Las características
+generales no cambian.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/cor-campo-1} \caption{Correlación cuadrada media para estaciones según onda3.{fig:cor-campo}}\label{fig:cor-campo}
+\includegraphics[ ]{fig/tesis/cor-campo2-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo2 - SÓLO BORRADOR}\label{fig:cor-campo2}
 \end{figure}
 
-Cosas para ver:\\
-Esto es, para cada punto de grilla, la correlación entre el campo
-observado y el reconstruido en todos los meses y años. Además de la
-dependencia latitudinal de la importancia de la onda 3 (que se puede ver
-en los cortes anteriores), se ve la dependencia zonal. La onda 3 es más
-importante en el Pacífico sur que en el Atlántico o el Índico. Además,
-se ve un patrón de altas correlaciones que asemejan a un tren de
-ondas.\\
-¿Confirma? lo que se ve en en análisis de wavelets.
+\todo[inline]{hasta acá}
+
+\begin{figure}
+\includegraphics[ ]{fig/tesis/r2-cor2-1} \caption{Relación entre R2 medio y R2 reconstruido. - fig:r2-cor2 - SÓLO BORRADOR}\label{fig:r2-cor2}
+\end{figure}
 
 Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 
@@ -1479,7 +1576,7 @@ En promedio zonal, sin embargo, SPEEDY funciona bien.
 \subsection{Onda 3}\label{onda-3-1}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de Fourier (speedy en sombreado, ncep en contornos).{fig:ampl-sp-nc}}\label{fig:ampl-sp-nc}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de Fourier (speedy en sombreado, ncep en contornos). - fig:ampl-sp-nc}\label{fig:ampl-sp-nc}
 \end{figure*}
 
 \begin{figure*}
@@ -1563,11 +1660,11 @@ ONo hay casi diferencia entre las corridas.
 \subsection{Onda 3}\label{onda-3-2}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ampl-sp-runs-1} \caption{Amplitud media de la onda 3 para cada corrida.{fig:ampl-sp-runs}}\label{fig:ampl-sp-runs}
+\includegraphics[ ]{fig/tesis/ampl-sp-runs-1} \caption{Amplitud media de la onda 3 para cada corrida. - fig:ampl-sp-runs}\label{fig:ampl-sp-runs}
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/ampl-dif-sp-runs-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida.{fig:ampl-dif-sp-runs}}\label{fig:ampl-dif-sp-runs}
+\includegraphics[ ]{fig/tesis/ampl-dif-sp-runs-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida. - fig:ampl-dif-sp-runs}\label{fig:ampl-dif-sp-runs}
 \end{figure}
 
 \begin{figure}

@@ -63,6 +63,8 @@ knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"),
 
 source("scripts/helperfun.R")
 
+# Plot thingys
+
 data.world <- BuildMap(res = 1, smooth = 1)
 map.world <- geom_map2(data.world)
 map.SH <- geom_map2(data.world[lat %b% c(-90, 0)])
@@ -87,6 +89,9 @@ theme_elio <- theme_minimal(base_size = 11) +
           panel.grid = element_line(color = "black", size = 0.2, linetype = 3),
           panel.ontop = TRUE)
 theme_set(theme_elio)
+
+# For vertical cross-sections
+coord_section <- function(ratio = 20, ...) coord_fixed(ratio = 20, ...)
 
 ## Hooks.
 
@@ -370,6 +375,8 @@ Cambio en el máximo. Localización en vez de un número para cada latitud.
 
 # Climatología observada
 
+En esta sección se presentan campos medios y anomalías zonales de altura geopotencial, temperatura, viento zonal, viento meridinal, gradiente meridional de vorticidad absoluta y el número de onda estacionario, y función corriente como introducción general al estado medio de la atmósfera sobre el cual se desarrollan las ondas estacionarias. Luego se analizan los campos de amplitud y varianza explicada por las ondas cuasiestacionarias (QS) en sí mismas. 
+
 ## Altura geopotencial
 
 Campo medio:
@@ -387,7 +394,10 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     coord_quickmap() 
 ```
 
-El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra una estructura más zonal en el HS que en el HN. Es evidente la generación del vórtice polar en la estratósfera de invierno y primavera y el aumento del gradiente meridional de Z con la altura. 
+
+El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra una estructura más zonal en el HS que en el HN en todos los niveles y estaciones. En verano el gradiente meridional de Z es máximo en 200hPa, reduciéndose en 500hPa y por encima de 100hPa. En 50hPa el gradiente es prácticamente nulo y en niveles superiores, éste se invierte en comparación a los inferiores (no se muestra). En otoño el máximo de gradiente todavía se da en 200hPa, pero continua siendo intenso en niveles superiores. En invierno y primavera, el mayor gradiente se da en 50hPa y es mucho más intenso que los observados en los demás niveles o estaciones. En contraste con el resto de los niveles, 50hPa y 100hPa tienen mucha más variabilidad estacional. 
+
+El aumento del gradiente meridional de geopotencial en invierno y primavera en niveles altos está relacionado con la generación del vórtice polar que aisla las latitudes polares de las latitudes medias. En 200hPa, en cambio, es evidencia del jet subtropical, que es más estable a lo largo de todo el año. 
 
 ```{r ghdy-ncep-corte, fig.cap = "Gradiente meridional de Z", fig.publish = FALSE}
 ncep.mean.season[, mean(gh), by = .(lat, lev, season)] %>% 
@@ -405,6 +415,7 @@ ncep.mean.season[, mean(gh), by = .(lat, lev, season)] %>%
     scale_fill_divergent() +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(trans = "reverse") +
+    coord_section() +
     facet_wrap(~season)
 ```
 
@@ -424,11 +435,13 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     coord_quickmap()
 ```
 
-Las anomalías zonales (\autoref{fig:ghz-ncep}) muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima en la estratósfera de primavera y una estructura coherente en la vertical en 60°S (\autoref{fig:ghz-ncep-corte60}). Pueden diferenciarse dos QS1 distintas; una centrada en ~60°S y con el centro anticiclónico al rededor de la línea de fecha, y la otra sobre la costa del continente y el centro anticiclónico entre 120 y 60°O. @Quintanar1995 concluyó que el primero está asociado principalmente con forzantes de latitudes bajas mientras que el segundo responde a la orografía del continente antártico.
+Las anomalías zonales de geopotencial (Z\*, \autoref{fig:ghz-ncep}) muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima en la estratósfera de primavera. Pueden diferenciarse dos QS1 distintas; una centrada en ~60°S y con el centro anticiclónico al rededor de la línea de fecha, y la otra sobre la costa del continente y el centro anticiclónico entre 120 y 60°O. @Quintanar1995 concluyó que el primero está asociado principalmente con forzantes de latitudes bajas mientras que el segundo responde a la orografía del continente antártico. 
 
-Salvo en verano, la inclinación hacia el oeste en la horizontal y en la vertical indica que las perturbaciones estacionarias están asociadas con transporte hacia el polo tanto de cantidad de movimiento zonal como de temperatura. \todo[inline]{¿Debería agregar una justificación de esto? ¿Un resumen del desarrollo matemático que está en el James?} 
+En latitudes tropicales, en verano hay una anomalía negativa sobre el Pacífico este con máxima amplitud en 200hPa que está presente en las otras estaciones con menor intensidad. Sobre Sudamérica, en verano y primavera en ese mismo nivel aparece un centro anticiclónico con un centro ciclónico al noroeste. Estas anomalías (la alta de Bolivia y la baja del noroeste) son caracetrísticas del Sistema Monzónico Sudamericano\todo{buscar cita}.
 
-En verano, las anomalías zonales tienen una estructura barotrópica equivalente y carecen de inclinación en la horizontal. Consecuentemente, los transportes meridionales asociados se reducen considerablemente. \todo{¿Por qué?}
+En la \autoref{fig:ghz-ncep-corte69} se muestra un corte zonal en 60°S de Z\*. Se aprecia la coherencia vertical de la QS1 y es evidente la inclinación hacia el oeste con la altura en todas las estaciones salvo en verano.
+
+La inclinación hacia el oeste con la latitud (\autoref{fig:ghz-ncep}) y con la altura (\autoref{fig:ghz-ncep-corte60}) indican que las perturbaciones estacionarias están asociadas con transporte hacia el polo tanto de cantidad de movimiento zonal como de temperatura. Como en verano las anomalías zonales tienen una estructura barotrópica equivalente y carecen de inclinación en la horizontal, los transportes meridionales asociados se reducen considerablemente. \todo{¿Por qué?}
 
 ```{r ghz-ncep-corte60, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de geopotencial en -60°."}
 binwidth <- 60
@@ -442,13 +455,14 @@ ggplot(ncep.mean.season[lat %~% cutlat], aes(lon, lev)) +
 ```
 
 
-```{r uzvz-ncep-corte, fig.cap = "Transportes", fig.subcap = c("uz*vz*", "T*v*"), fig.publish = FALSE}
+```{r uzvz-ncep-corte, fig.cap = "Transportes", fig.subcap = c("u*v*", "T*v*"), fig.publish = FALSE}
 ncep[, mean(u.z*v.z), by = .(lat, lev, season(date))] %>% 
     ggplot(aes(lat, lev)) +
     geom_contour(aes(z = V1, color = ..level..), binwidth = 5) +
     scale_color_divergent(breaks = MakeBreaks(5)) +
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
+    coord_section() +
     facet_wrap(~season)
 
 ncep[, mean(v.z*t.z), by = .(lat, lev, season(date))] %>% 
@@ -457,6 +471,7 @@ ncep[, mean(v.z*t.z), by = .(lat, lev, season(date))] %>%
     scale_color_divergent(breaks = MakeBreaks()) +
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
+    coord_section() +
     facet_wrap(~season)
 
 ```
@@ -486,42 +501,48 @@ binwidth <- 5
 ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], aes(lon, lat)) +
     geom_contour(aes(z = t), binwidth = binwidth, color = "black") +
     geom_label_contour2(aes(z = t, label = ..level..), binwidth = binwidth) +
-    geom_tile(data = pres[, lev := 850][pres < 850], fill = "white", color = "white") +
+    geom_tile(data = copy(pres)[, lev := 850][pres < 850], fill = "white", color = "white") +
     map.SH +
     scale_s_map() +
     coord_quickmap() +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-En la tropósfera, la temperatura (\autoref{fig:t-ncep}) presenta una estructura zonal con mayor baroclinicidad en invierno. En 200 hPa los gradientes meridionales son mínimos y por encima de ese nivel éstos se revierten, dando lugar a temperaturas ecuatoriales menores que las polares (\autoref{fig:tz-ncep-corte}). Por encima de 100 hPa de invierno y primavera, hay un máximo relativo en ~45° \todo{¿Por qué?} y una región de anomalías zonales positivas que se ve claramente incluso en el campo total, particularmente en primavera. 
+Pasando a la temperatura, en la \autoref{fig:t-ncep} puede verse que, al igual que el campo de geopotencial, tiene una estructura principalmente zonal en todos los niveles y estaciones. Por debajo de los 200hPa, donde el gradiente meridional de temperatura es mínimo, la temperatura disminuye con la latitud en todas las estaciones. Por encima de este nivel, en cambio, en verano la temperatura crece con la latitud, y en el resto de las estaciones muestra un máximo centrado en 60°S en otoño y en 45°S en invierno y primavera. El nivel de 850hPa se ve particularmente deformado por los contrastes de temperatura zonales como el máximo sobre Australia en verano. 
 
-```{r tz-ncep-corte, fig.class = "textwidth", fig.cap = "Corte meridional de temperatura media."}
-binwidth <- 5
+```{r t-ncep-corte, fig.class = "textwidth", fig.cap = "Corte meridional de temperatura media."}
+binwidth <- 10
 ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
        aes(lat, lev)) +
-    geom_contour_fine(aes(z = t, color = ..level..)) +
+    geom_contour_fill(aes(z = t), binwidth = binwidth) +
     surface +
     scale_y_level(breaks = plot.levs, minor_breaks = NULL) + 
     scale_x_latitude(name = "latitud", trans = "reverse") +
-    scale_color_viridis_c(name = "Temperatura media zonal", 
+    scale_fill_viridis_c(name = "Temperatura media zonal", 
                           breaks = MakeBreaks(binwidth), 
                           guide = guide_colorstrip_bottom()) +
+    coord_section() +
     facet_wrap(~season)
 ```
 
+Haciendo un promedio zonal como se muestra en la \autoref{fig:t-ncep-corte}, se observa un mínimo de temperatura se da en la estatósfera tropical durante todo el año y uno en la estatósfera polar con amplitud, extensión y altura máxima en invierno y mínima en verano. El máximo relativo de tempertura observado por encima de 100hPa se da como consecuencia de estos dos mínimos. 
 
 ```{r tz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de temperatura."}
 binwidth <- 1
-ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], 
-       aes(lon, lat)) +
+
+copy(pres)[ncep.mean.season[lev %in% c(plot.levs, 850)], 
+                   on = c("lon", "lat")] %>% 
+    .[, t.z := NULL] %>% 
+    .[lev < pres, t.z := Anomaly(t), by = .(lat, lev, season)] %>%  
+ggplot(aes(lon, lat)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
-    geom_tile(data = pres[, lev := 850][pres < 850], 
+    geom_tile(data = copy(pres)[, lev := 850][pres < 850],
               fill = "white", color = "white") +
     # geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
     map.SH +
-    scale_fill_divergent(breaks = MakeBreaks(binwidth), 
+    scale_fill_divergent(breaks = MakeBreaks(binwidth),
                          limits = c(-9, NA),
-                         name = "T*", 
+                         name = "T*",
                          guide = guide_colorstrip_bottom(25)) +
     scale_y_latitude() +
     scale_x_longitude() +
@@ -529,14 +550,11 @@ ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)],
     coord_quickmap() 
 ```
 
+En la \autoref{fig:tz-ncep} se muestran las anomalías zonales de temperatura. En 850hPa se aprecia mejor el efecto del contraste de temperatura entre el suelo y el mar que en la \autoref{fig:t-ncep}. Se observan anomalías positivas sobre los continentes y negativas sobre los océanos en todas las estaciones, aunque más intensas en verano y primavera. En niveles más altos éstas pierden su intensidad pero reaparecen en 100hPa con signo invertido. Estas características tienen su correlato en la altura geopotencial y corresponden a circulaciones tipo Walker \todo{¿Es así?}. 
 
-Como se puede apreciar en el campo de T* (\autoref{fig:tz-ncep}), en invierno y primavera, los niveles altos están dominados por una QS1 con máximo en el sur de Australia y mínimo en el Atlántico sur. En niveles más bajos, la onda se defasa hacia el este y queda casi en cuadratura (\autoref{fig:tz-ncep-corte60}) con el máximo en 850hPa en Antártida occidental. 
+En invierno y primavera, los niveles altos están dominados por una QS1 con máximo en el sur de Australia y mínimo en el Atlántico sur. En niveles más bajos, la onda disminuye su amplitid y se defasa hacia el este y queda casi en cuadratura (\autoref{fig:t-ncep-corte60}) con el máximo en 850hPa en Antártida occidental. En otoño esta onda está presente pero con amplitud muy reducida y máxima en niveles medios. Finalmente, en verano ésta desaparece por encima de 100hPa. 
 
-\todo[inline]{¿Más detalle?}
-
-En los trópicos, las anomalías de temperatura presentan un patrón de onda 3 con máximos en los continentes y mínimos en los océanos que se revierten de signo en 100hPa. Estas características tienen su correlato en la altura geopotencial y corresponden a circulaciones tipo Walker \todo{¿Es así?}. 
-
-```{r tz-ncep-corte60, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de temperatura en -60°."}
+```{r t-ncep-corte60, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de temperatura en -60°."}
 binwidth <- 1
 ggplot(ncep.mean.season[lat %~% cutlat], aes(lon, lev)) +
     stat_contour_fill(aes(z = t.z), binwidth = binwidth, exclude = 0) +
@@ -563,10 +581,11 @@ ncep.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>%
     scale_fill_divergent(name = "U media zonal", 
                          breaks = MakeBreaks(5),
                          guide = guide_colorstrip_bottom()) +
+    coord_section() +
     facet_wrap(~season)
 ```
 
-La estructura meridional del viento zonal (\autoref{fig:u-ncep-corte}) muestra la localización e intensidad de los jets subtropical y subpolar. El primero está presente durante todo el año aunque con mayor intensidad y corrido hacia latitudes más ecuatoriales en invierno y primavera. El segundo está presente principalmente en invierno y primavera, e incipiente en otoño. En la estratósfera se observan vientos del este en latitudes bajas que son más intensos en verano y otoño. 
+La media zonal del viento zonal (\autoref{fig:u-ncep-corte}) muestra sendos máximos en latitudes medias en 200hPa y plares en la estatósfera, correspondientes al jet subtropical y subpolar respectivamene. El primero está presente durante todo el año aunque con mayor intensidad y corrido hacia latitudes más ecuatoriales en invierno y primavera. El segundo está presente principalmente en invierno y primavera, e incipiente en otoño. En la estratósfera se observan vientos del este en latitudes bajas que son más intensos en verano y otoño. 
 
 ```{r u-ncep, fig.class = "fullpage", fig.cap = "Viento zonal."}
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
@@ -584,9 +603,11 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-En la \autoref{fig:u-ncep} se observa que el jet subpolar es más intenso al sur de África, donde además se encuentra en una latitud más ecuatorial que en la región del Pacífico. El jet subtropical también tiene un máximo al sur de África y otro al norte de Nueva Zelanda --especialmente en invierno--, donde además se produce una bifurcación del jet. Se trata de una región de persistentes y frecuentes bloqueos [@Trenberth1985] que se evidencia como anomalías zonales negativas durante todo el año (\autoref{fig:uz-ncep}).
+En la \autoref{fig:u-ncep} se observa que el jet subpolar es más intenso al sur de África, donde además se encuentra en una latitud más ecuatorial que en la región del Pacífico. El jet subtropical también tiene un máximo al sur de África y otro al norte de Nueva Zelanda --especialmente en invierno--, donde además se produce una bifurcación del jet. Se trata de una región de persistentes y frecuentes bloqueos [@Trenberth1985].
 
-Las anomalías zonales en la \autoref{fig:uz-ncep} también evidencian la circulación tropical forzada por la temperatura superficial del pacífico. Consistente con los campos de temperatura, en verano del pacífico central existen divergencias en niveles altos y convergencias en niveles bajos (no se muestra) que se traducen anomalías zonales positivas y negativas al este y al oeste de 180° respectivamente. 
+Esta bifurcación del jet sobre Nueva Zelanda se evidencia en el campo de anomalías zonales de viento zonal (\autoref{fig:uz-ncep}) como anomalías negativas durante todo el año. Este campo también presenta varios pares de QS1 antisimétricos respecto a 60°S. Estas anomalías se corresponden con la variación meridional del jet observado en la \autoref{fig:u-ncep} y son consistentes con la QS1 de geopotencial observada en la \autoref{fig:ghz-ncep}, las cuales generan viento zonal anómalo del este y del oeste al norte y sur del anticiclón respectivamente.
+
+En verano, entre 300hPa y 100hPa sobre el Pacífico ecuatorial existe una zona de anomalías del viento zonal positivas al este y negativas al oeste. Consistente con los campos de temperatura, esto implica divergencias en niveles altos y convergencias en niveles bajos (no se muestra). Evidencia de la circulación tropical forzada por la temperatura superficial del pacífico.\todo{buscar cita.}
 
 ```{r uz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de viento zonal."}
 binwidth <- 2.5
@@ -601,6 +622,9 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     coord_quickmap()
 ```
 
+Los campos de viento zonal, temperatura y altura geopotencial están ligados por el balance de viento geostrófico y de viento térmico. El máximo del jet se encuentra en regiones de máxima baroclinicidad y máximo gradiente meridional de Z y donde el gradiente meridional de temperatura se anula. 
+
+\todo[inline]{hasta acá de revisión.}
 
 ## Viento meridional
 
@@ -616,12 +640,14 @@ ggplot(ncep.mean.season[lev >= 30, .(v = mean(v)), by = .(lat, lev, season)],
     scale_fill_divergent(name = "V media zonal", 
                          breaks = MakeBreaks(binwidth, 0), 
                          guide = guide_colorstrip_bottom()) + 
+    coord_section() +
     facet_wrap(~season)
 ```
 
 En los campos medios zonales de viento meridional (\autoref{fig:v-ncep-corte}) se muestra claramente la circulación de Hadley. En verano, la rama ascendente de encuentra en el hemisferio sur y se tiene convergencias en niveles bajos y divergencias en niveles altos. En invierno, en cambio, sólo se ve la rama descendente, mucho más intensa que en verano, que genera convergencias en niveles altos y divergencias en niveles bajos al rededor de los 30°S. 
 
 Presentes durante todo el año, los vientos de drenaje antárticos también son evidentes en la \autoref{fig:v-ncep-corte}. Estos vientos catabáticos son máximos en la costa del continente y alcanzan su máxima intensidad en invierno. 
+
 ```{r v-ncep, fig.class = "fullpage", fig.cap = "Viento meridional medio."}
 binwidth <- 2
 ggplot(ncep.mean.season[lev %in% c(850, plot.levs)], aes(lon, lat)) +
@@ -711,7 +737,7 @@ El corte de $\psi_y$ en 180° evidencia que la onda 3 sólo puede propagarse mer
 a <- 6371000
 
 ncep.mean.season[, k := sqrt(eta.dy/u)*(a*cos(lat*pi/180))]
-ncep.mean.season[, k.full := ifelse(is.na(k) | k > 10, -1, k)]
+ncep.mean.season <- ncep.mean.season[, k.full := ifelse(is.na(k) | k > 10, -1, k)]
 
 ggplot(ncep.mean.season[lev == 200], aes(lon, lat)) +
     geom_contour_fine(aes(z = k), breaks = 0:9, color = "black") +
@@ -746,6 +772,7 @@ ggplot(ncep.mean.season[lon %~% 180], aes(lat, lev))+
     surface +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(trans = "reverse") +
+    coord_section() +
     facet_wrap(~season) 
 ```
 
@@ -809,6 +836,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse", 
                      ticks = 15) +
+    coord_section() +
     facet_grid(k ~ season, labeller = labeller(k = qs.lab))
 ```
 
@@ -836,6 +864,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse", 
                      ticks = 15) +
+    coord_section() +
     facet_grid(k ~ season, labeller = labeller(k = qs.lab))
 ```
 
@@ -958,6 +987,7 @@ wv.mean.season[, .(amplitude = mean(amplitude)),
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
     surface +
+    coord_section() +
     facet_wrap(~season)
 ```
 
@@ -1048,6 +1078,7 @@ ncep.qs.all %>%
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
     scale_fill_viridis_c() +
+    coord_section() +
     facet_wrap(~season)
 ```
 
@@ -1196,6 +1227,7 @@ ggplot(gdata, aes(lat, lev)) +
     scale_x_latitude(name = "latitud", trans = "reverse") +
     scale_fill_viridis_c(guide = guide_colorstrip_bottom(),
                          breaks = MakeBreaks(binwidth)) +
+    coord_section() +
     facet_wrap(~date.f, labeller = labeller(date.f = labeller.date()))
 ```
 
@@ -1255,9 +1287,7 @@ index[, m.amplitude := NULL]
 
 El ciclo anual de la amplitud media se muestra en la Figura\ \ref{fig:ampl-ts1} donde los puntos son datos puntuales. La amplitud máxima en invierno es evidente, así como la mayor variabilidad. Esto es de esperarse en una variable definida positiva que toma valores cercanos a cero. Notar que la amplitud media no es mínima en primavera, en contraste con lo observado en el análisis climatológico (\autoref{fig:ampl-ncep}) y los campos reconstruidos (\autoref{fig:qs3-ncep}). La resolución a este problema radica en el análisis de la fase (\autoref{fase}).
 
-La serie temporal de la amplitud media se muestra en la Figura\ \ref{fig:ampl-ts2} donde en líneas horizontales se marca la amplitud media anual para cada año. No hay evidencia clara de periodicidades aunque se puede observar indicios de un ciclo de dos años en la anticorrelación de los promedios anuales. Dicha periodicidad no es estadísticamente significativa (no se muestra\todo{¿no se muestra?})
-
-```{r ampl-ts, fig.class = "pagewidth", fig.cap = "Amplitud media", fig.subcap = c("Ciclo anual", "Serie temporal"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1}
+```{r ampl-ts, fig.class = "pagewidth", fig.cap = "Amplitud media", fig.subcap = c("Ciclo anual", "Serie temporal"), fig.height = 4, fig.show = "hold", fig.ncol = 1}
 ggplot(index, aes(factor(month(date)), amplitude)) +
     # geom_violin() +
     geom_boxplot(outlier.alpha = 0) +
@@ -1266,19 +1296,24 @@ ggplot(index, aes(factor(month(date)), amplitude)) +
     scale_x_discrete(name = "Mes", labels = month.abb_sp) +
     scale_y_continuous(name = "Amplitud")
 
-
-g <- copy(index) %>% 
-    .[, amplitude.mean := mean(amplitude), by = .(year(date))] %>% 
-    ggplot(aes(date, amplitude)) +
-    geom_line(aes(y = amplitude.mean, group = year(date)),
-              color = "gray50") +
-    geom_line() +
-    # geom_smooth(span = 5*12/372) +
-    geom_hline(yintercept = mean(index$amplitude), linetype = 3) +
-    scale_x_date(date_breaks = "1 years", expand = c(0, 0), 
-                 date_labels = "%y", date_minor_breaks = "3 months")  
-DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "Amplitud")
+DivideTimeseries({
+    copy(index) %>% 
+        .[, amplitude.mean := mean(amplitude), by = .(year(date))] %>%
+        .[, anomaly := sign(amplitude.mean - mean(amplitude))] %>% 
+        ggplot(aes(date, amplitude)) +
+        geom_line(aes(group = year(date), y = amplitude.mean,
+                      color = factor(-anomaly))) +
+        geom_line(color = "gray50") +
+        geom_hline(yintercept = mean(index$amplitude), linetype = 3) +
+        scale_color_brewer(palette = "Set1", guide = "none") +
+        scale_x_date(date_breaks = "1 years", expand = c(0, 0), 
+                     date_labels = "%y", minor_breaks = NULL) 
+        # coord_cartesian(ylim = c(20, 60))
+}, index$date, n = 3, xlab = "Fecha", ylab = "Amplitud")
 ```
+
+
+La serie temporal de la amplitud media se muestra en la Figura\ \ref{fig:ampl-ts2} donde en líneas horizontales se marca la amplitud media anual para cada año indicando en color rojo o azul si dicho valor está por encima o debajo de la media de la serie respectivamente. Se observan series de años con anomalías positivas consistentemente seguidos por anoamlías negativas (1985-1990, 1992-1996 y 1999-2005) y otras con persistencia de anomalías positivas o negativas (2005-2009 y 2012-2015). No hay evidencia visual de periodicidades ni de una tendencia secular.  
 
 ```{r calc-wavelet-dt}
 index <- index[, amplitude.t := Anomaly(amplitude), 
@@ -1323,16 +1358,14 @@ cowplot::plot_grid(
 ```
 
 ```{r acf-ampl, fig.cap = "Función de autocorrelación para la amplitud media anual de la onda 3", fig.publish = FALSE}
-copy(index) %>% 
-    .[, mean(amplitude), by = year(date)] %>% 
-    .[, V1] %>% 
-    acf.sig(alpha = 0.01, lag.max = 12*2, sided = "two") %>%
+acf.sig(index$amplitude.t, alpha = 0.01, lag.max = 12*2, sided = "two") %>%
     ggplot(aes(lag, acf)) +
     geom_col(fill = "black", width = 0.3) +
     geom_line(aes(y = upp.sig.cut)) +
     geom_line(aes(y = low.sig.cut)) +
-    scale_x_continuous(name = "lag (años)")
+    scale_x_continuous(name = "lag (meses)")
 ```
+
 
 
 ## Fase
@@ -1348,7 +1381,8 @@ map.arg <- geom_map2(BuildMap(countries = T)[lat %b% lat.lims &
                      color = "gray50")
 nudge <- 0.54
 size <- 2
-index[, phase.c := circular(phase*3, modulo = "2pi")]
+
+index <- index[, phase.c := circular(phase*3, modulo = "2pi")]
 index %>% 
     group_by(month = month(date)) %>% 
     filter(greater(amplitude, 20)) %>% 
@@ -1409,7 +1443,7 @@ La gran variabilidad presente durante los meses de primavera, en comparación co
 
 ```{r phase-sd, include = params$draft}
 index[, .(sd = sd(phase.c)/3*180/pi),
-      by = season(date)] %>% 
+      by = month(date)] %>% 
     knitr::kable(digis = 2, col.names = c("Estación", "SD"),
                  caption = "Desvío estándar de la fase para cada estación - NO SE PUBLICA")
 ```
@@ -1521,21 +1555,35 @@ ggplot(qs.qs.season[lat %~% -52.5], aes(lon, lev)) +
 El uso de componentes principales para el análisis de una onda que cambia de fase es similar a la metodología utilizada para el monitoreo de la MJO\todo{cita de MJO} por lo que sería posible su utilización como indicador de la actividad de la QS3 distinto de la amplitud media de Fourier. La exploración de dicho indicador está por fuera del objetivo de este trabajo. 
 
 Una desventaja de esta clasificación es que no todas las estaciones tienen la misma cantidad de meses, lo cual dificulta la comparación estadística entre distintas estaciones. 
-
 ## Persistencia (ver dónde va)
 
 ```{r lag-cor, fig.cap = "Correlación lageada para cada mes con los 12 sigientes."}
 lags <- 0:12
 qs.croscor <- copy(qs.wave[lev == 300]) %>%
+    .[, QS3.t := Anomaly(QS3), by = .(month(date), lon, lat)] %>% 
     .[, (paste0("l", lags)) := shift(QS3, lags, type = "lead"), 
       by = .(lat, lon)] %>% 
-    .[, lapply(lags, function(l) cor(.SD$l0, .SD[[paste0("l", l)]], 
-                                     use = "complete.obs")), 
+    .[, lapply(lags, function(l) cor.test(.SD$l0, .SD[[paste0("l", l)]], 
+                                     use = "complete.obs")$estimate), 
       by = month(date)] %>% 
     set_colnames(c("month", 0:12)) %>% 
     melt(id.vars = "month", variable.name = "lag", value.name = "cor") %>% 
     .[, lag := as.numeric(as.character(lag))] %>% 
     .[, month2 := ifelse2(month + lag, x > 12, x - 12)]
+
+# qs.test <- copy(qs.wave[lev == 300]) %>%
+#     .[, QS3.t := Anomaly(QS3), by = .(month(date), lon, lat)] %>% 
+#     .[, (paste0("l", lags)) := shift(QS3.t, lags, type = "lead"), 
+#       by = .(lat, lon)] %>% 
+#     .[, lapply(lags, function(l) cor.test(.SD$l0, .SD[[paste0("l", l)]], 
+#                                      use = "complete.obs")$p.value), 
+#       by = month(date)] %>% 
+#     set_colnames(c("month", 0:12)) %>% 
+#     melt(id.vars = "month", variable.name = "lag", value.name = "p.value") %>% 
+#     .[, lag := as.numeric(as.character(lag))] %>% 
+#     .[, month2 := ifelse2(month + lag, x > 12, x - 12)]
+# 
+# qs.croscor[, p.value := qs.test$p.value]
 
 ggplot(qs.croscor[lag != 0], aes(month2, month)) +
     # annotate("ribbon", x = c(0.5, rep(1:12 + 0.5, each = 2)),
@@ -1543,12 +1591,13 @@ ggplot(qs.croscor[lag != 0], aes(month2, month)) +
     #          ymax = 13, 
     #          fill = "gray80", alpha = 0.2) +
     # geom_point(aes(size = abs(cor), color = cor)) +
+    # geom_contour(aes(z = cor, color = ..level..), binwidth = 0.05)  +
+    # scale_color_divergent() +
     geom_tile(aes(fill = cor)) +
-    geom_text(aes(label = round(cor*10, 1))) +
+    # geom_contour(aes(z = cor, color = ..level..), binwidth = 0.05)  +
+    geom_text(aes(label = no.zero(round(cor, 2)))) +
     annotate("step", x = 2:13 - 0.5, y = 1:12 - 0.5, direction = "vh",
              color = "gray20", linetype = 1) +
-    # points(seq(0.1, 0.5, by = 0.1)) +
-    scale_size() +
     scale_y_continuous(name = "Mes", expand = c(0, 0), trans = "reverse", 
                        breaks = 1:12, labels = month.abb_sp) +
     scale_x_continuous(name = "Mes siguiente", expand = c(0, 0),
@@ -1558,11 +1607,79 @@ ggplot(qs.croscor[lag != 0], aes(month2, month)) +
     theme(panel.ontop = F)
 ```
 
+En la \autoref{fig:lag-cor} se muestra la correlación del campo de QS3 de cada mes con los demás. La línea escalonada marca la separación del año de manera que un número a la izquierda de la misma implica correlación de ese mes con meses del año siguiente. Las correlaciones justo a la izquierda de la línea escalonada son positivas y relativamente altas para casi todos los meses salvo noviembre, diciembre y agosto. Esto implica que estos meses tienen poca similaridad de un año a otro. Noviembre y diciembre también presentan bajas correlaciones en general con los demás meses y ambas observaciones se puede comprender a la luz de los resultados de las secciones anteriores: al ser meses con actividad de la onda 3 poco estacionaria, sus campos de QS3 no son consistentemente similares con ningún otro mes. Esta interpretació no parece posible para agosto, ya que su variabilidad no es paricularmente alta (\autoref{fig:fase-boxplot})\todo{¿qué pasa con agosto?}.
+
+Los valores un mes a la derecha de la linea escalonada son también generalmente altos indicando buena concordancia entre los campos de un mes y el siguiente. Para esto nuevamente las excepciónes son noviembre, diciembre y julio. La explicación para estas bajas correlaciones posiblemente sea la misma que para las anteriores. 
+
+Las correlaciones entre meses corridos 6 meses son bajas para los meses de verano e invierno y medias para los meses de transición. Es decir, los meses de verano son muy distintos de los de invierno, mientras que los de transición son medianamente parecidos a todos. Esta es una consecuencia del ciclo anual de la fase (\autoref{fig:fase-boxplot}). 
+
+
 ## R2
 
-Se puede estimar de dos maneras distintas: a partir del ajuste de fourier para cada nivel y latitud (figura blabla) y haciendo un promedio, o reconstruyendo el campo tridimensional de la onda 3 y haciendo la correlación (global) con el campo tridimensional observado. Esta segunda forma da casi siempre un valor menor. 
+En la \autoref{fig:ondas-quasiestacionarias}, se mostró la estructura vertical de la varianza explicada por la QS3 para cada estación (\autoref{fig:r2-ncep}). En esta sección se explora la estructura horizontal de dicha propiedad. Para esto, se toma como $r^2$ la correlación cuadrada entre el valor de Z\* y el de QS3 para cada punto de grilla y cada mes. 
 
-```{r r2-cor2, fig.cap = "Relación entre R2 medio y R2 reconstruido."}
+```{r cor-campo, fig.cap = "Correlación cuadrada media para estaciones según onda3.", fig.height = 6}
+cor.season <- fields[lat > -90 & lev == 300, 
+                     .(corelation = cor(gh, QS3)^2), 
+                     by = .(lon, lat, season(date))]
+
+binwidth <- 0.1
+ggplot(cor.season, aes(lon, lat)) +
+    geom_contour_fill(aes(z = corelation), breaks = MakeBreaks(binwidth)(c(0.1, 0.6)),
+                      complete = FALSE) +
+    geom_contour_fine(aes(z = mean, color = factor(sign(..level..))),
+                      data = qs.wave.season[lev == 300],
+                 breaks = c(1, -1)*20) +
+    map.SH +
+    scale_fill_viridis_c(breaks = MakeBreaks(binwidth)(c(0.1, 0.6)),
+                          limits = c(0, 0.6),
+                          guide = guide_colorstrip_bottom()) +
+    scale_color_brewer(palette = "Set1", guide = "none", direction = -1) +
+    scale_s_map() +
+    coord_quickmap() +
+    facet_wrap(~season, ncol = 2)
+```
+
+Los campos horizontales de $r^2$ para 300hPa se muestran en la \autoref{fig:cor-camp}, con los centros de máximas anomalías marcados con líneas. En las cuatro estaciones la QS3 explica la mayor parte de la varianza en el hemiferio oeste entre 60°S y 45°S. Lejos de ser homogéneos, los campos muestran tres máximos localizados con cierta persistencia durante el año. El primero, al sur del Índico, está presente en verano y otoño en 60°E que se mueve hacia el este en invierno y primavera. Algo similar sucede on el segundo máximo al sur del Pacífico, que pasa de 180° a 120° entre otoño y primavera. Hay un tercer máximo en el Atlántico sur cuyo desplazamiento hacia el este es bastante menor. Finalmente, en verano y otoño hay un máximo en latitudes bajas en el pacífico central. 
+
+Si se compara la posición de los máximos de $r^2$ con los centros de QS3, el máximo del Índico, por ejemplo, coincide con un anticiclón en verano pero se encuentra entre dos centros en otoño y lo mismo pasa con el máximo del Atlántico. Éste último coincide con un centro anticiclónico en verano pero está más cerca de uno ciclónico en invierno. No parece haber una asociación entre los máximos de $r^2$ y los centros de QS3. 
+
+Comparando con la \autoref{fig:waveletz-ncep} de campos de amplitud de wavelets, se puede observar cierta correspondencia entre las anomalías zonales de wavelets y los campos de $r^2$. Ambos son más intensos en el hemisferio occidental, muestran una translación general hacia el este entre verano e invierno e incluso ambos presentan máximos en el pacífico central. Que estas características se recuperen utilizando dos metodologías independientes brindan robustez al resultado.
+
+Si se realiza un análisis análogo pero en base a las estaciones definidas en la \autoref{estaciones} las principales diferencias son un debilitamiento del los máximos durante EFM y una fuerte intensificación del máximo del Atlántico durante DN (no se muestra). Las características generales no cambian. 
+
+```{r cor-campo2, fig.cap = "Correlación cuadrada media para estaciones según onda3.", fig.publish = FALSE, fig.height = 6}
+cor.season <- fields[lat > -90 & lev == 300, 
+                     .(corelation = cor(gh, QS3)^2), 
+                     by = .(lon, lat, season = qs.season(date))]
+
+binwidth <- 0.1
+ggplot(cor.season, aes(lon, lat)) +
+    geom_contour_fill(aes(z = corelation), breaks = MakeBreaks(binwidth)(c(0.1, 0.6)),
+                      complete = FALSE) +
+    geom_contour_fine(aes(z = mean, color = factor(sign(..level..))),
+                      data = qs.wave[lev == 300, 
+                                            .(mean = mean(QS3)), 
+                                            by = .(lon, lat, season = qs.season(date))],
+                 breaks = c(1, -1)*20) +
+    map.SH +
+    scale_fill_viridis_c(breaks = MakeBreaks(binwidth)(c(0.1, 0.6)),
+                          limits = c(0, 0.6),
+                          guide = guide_colorstrip_bottom()) +
+    scale_color_brewer(palette = "Set1", guide = "none", direction = -1) +
+    scale_s_map() +
+    coord_quickmap() +
+    facet_wrap(~season, ncol = 2)
+```
+
+\todo[inline]{hasta acá}
+```{r}
+beepr::beep(5)
+```
+
+<!-- Se puede estimar de dos maneras distintas: a partir del ajuste de fourier para cada nivel y latitud (figura blabla) y haciendo un promedio, o reconstruyendo el campo tridimensional de la onda 3 y haciendo la correlación (global) con el campo tridimensional observado. Esta segunda forma da casi siempre un valor menor.  -->
+
+```{r r2-cor2, fig.cap = "Relación entre R2 medio y R2 reconstruido.", fig.publish = FALSE}
 r2.cor <- index[, cor(cor, r2)]^2
 ggplot(index, aes(r2, cor)) +
     geom_point(size = 0.5, alpha = 0.5) +
@@ -1577,87 +1694,33 @@ ggplot(index, aes(r2, cor)) +
     coord_equal()
 ```
 
-Para ver:    
-La relación ya no es lineal y hay bastante más scatter. Ergo, hay diferencia en la información.     
-Dos regímenes: Cuando el R^2 es bajo, la relación es "menor" que 1:1 y hay algunos casos donde el R2 reconstruido es mayor que el r2 medio. Para R2 más grandes, la pendiente es 1. Modelar la relación... ¿Cómo se interpreta?
+
+<!-- Para ver:     -->
+<!-- La relación ya no es lineal y hay bastante más scatter. Ergo, hay diferencia en la información.      -->
 
 
-```{r r2-corte, fig.cap = "R2 medio", fig.height = 4, fig.class = "pagewidth"}
-M <- max(index[date %in% select.dates, r2])
-binwidth <- 0.1
-ggplot(gdata, aes(lat, lev)) + 
-    stat_contour_fill(aes(z = r2), binwidth = binwidth) +
-    geom_index.region(rect.annotation) +
-    surface +
-    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
-                 size = 1, color = "red", 
-                 aes(x = -90, xend = -90, y = 1000, 
-                     yend = 10^(-2/M*r2 + 3))) +
-    geom_segment(data = index[date %in% select.dates], inherit.aes = F,
-                 size = 1, color = "blue", 
-                 aes(x = -90, xend = -90, y = 1000, 
-                     yend = 10^(-2/M*(cor) + 3))) +
-    scale_y_level(name = "nivel", 
-                  sec.axis = sec_axis(~-M/2*(log10(.) - 3), name = "R^2")) +
-    scale_x_latitude(name = "latitud", trans = "reverse") +
-    scale_fill_viridis_c(guide = guide_colorstrip_bottom(15)) +
-    facet_wrap(~date)
-```
+<!-- Dos regímenes: Cuando el R^2 es bajo, la relación es "menor" que 1:1 y hay algunos casos donde el R2 reconstruido es mayor que el r2 medio. Para R2 más grandes, la pendiente es 1. Modelar la relación... ¿Cómo se interpreta? -->
 
-Cosas para ver:    
-Comparando con las figuras anteriores, casos donde la amplitud es grande pero el R2 no tanto. 
+<!-- ```{r r2-ts, fig.class = "pagewidth", fig.cap = "R2 medio", fig.subcap = c("Serie temporal", "Ciclo anual"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1} -->
+<!-- gdata <- melt(index, id.vars = "date", measure.vars = c("r2", "cor"),  -->
+<!--               variable.name = "tipo", value.name = "r2" ) -->
+<!-- g <- ggplot(gdata, aes(date, r2)) + -->
+<!--     geom_line(aes(color = tipo)) + -->
+<!--     geom_hline(data = gdata[, .(m = mean(r2)), by = tipo], -->
+<!--                aes(yintercept = m, color = tipo), linetype = 3) + -->
+<!--     scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%y") + -->
+<!--     scale_color_brewer(palette = "Set1") -->
+<!-- DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "R2") -->
 
-```{r r2-ts, fig.class = "pagewidth", fig.cap = "R2 medio", fig.subcap = c("Serie temporal", "Ciclo anual"), cache = FALSE, fig.height = 4, fig.show = "hold", fig.ncol = 1}
-gdata <- melt(index, id.vars = "date", measure.vars = c("r2", "cor"), 
-              variable.name = "tipo", value.name = "r2" )
-g <- ggplot(gdata, aes(date, r2)) +
-    geom_line(aes(color = tipo)) +
-    geom_hline(data = gdata[, .(m = mean(r2)), by = tipo],
-               aes(yintercept = m, color = tipo), linetype = 3) +
-    scale_x_date(date_breaks = "1 years", expand = c(0, 0), date_labels = "%y") +
-    scale_color_brewer(palette = "Set1")
-DivideTimeseries(g, index$date, n = 3, xlab = "Fecha", ylab = "R2")
+<!-- ggplot(gdata, aes(factor(month(date)), r2, color = tipo)) + -->
+<!--     geom_boxplot() + -->
+<!--     scale_x_discrete(name = "Mes", labels = month.abb_sp) + -->
+<!--     scale_y_continuous(name = "R2") + -->
+<!--     scale_color_brewer(palette = "Set1") -->
+<!-- ``` -->
 
-ggplot(gdata, aes(factor(month(date)), r2, color = tipo)) +
-    geom_boxplot() +
-    scale_x_discrete(name = "Mes", labels = month.abb_sp) +
-    scale_y_continuous(name = "R2") +
-    scale_color_brewer(palette = "Set1")
-```
-
-Cosas para ver:    
-El ciclo anual no es para nada tan claro. Varios outliers. La correlación reconstruida (azul) no tiene casi ciclo anual. 
-
-
-Una ventaja de la correlación entre el campo real y el reconstruido es que puede hacerse para cada punto y analizar la variación espacial de la misma. 
-
-
-```{r cor-campo, fig.cap = "Correlación cuadrada media para estaciones según onda3."}
-cor.months <- fields[lat > -90 & lev == 300, 
-                     .(corelation = cor(gh, QS3)), 
-                     by = .(lon, lat, month(date))][
-                         , cor.w := corelation*sqrt(cos(lat*pi/180))]
-
-binwidth <- 0.15
-ggplot(cor.months[, .(cor = mean(corelation^2)), 
-                  by = .(lon, lat, season = qs.season(month))], 
-       aes(lon, lat)) +
-    stat_contour(aes(z = cor, color = ..level..), binwidth = binwidth) +
-    map.SH +
-    scale_color_viridis_c(breaks = MakeBreaks(binwidth),
-                          limits = c(0, 1),
-                          guide = guide_colorstrip_bottom()) +
-    scale_s_map() +
-    coord_quickmap() +
-    facet_wrap(~season)
-```
-
-
-Cosas para ver:    
-Esto es, para cada punto de grilla, la correlación entre el campo observado y el reconstruido en todos los meses y años. 
-Además de la dependencia latitudinal de la importancia de la onda 3 (que se puede ver en los cortes anteriores), se ve la dependencia zonal. La onda 3 es más importante en el Pacífico sur que en el Atlántico o el Índico. Además, se ve un patrón de altas correlaciones que asemejan a un tren de ondas.    
-¿Confirma? lo que se ve en en análisis de wavelets. 
-
+<!-- Cosas para ver:     -->
+<!-- El ciclo anual no es para nada tan claro. Varios outliers. La correlación reconstruida (azul) no tiene casi ciclo anual.  -->
 
 Conclusión: no voy a usar el r2 a partir del campo reconstruido. 
 
@@ -1920,12 +1983,12 @@ tempplot <- function(m) {
 ```
 
 
-```{r gh-qs3-select-ene, fig.cap = "Campos para los 10 eneros seleccionados.", fig.class = "fullpage"}
+```{r gh-qs3-select-ene, fig.cap = "Campos para los 10 eneros seleccionados.", fig.class = "vfullpage"}
 tempplot(1)
 
 ```
 
-```{r gh-qs3-select-sep, fig.cap = "Campos para los 10 septiembres seleccionados.", fig.class = "fullpage"}
+```{r gh-qs3-select-sep, fig.cap = "Campos para los 10 septiembres seleccionados.", fig.class = "vfullpage"}
 tempplot(9)
 
 ```
@@ -2246,6 +2309,7 @@ speedy.mean.season[run == "Control",
     scale_fill_divergent(name = "U media zonal", breaks = MakeBreaks(5),
                          guide = guide_colorstrip_bottom()) +
     scale_linetype(guide = "none") +
+    coord_section() +
     facet_wrap(~season)
 ```
 
@@ -2410,9 +2474,9 @@ binwidth <- 10
 ggplot(qs.sp.season[run == "Control"], aes(lat, lev)) +
     geom_contour_fill(aes(z = amplitude), binwidth = binwidth) +
     geom_contour_back(aes(z = amplitude), 
-                      data = ampl.mean[k == 3], binwidth = binwidth) +
+                      data = ncep.qs[k == 3], binwidth = binwidth) +
     geom_label_contour_back(aes(z = amplitude, label = ..level..), 
-                            data = ampl.mean[k == 3], binwidth = binwidth) +
+                            data = ncep.qs[k == 3], binwidth = binwidth) +
     surface +
     geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = "Amplitud (escala logarítmica)", 
@@ -2422,6 +2486,7 @@ ggplot(qs.sp.season[run == "Control"], aes(lat, lev)) +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse", 
                      ticks = 15) +
+    coord_section() +
     facet_grid(~ season)
 ```
 
@@ -2653,6 +2718,7 @@ ggplot(qs.sp.season, aes(lat, lev)) +
     scale_fill_viridis_c(guide = guide_colorstrip_bottom(),
                          breaks = MakeBreaks(binwidth)) +
     ylab("Nivel") + xlab("Latitud") +
+    coord_section() +
     facet_grid(run ~ season)
 ```
 
@@ -2669,6 +2735,7 @@ ggplot(qs.sp.season[run != "Control"], aes(lat, lev, z = dif)) +
     scale_x_latitude(trans = "reverse") +
     scale_fill_divergent(guide = guide_colorstrip_bottom(),
                          breaks = MakeBreaks(binwidth)) +
+    coord_section() +
     facet_grid(run ~ season, 
                labeller = labeller(run = dif))
 ```

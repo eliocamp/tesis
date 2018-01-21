@@ -971,3 +971,17 @@ labeller.date <- function(sep = " - ") {
         paste0(month.abb_sp[m], sep, y)
     }
 }
+
+no.zero_ <- function(x) {
+    if (x == 0) return(".0")
+    if (abs(x) < 1) {
+        s <- ifelse(x < 0, "-", "")
+        paste0(s, substr(abs(x), 2, nchar(x)))
+    } else {
+        x
+    }
+}
+
+no.zero <- function(x) {
+    sapply(seq_along(x), function(i) no.zero_(x[i]))
+}
