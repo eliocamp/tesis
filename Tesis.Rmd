@@ -624,8 +624,6 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
 
 Los campos de viento zonal, temperatura y altura geopotencial están ligados por el balance de viento geostrófico y de viento térmico. El máximo del jet se encuentra en regiones de máxima baroclinicidad y máximo gradiente meridional de Z y donde el gradiente meridional de temperatura se anula. 
 
-\todo[inline]{hasta acá de revisión.}
-
 ## Viento meridional
 
 
@@ -644,9 +642,11 @@ ggplot(ncep.mean.season[lev >= 30, .(v = mean(v)), by = .(lat, lev, season)],
     facet_wrap(~season)
 ```
 
-En los campos medios zonales de viento meridional (\autoref{fig:v-ncep-corte}) se muestra claramente la circulación de Hadley. En verano, la rama ascendente de encuentra en el hemisferio sur y se tiene convergencias en niveles bajos y divergencias en niveles altos. En invierno, en cambio, sólo se ve la rama descendente, mucho más intensa que en verano, que genera convergencias en niveles altos y divergencias en niveles bajos al rededor de los 30°S. 
+En los campos medios zonales de viento meridional (\autoref{fig:v-ncep-corte}) la principal característica descable son los máximos tropicales presentes en superficie y altura en todas las estaciones. Se trata de la circulación de Hadley. En verano, la rama ascendente de encuentra en el hemisferio sur y se tiene convergencias en niveles bajos y divergencias en niveles altos. En invierno, en cambio, sólo se ve la rama descendente, mucho más intensa que en verano, que genera convergencias en niveles altos y divergencias en niveles bajos al rededor de los 30°S. 
 
-Presentes durante todo el año, los vientos de drenaje antárticos también son evidentes en la \autoref{fig:v-ncep-corte}. Estos vientos catabáticos son máximos en la costa del continente y alcanzan su máxima intensidad en invierno. 
+Presente durante todo el año, también se observa un maximo de vientos del sur en la costa antártica. Esta es la señal de los vientos catabáticos antárticos producidos por una capa muy estable cerca de superficie y la consistente inclinación de la topografía del continente.\todo{cita para esto}.
+
+En el resto del dominio, la media zonal es prácticamente nula, lo cual implica que la anomalía zonal de V es prácticamente idéntica al campo total; por lo tanto, sólo se muestra éste último.
 
 ```{r v-ncep, fig.class = "fullpage", fig.cap = "Viento meridional medio."}
 binwidth <- 2
@@ -656,7 +656,10 @@ ggplot(ncep.mean.season[lev %in% c(850, plot.levs)], aes(lon, lat)) +
     # geom_contourlabel(aes(z = v, color = ..level..), binwidth = binwidth, step = 1,
     # size = 3, vjust = "inward", hjust = "inward") +
     # geom_tile(aes(fill = v)) +
+    geom_tile(data = copy(pres)[, lev := 850][pres < 850], fill = "white",
+              color = "white") +
     map.SH +
+    
     scale_y_latitude() +
     scale_x_longitude() +
     scale_fill_divergent(name = "V", breaks = MakeBreaks(1),
@@ -665,11 +668,12 @@ ggplot(ncep.mean.season[lev %in% c(850, plot.levs)], aes(lon, lat)) +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}. En invierno, existe evidencia de un tren de ondas de Rossby que se propaga desde el Índico occidental sudeste llegando a su máxima latitud en 150°O donde comienza a propagarse hacia el norte hasta llegar al sur de Sudamérica. Este tren de ondas puede identificarse con mayor dificultad en el campo de geopotencial (\autoref{fig:ghz-ncep}) debido a la interferencia de la QS1. 
+Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}. Consistente con los campos de Z\* (\autoref{fig:ghz-ncep}), en niveles altos se observa una QS1 que alcanza su máximo en la estratósfera de primavera.
 
-También en invierno, en los trópicos se puede observar el viento meridional hacia el norte en 850hPa en la costa oeste de África asociado al monzón de la India. El monzón sudamericano, por su parte, se evidencia por un aumento de la intensidad de los vientos del norte en verano sobre el continente americano. En altura, el monzón de la India se muestra como viento hacia el sur producto de la divergencia de niveles altos generada por la convección anómala. El Sudamérica, la alta de Bolivia genera viento hacia el norte y hacia el sur al este y al oeste de Bolivia respectivamente. 
+En invierno entre 500hPa y 100hPa, existe evidencia de un tren de ondas de Rossby que se propaga desde el Índico occidental sudeste llegando a su máxima latitud en 150°O donde comienza a propagarse hacia el norte hasta llegar al sur de Sudamérica. Este tren de ondas puede identificarse en el campo de Z\* (\autoref{fig:ghz-ncep}), pero con mayor dificultad debido a la interferencia de la QS1. 
 
-La anomalía zonal de V es prácticamente idéntica al campo total ya que la media zonal es casi nula en gran parte del dominio (\autoref{fig:v-ncep-corte}); por lo tanto, no se muestra. 
+También en invierno (verano del HN), en los trópicos se puede observar el viento meridional hacia el norte en 850hPa en la costa oeste de África asociado al monzón de la India. El monzón sudamericano, por su parte, se evidencia en verano por un aumento de la intensidad de los vientos del norte sobre el continente americano. En altura, el monzón de la India se muestra como viento hacia el sur producto de la divergencia de niveles altos generada por la convección anómala. El Sudamérica, la alta de Bolivia genera viento hacia el norte y hacia el sur al este y al oeste de Bolivia respectivamente. 
+
 
 ```{r ghminus1-ncep, fig.class = "fullpage", fig.publish = FALSE, fig.cap = "Z* menos QS1."}
 ncep.mean.season %>% 
@@ -685,6 +689,8 @@ ncep.mean.season %>%
     scale_fill_divergent() +
     facet_grid(lev~season)
 ```
+
+\todo[inline]{hasta acá revisión}
 
 ## Gradiente meridional de vorticidad absoluta
 
