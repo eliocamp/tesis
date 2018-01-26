@@ -2,21 +2,33 @@
 title: "Untitled"
 author: "Elio Campitelli"
 date: "January 17, 2018"
-output: 
+documentclass: book
+output:
     pdf_document:
-        toc: yes
+      fig_height: 3
+      fig_width: 6
+      keep_tex: yes
+      latex_engine: xelatex
+      number_sections: yes
+      toc: yes
+      toc_depth: 4
+header-includes: 
+    - \usepackage[nomarkers,figuresonly]{endfloat}
 bibliography: Papers/Biblio.bib
-
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# R Markdown
 @Vera2004
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+```{r pressure2, echo=FALSE, fig.cap = "Caption"}
+plot(pressure)
+```
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
@@ -24,13 +36,17 @@ When you click the **Knit** button a document will be generated that includes bo
 summary(cars)
 ```
 
-## Including Plots
+\processdelayedfloats
+
+# Including Plots
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
+```{r pressure, echo=FALSE, fig.cap = "Caption"}
 plot(pressure)
 ```
+
+\processdelayedfloats
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
@@ -44,7 +60,7 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 \appendix
 
 
-# APéndice 1
+# Apéndice 1
 
 Apéndice
 

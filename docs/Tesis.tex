@@ -142,6 +142,8 @@ Esto es para probar una referencia bibliográfica: Vera et~al.
   Fourier
 \item
   wavelets
+\item
+  Flujo de actividad de onda.
 \end{itemize}
 
 \todo[inline]{chequear este paper: https://link.springer.com/article/10.1007/s00024-012-0635-9}
@@ -432,8 +434,6 @@ máximo del jet se encuentra en regiones de máxima baroclinicidad y
 máximo gradiente meridional de Z y donde el gradiente meridional de
 temperatura se anula.
 
-\todo[inline]{hasta acá de revisión.}
-
 \section{Viento meridional}\label{viento-meridional}
 
 \begin{figure}
@@ -446,17 +446,24 @@ temperatura se anula.
 \end{figure}
 
 En los campos medios zonales de viento meridional
-(\autoref{fig:v-ncep-corte}) se muestra claramente la circulación de
-Hadley. En verano, la rama ascendente de encuentra en el hemisferio sur
-y se tiene convergencias en niveles bajos y divergencias en niveles
-altos. En invierno, en cambio, sólo se ve la rama descendente, mucho más
-intensa que en verano, que genera convergencias en niveles altos y
-divergencias en niveles bajos al rededor de los 30°S.
+(\autoref{fig:v-ncep-corte}) la principal característica descable son
+los máximos tropicales presentes en superficie y altura en todas las
+estaciones. Se trata de la circulación de Hadley. En verano, la rama
+ascendente de encuentra en el hemisferio sur y se tiene convergencias en
+niveles bajos y divergencias en niveles altos. En invierno, en cambio,
+sólo se ve la rama descendente, mucho más intensa que en verano, que
+genera convergencias en niveles altos y divergencias en niveles bajos al
+rededor de los 30°S.
 
-Presentes durante todo el año, los vientos de drenaje antárticos también
-son evidentes en la \autoref{fig:v-ncep-corte}. Estos vientos
-catabáticos son máximos en la costa del continente y alcanzan su máxima
-intensidad en invierno.
+Presente durante todo el año, también se observa un maximo de vientos
+del sur en la costa antártica. Esta es la señal de los vientos
+catabáticos antárticos producidos por una capa muy estable cerca de
+superficie y la consistente inclinación de la topografía del
+continente.\todo{cita para esto}.
+
+En el resto del dominio, la media zonal es prácticamente nula, lo cual
+implica que la anomalía zonal de V es prácticamente idéntica al campo
+total; por lo tanto, sólo se muestra éste último.
 
 \begin{figure}
 
@@ -467,27 +474,27 @@ intensidad en invierno.
 \caption{Viento meridional medio. - fig:v-ncep}\label{fig:v-ncep}
 \end{figure}
 
-Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}. En
-invierno, existe evidencia de un tren de ondas de Rossby que se propaga
-desde el Índico occidental sudeste llegando a su máxima latitud en 150°O
-donde comienza a propagarse hacia el norte hasta llegar al sur de
-Sudamérica. Este tren de ondas puede identificarse con mayor dificultad
-en el campo de geopotencial (\autoref{fig:ghz-ncep}) debido a la
-interferencia de la QS1.
+Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}.
+Consistente con los campos de Z* (\autoref{fig:ghz-ncep}), en niveles
+altos se observa una QS1 que alcanza su máximo en la estratósfera de
+primavera.
 
-También en invierno, en los trópicos se puede observar el viento
-meridional hacia el norte en 850hPa en la costa oeste de África asociado
-al monzón de la India. El monzón sudamericano, por su parte, se
-evidencia por un aumento de la intensidad de los vientos del norte en
-verano sobre el continente americano. En altura, el monzón de la India
-se muestra como viento hacia el sur producto de la divergencia de
-niveles altos generada por la convección anómala. El Sudamérica, la alta
-de Bolivia genera viento hacia el norte y hacia el sur al este y al
+En invierno entre 500hPa y 100hPa, existe evidencia de un tren de ondas
+de Rossby que se propaga desde el Índico occidental sudeste llegando a
+su máxima latitud en 150°O donde comienza a propagarse hacia el norte
+hasta llegar al sur de Sudamérica. Este tren de ondas puede
+identificarse en el campo de Z* (\autoref{fig:ghz-ncep}), pero con mayor
+dificultad debido a la interferencia de la QS1.
+
+También en invierno (verano del HN), en los trópicos se puede observar
+el viento meridional hacia el norte en 850hPa en la costa oeste de
+África asociado al monzón de la India. El monzón sudamericano, por su
+parte, se evidencia en verano por un aumento de la intensidad de los
+vientos del norte sobre el continente americano. En altura, el monzón de
+la India se muestra como viento hacia el sur producto de la divergencia
+de niveles altos generada por la convección anómala. El Sudamérica, la
+alta de Bolivia genera viento hacia el norte y hacia el sur al este y al
 oeste de Bolivia respectivamente.
-
-La anomalía zonal de V es prácticamente idéntica al campo total ya que
-la media zonal es casi nula en gran parte del dominio
-(\autoref{fig:v-ncep-corte}); por lo tanto, no se muestra.
 
 \begin{figure}
 
@@ -514,46 +521,37 @@ meridional de vorticidad absoluta (\(\psi_y\))
 \caption{Gradiente meridional de vorticidad absoluta * 1e11 - fig:etady-ncep}\label{fig:etady-ncep}
 \end{figure}
 
-La \autoref{fig:etady-ncep} muestra que el campo de \(\psi_y\) impide la
-propagación meridional de ondas de Rossby en una \emph{región prohibida}
-acotada centrada sobre Nueva Zelanda principalmente en invierno entre
-300 y 200 hPa. Ésta coincide con la región de bloqueos que, en invierno
-está franqueada por el jet intenso, dando lugar a gradientes
-meridionales de U negativos más intensos que \(\beta\). Estas figuras
-extienden el resultado de Berbery, Nogués-Paegle, y Horel
-(\protect\hyperlink{ref-Berbery1992}{1992}) (su Figura 3) utilizando 5
+La \autoref{fig:etady-ncep} muestra que el campo de \(\psi_y\) tiene dos
+regiones con valores negativos. La primera, centrada sobre Nueva
+Zelanda, se da en invierno en 300hPa y 200hPa coincidiendo con la región
+de bloqueos. En invierno está franqueada por el jet intenso, dando lugar
+a gradientes meridionales de U negativos más intensos que \(\beta\). La
+segunda se da en algunas regiones de la costa Antártica.
+
+Estas zonas de \(\psi_y\) negativo forman una \emph{región prohibida}
+que impide la propagación meridional de ondas de Rossby. Esta figura
+reproduce y extiende el resultado de Berbery, Nogués-Paegle, y Horel
+(\protect\hyperlink{ref-Berbery1992}{1992}) (su Figura~3) utilizando 5
 años de análisis objetivo del Centro Europeo de Predicción a Plazo Medio
-(ECMWF).
+(ECMWF). Aún con \(\psi_y\) positivo, las ondas de Rossby sólo se pueden
+propagar si su número de onda zonal es menor que el número de onda
+estacionario (James \protect\hyperlink{ref-James}{1994}). En la
+\autoref{fig:ks-ncep} se muestra el número de onda estacionario para el
+nivel de 200hPa y en la \autoref{fig:ks-ncep-corte} se muestra un corte
+en 180°. Además de la \emph{región prohibida}, las ondas cortas no
+pueden propagarse meridionalmente en latitudes altas. Las ondas largas
+con k \textless{} 3 pueden propagarse meridionalmente libremente en
+verano al norte de los 60°S aproximadamente, pero quedan atrapadas al
+sur de 45°S en toda una franja de longitudes entre 60°E y 120°O durante
+el resto del año.
 
-\section{Número de onda estacionaria}\label{numero-de-onda-estacionaria}
-
-Aún con \(\psi_y\) positivo, las ondas de Rossby sólo se pueden propagar
-si su número de onda zonal es menor que el número de onda estacionario
-(James \protect\hyperlink{ref-James}{1994}). En la \autoref{fig:ks-ncep}
-se muestra el número de onda estacionario para el nivel de 200hPa y en
-la \autoref{fig:ks-ncep-corte} se muestra un corte en 180°. Además de la
-\emph{región prohibida}, las ondas cortas no pueden propagarse
-meridionalmente en latitudes altas. Las ondas largas con k \textless{} 3
-pueden propagarse meridionalmente libremente en verano al norte de los
-60°S aproximadamente, pero quedan atrapadas al sur de 45°S en toda una
-franja de longitudes entre 60°E y 120°O durante el resto del año.
-
-El corte de \(\psi_y\) en 180° evidencia que la onda 3 sólo puede
+El corte de \(\psi_y\) en 180° evidencia que la QS3 sólo puede
 propagarse meridionalmente dentro de una franja angosta de latitudes,
 entre 60°S y 50°S. Una región donde este modo muestra un máximo de
 amplitud (\autoref{fig:ampl-ncep}).
 
 \begin{figure}
 \includegraphics[ ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa. - fig:ks-ncep}\label{fig:ks-ncep}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-ncep-corte-1} 
-
-}
-
-\caption{Número de onda estacionario medio por círculo de latitud. - fig:ks-ncep-corte}\label{fig:ks-ncep-corte}
 \end{figure}
 
 \begin{figure}
@@ -571,7 +569,31 @@ amplitud (\autoref{fig:ampl-ncep}).
 \caption{Función corriente x 1099 - fig:psi-ncep}\label{fig:psi-ncep}
 \end{figure}
 
-No sé bien qué decir de la \autoref{fig:psi-ncep} :(.
+Para analizar la influencia tropical en la circulación no es posible
+usar la altura geopotencial, ya que el balance geostrófico pierde
+validez cerca del ecuador. Por lo tanto, es útil analizar el campo de
+función corriente (\(\psi\)). El reanálisis de NCEP provee esta variable
+en niveles sigma en vez de presión. En la \autoref{fig:psi-ncep} se
+muestra \(\psi\) en el nivel 0.2101 sigma, que equivale aproximadamente
+a 250hPa. Además del campo medio, se muestran las anomalías zonales en
+sombreado y los flujos de actividad de onda en flechas.
+
+Las características del campo de \(\psi\), tanto el total como las
+anomalías zonales, es similar al de Z (\autoref{fig:gh-ncep}, 200hPa)
+con una estructura eminentemente zonal y un aumento del gradiente
+meridional en invierno y primavera y los mismos centros de anomalías. La
+principal diferencia es, además del cambio de signo dada por la
+dependencia de \(\psi\) con f, es que los patrones presentes en las
+latitudes tropicales se ven con mayor magnitud que los de latitudes
+medias y altas.
+
+Los flujos de actividad de onda en verano muestran transporte de energía
+desde el Pacífico este hacia el sur de África pasando por el Atlántico
+que se sostiene durante todo el año con menor intensidad. Desde ese
+lugar también se observa transferencia de energía hacia el hemisferio
+norte, que se junta con otra región de flujos intensos que viene desde
+el Pacífico oeste. Sobre el Índico, los flujos son de mayor magnitud en
+invierno transportando energía hacia el sur.
 
 \section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
 
@@ -700,7 +722,13 @@ Primavera & -0.163\tabularnewline
 \includegraphics[width=150mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3. - fig:qs3sd-ncep}\label{fig:qs3sd-ncep}
 \end{figure*}
 
-\todo[inline]{No tengo idea de cómo interpretar la \autoref{fig:qs3sd-ncep}. Quizás hablar de que la variabilidad asociada a la onda 3 se da principalmente en los nodos y que entonces ahí es donde hay que ver la variación del efecto? no sé... }
+En la \autoref{fig:qs3sd-ncep} se muestra el desvío estándar de la
+reconstrucción de la QS3. La variabilidad máxima se da entre los centros
+ciclónicos y anticiclónicos (marcados en la \autoref{fig:qs3sd-ncep} con
+contornos negros), indicando que la variabilidad del geopotencial
+asociada a la QS3 se debe al corrimiento de la fase.
+
+\todo[inline]{hasta acá revision}
 
 \subsection{Wavelets}\label{wavelets}
 
@@ -1333,7 +1361,7 @@ no hay mucha diferencia. En efecto, las composiciones son casi iguales
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-qs3-select-ene-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-ene-1} 
 
 }
 
@@ -1342,7 +1370,7 @@ no hay mucha diferencia. En efecto, las composiciones son casi iguales
 
 \begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-qs3-select-sep-1} 
+{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-sep-1} 
 
 }
 
@@ -1541,7 +1569,7 @@ invierno de niveles altos es menor en 200hPa y casi desaparece en
 300hPa.
 
 \subsection{Número de onda
-estacionaria}\label{numero-de-onda-estacionaria-1}
+estacionaria}\label{numero-de-onda-estacionaria}
 
 \begin{figure}
 \includegraphics[ ]{fig/tesis/ks-sp-1} \caption{Número de onda estacionario en 300hPa (speedy).{fig:ks-sp}}\label{fig:ks-sp}
