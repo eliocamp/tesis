@@ -899,6 +899,7 @@ geom_label_contour2 <- function(...) {
 
 
 cache.file <- function(file, expression) {
+
     if (file.exists(file)) {
         message("Reading data from file.")
         return(readRDS(file))
