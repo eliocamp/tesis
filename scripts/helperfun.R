@@ -69,7 +69,7 @@ BuildMap <- function(res = 1, smooth = 1, pm = 180,
     return(m)
 }
 
-geom_map2 <- function(map, size = 0.2, color = "black") {
+geom_map2 <- function(map, size = 0.2, color = "gray50") {
     # Un geom_path con defaults copados para agregar mapas
     g <- geom_path(data = map, aes(long, lat, group = group),
                    inherit.aes = F, color = color, size = size)

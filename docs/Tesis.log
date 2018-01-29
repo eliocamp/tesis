@@ -1,11 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.8.22)  11 OCT 2017 16:26
-entering extended mode
+This is LuaTeX, Version beta-0.80.0 (TeX Live 2015/Debian) (rev 5238)  (format=lualatex 2017.8.22)  28 JAN 2018 22:08
  restricted \write18 enabled.
- %&-line parsing enabled.
 **Tesis.tex
 (./Tesis.tex
 LaTeX2e <2016/02/01>
-Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
+Babel <3.9q> and hyphenation patterns for 1 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo
@@ -133,7 +131,7 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
+Package ifluatex Info: LuaTeX detected.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/base/fixltx2e.sty
 Package: fixltx2e 2015/06/22 v2.0b fixes to LaTeX (obsolete)
@@ -143,21 +141,14 @@ Package fixltx2e Warning: fixltx2e is not required with releases after 2015
 (fixltx2e)                All fixes are now in the LaTeX kernel.
 (fixltx2e)                See the latexrelease package for details.
 
-) (/usr/share/texlive/texmf-dist/tex/xelatex/mathspec/mathspec.sty
-Package: mathspec 2009/09/30 v0.2 LaTeX Package (Mathematics font selection for
- XeLaTeX)
-
-(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2015/08/02 v2.2a e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count100
-)
-(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
 (/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
 Package: expl3 2016/01/19 v6377 L3 programming layer (loader) 
 
 (/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3-code.tex
 Package: expl3 2016/01/19 v6377 L3 programming layer (code)
 L3 Module: l3bootstrap 2016/01/01 v6339 L3 Bootstrap code
+\ucharcat@table=\catcodetable5
 L3 Module: l3names 2015/12/21 v6328 L3 Namespace for primitives
 L3 Module: l3basics 2015/11/22 v6315 L3 Basic definitions
 L3 Module: l3expan 2015/09/10 v5983 L3 Argument expansion
@@ -165,24 +156,24 @@ L3 Module: l3tl 2015/09/29 v6121 L3 Token lists
 L3 Module: l3str 2016/01/03 v6357 L3 Strings
 L3 Module: l3seq 2015/08/05 v5777 L3 Sequences and stacks
 L3 Module: l3int 2016/01/05 v6366 L3 Integers
-\c_max_int=\count101
-\l_tmpa_int=\count102
-\l_tmpb_int=\count103
-\g_tmpa_int=\count104
-\g_tmpb_int=\count105
+\c_max_int=\count100
+\l_tmpa_int=\count101
+\l_tmpb_int=\count102
+\g_tmpa_int=\count103
+\g_tmpb_int=\count104
 L3 Module: l3quark 2015/08/17 v5855 L3 Quarks
 L3 Module: l3prg 2015/11/01 v6216 L3 Control structures
-\g__prg_map_int=\count106
+\g__prg_map_int=\count105
 L3 Module: l3clist 2015/09/02 v5901 L3 Comma separated lists
 L3 Module: l3token 2015/11/11 v6249 L3 Experimental token manipulation
 L3 Module: l3prop 2016/01/05 v6366 L3 Property lists
 L3 Module: l3msg 2015/09/28 v6113 L3 Messages
 L3 Module: l3file 2015/12/03 v6317 L3 File and I/O operations
-\l_iow_line_count_int=\count107
-\l__iow_target_count_int=\count108
-\l__iow_current_line_int=\count109
-\l__iow_current_word_int=\count110
-\l__iow_current_indentation_int=\count111
+\l_iow_line_count_int=\count106
+\l__iow_target_count_int=\count107
+\l__iow_current_line_int=\count108
+\l__iow_current_word_int=\count109
+\l__iow_current_indentation_int=\count110
 L3 Module: l3skip 2016/01/05 v6366 L3 Dimensions and skips
 \c_zero_dim=\dimen112
 \c_max_dim=\dimen113
@@ -203,18 +194,18 @@ L3 Module: l3skip 2016/01/05 v6366 L3 Dimensions and skips
 \g_tmpa_muskip=\muskip15
 \g_tmpb_muskip=\muskip16
 L3 Module: l3keys 2015/11/17 v6284 L3 Key-value interfaces
-\g__keyval_level_int=\count112
-\l_keys_choice_int=\count113
+\g__keyval_level_int=\count111
+\l_keys_choice_int=\count112
 L3 Module: l3fp 2015/08/25 v5890 L3 Floating points
-\c__fp_leading_shift_int=\count114
-\c__fp_middle_shift_int=\count115
-\c__fp_trailing_shift_int=\count116
-\c__fp_big_leading_shift_int=\count117
-\c__fp_big_middle_shift_int=\count118
-\c__fp_big_trailing_shift_int=\count119
-\c__fp_Bigg_leading_shift_int=\count120
-\c__fp_Bigg_middle_shift_int=\count121
-\c__fp_Bigg_trailing_shift_int=\count122
+\c__fp_leading_shift_int=\count113
+\c__fp_middle_shift_int=\count114
+\c__fp_trailing_shift_int=\count115
+\c__fp_big_leading_shift_int=\count116
+\c__fp_big_middle_shift_int=\count117
+\c__fp_big_trailing_shift_int=\count118
+\c__fp_Bigg_leading_shift_int=\count119
+\c__fp_Bigg_middle_shift_int=\count120
+\c__fp_Bigg_trailing_shift_int=\count121
 L3 Module: l3box 2015/08/09 v5822 L3 Experimental boxes
 \c_empty_box=\box28
 \l_tmpa_box=\box29
@@ -262,8 +253,9 @@ L3 Module: l3candidates 2016/01/14 v6376 L3 Experimental additions to l3kernel
 \l__coffin_scaled_width_dim=\dimen142
 L3 Module: l3luatex 2015/11/11 v6250 L3 Experimental LuaTeX-specific functions
 )
-(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/l3xdvipdfmx.def
-File: l3xdvidpfmx.def 2015/11/11 v6250 L3 Experimental driver: xdvipdfmx
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/l3pdfmode.def
+File: l3pdfmode.def 2015/11/11 v6250 L3 Experimental driver: PDF mode
+\l__driver_color_stack_int=\count122
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2016/01/19 v6377 L3 Experimental document command parser
@@ -275,8 +267,43 @@ Package: xparse 2016/01/19 v6377 L3 Experimental document command parser
 )
 Package: fontspec 2016/02/01 v2.5a Font selection for XeLaTeX and LuaLaTeX
 
-(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
-Package: fontspec-xetex 2016/02/01 v2.5a Font selection for XeLaTeX and LuaLaTe
+(/usr/share/texlive/texmf-dist/tex/luatex/luaotfload/luaotfload.sty
+Package: luaotfload 2015/12/09 v2.6 OpenType layout system
+Lua module: luaotfload-main 2015/12/09 2.60001 OpenType layout system.
+Lua module: lualibs 2015-12-02 2.3 ConTeXt Lua standard libraries.
+Lua module: lualibs-extended 2015-12-02 2.3 ConTeXt Lua libraries -- extended co
+llection.(using write cache: /home/elio/.texmf-var/luatex-cache/generic)(using r
+ead cache: /var/lib/texmf/luatex-cache/generic /home/elio/.texmf-var/luatex-cach
+e/generic)
+luaotfload | conf : Root cache directory is /home/elio/.texmf-var/luatex-cache/g
+eneric/names.
+luaotfload | init : Loading fontloader “fontloader-2016-02-12.lua” from kpse
+-resolved path “/usr/share/texlive/texmf-dist/tex/luatex/luaotfload/fontloader
+-2016-02-12.lua”.
+Lua-only attribute luaotfload@state = 1
+Lua-only attribute luaotfload@cursbase = 2
+Lua-only attribute luaotfload@noligature = 3
+luaotfload | init : Context OpenType loader version “2.82”
+Inserting `luaotfload.node_processor' at position 1 in `pre_linebreak_filter'.
+Inserting `luaotfload.node_processor' at position 1 in `hpack_filter'.
+Inserting `luaotfload.define_font' at position 1 in `define_font'.
+Lua-only attribute luaotfload_color_attribute = 4
+luaotfload | conf : Root cache directory is /home/elio/.texmf-var/luatex-cache/g
+eneric/names.
+Inserting `luaotfload.aux.set_sscale_dimens' at position 1 in `luaotfload.patch_
+font'.
+Inserting `luaotfload.aux.patch_cambria_domh' at position 2 in `luaotfload.patch
+_font'.
+Inserting `luaotfload.aux.fixup_fontdata' at position 1 in `luaotfload.patch_fon
+t_unsafe'.
+Inserting `luaotfload.aux.set_capheight' at position 3 in `luaotfload.patch_font
+'.
+Inserting `luaotfload.rewrite_fontname' at position 4 in `luaotfload.patch_font'
+.
+luaotfload | main : initialization completed in 2.020 seconds)
+Lua module: fontspec 2016/02/01 2.5a Advanced font selection for LuaLaTeX.
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty
+Package: fontspec-luatex 2016/02/01 v2.5a Font selection for XeLaTeX and LuaLaTe
 X
 \l_fontspec_script_int=\count128
 \l_fontspec_language_int=\count129
@@ -289,27 +316,39 @@ X
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
-(/usr/share/texlive/texmf-dist/tex/latex/euenc/eu1enc.def
-File: eu1enc.def 2010/05/27 v0.1h Experimental Unicode font encodings
+(/usr/share/texlive/texmf-dist/tex/latex/euenc/eu2enc.def
+File: eu2enc.def 2010/05/27 v0.1h Experimental Unicode font encodings
 )
-LaTeX Font Info:    Try loading font information for EU1+lmr on input line 105.
+LaTeX Font Info:    Try loading font information for EU2+lmr on input line 105.
 
-
-(/usr/share/texlive/texmf-dist/tex/latex/euenc/eu1lmr.fd
-File: eu1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-))
+(/usr/share/texlive/texmf-dist/tex/latex/euenc/eu2lmr.fd
+File: eu2lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+luaotfload | db : Font names database loaded from /home/elio/.texmf-var/luatex-c
+ache/generic/names/luaotfload-names.luc(compiling luc: /var/lib/texmf/luatex-cac
+he/generic/fonts/otf/lmroman10-regular.luc)(load luc: /home/elio/.texmf-var/luat
+ex-cache/generic/fonts/otf/lmroman10-regular.luc))
 (/usr/share/texlive/texmf-dist/tex/xelatex/xunicode/xunicode.sty
-File: xunicode.sty 2011/09/09 v0.981 provides access to latin accents and many 
-other characters in Unicode lower plane
+File: xunicode.sty 2011/09/09 v0.981 provides access to latin accents and many o
+ther characters in Unicode lower plane
 
 (/usr/share/texmf/tex/latex/tipa/t3enc.def
 File: t3enc.def 2001/12/31 T3 encoding
-LaTeX Font Info:    Try loading font information for EU1+lmss on input line 357
-.
+(compiling luc: /var/lib/texmf/luatex-cache/generic/fonts/otf/lmromanslant10-reg
+ular.luc)(load luc: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroman
+slant10-regular.luc)(compiling luc: /var/lib/texmf/luatex-cache/generic/fonts/ot
+f/lmroman10-italic.luc)(load luc: /home/elio/.texmf-var/luatex-cache/generic/fon
+ts/otf/lmroman10-italic.luc)(compiling luc: /var/lib/texmf/luatex-cache/generic/
+fonts/otf/lmroman10-bold.luc)(load luc: /home/elio/.texmf-var/luatex-cache/gener
+ic/fonts/otf/lmroman10-bold.luc)
+LaTeX Font Info:    Try loading font information for EU2+lmss on input line 357.
 
-(/usr/share/texlive/texmf-dist/tex/latex/euenc/eu1lmss.fd
-File: eu1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
-))
+
+(/usr/share/texlive/texmf-dist/tex/latex/euenc/eu2lmss.fd
+File: eu2lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)(compiling luc: /var/lib/texmf/luatex-cache/generic/fonts/otf/lmsans10-regular.
+luc)(load luc: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmsans10-reg
+ular.luc))
 \tipaTiiicode=\count131
 \tipasavetokens=\toks20
 \tipachecktokens=\toks21
@@ -330,167 +369,153 @@ Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: xetex.def on input line 95.
+Package graphics Info: Driver file: pdftex.def on input line 95.
 
-(/usr/share/texlive/texmf-dist/tex/xelatex/xetex-def/xetex.def
-File: xetex.def 2015/09/11 v4.06 LaTeX color/graphics driver for XeTeX (TeX Liv
-e/RRM/JK)
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 )
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)))
+)
+\Gread@gobject=\count132
+))
 \Gin@req@height=\dimen146
 \Gin@req@width=\dimen147
 ))
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \__fontspec_post_arg:w with sig. 'mmO{}' on line 353.
+. Defining command \__fontspec_post_arg:w with sig. 'mmO{}' on line 356.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \fontspec with sig. 'om' on line 355.
+. Defining command \fontspec with sig. 'om' on line 358.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \setmainfont with sig. 'om' on line 365.
+. Defining command \setmainfont with sig. 'om' on line 368.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \setsansfont with sig. 'om' on line 375.
+. Defining command \setsansfont with sig. 'om' on line 378.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \setmonofont with sig. 'om' on line 385.
+. Defining command \setmonofont with sig. 'om' on line 388.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \setmathrm with sig. 'om' on line 399.
+. Defining command \setmathrm with sig. 'om' on line 402.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \setboldmathrm with sig. 'om' on line 407.
+. Defining command \setboldmathrm with sig. 'om' on line 410.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \setmathsf with sig. 'om' on line 415.
+. Defining command \setmathsf with sig. 'om' on line 418.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \setmathtt with sig. 'om' on line 423.
+. Defining command \setmathtt with sig. 'om' on line 426.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newfontfamily with sig. 'mom' on line 437.
+. Defining command \newfontfamily with sig. 'mom' on line 440.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newfontface with sig. 'mom' on line 453.
+. Defining command \newfontface with sig. 'mom' on line 456.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \defaultfontfeatures with sig. 't+om' on line 467.
+. Defining command \defaultfontfeatures with sig. 't+om' on line 470.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \addfontfeatures with sig. 'm' on line 529.
+. Defining command \addfontfeatures with sig. 'm' on line 533.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newfontfeature with sig. 'mm' on line 540.
+. Defining command \newfontfeature with sig. 'mm' on line 544.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newAATfeature with sig. 'mmmm' on line 548.
+. Defining command \newAATfeature with sig. 'mmmm' on line 552.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newopentypefeature with sig. 'mmm' on line 556.
+. Defining command \newopentypefeature with sig. 'mmm' on line 560.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \aliasfontfeature with sig. 'mm' on line 577.
+. Defining command \aliasfontfeature with sig. 'mm' on line 581.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \aliasfontfeatureoption with sig. 'mmm' on line 586.
+. Defining command \aliasfontfeatureoption with sig. 'mmm' on line 590.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newfontscript with sig. 'mm' on line 590.
+. Defining command \newfontscript with sig. 'mm' on line 594.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \newfontlanguage with sig. 'mm' on line 594.
+. Defining command \newfontlanguage with sig. 'mm' on line 598.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \DeclareFontsExtensions with sig. 'm' on line 599.
+. Defining command \DeclareFontsExtensions with sig. 'm' on line 603.
 .................................................
-\l__fontspec_tmp_int=\count132
+\l__fontspec_tmp_int=\count133
 
 (/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)
-LaTeX Info: Redefining \itshape on input line 2705.
-LaTeX Info: Redefining \slshape on input line 2710.
-LaTeX Info: Redefining \scshape on input line 2715.
-LaTeX Info: Redefining \upshape on input line 2720.
-\l__fontspec_em_int=\count133
-\l__fontspec_emdef_int=\count134
-LaTeX Info: Redefining \em on input line 2736.
-LaTeX Info: Redefining \emph on input line 2742.
-LaTeX Info: Redefining \- on input line 2746.
+LaTeX Info: Redefining \itshape on input line 2629.
+LaTeX Info: Redefining \slshape on input line 2634.
+LaTeX Info: Redefining \scshape on input line 2639.
+LaTeX Info: Redefining \upshape on input line 2644.
+\l__fontspec_em_int=\count134
+\l__fontspec_emdef_int=\count135
+LaTeX Info: Redefining \em on input line 2660.
+LaTeX Info: Redefining \emph on input line 2666.
+LaTeX Info: Redefining \- on input line 2670.
 .................................................
 . LaTeX info: "xparse/redefine-command"
 . 
-. Redefining command \oldstylenums with sig. 'm' on line 2841.
+. Redefining command \oldstylenums with sig. 'm' on line 2765.
 .................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
-. Defining command \liningnums with sig. 'm' on line 2845.
+. Defining command \liningnums with sig. 'm' on line 2769.
 .................................................
 ))
-(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
-Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
-
-(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
-(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks23
-\XKV@tempa@toks=\toks24
-)
-\XKV@depth=\count135
-File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-))
-\c@eu@=\count136
-\c@eu@i=\count137
-\c@mkern=\count138
-)
 (/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
-Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
-tim
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbat
+im
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
@@ -535,7 +560,6 @@ Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 369.
 Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 370.
 Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 371.
 Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 372.
-
 Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 373.
 Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 374.
 Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 375.
@@ -576,16 +600,30 @@ Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
 Package: microtype 2013/05/23 v2.5a Micro-typographical refinements (RS)
-\MT@toks=\toks25
-\MT@count=\count139
+\MT@toks=\toks23
+\MT@count=\count136
 LaTeX Info: Redefining \textls on input line 766.
 \MT@outer@kern=\dimen148
 LaTeX Info: Redefining \textmicrotypecontext on input line 1285.
-\MT@listname@count=\count140
+\MT@listname@count=\count137
 
-(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-xetex.def
-File: microtype-xetex.def 2013/05/23 v2.5a Definitions specific to xetex (RS)
-LaTeX Info: Redefining \lsstyle on input line 254.
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-luatex.def
+File: microtype-luatex.def 2013/05/23 v2.5a Definitions specific to luatex (RS)
+
+(/usr/share/texlive/texmf-dist/tex/luatex/luatexbase/luatexbase.sty
+Package: luatexbase 2015/10/04 v1.3 luatexbase interface to LuaTeX 
+
+(/usr/share/texlive/texmf-dist/tex/luatex/ctablestack/ctablestack.sty
+Package: ctablestack 2015/10/01 v1.0 Catcode table stable support
+\@catcodetablestackcnt=\count138
+)
+\CatcodeTableOther=\catcodetable6
+\CatcodeTableExpl=\catcodetable7
+)
+Lua module: microtype 2013/05/15 2.5 microtype module.
+LaTeX Info: Redefining \lsstyle on input line 644.
+LaTeX Info: Redefining \lslig on input line 644.
+\MT@outer@space=\skip52
 )
 Package microtype Info: Loading configuration file microtype.cfg.
 
@@ -597,15 +635,15 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is not detected.
+Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-\Gm@cnth=\count141
-\Gm@cntv=\count142
-\c@Gm@tempcnt=\count143
+\Gm@cnth=\count139
+\Gm@cntv=\count140
+\c@Gm@tempcnt=\count141
 \Gm@bindingoffset=\dimen149
 \Gm@wd@mp=\dimen150
 \Gm@odd@mp=\dimen151
@@ -614,14 +652,13 @@ Package ifvtex Info: VTeX not detected.
 \Gm@layoutheight=\dimen154
 \Gm@layouthoffset=\dimen155
 \Gm@layoutvoffset=\dimen156
-\Gm@dimlist=\toks26
+\Gm@dimlist=\toks24
 )
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
 Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
-
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
 Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
@@ -633,22 +670,20 @@ Package hobsub Info: Skipping package `ifvtex' (already loaded).
 Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
 Package hobsub Info: Skipping package `ifpdf' (already loaded).
 Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
 Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
 Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
-Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: pdfTeX >= 1.30 not detected.
+Package: luatex-loader 2010/03/09 v0.4 Lua module loader (HO)
+
+(/usr/share/texlive/texmf-dist/scripts/oberdiek/oberdiek.luatex.lua)
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO)
+
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode not found.
+Package pdftexcmds Info: \pdfdraftmode found.
+\pdftexcmds@toks=\toks25
 Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
-Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
-)
+Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO)
+
 Package: bitset 2011/01/30 v1.1 Handle bit-vector datatype (HO)
 Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
 )
@@ -657,6 +692,7 @@ Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
 Package: hopatch 2012/05/28 v1.2 Wrapper for package hooks (HO)
 Package: xcolor-patch 2011/01/30 xcolor patch
 Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
 Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
 Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
@@ -668,13 +704,13 @@ Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
 \@linkdim=\dimen157
-\Hy@linkcounter=\count144
-\Hy@pagecounter=\count145
+\Hy@linkcounter=\count142
+\Hy@pagecounter=\count143
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 )
-\Hy@SavedSpaceFactor=\count146
+\Hy@SavedSpaceFactor=\count144
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -686,7 +722,7 @@ Package hyperref Info: Plain pages OFF on input line 4458.
 Package hyperref Info: Backreferencing OFF on input line 4463.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
-\c@Hy@tempcnt=\count147
+\c@Hy@tempcnt=\count145
 
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
@@ -694,7 +730,7 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5041.
 \XeTeXLinkMargin=\dimen158
-\Fld@menulength=\count148
+\Fld@menulength=\count146
 \Field@Width=\dimen159
 \Fld@charsize=\dimen160
 Package hyperref Info: Hyper figures OFF on input line 6295.
@@ -706,66 +742,112 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6320.
 Package hyperref Info: PDF/A mode OFF on input line 6325.
 LaTeX Info: Redefining \ref on input line 6365.
 LaTeX Info: Redefining \pageref on input line 6369.
-\Hy@abspage=\count149
-\c@Item=\count150
-\c@Hfootnote=\count151
+\Hy@abspage=\count147
+\c@Item=\count148
+\c@Hfootnote=\count149
 )
 
-Package hyperref Message: Driver (autodetected): hxetex.
+Package hyperref Message: Driver (autodetected): hpdftex.
 
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def
-File: hxetex.def 2012/11/06 v6.83m Hyperref driver for XeTeX
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+\Fld@listcount=\count150
+\c@bookmark@seq@number=\count151
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
+2.
+)
+\Hy@SectionHShift=\skip53
+)
+Package hyperref Info: Option `unicode' set `true' on input line 30.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2012/11/06 v6.83m Hyperref: PDF Unicode definition (HO)
 )
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/stringenc.sty
-Package: stringenc 2011/12/02 v1.10 Convert strings between diff. encodings (HO
-)
-)
-\pdfm@box=\box43
-\c@Hy@AnnotLevel=\count152
-\HyField@AnnotCount=\count153
-\Fld@listcount=\count154
-\c@bookmark@seq@number=\count155
-
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
-Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
-Package rerunfilecheck Info: Feature \pdfmdfivesum is not available
-(rerunfilecheck)             (e.g. pdfTeX or LuaTeX with package `pdftexcmds').
-
-(rerunfilecheck)             Therefore file contents cannot be checked efficien
-tly
-(rerunfilecheck)             and the loading of the package is aborted.
-)
-\Hy@SectionHShift=\skip52
-)
-Package hyperref Info: Option `unicode' set `true' on input line 31.
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
-File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
-
-)
-Package hyperref Info: Option `breaklinks' set `true' on input line 31.
+Package hyperref Info: Option `breaklinks' set `true' on input line 30.
 
 (/usr/share/texlive/texmf-dist/tex/latex/polyglossia/polyglossia.sty
-Package: polyglossia 2015/08/06 v1.42.0 Alternative to Babel for XeLaTeX and Lu
-aLaTeX
+Package: polyglossia 2015/08/06 v1.42.0 Alternative to Babel for XeLaTeX and Lua
+LaTeX
 
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2015/08/02 v2.2a e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count152
+)
 (/usr/share/texlive/texmf-dist/tex/latex/makecmds/makecmds.sty
 Package: makecmds 2009/09/03 v1.0a extra command making commands
 )
-\xpg@normalclass=\XeTeXcharclass1
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks26
+\XKV@tempa@toks=\toks27
 )
+\XKV@depth=\count153
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+luatex-hyphen: using data file: /var/lib/texmf/tex/generic/config/language.dat.l
+ua
+Lua module: polyglossia 2013/05/11 1.3 Polyglossia)
 (/usr/share/texlive/texmf-dist/tex/latex/polyglossia/gloss-spanish.ldf
 File: gloss-spanish.ldf polyglossia: module for spanish
+
+
+Package polyglossia Warning: No hyphenation patterns were loaded for `Spanish'
+(polyglossia)                I will use \language=\l@nohyphenation instead on in
+put line 8.
+
+\l@spanish = a dialect from \language\l@nohyphenation 
+
+Package polyglossia Warning: \setlocalhyphenmin useless for unhyphenated languag
+e spanish on input line 8.
+
 )
 Package polyglossia Info: Default language is spanish.
-
+ (/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip54
+\LTright=\skip55
+\LTpre=\skip56
+\LTpost=\skip57
+\LTchunksize=\count154
+\LTcapwidth=\dimen161
+\LT@head=\box43
+\LT@firsthead=\box44
+\LT@foot=\box45
+\LT@lastfoot=\box46
+\LT@cols=\count155
+\LT@rows=\count156
+\c@LT@tables=\count157
+\c@LT@chunks=\count158
+\LT@p@ftn=\toks28
+)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen162
+\lightrulewidth=\dimen163
+\cmidrulewidth=\dimen164
+\belowrulesep=\dimen165
+\belowbottomsep=\dimen166
+\aboverulesep=\dimen167
+\abovetopsep=\dimen168
+\cmidrulesep=\dimen169
+\cmidrulekern=\dimen170
+\defaultaddspace=\dimen171
+\@cmidla=\count159
+\@cmidlb=\count160
+\@aboverulesep=\dimen172
+\@belowrulesep=\dimen173
+\@thisruleclass=\count161
+\@lastruleclass=\count162
+\@thisrulewidth=\dimen174
+)
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grffile.sty
 Package: grffile 2012/04/05 v1.16 Extended file name support for graphics (HO)
-Package grffile Info: \Gread@QTm patched on input line 253.
-Package grffile Info: \Gread@eps patched on input line 303.
 Package grffile Info: Option `multidot' is set to `true'.
 Package grffile Info: Option `extendedchars' is set to `false'.
 Package grffile Info: Option `space' is set to `true'.
@@ -776,9 +858,9 @@ Package: parskip 2001/04/09 non-zero parskip adjustments
 )
 (/usr/share/texlive/texmf-dist/tex/latex/titling/titling.sty
 Package: titling 2009/09/04 v2.1d maketitle typesetting
-\thanksmarkwidth=\skip53
-\thanksmargin=\skip54
-\droptitle=\skip55
+\thanksmarkwidth=\skip58
+\thanksmargin=\skip59
+\droptitle=\skip60
 )
 (/usr/share/texlive/texmf-dist/tex/latex/subfig/subfig.sty
 Package: subfig 2005/06/28 ver: 1.3 subfig package
@@ -789,103 +871,464 @@ Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2016/02/04 v1.7-139 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
-\captionmargin=\dimen161
-\captionmargin@=\dimen162
-\captionwidth=\dimen163
-\caption@tempdima=\dimen164
-\caption@indent=\dimen165
-\caption@parindent=\dimen166
-\caption@hangindent=\dimen167
+\captionmargin=\dimen175
+\captionmargin@=\dimen176
+\captionwidth=\dimen177
+\caption@tempdima=\dimen178
+\caption@indent=\dimen179
+\caption@parindent=\dimen180
+\caption@hangindent=\dimen181
 )
-\c@ContinuedFloat=\count156
+\c@ContinuedFloat=\count163
 Package caption Info: hyperref package is loaded.
-)
-\c@KVtest=\count157
-\sf@farskip=\skip56
-\sf@captopadj=\dimen168
-\sf@capskip=\skip57
-\sf@nearskip=\skip58
-\c@subfigure=\count158
-\c@subfigure@save=\count159
-\c@lofdepth=\count160
-\c@subtable=\count161
-\c@subtable@save=\count162
-\c@lotdepth=\count163
-\sf@top=\skip59
-\sf@bottom=\skip60
+Package caption Info: longtable package is loaded.
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2013/06/09 v1.4-94 longtable captions (AR)
+))
+\c@KVtest=\count164
+\sf@farskip=\skip61
+\sf@captopadj=\dimen182
+\sf@capskip=\skip62
+\sf@nearskip=\skip63
+\c@subfigure=\count165
+\c@subfigure@save=\count166
+\c@lofdepth=\count167
+\c@subtable=\count168
+\c@subtable@save=\count169
+\c@lotdepth=\count170
+\sf@top=\skip64
+\sf@bottom=\skip65
 )
 (/usr/share/texlive/texmf-dist/tex/latex/marginnote/marginnote.sty
 Package: marginnote 2012/03/29 v1.1i non floating margin notes for LaTeX
-\c@mn@abspage=\count164
+\c@mn@abspage=\count171
 )
-(./Tesis.aux)
-\openout1 = `Tesis.aux'.
+(/usr/share/texlive/texmf-dist/tex/latex/endfloat/endfloat.sty
+Package: endfloat 2011/12/25 v2.5d LaTeX2e package puts figures and tables at en
+d (jdm)
+\c@postfigure=\count172
+\efloat@postfff=\write3
+\@ef@fffopen=\count173
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 97.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 97.
- (/usr/share/texmf/tex/latex/tipa/t3cmr.fd
+*** Using endfloat.cfg ***
+(./endfloat.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/todonotes/todonotes.sty
+Package: todonotes 2015/07/09 .dtx Todonotes source and documentation.
+Package: todonotes 2012/07/25
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks29
+\pgfutil@tempdima=\dimen183
+\pgfutil@tempdimb=\dimen184
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box47
+(/usr/share/texlive/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2015/08/07 v3.0.1a (rcs-revision 1.31)
+))
+Package: pgf 2015/08/07 v3.0.1a (rcs-revision 1.15)
+
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2014/07/09 v3.0.1a (rcs-revision 1.48)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks30
+\pgfkeys@temptoks=\toks31
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex
+\pgfkeys@tmptoks=\toks32
+))
+\pgf@x=\dimen185
+\pgf@y=\dimen186
+\pgf@xa=\dimen187
+\pgf@ya=\dimen188
+\pgf@xb=\dimen189
+\pgf@yb=\dimen190
+\pgf@xc=\dimen191
+\pgf@yc=\dimen192
+\w@pgf@writea=\write4
+\r@pgf@reada=\read2
+\c@pgf@counta=\count174
+\c@pgf@countb=\count175
+\c@pgf@countc=\count176
+\c@pgf@countd=\count177
+\t@pgf@toka=\toks33
+\t@pgf@tokb=\toks34
+\t@pgf@tokc=\toks35
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2014/10/11  (rcs-revision 1.35)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f
+File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex
+File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
+\pgfsyssoftpath@smallbuffer@items=\count178
+\pgfsyssoftpath@bigbuffer@items=\count179
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen193
+\pgfmath@count=\count180
+\pgfmath@box=\box48
+\pgfmath@toks=\toks36
+\pgfmath@stack@operand=\toks37
+\pgfmath@stack@operation=\toks38
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count181
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x
+File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
+\pgf@picminx=\dimen194
+\pgf@picmaxx=\dimen195
+\pgf@picminy=\dimen196
+\pgf@picmaxy=\dimen197
+\pgf@pathminx=\dimen198
+\pgf@pathmaxx=\dimen199
+\pgf@pathminy=\dimen256
+\pgf@pathmaxy=\dimen257
+\pgf@xx=\dimen258
+\pgf@xy=\dimen259
+\pgf@yx=\dimen260
+\pgf@yy=\dimen261
+\pgf@zx=\dimen262
+\pgf@zy=\dimen263
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex
+File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
+\pgf@path@lastx=\dimen264
+\pgf@path@lasty=\dimen265
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex
+File: pgfcorepathusage.code.tex 2014/11/02  (rcs-revision 1.24)
+\pgf@shorten@end@additional=\dimen266
+\pgf@shorten@start@additional=\dimen267
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x
+File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
+\pgfpic=\box49
+\pgf@hbox=\box50
+\pgf@layerbox@main=\box51
+\pgf@picture@serial@count=\count182
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex
+File: pgfcoregraphicstate.code.tex 2014/11/02  (rcs-revision 1.12)
+\pgflinewidth=\dimen268
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex
+File: pgfcoretransformations.code.tex 2015/08/07  (rcs-revision 1.20)
+\pgf@pt@x=\dimen269
+\pgf@pt@y=\dimen270
+\pgf@pt@temp=\dimen271
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex
+File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x
+File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
+\pgfarrowsep=\dimen272
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
+\pgf@max=\dimen273
+\pgf@sys@shading@range@num=\count183
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex
+File: pgfcoreexternal.code.tex 2014/07/09  (rcs-revision 1.21)
+\pgfexternal@startupbox=\box52
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x
+File: pgfcorelayers.code.tex 2013/07/18  (rcs-revision 1.7)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex
+File: pgfcoretransparency.code.tex 2013/09/30  (rcs-revision 1.5)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex
+File: pgfcorepatterns.code.tex 2013/11/07  (rcs-revision 1.5)
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2014/03/21  (rcs-revision 1.35)
+\pgfnodeparttextbox=\box53
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty
+Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen274
+\pgf@nodesepend=\dimen275
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty
+Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
+)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+\pgffor@iter=\dimen276
+\pgffor@skip=\dimen277
+\pgffor@stack=\toks39
+\pgffor@toks=\toks40
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex
+File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
+\pgf@plot@mark@count=\count184
+\pgfplotmarksize=\dimen278
+)
+\tikz@lastx=\dimen279
+\tikz@lasty=\dimen280
+\tikz@lastxsaved=\dimen281
+\tikz@lastysaved=\dimen282
+\tikzleveldistance=\dimen283
+\tikzsiblingdistance=\dimen284
+\tikz@figbox=\box54
+\tikz@figbox@bg=\box55
+\tikz@tempbox=\box56
+\tikz@tempbox@bg=\box57
+\tikztreelevel=\count185
+\tikznumberofchildren=\count186
+\tikznumberofcurrentchild=\count187
+\tikz@fig@count=\count188
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
+\pgfmatrixcurrentrow=\count189
+\pgfmatrixcurrentcolumn=\count190
+\pgf@matrix@numberofcolumns=\count191
+)
+\tikz@expandcount=\count192
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count193
+\calc@Bcount=\count194
+\calc@Adimen=\dimen285
+\calc@Bdimen=\dimen286
+\calc@Askip=\skip66
+\calc@Bskip=\skip67
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count195
+\calc@Cskip=\skip68
+)
+\c@@todonotes@numberoftodonotes=\count196
+)
+(/usr/share/texlive/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen287
+\WF@size=\dimen288
+\c@WF@wrappedlines=\count197
+\WF@box=\box58
+\WF@everypar=\toks41
+Package: wrapfig 2003/01/31  v 3.6
+) (./Tesis.aux
+luatex-hyphen: loading patterns and exceptions for: spanish (\language255)
+luatex-hyphen: info: no hyphenation exceptions for this language
+luatex-hyphen: loading patterns and exceptions for: spanish (\language255)
+luatex-hyphen: info: no hyphenation exceptions for this language)
+\openout1 = Tesis.aux
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for EU2/lmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 101.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 101.
+
+(/usr/share/texmf/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 97.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 97.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 101.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 101.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Info: Redefining \microtypecontext on input line 97.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count198
+\scratchdimen=\dimen289
+\scratchbox=\box59
+\nofMPsegments=\count199
+\nofMParguments=\count266
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count267
+\MPscratchDim=\dimen290
+\MPnumerator=\count268
+\makeMPintoPDFobject=\count269
+\everyMPtoPDFconversion=\toks43
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+
+))
+LaTeX Info: Redefining \microtypecontext on input line 101.
+Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
+Package microtype Info: Using default expansion set `basictext'.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of spacing.
 Package microtype Info: No adjustment of kerning.
 
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
-File: mt-LatinModernRoman.cfg 2013/03/13 v1.0 microtype config. file: Latin Mod
-ern Roman (RS)
+File: mt-LatinModernRoman.cfg 2013/03/13 v1.0 microtype config. file: Latin Mode
+rn Roman (RS)
 )
 *geometry* driver: auto-detecting
-*geometry* detected driver: xetex
+*geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
-* driver: xetex
+* driver: pdftex
 * paper: a4paper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: twoside 
-* h-part:(L,W,R)=(85.35826pt, 369.88583pt, 142.26378pt)
+* h-part:(L,W,R)=(142.26378pt, 312.98032pt, 142.26378pt)
 * v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
-* \textwidth=369.88583pt
+* \textwidth=312.98032pt
 * \textheight=702.78308pt
-* \oddsidemargin=13.08827pt
+* \oddsidemargin=69.99379pt
 * \evensidemargin=69.99379pt
 * \topmargin=-31.2056pt
 * \headheight=12.0pt
 * \headsep=18.06749pt
 * \topskip=10.0pt
 * \footskip=25.29494pt
-* \marginparwidth=128.0374pt
-* \marginparsep=8.53581pt
+* \marginparwidth=115.0pt
+* \marginparsep=7.0pt
 * \columnsep=10.0pt
 * \skip\footins=9.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
@@ -897,38 +1340,51 @@ ern Roman (RS)
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box44
-Package hyperref Info: Link coloring OFF on input line 97.
+\AtBeginShipoutBox=\box60
+Package hyperref Info: Link coloring OFF on input line 101.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count165
+\c@section@level=\count270
 )
-LaTeX Info: Redefining \ref on input line 97.
-LaTeX Info: Redefining \pageref on input line 97.
-LaTeX Info: Redefining \nameref on input line 97.
+LaTeX Info: Redefining \ref on input line 101.
+LaTeX Info: Redefining \pageref on input line 101.
+LaTeX Info: Redefining \nameref on input line 101.
 
 (./Tesis.out) (./Tesis.out)
-\@outlinefile=\write3
-\openout3 = `Tesis.out'.
+\@outlinefile=\write5
 
+\openout5 = Tesis.out
+luatex-hyphen: loading patterns and exceptions for: spanish (\language255)
+luatex-hyphen: info: no hyphenation exceptions for this language
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package marginnote Info: \pdfoutput not 0 and \pdflastxpos available.
 (marginnote)             Extended position detection mode activated.
- [1
+ ABD: EveryShipout initializing macros(compiling luc: /var/lib/texmf/luatex-cach
+e/generic/fonts/otf/lmroman17-regular.luc)(load luc: /home/elio/.texmf-var/luate
+x-cache/generic/fonts/otf/lmroman17-regular.luc)(compiling luc: /var/lib/texmf/l
+uatex-cache/generic/fonts/otf/lmroman12-regular.luc)(load luc: /home/elio/.texmf
+-var/luatex-cache/generic/fonts/otf/lmroman12-regular.luc)(compiling luc: /var/l
+ib/texmf/luatex-cache/generic/fonts/otf/lmroman12-italic.luc)(load luc: /home/el
+io/.texmf-var/luatex-cache/generic/fonts/otf/lmroman12-italic.luc) [1
 
 
-] [2
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
 
-] (./Tesis.toc
+](compiling luc: /var/lib/texmf/luatex-cache/generic/fonts/otf/lmroman12-bold.lu
+c)(load luc: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroman12-bold
+.luc)
+(./Tesis.toc
+luatex-hyphen: loading patterns and exceptions for: spanish (\language255)
+luatex-hyphen: info: no hyphenation exceptions for this language
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 4.
-
-(/usr/share/texmf/tex/latex/lm/ot1lmr.fd
+ (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 Package microtype Info: Loading generic settings for font family
@@ -972,759 +1428,2232 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ))
-\tf@toc=\write4
-\openout4 = `Tesis.toc'.
+\tf@toc=\write6
 
- [3] [4
-
-]
+\openout6 = Tesis.toc
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input li
+ne 110.
+ [3] [4]
 Capítulo 1.
+[5
 
-LaTeX Warning: Citation `@Vera2004' on page 5 undefined on input line 120.
-
-[5] [6
+] [6
 
 ]
 Capítulo 2.
 
-! LaTeX Error: File `fig/tesis/fourier-ejemplo-ondas-1' not found.
+\openout3 = Tesis.fff
+(Tesis.fff)
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.137 ...0mm, ]{fig/tesis/fourier-ejemplo-ondas-1}
-                                                   \caption{Ejemplo fourier}...
+LaTeX Warning: Reference `fig:fourier-ejemplo' on page 7 undefined on input line
+ 157.
 
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+[7] [8
 
-
-LaTeX Warning: Reference `fig:fourier-ejemplo-ondas' on page 7 undefined on inp
-ut line 140.
-
-
-! LaTeX Error: File `fig/tesis/wavelet_ejemplo-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.153 ...idth=75mm]{fig/tesis/wavelet_ejemplo-1} }
-                                                  \subfloat[Análisis de Wav...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \hbox (5.54199pt too wide) in paragraph at lines 153--153
-[]\EU1/lmr/m/n/8 (a)
- []
-
-
-Overfull \hbox (15.55pt too wide) in paragraph at lines 153--153
-|\EU1/lmr/m/n/8 Cam-
- []
-
-
-Overfull \hbox (5.878pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 po[][]| 
- []
-
-
-! LaTeX Error: File `fig/tesis/wavelet_ejemplo-2' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.153 ...idth=75mm]{fig/tesis/wavelet_ejemplo-2} }
-                                                  \caption{Wavelets}\label{f...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \hbox (6.01399pt too wide) in paragraph at lines 153--153
-[]\EU1/lmr/m/n/8 (b)
- []
-
-
-Overfull \hbox (13.422pt too wide) in paragraph at lines 153--153
-|\EU1/lmr/m/n/8 Aná-
- []
-
-
-Overfull \hbox (2.806pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 li-
- []
-
-
-Overfull \hbox (5.734pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 sis
- []
-
-
-Overfull \hbox (5.166pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 de
- []
-
-
-Overfull \hbox (9.90999pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 Wa-
- []
-
-
-Overfull \hbox (5.886pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 ve-
- []
-
-
-Overfull \hbox (9.462pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 lets
- []
-
-
-Overfull \hbox (5.166pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 en
- []
-
-
-Overfull \hbox (16.03pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 círcu-
- []
-
-
-Overfull \hbox (6.63pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 los
- []
-
-
-Overfull \hbox (5.166pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 de
- []
-
-
-Overfull \hbox (4.694pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 la-
- []
-
-
-Overfull \hbox (3.75pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 ti-
- []
-
-
-Overfull \hbox (9.414pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 tud
- []
-
-
-Overfull \hbox (5.214pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 se-
- []
-
-
-Overfull \hbox (7.054pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 ña-
- []
-
-
-Overfull \hbox (4.694pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 la-
- []
-
-
-Overfull \hbox (11.35pt too wide) in paragraph at lines 153--153
-\EU1/lmr/m/n/8 dos.[][]| 
- []
-
-Package marginnote Info: Margin note 7.1 is on absolute page 7
-(marginnote)              on input line 159.
-Package marginnote Info: xpos seems to be 419.97829pt,
-(marginnote)             \marginnoterightadjust ignored on input line 159.
-[7] [8]
+]
 Capítulo 3.
 
-! LaTeX Error: File `fig/tesis/gh_campo_medio_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.172 ...ngle=90]{fig/tesis/gh_campo_medio_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/gh_anomalia_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.187 ...m,angle=90]{fig/tesis/gh_anomalia_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/gh_ambos_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.201 ...27mm,angle=90]{fig/tesis/gh_ambos_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/gh_zonal65_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.212 ...ludegraphics{fig/tesis/gh_zonal65_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/gh_sd_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.225 ... \includegraphics{fig/tesis/gh_sd_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/temp_media_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.241 ...mm,angle=90]{fig/tesis/temp_media_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/temp_corte_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.256 ...ludegraphics{fig/tesis/temp_corte_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/temp_zonal_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.265 ...mm,angle=90]{fig/tesis/temp_zonal_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/t_zonal65_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.276 ...cludegraphics{fig/tesis/t_zonal65_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[9
-
-]
-
-! LaTeX Error: File `fig/tesis/u_medio_corte_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.292 ...egraphics{fig/tesis/u_medio_corte_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/u_medio_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.306 ...227mm,angle=90]{fig/tesis/u_medio_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/u_nomalia_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.321 ...7mm,angle=90]{fig/tesis/u_nomalia_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/v_corte_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.338 ...includegraphics{fig/tesis/v_corte_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/v_medio_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.354 ...227mm,angle=90]{fig/tesis/v_medio_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/v_anomal_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.369 ...27mm,angle=90]{fig/tesis/v_anomal_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/eta-dy-ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.384 ...=227mm,angle=90]{fig/tesis/eta-dy-ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[10] [11]
-
-! LaTeX Error: File `fig/tesis/r2_qs_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.405 ... \includegraphics{fig/tesis/r2_qs_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/ampl_qs_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.418 ...includegraphics{fig/tesis/ampl_qs_ncep-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[12]
-Capítulo 4.
-
-! LaTeX Error: File `fig/tesis/qs_teorico_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.435 ...dth=150mm, ]{fig/tesis/qs_teorico_ncep-1}
-                                                   \caption{Media de reconst...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/qs_teorico_corte_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.449 ...0mm, ]{fig/tesis/qs_teorico_corte_ncep-1}
-                                                   \caption{Corte}\label{fig...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/qs_teorico_sd_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.460 ...=150mm, ]{fig/tesis/qs_teorico_sd_ncep-1}
-                                                   \caption{Desvío estánda...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/qs_teorico_sd_corte_ncep-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.464 ..., ]{fig/tesis/qs_teorico_sd_corte_ncep-1}
-                                                   \caption{Corte sd}\label{...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `fig/tesis/wavelet_fourier_comp-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.477 ...raphics{fig/tesis/wavelet_fourier_comp-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[13
-
-]
-
-! LaTeX Error: File `fig/tesis/max_mean_compara-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.523 ...egraphics{fig/tesis/max_mean_compara-1} }
-                                                  \newline\subfloat[Corte ve...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \hbox (5.54199pt too wide) in paragraph at lines 523--523
-[]\EU1/lmr/m/n/8 (a)
- []
-
-
-Overfull \hbox (10.286pt too wide) in paragraph at lines 523--523
-|\EU1/lmr/m/n/8 Dis-
- []
-
-
-Overfull \hbox (7.534pt too wide) in paragraph at lines 523--523
-\EU1/lmr/m/n/8 cri-
- []
-
-
-Overfull \hbox (7.526pt too wide) in paragraph at lines 523--523
-\EU1/lmr/m/n/8 bu-
- []
-
-
-Overfull \hbox (11.774pt too wide) in paragraph at lines 523--523
-\EU1/lmr/m/n/8 ción[][]| 
- []
-
-
-! LaTeX Error: File `fig/tesis/max_mean_compara-2' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.523 ...egraphics{fig/tesis/max_mean_compara-2} }
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \hbox (6.01399pt too wide) in paragraph at lines 523--523
-[]\EU1/lmr/m/n/8 (b)
- []
-
-
-Overfull \hbox (11.782pt too wide) in paragraph at lines 523--523
-|\EU1/lmr/m/n/8 Cor-
- []
-
-
-Overfull \hbox (3.75pt too wide) in paragraph at lines 523--523
-\EU1/lmr/m/n/8 te
- []
-
-
-Overfull \hbox (9.198pt too wide) in paragraph at lines 523--523
-\EU1/lmr/m/n/8 ver-
- []
-
-
-Overfull \hbox (3.75pt too wide) in paragraph at lines 523--523
-\EU1/lmr/m/n/8 ti-
- []
-
-
-Overfull \hbox (9.414pt too wide) in paragraph at lines 523--523
-\EU1/lmr/m/n/8 cal.[][]| 
- []
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.527 \newline
-              \caption{Distribució de amplitud para 12 fechas. En rojo la a...
-
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-LaTeX Warning: File `fig/tesis/campos_anomalia_select-1.pdf' not found on input
- line 538.
-
-! Unable to load picture or PDF file 'fig/tesis/campos_anomalia_select-1.pdf'.
-<to be read again> 
-                   }
-l.538 ...s{fig/tesis/campos_anomalia_select-1.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.538 ...s{fig/tesis/campos_anomalia_select-1.pdf}
-                                                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.538 ...s{fig/tesis/campos_anomalia_select-1.pdf}
-                                                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-File: fig/tesis/campos_anomalia_select-1.pdf Graphic file (type QTm)
-<use  "fig/tesis/campos_anomalia_select-1.pdf" >
-! Unable to load picture or PDF file 'fig/tesis/campos_anomalia_select-1.pdf'.
-<to be read again> 
-                   \GXT@clipend 
-l.538 ...s{fig/tesis/campos_anomalia_select-1.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
+LaTeX Warning: Reference `fig:gh-ncep' on page 9 undefined on input line 203.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep' on page 9 undefined on input line 234.
+
+[9]
+
+LaTeX Warning: Reference `fig:ghz-ncep-corte69' on page 10 undefined on input li
+ne 252.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep' on page 10 undefined on input line 257.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep-corte60' on page 10 undefined on input li
+ne 258.
+
+
+LaTeX Warning: Reference `fig:sd-gh-ncep' on page 10 undefined on input line 279
+.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep' on page 10 undefined on input line 283.
+
+
+LaTeX Warning: Reference `fig:t-ncep' on page 10 undefined on input line 306.
+
+
+LaTeX Warning: Reference `fig:t-ncep-corte' on page 10 undefined on input line 3
+27.
+
+
+LaTeX Warning: Reference `fig:tz-ncep' on page 10 undefined on input line 342.
+
+
+LaTeX Warning: Reference `fig:t-ncep' on page 10 undefined on input line 344.
+
+[10]
+
+LaTeX Warning: Reference `fig:t-ncep-corte60' on page 11 undefined on input line
+ 355.
+
+
+LaTeX Warning: Reference `fig:u-ncep-corte' on page 11 undefined on input line 3
+80.
+
+
+LaTeX Warning: Reference `fig:u-ncep' on page 11 undefined on input line 398.
+
+
+LaTeX Warning: Reference `fig:uz-ncep' on page 11 undefined on input line 407.
+
+
+LaTeX Warning: Reference `fig:u-ncep' on page 11 undefined on input line 410.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep' on page 11 undefined on input line 412.
+
+[11]
+
+LaTeX Warning: Reference `fig:v-ncep-corte' on page 12 undefined on input line 4
+49.
+
+
+LaTeX Warning: Reference `fig:v-ncep' on page 12 undefined on input line 477.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep' on page 12 undefined on input line 478.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep' on page 12 undefined on input line 486.
+
+
+Underfull \vbox (badness 1596) has occurred while \output is active []
+
+ [12]
+
+LaTeX Warning: Reference `fig:etady-ncep' on page 13 undefined on input line 524
+.
+
+
+LaTeX Warning: Reference `fig:ks-ncep' on page 13 undefined on input line 539.
+
+
+LaTeX Warning: Reference `fig:ks-ncep-corte' on page 13 undefined on input line 
+540.
+
+
+LaTeX Warning: Reference `fig:ampl-ncep' on page 13 undefined on input line 551.
+
+
+
+LaTeX Warning: Reference `fig:psi-ncep' on page 13 undefined on input line 576.
+
+
+LaTeX Warning: Reference `fig:gh-ncep' on page 13 undefined on input line 582.
+
+[13]
+
+LaTeX Warning: Reference `métodos-y-materiales' on page 14 undefined on input l
+ine 600.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep' on page 14 undefined on input line 608.
+
+
+LaTeX Warning: Reference `fig:r2-ncep' on page 14 undefined on input line 611.
+
+
+LaTeX Warning: Reference `fig:r2-ncep' on page 14 undefined on input line 634.
+
+
+LaTeX Warning: Reference `fig:ampl-ncep' on page 14 undefined on input line 634.
+
 
 [14] [15] [16
 
 ]
+Capítulo 4.
+
+LaTeX Warning: Reference `fig:qs3-ncep' on page 17 undefined on input line 680.
+
+
+LaTeX Warning: Reference `fig:qs3-ncep-corte' on page 17 undefined on input line
+ 683.
+
+
+LaTeX Warning: Reference `fig:ampl-ncep' on page 17 undefined on input line 684.
+
+
+
+LaTeX Warning: Marginpar on page 17 moved.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 4.1 on input line 715.
+
+
+LaTeX Warning: Reference `fig:qs3sd-ncep' on page 17 undefined on input line 725
+.
+
+
+LaTeX Warning: Reference `fig:qs3sd-ncep' on page 17 undefined on input line 727
+.
+
+[17]
+
+LaTeX Warning: Reference `fig:wavelet-fourier-ncep' on page 18 undefined on inpu
+t line 746.
+
+
+LaTeX Warning: Reference `fig:waveletz-ncep' on page 18 undefined on input line 
+752.
+
+
+LaTeX Warning: Reference `fig:waveletz-ncep1' on page 18 undefined on input line
+ 758.
+
+
+LaTeX Warning: Reference `fig:waveletz-ncep2' on page 18 undefined on input line
+ 758.
+
+
+LaTeX Warning: Reference `fig:waveletz-ncep1' on page 18 undefined on input line
+ 780.
+
+
+LaTeX Warning: Reference `fig:waveletz-ncep2' on page 18 undefined on input line
+ 785.
+
+
+LaTeX Warning: Reference `fig:wavelet-ncep-corte' on page 18 undefined on input 
+line 788.
+
+
+LaTeX Warning: Reference `fig:wavelet-ncep-corte' on page 18 undefined on input 
+line 788.
+
+
+LaTeX Warning: Reference `fig:wavelet-ncep-corte' on page 18 undefined on input 
+line 788.
+
+
+LaTeX Warning: Reference `fig:wavelet-ncep-corte' on page 18 undefined on input 
+line 788.
+
+
+LaTeX Warning: Reference `fig:wavelet-fourier-ncep' on page 18 undefined on inpu
+t line 801.
+
+[18]
+
+LaTeX Warning: Reference `fig:waveletz-ncep' on page 19 undefined on input line 
+812.
+
+
+LaTeX Warning: Reference `fig:estacionaridad' on page 19 undefined on input line
+ 820.
+
+
+LaTeX Warning: Reference `fig:estacionaridad' on page 19 undefined on input line
+ 820.
+
+
+LaTeX Warning: Reference `fig:estacionaridad' on page 19 undefined on input line
+ 820.
+
+
+LaTeX Warning: Reference `fig:estacionaridad' on page 19 undefined on input line
+ 820.
+
+
+LaTeX Warning: Marginpar on page 19 moved.
+
+
+LaTeX Warning: Marginpar on page 19 moved.
+
+
+LaTeX Warning: Marginpar on page 19 moved.
+
+
+LaTeX Warning: Reference `fig:estacionaridad-fourier' on page 19 undefined on in
+put line 821.
+
+[19]
+
+LaTeX Warning: Reference `fig:ampl-max-mean' on page 20 undefined on input line 
+903.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep-select' on page 20 undefined on input lin
+e 904.
+
+
+LaTeX Warning: Reference `fig:ampl-max-mean' on page 20 undefined on input line 
+907.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep-select' on page 20 undefined on input lin
+e 909.
+
+
+LaTeX Warning: Reference `fig:ampl-max-mean' on page 20 undefined on input line 
+913.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep-select' on page 20 undefined on input lin
+e 914.
+
+
+LaTeX Warning: Reference `fig:ampl-max-mean' on page 20 undefined on input line 
+921.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep-select' on page 20 undefined on input lin
+e 922.
+
+
+LaTeX Warning: Reference `fig:ampl-max-mean' on page 20 undefined on input line 
+930.
+
+
+LaTeX Warning: Reference `fig:ghz-ncep-select' on page 20 undefined on input lin
+e 931.
+
+
+LaTeX Warning: Reference `fig:cor-mean-max' on page 20 undefined on input line 9
+47.
+
+[20]
+
+LaTeX Warning: Reference `fig:ampl-ts1' on page 21 undefined on input line 954.
+
+
+LaTeX Warning: Reference `fig:ampl-ncep' on page 21 undefined on input line 959.
+
+
+
+LaTeX Warning: Reference `fig:qs3-ncep' on page 21 undefined on input line 960.
+
+
+LaTeX Warning: Reference `fase' on page 21 undefined on input line 961.
+
+
+LaTeX Warning: Reference `fig:ampl-ts2' on page 21 undefined on input line 968.
+
+
+LaTeX Warning: Reference `fig:fase-boxplot' on page 21 undefined on input line 9
+99.
+
+
+LaTeX Warning: Reference `fig:qs3-ncep' on page 21 undefined on input line 1008.
+
+
+
+LaTeX Warning: Reference `fig:fase-boxplot' on page 21 undefined on input line 1
+015.
+
+[21]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 4.2 on input line 1056.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 4.3 on input line 1074.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [22]
+
+LaTeX Warning: Marginpar on page 23 moved.
+
+
+LaTeX Warning: Reference `eoftabla' on page 23 undefined on input line 1100.
+
+
+LaTeX Warning: Reference `eoftabla' on page 23 undefined on input line 1108.
+
+
+LaTeX Warning: Marginpar on page 23 moved.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 4.4 on input line 1127.
+
+
+LaTeX Warning: Reference `fig:eof-field' on page 23 undefined on input line 1134
+.
+
+
+LaTeX Warning: Reference `fig:pc1-pc2' on page 23 undefined on input line 1137.
+
+
+LaTeX Warning: Reference `fig:pc1-pc2' on page 23 undefined on input line 1141.
+
+
+LaTeX Warning: Reference `fase' on page 23 undefined on input line 1151.
+
+[23]
+
+LaTeX Warning: Reference `fig:qs3-qsseason-ncep' on page 24 undefined on input l
+ine 1161.
+
+
+LaTeX Warning: Reference `qs3-qsseason-ncep' on page 24 undefined on input line 
+1161.
+
+
+LaTeX Warning: Reference `fig:qs3-season-ncep' on page 24 undefined on input lin
+e 1162.
+
+
+LaTeX Warning: Reference `qs3-season-ncep' on page 24 undefined on input line 11
+63.
+
+
+LaTeX Warning: Reference `fig:lag-cor' on page 24 undefined on input line 1191.
+
+
+LaTeX Warning: Reference `fig:fase-boxplot' on page 24 undefined on input line 1
+204.
+
+
+LaTeX Warning: Reference `fig:fase-boxplot' on page 24 undefined on input line 1
+216.
+
+
+LaTeX Warning: Reference `fig:ondas-quasiestacionarias' on page 24 undefined on 
+input line 1220.
+
+
+LaTeX Warning: Reference `fig:r2-ncep' on page 24 undefined on input line 1222.
+
+
+Underfull \vbox (badness 4217) has occurred while \output is active []
+
+ [24]
+
+LaTeX Warning: Reference `fig:cor-camp' on page 25 undefined on input line 1232.
+
+
+
+LaTeX Warning: Reference `fig:waveletz-ncep' on page 25 undefined on input line 
+1252.
+
+
+LaTeX Warning: Reference `estaciones' on page 25 undefined on input line 1261.
+
+
+LaTeX Warning: Reference `fig:regr-gh-ncep' on page 25 undefined on input line 1
+296.
+
+[25]
+
+LaTeX Warning: Reference `fase' on page 26 undefined on input line 1315.
+
+
+LaTeX Warning: Reference `fig:fase-boxplot' on page 26 undefined on input line 1
+315.
+
+
+LaTeX Warning: Reference `fig:regr-gh-polar' on page 26 undefined on input line 
+1345.
+
+
+LaTeX Warning: Reference `fig:regr-gh-ncep' on page 26 undefined on input line 1
+346.
+
+(compiling luc: /var/lib/texmf/luatex-cache/generic/fonts/otf/lmroman7-regular.l
+uc)(compiling luc: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroman7
+-regular.luc)(save: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroman
+7-regular.lua)(save: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroma
+n7-regular.luc)(compiling luc: /var/lib/texmf/luatex-cache/generic/fonts/otf/lmr
+oman8-regular.luc)(compiling luc: /home/elio/.texmf-var/luatex-cache/generic/fon
+ts/otf/lmroman8-regular.luc)(save: /home/elio/.texmf-var/luatex-cache/generic/fo
+nts/otf/lmroman8-regular.lua)(save: /home/elio/.texmf-var/luatex-cache/generic/f
+onts/otf/lmroman8-regular.luc)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 1352.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 1352.
+(compiling luc: /var/lib/texmf/luatex-cache/generic/fonts/otf/lmroman6-regular.l
+uc)(compiling luc: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroman6
+-regular.luc)(save: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroman
+6-regular.lua)(save: /home/elio/.texmf-var/luatex-cache/generic/fonts/otf/lmroma
+n6-regular.luc)
+Underfull \vbox (badness 4353) has occurred while \output is active []
+
+ [26]
+
+LaTeX Warning: Reference `fig:regr-gh-ncep' on page 27 undefined on input line 1
+364.
+
+
+LaTeX Warning: Reference `fig:regr-psi-ncep' on page 27 undefined on input line 
+1389.
+
+
+LaTeX Warning: Reference `fig:regr-gh-ncep' on page 27 undefined on input line 1
+393.
+
+
+LaTeX Warning: Reference `fase' on page 27 undefined on input line 1400.
+
+[27]
+
+LaTeX Warning: Reference `fig:regr-sst-ncep' on page 28 undefined on input line 
+1491.
+
+
+LaTeX Warning: Reference `fig:regr-sst-ncep' on page 28 undefined on input line 
+1504.
+
+
+LaTeX Warning: Reference `fig:regr-gh-ncep' on page 28 undefined on input line 1
+505.
+
+
+LaTeX Warning: Reference `fig:regr-olr-ncep' on page 28 undefined on input line 
+1523.
+
+
+LaTeX Warning: Reference `fig:regr-sst-ncep' on page 28 undefined on input line 
+1528.
+
+[28] [29] [30
+
+]
 Capítulo 5.
-[17] [18
+[31]
+
+LaTeX Warning: Reference `fig:k-steady-ncep' on page 32 undefined on input line 
+1673.
+
+[32] [33] [34
 
 ]
 Capítulo 6.
-[19] [20
+[35] [36
 
 ]
 Capítulo 7.
-[21] [22
+[37] [38
 
 ]
-Capítulo 8.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 599.
-[23]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 599.
- (./Tesis.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 599.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 599.
+Underfull \hbox (badness 1226) in paragraph at lines 1832--1836
+\EU2/lmr/m/n/10 Wa-ves in the Sout-hern He-misp-here. Part II: Ge-ne-ra-tion Me
+-cha-
+ []
 
+
+Underfull \hbox (badness 3547) in paragraph at lines 1832--1836
+\EU2/lmr/m/n/10 nisms». \EU2/lmr/m/it/10 Jour-nal of Cli-mate \EU2/lmr/m/n/10 
+8 (11): 2673-90. doi:[]10.1175/1520-
+ []
+
+
+Underfull \hbox (badness 1527) in paragraph at lines 1843--1847
+[][]\EU2/lmr/m/n/10 Vera, Ca-ro-lina, Ga-briel Sil-ves-tri, Vi-cente Ba-rros, y
+ An-drea Ca-
+ []
+
+
+Underfull \hbox (badness 1748) in paragraph at lines 1843--1847
+\EU2/lmr/m/n/10 rril. 2004. «Dif-fe-ren-ces in El Niño res-ponse over the Sou
+t-hern
+ []
+
+AED endfloat: Processing end Figures and Tables [39] [40
+
+
+
+]
+No file Tesis.lof.
+\tf@lof=\write7
+
+\openout7 = Tesis.lof
+[41] (./Tesis.fff
+
+! LaTeX Error: File `fig/tesis/fourier-ejemplo-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2 ...s[width=150mm, ]{fig/tesis/fourier-ejemplo-1}
+                                                   \caption{Ejemplo fourier ...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/wavelet-ejemplo-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.7 ...[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }
+                                                  \subfloat[Análisis de Wav...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.32486pt too wide) in paragraph at lines 7--7
+[][]\EU2/lmr/m/n/8 (a)
+ []
+
+
+Overfull \hbox (22.81334pt too wide) in paragraph at lines 7--7
+|\EU2/lmr/m/n/8 Campo[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/wavelet-ejemplo-2' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.7 ...[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }
+                                                  \caption{Wavelets - fig:wa...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.78741pt too wide) in paragraph at lines 7--7
+[][]\EU2/lmr/m/n/8 (b)
+ []
+
+
+Overfull \hbox (13.05862pt too wide) in paragraph at lines 7--7
+|\EU2/lmr/m/n/8 Aná-
+ []
+
+
+Overfull \hbox (2.65497pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 li-
+ []
+
+
+Overfull \hbox (5.55272pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 sis
+ []
+
+
+Overfull \hbox (4.99608pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 de
+ []
+
+
+Overfull \hbox (9.59384pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 Wa-
+ []
+
+
+Overfull \hbox (5.6641pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 ve-
+ []
+
+
+Overfull \hbox (9.20616pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 lets
+ []
+
+
+Overfull \hbox (4.99608pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 en
+ []
+
+
+Overfull \hbox (15.61449pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 círcu-
+ []
+
+
+Overfull \hbox (6.4308pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 los
+ []
+
+
+Overfull \hbox (4.99608pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 de
+ []
+
+
+Overfull \hbox (4.5052pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 la-
+ []
+
+
+Overfull \hbox (3.58008pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 ti-
+ []
+
+
+Overfull \hbox (9.1591pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 tud
+ []
+
+
+Overfull \hbox (5.0148pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 se-
+ []
+
+
+Overfull \hbox (6.818pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 ña-
+ []
+
+
+Overfull \hbox (4.5052pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 la-
+ []
+
+
+Overfull \hbox (11.0564pt too wide) in paragraph at lines 7--7
+\EU2/lmr/m/n/8 dos.[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/gh-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.13 ...s[width=227mm,angle=90]{fig/tesis/gh-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghdy-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.22 ...ludegraphics[ ]{fig/tesis/ghdy-ncep-corte-1}
+                                                   \caption{Gradiente meridi...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.28 ...[width=227mm,angle=90]{fig/tesis/ghz-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-ncep-corte60-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.38 ...width=130mm, ]{fig/tesis/ghz-ncep-corte60-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/uzvz-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.47 ...degraphics[ ]{fig/tesis/uzvz-ncep-corte-1} }
+                                                  \newline\subfloat[T*v*\lab...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.32486pt too wide) in paragraph at lines 47--47
+[][]\EU2/lmr/m/n/8 (a)
+ []
+
+
+Overfull \hbox (14.01991pt too wide) in paragraph at lines 47--47
+|\EU2/lmr/m/n/8 u*v*[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/uzvz-ncep-corte-2' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.47 ...degraphics[ ]{fig/tesis/uzvz-ncep-corte-2} }
+                                                  \caption{Transportes - fig...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.78741pt too wide) in paragraph at lines 47--47
+[][]\EU2/lmr/m/n/8 (b)
+ []
+
+
+Overfull \hbox (15.4076pt too wide) in paragraph at lines 47--47
+|\EU2/lmr/m/n/8 T*v*[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/sd-gh-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.53 ...phics[width=130mm, ]{fig/tesis/sd-gh-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/t-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.63 ...cs[width=227mm,angle=90]{fig/tesis/t-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/t-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.73 ...ics[width=130mm, ]{fig/tesis/t-ncep-corte-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/tz-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.83 ...s[width=227mm,angle=90]{fig/tesis/tz-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/t-ncep-corte60-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.93 ...s[width=130mm, ]{fig/tesis/t-ncep-corte60-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/u-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.103 ...cs[width=130mm, ]{fig/tesis/u-ncep-corte-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/u-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.113 ...s[width=227mm,angle=90]{fig/tesis/u-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/uz-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.123 ...[width=227mm,angle=90]{fig/tesis/uz-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/v-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.133 ...cs[width=130mm, ]{fig/tesis/v-ncep-corte-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/v-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.143 ...s[width=227mm,angle=90]{fig/tesis/v-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghminus1-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.153 ...=227mm,angle=90]{fig/tesis/ghminus1-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/etady-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.163 ...dth=227mm,angle=90]{fig/tesis/etady-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ks-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.172 \includegraphics[ ]{fig/tesis/ks-ncep-1}
+                                             \caption{Número de onda estaci...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ks-ncep-cortelev-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.177 ...degraphics[ ]{fig/tesis/ks-ncep-cortelev-1}
+                                                   \caption{Número de onda ...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/psi-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.183 ...width=227mm,angle=90]{fig/tesis/psi-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/r2-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.193 ...[width=227mm,angle=90]{fig/tesis/r2-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ampl-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.203 ...idth=227mm,angle=90]{fig/tesis/ampl-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[42
+
+] [43]
+
+! LaTeX Error: File `fig/tesis/qs3-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.212 ...aphics[width=150mm, ]{fig/tesis/qs3-ncep-1}
+                                                   \caption{Media de reconst...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/qs3-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.217 ...[width=150mm, ]{fig/tesis/qs3-ncep-corte-1}
+                                                   \caption{Corte - fig:qs3-...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/qs3sd-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.222 ...hics[width=150mm, ]{fig/tesis/qs3sd-ncep-1}
+                                                   \caption{Desvío estánda...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/wavelet-fourier-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.228 ...=130mm, ]{fig/tesis/wavelet-fourier-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/waveletz-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.237 ...udegraphics[ ]{fig/tesis/waveletz-ncep-1} }
+                                                  \newline\subfloat[Haciendo...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.32486pt too wide) in paragraph at lines 237--237
+[][]\EU2/lmr/m/n/8 (a)
+ []
+
+
+Overfull \hbox (8.43303pt too wide) in paragraph at lines 237--237
+|\EU2/lmr/m/n/8 Ha-
+ []
+
+
+Overfull \hbox (19.798pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 ciendo
+ []
+
+
+Overfull \hbox (3.14584pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 la
+ []
+
+
+Overfull \hbox (9.1308pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 am-
+ []
+
+
+Overfull \hbox (7.28056pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 pli-
+ []
+
+
+Overfull \hbox (9.1591pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 tud
+ []
+
+
+Overfull \hbox (7.30888pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 del
+ []
+
+
+Overfull \hbox (20.50055pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 campo
+ []
+
+
+Overfull \hbox (8.66824pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 me-
+ []
+
+
+Overfull \hbox (7.77144pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 dio[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/waveletz-ncep-2' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.237 ...udegraphics[ ]{fig/tesis/waveletz-ncep-2} }
+                                                  \caption{Campo medio de la...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.78741pt too wide) in paragraph at lines 237--237
+[][]\EU2/lmr/m/n/8 (b)
+ []
+
+
+Overfull \hbox (8.43303pt too wide) in paragraph at lines 237--237
+|\EU2/lmr/m/n/8 Ha-
+ []
+
+
+Overfull \hbox (19.798pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 ciendo
+ []
+
+
+Overfull \hbox (2.68329pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 el
+ []
+
+
+Overfull \hbox (5.89465pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 va-
+ []
+
+
+Overfull \hbox (6.2236pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 lor
+ []
+
+
+Overfull \hbox (8.66824pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 me-
+ []
+
+
+Overfull \hbox (7.77144pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 dio
+ []
+
+
+Overfull \hbox (4.99608pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 de
+ []
+
+
+Overfull \hbox (3.14584pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 la
+ []
+
+
+Overfull \hbox (9.1308pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 am-
+ []
+
+
+Overfull \hbox (7.28056pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 pli-
+ []
+
+
+Overfull \hbox (11.47191pt too wide) in paragraph at lines 237--237
+\EU2/lmr/m/n/8 tud.[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/wavelet-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.243 ...m,angle=90]{fig/tesis/wavelet-ncep-corte-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/estacionaridad-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.252 ...degraphics[ ]{fig/tesis/estacionaridad-1} }
+                                                  \newline\subfloat[media zo...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.32486pt too wide) in paragraph at lines 252--252
+[][]\EU2/lmr/m/n/8 (a)
+ []
+
+
+Overfull \hbox (20.50055pt too wide) in paragraph at lines 252--252
+|\EU2/lmr/m/n/8 campo[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/estacionaridad-2' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.252 ...degraphics[ ]{fig/tesis/estacionaridad-2} }
+                                                  \caption{Ratio de amplitud...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.78741pt too wide) in paragraph at lines 252--252
+[][]\EU2/lmr/m/n/8 (b)
+ []
+
+
+Overfull \hbox (8.66824pt too wide) in paragraph at lines 252--252
+|\EU2/lmr/m/n/8 me-
+ []
+
+
+Overfull \hbox (7.77144pt too wide) in paragraph at lines 252--252
+\EU2/lmr/m/n/8 dia
+ []
+
+
+Overfull \hbox (5.89288pt too wide) in paragraph at lines 252--252
+\EU2/lmr/m/n/8 zo-
+ []
+
+
+Overfull \hbox (7.77144pt too wide) in paragraph at lines 252--252
+\EU2/lmr/m/n/8 nal[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/estacionaridad-fourier-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.257 ...hics[ ]{fig/tesis/estacionaridad-fourier-1}
+                                                   \caption{Estacionaridad s...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/wavelet-reconstr-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.262 ...degraphics[ ]{fig/tesis/wavelet-reconstr-1}
+                                                   \caption{Reconstrucción ...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ampl-max-mean-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.267 ...s[width=150mm, ]{fig/tesis/ampl-max-mean-1}
+                                                   \caption{Distribució de ...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-ncep-select-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.272 ...width=150mm, ]{fig/tesis/ghz-ncep-select-1}
+                                                   \caption{Anomalía zonal ...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/cor-mean-max-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.277 \includegraphics[ ]{fig/tesis/cor-mean-max-1}
+                                                  \caption{Correlación entr...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ampl-ts-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.282 ...phics[width=150mm, ]{fig/tesis/ampl-ts-1} }
+                                                  \newline\subfloat[Serie te...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.32486pt too wide) in paragraph at lines 282--282
+[][]\EU2/lmr/m/n/8 (a)
+ []
+
+
+Overfull \hbox (6.35544pt too wide) in paragraph at lines 282--282
+|\EU2/lmr/m/n/8 Ci-
+ []
+
+
+Overfull \hbox (6.84633pt too wide) in paragraph at lines 282--282
+\EU2/lmr/m/n/8 clo
+ []
+
+
+Overfull \hbox (16.32008pt too wide) in paragraph at lines 282--282
+\EU2/lmr/m/n/8 anual[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/ampl-ts-2' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.282 ...phics[width=150mm, ]{fig/tesis/ampl-ts-2} }
+                                                  \caption{Amplitud media - ...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (5.78741pt too wide) in paragraph at lines 282--282
+[][]\EU2/lmr/m/n/8 (b)
+ []
+
+
+Overfull \hbox (6.35544pt too wide) in paragraph at lines 282--282
+|\EU2/lmr/m/n/8 Se-
+ []
+
+
+Overfull \hbox (5.92905pt too wide) in paragraph at lines 282--282
+\EU2/lmr/m/n/8 rie
+ []
+
+
+Overfull \hbox (11.90616pt too wide) in paragraph at lines 282--282
+\EU2/lmr/m/n/8 tem-
+ []
+
+
+Overfull \hbox (7.05798pt too wide) in paragraph at lines 282--282
+\EU2/lmr/m/n/8 po-
+ []
+
+
+Overfull \hbox (6.3916pt too wide) in paragraph at lines 282--282
+\EU2/lmr/m/n/8 ral[][]| 
+ []
+
+
+! LaTeX Error: File `fig/tesis/wavelet-period-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 ...ludegraphics[ ]{fig/tesis/wavelet-period-1}
+                                                   \caption{Análisis de wav...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/acf-ampl-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.292 \includegraphics[ ]{fig/tesis/acf-ampl-1}
+                                              \caption{Función de autocorre...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/fase-boxplot-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.298 ...h=227mm,angle=90]{fig/tesis/fase-boxplot-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/eof-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.307 \includegraphics[ ]{fig/tesis/eof-1}
+                                         \caption{Primeras dos componentes p...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/pc1-pc2-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.312 \includegraphics[ ]{fig/tesis/pc1-pc2-1}
+                                             \caption{Valor medio de las dos...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/qs3-qsseason-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.317 ...dth=150mm, ]{fig/tesis/qs3-qsseason-ncep-1}
+                                                   \caption{Media de reconst...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/qs3-qsseason-ncep-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.322 ...0mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1}
+                                                   \caption{Corte - fig:qs3-...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/lag-cor-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.327 \includegraphics[ ]{fig/tesis/lag-cor-1}
+                                             \caption{Correlación lageada p...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/cor-campo-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.332 \includegraphics[ ]{fig/tesis/cor-campo-1}
+                                               \caption{Correlación cuadrad...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/cor-campo2-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.337 \includegraphics[ ]{fig/tesis/cor-campo2-1}
+                                                \caption{Correlación cuadra...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/r2-cor2-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.342 \includegraphics[ ]{fig/tesis/r2-cor2-1}
+                                             \caption{Relación entre R2 med...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/regr-gh-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.348 ...h=227mm,angle=90]{fig/tesis/regr-gh-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/regr-gh-polar-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.357 \includegraphics[ ]{fig/tesis/regr-gh-polar-1}
+                                                   \caption{Igual que figura...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/sam-ampl-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.362 \includegraphics[ ]{fig/tesis/sam-ampl-1}
+                                              \caption{Relación entre ampli...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/regr-psi-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.368 ...=227mm,angle=90]{fig/tesis/regr-psi-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/seleccion-tabla-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.378 ...27mm,angle=90]{fig/tesis/seleccion-tabla-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/interaccion-tabla-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.388 ...dth=130mm, ]{fig/tesis/interaccion-tabla-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/gh-comp-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.398 ...[width=227mm,angle=90]{fig/tesis/gh-comp-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/gh-qs3-select-ene-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.408 ...dth=150mm, ]{fig/tesis/gh-qs3-select-ene-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[44] [45] [46]
+
+! LaTeX Error: File `fig/tesis/gh-qs3-select-sep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.418 ...dth=150mm, ]{fig/tesis/gh-qs3-select-sep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/regr-sst-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.428 ...=227mm,angle=90]{fig/tesis/regr-sst-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/regr-olr-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.438 ...=227mm,angle=90]{fig/tesis/regr-olr-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.448 ...idth=227mm,angle=90]{fig/tesis/ghz-sp-nc-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-dif-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.458 ...=227mm,angle=90]{fig/tesis/ghz-dif-sp-nc-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-sp-nc-corte60-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.468 ...dth=130mm, ]{fig/tesis/ghz-sp-nc-corte60-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/t-nc-sp-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.477 \includegraphics[ ]{fig/tesis/t-nc-sp-1}
+                                             \caption{Temperatura{fig:t-nc-s...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/tz-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.482 \includegraphics[ ]{fig/tesis/tz-sp-nc-1}
+                                              \caption{T*{fig:tz-sp-nc}}\lab...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/u-sp-nc-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.488 ...s[width=130mm, ]{fig/tesis/u-sp-nc-corte-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/u-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.498 ...[width=227mm,angle=90]{fig/tesis/u-sp-nc-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/u-dif-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.507 \includegraphics[ ]{fig/tesis/u-dif-sp-nc-1}
+                                                 \caption{Diferencia entre n...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/etady-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.513 ...th=227mm,angle=90]{fig/tesis/etady-sp-nc-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 517--517
+[][]\EU2/lmr/m/n/10 Fi-gura 7.68: |Gra-diente me-ri-dio-nal de vor-ti-ci-dad ab
+-so-luta
+ []
+
+
+! LaTeX Error: File `fig/tesis/ks-sp-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.522 \includegraphics[ ]{fig/tesis/ks-sp-1}
+                                           \caption{Número de onda estacion...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ks-sp-nc-corte-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.528 ...[width=130mm, ]{fig/tesis/ks-sp-nc-corte-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/psi-sp-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.538 ...s[width=227mm,angle=90]{fig/tesis/psi-sp-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ampl-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.547 ...hics[width=150mm, ]{fig/tesis/ampl-sp-nc-1}
+                                                   \caption{Amplitud de four...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/qs2-sp-nc-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.552 ...phics[width=150mm, ]{fig/tesis/qs2-sp-nc-1}
+                                                   \caption{Media de reconst...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.558 ...th=227mm,angle=90]{fig/tesis/ghz-sp-runs-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ghz-dif-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.567 ...udegraphics[ ]{fig/tesis/ghz-dif-sp-runs-1}
+                                                   \caption{Diferencia Contr...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/t-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.572 \includegraphics[ ]{fig/tesis/t-sp-runs-1}
+                                               \caption{Temperatura media en...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/tz-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.577 \includegraphics[ ]{fig/tesis/tz-sp-runs-1}
+                                                \caption{Temperatura media e...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/tz-dif-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.583 ...227mm,angle=90]{fig/tesis/tz-dif-sp-runs-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/uz-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.593 ...dth=227mm,angle=90]{fig/tesis/uz-sp-runs-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/u-dif-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.602 \includegraphics[ ]{fig/tesis/u-dif-sp-runs-1}
+                                                   \caption{Diferencia contr...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/psi-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.608 ...th=227mm,angle=90]{fig/tesis/psi-sp-runs-1}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/psiz-dif-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.617 ...degraphics[ ]{fig/tesis/psiz-dif-sp-runs-1}
+                                                   \caption{Diferencia en ps...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ampl-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.622 \includegraphics[ ]{fig/tesis/ampl-sp-runs-1}
+                                                  \caption{Amplitud media de...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/ampl-dif-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.627 ...degraphics[ ]{fig/tesis/ampl-dif-sp-runs-1}
+                                                   \caption{Diferencia de am...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/index-sp-boxplot-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.632 ...degraphics[ ]{fig/tesis/index-sp-boxplot-1}
+                                                   \caption{Ciclo anual de a...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/regr-psi-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.637 ...degraphics[ ]{fig/tesis/regr-psi-sp-runs-1}
+                                                   \caption{Regresión en fu...
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.tif,.jpeg,.PNG,.PDF,.JPG,.JPEG,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[47] [48] [49]) [50]
+
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1849.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1849.
+(./Tesis.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1849.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1849.
+
+
+Package rerunfilecheck Warning: File `Tesis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Tesis.out':
+(rerunfilecheck)             Before: 01FB5F0163835B71967E1AF4A12EC2FC;1859
+(rerunfilecheck)             After:  9AE424A4201B293E16180EFB95C044DF;6531.
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
- ) 
-Here is how much of TeX's memory you used:
- 25705 strings out of 493638
- 455846 string characters out of 6146796
- 515309 words of memory out of 5000000
- 28788 multiletter control sequences out of 15000+600000
- 16375 words of font info for 46 fonts, out of 8000000 for 9000
- 1328 hyphenation exceptions out of 8191
- 61i,9n,96p,10403b,474s stack positions out of 5000i,500n,10000p,200000b,80000s
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1849.
+)
 
-Output written on Tesis.pdf (23 pages).
+Here is how much of LuaTeX's memory you used:
+ 37880 strings out of 495004
+ 125200,953878 words of node,token memory allocated
+ 659 words of node memory still in use:
+   6 hlist, 4 vlist, 2 rule, 3 glue, 1 kern, 6 attribute, 48 glue_spec, 6 attrib
+ute_list, 3 action, 1 write nodes
+   avail lists: 1:2,2:5769,3:2244,4:2361,5:175,6:3970,7:197,8:41,9:920,10:473
+ 40096 multiletter control sequences out of 65536+600000
+ 58 fonts using 4363887 bytes
+ 62i,10n,96p,940b,716s stack positions out of 5000i,500n,10000p,200000b,100000s
+LuaTeX warning (dest): name{figure.caption.19} has been referenced but does not 
+exist, replaced by a fixed one
+
+LuaTeX warning (dest): name{chapter.8} has been referenced but does not exist, r
+eplaced by a fixed one
+
+LuaTeX warning (dest): name{subsection.4.2.2} has been referenced but does not e
+xist, replaced by a fixed one
+
+LuaTeX warning (dest): name{subsection.4.2.1} has been referenced but does not e
+xist, replaced by a fixed one
+
+</usr/share/texmf/fonts/opentype/public/lm/lmroman8-regular.otf></usr/share/texm
+f/fonts/opentype/public/lm/lmroman6-regular.otf></usr/share/texmf/fonts/opentype
+/public/lm/lmroman7-regular.otf>{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.e
+nc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}</usr/share/texmf/fonts/openty
+pe/public/lm/lmroman10-italic.otf>{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit
+.enc}</usr/share/texmf/fonts/opentype/public/lm/lmromanslant10-regular.otf></usr
+/share/texmf/fonts/opentype/public/lm/lmroman10-bold.otf></usr/share/texmf/fonts
+/opentype/public/lm/lmroman12-bold.otf></usr/share/texmf/fonts/opentype/public/l
+m/lmroman10-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-ita
+lic.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-regular.otf></usr/s
+hare/texmf/fonts/opentype/public/lm/lmroman17-regular.otf><</usr/share/texmf/fon
+ts/type1/public/lm/lmmi10.pfb><</usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb
+><</usr/share/texmf/fonts/type1/public/lm/lmr10.pfb><</usr/share/texmf/fonts/typ
+e1/public/lm/lmr7.pfb><</usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb>
+Output written on Tesis.pdf (50 pages, 196298 bytes).
+
+PDF statistics: 679 PDF objects out of 1000 (max. 8388607)
+ 583 compressed objects within 6 object streams
+ 255 named destinations out of 1000 (max. 131072)
+ 248 words of extra memory for PDF output out of 10000 (max. 10000000)
+

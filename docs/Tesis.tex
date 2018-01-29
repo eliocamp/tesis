@@ -139,7 +139,7 @@ Esto es para probar una referencia bibliográfica: Vera et~al.
 \item
   Ondas cuasiestacionarias
 \item
-  Fourier
+  fourier
 \item
   wavelets
 \item
@@ -598,8 +598,8 @@ invierno transportando energía hacia el sur.
 \section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
 
 Como se describió en \autoref{métodos-y-materiales}, el análisis
-estacional de la amplitud y \(r^2\) de Fourier puede hacerse a partir de
-la media delos campos mensuales o aplicando Fourier a los campos
+estacional de la amplitud y \(r^2\) de fourier puede hacerse a partir de
+la media delos campos mensuales o aplicando fourier a los campos
 estacionales. En el caso de los datos de NCEP existe poca diferencia,
 por lo que sólo se muestran los resultados conseguidos mediante esta
 última metodología.
@@ -623,7 +623,7 @@ importantes (no se muestra).
 
 }
 
-\caption{$R^2$ de Fourier. - fig:r2-ncep}\label{fig:r2-ncep}
+\caption{$R^2$ de fourier. - fig:r2-ncep}\label{fig:r2-ncep}
 \end{figure}
 
 El \(r^2\) permite analizar la importancia relativa de cada modo con
@@ -662,14 +662,14 @@ presente.
 
 }
 
-\caption{Ampllitud de Fourier. - fig:ampl-ncep}\label{fig:ampl-ncep}
+\caption{Ampllitud de fourier. - fig:ampl-ncep}\label{fig:ampl-ncep}
 \end{figure}
 
 \todo[inline]{Acá podría poner alguna reflexión general de lo que se ve. Por ejemplo, cómo en verano la variabilidad está más acotada a la tropóstera mientras que en invierno y primavera hay más contacto con la estratósfera.}
 
 \chapter{Onda 3}\label{onda-3}
 
-\todo[inline]{introducción a QS3; decir que esto es una onda reconstruida a partir de Fourier}
+\todo[inline]{introducción a QS3; decir que esto es una onda reconstruida a partir de fourier}
 
 \section{Características típicas}\label{caracteristicas-tipicas}
 
@@ -741,45 +741,49 @@ asociada a la QS3 se debe al corrimiento de la fase.
 \caption{Amplitud de wavelets (sombreados) y de fourier (contornos) - fig:wavelet-fourier-ncep}\label{fig:wavelet-fourier-ncep}
 \end{figure}
 
-Para la QS3, la amplitud media obtenida mediante Wavelets
+Para la QS3, la amplitud media obtenida mediante wavelets
 \todo{agregar referencia a sección} es virtualmente idéntica a la
-amplitud obtenida con Fourier (\autoref{fig:wavelet-fourier-ncep}). Sin
+amplitud obtenida con fourier (\autoref{fig:wavelet-fourier-ncep}). Sin
 embargo, también permite obtener información de la variación meridional
-de la amplitud de la QS3. Al igual que con Fourier, esto puede hacerse
+de la amplitud de la QS3. Al igual que con fourier, esto puede hacerse
 promediando estacionalmente la amplitud de los campos mensuales o
 calculando la amplitud de los campos estacionales. Pero a diferencia de
-Fourier, los resultados de cada metodología son opuestos. Esto es
+fourier, los resultados de cada metodología son distintos. Esto es
 evidente en la \autoref{fig:waveletz-ncep} donde se muestra el campo de
 amplitud de la QS3 según wavelets en líneas y su anomalía zonal en
 sombreado. Los valores positivos representan regiones donde la amplitud
 de la QS3 es mayor que la media zonal y viceversa.
 
-No existe mucha diferencia en la amplitud media zonal entre ambas
-metodologías a excepción de que la primera siempre es mayor que la
-segunda
-\todo{Esta es una propiedad general que SIEMPRE se cumple. En realidad podría ir en metodología}.
+Comparando los campos totales de amplitud de wavelets de las
+Figuras~\ref{fig:waveletz-ncep1} y \ref{fig:waveletz-ncep2} se puede
+observar que no existe mucha diferencia en la amplitud media zonal entre
+ambas metodologías a excepción de que la amplitud del campo medio
+siempre es menor que la media de la
+amplitud.\todo{Esta es una propiedad general que SIEMPRE se cumple. En realidad podría ir en metodología}.
 Las principales diferencias se dan en las anomalías zonales.
 
 \begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/waveletz-ncep-1} 
-
-}
-
-\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
+\subfloat[Haciendo la amplitud del campo medio\label{fig:waveletz-ncep1}]{\includegraphics[ ]{fig/tesis/waveletz-ncep-1} }\newline\subfloat[Haciendo el valor medio de la amplitud.\label{fig:waveletz-ncep2}]{\includegraphics[ ]{fig/tesis/waveletz-ncep-2} }\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
 \end{figure}
 
-Las anomalías zonales presentan, en todas las estaciones, un máximo al
-sur del Índico centrado en 45°S que se desplaza hacia el este en
-latitudes más altas. Existe un segundo máximo en altas latitudes que en
-otoño y primavera se encuentran en 120°E y en invierno se encuentra en
-180°. En verano éste no aparece, pero sí existe un máximo centrado en
-15°S y 120°O.
+tiene un máximo de anomalías zonales al sur del Pacífico en 60°S
+presente durante todo el año.
 
-La principal diferencia con la media de la amplitud es que las mayores
-anomalías zonales se dan en latitudes altas (al rededor de 60°S) con un
-mínimo al sur del Índico en vez de un máximo. Al norte de 30°S, las
-diferencias son menores.
+Al norte de los 30°S, ambas metodologías dan resultados similares. En
+primavera, verano y otoño las anomalías zonales son positivas sobre el
+Pacífico y negativas en el Índico, indicando que hay una QS3 con mayor
+amplitud sobre éste océano. En invierno, las anomalías zonales
+desaparecen al norte de 30°S.
+
+Las dos metodologías divergen al sur de 30°S. La anomalía zonal de la
+amplitud media de la QS3 del campo medio
+(Figura~\ref{fig:waveletz-ncep1}) tiene, en todas las estaciones, un
+máximo al sur del Índico centrado en 45°S que se desplaza hacia el este
+en latitudes más altas. Existe un segundo máximo en altas latitudes que
+en otoño y primavera se encuentran en 120°E y en invierno se encuentra
+en 180°. La media de la amplitud de la QS3
+(Figura~\ref{fig:waveletz-ncep2}), en cambio tiene anomalías negativas
+al sur del Índico y positivas al sur del Pacífico durante todo el año.
 
 \todo{Estoy pensando en no poner la \autoref{fig:wavelet-ncep-corte} porque no encuentro mucho para decir y no veo que se gane demasiado. Queda para el doctorado? :P}
 
@@ -831,7 +835,7 @@ latitud de campos donde ésta está localizada en una región acotada.
 Por otro lado, la no ortogonalidad de los wavelets complejizan la
 interpretación de los resultados ya que no es posible la separación de
 un campo en modos oscilatorios con distinto número de onda. El análisis
-de una QS específica, por lo tanto está contaminado por la actividad de
+de una QS específica, por lo tanto, está contaminado por la actividad de
 otras QS con longitud de onda cercana.
 
 \begin{figure}
@@ -891,47 +895,45 @@ máxima.\todo{esto fue escrito a las 23:30 luego de un largo día de mirar campo
 \end{figure*}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-corte-1} \caption{Corte vertical de amplitud - fig:ampl-max-mean-corte}\label{fig:ampl-max-mean-corte}
-\end{figure*}
-
-\begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas. - fig:ghz-ncep-select}\label{fig:ghz-ncep-select}
 \end{figure*}
 
-Se seleccionaron manualmente 9 casos que representan distintas
-características de la amplitud media la máxima. Sus valores se muestran
-en la \autoref{fig:ampl-max-mean}, los cortes meridionales de amplitud,
-en la \autoref{fig:ampl-mac-mean-corte} y los campos de Z* (con las QS1
-y QS2 restadas) en la \autoref{fig:ghz-ncep-select}.
+Se seleccionaron 9 casos que representan distintas características de la
+amplitud media y la máxima. Sus valores se muestran en la
+\autoref{fig:ampl-max-mean}, y los campos de Z* (con las QS1 y QS2
+restadas) en la \autoref{fig:ghz-ncep-select}.
 
 Comparando mayo de 1997 con abril de 2012, ambos tienen una media muy
-similar, pero la máxima del primero es menor que la del segundo.
-Observando el campo de geopotencial, la QS3 se aprecia mucho más
-claramente en 2012 que en 1997.
+similar (\autoref{fig:ampl-max-mean}), pero la máxima del primero es
+menor que la del segundo. Observando el campo de geopotencial
+(\autoref{fig:ghz-ncep-select}), la QS3 se aprecia mucho más claramente
+en 2012 que en 1997.
 
-Enero de 1985 y julio de 1988 son un caso similar en cuanto a la
-relación de las métricas de amplitud, pero en este
-caso\todo{repite "caso"} ambos campos de Z* son muy similares en cuanto
-a intensidad y claridad de la QS3. Los dos meses presentan un tren de
-ondas que ocupan aproximadamente 1/3 de círculo de latitud. A pesar de
-que la amplitud máxima de 1985 es menor que la de 1988, el tren de ondas
-de 1988 se ve algo más claro que el de 1985.
+Enero de 1985 y julio de 1988 son similares en cuanto a la relación de
+las métricas de amplitud (\autoref{fig:ampl-max-mean}), pero en este
+caso ambos campos de Z* (\autoref{fig:ghz-ncep-select}) son muy
+similares en cuanto a intensidad y claridad de la QS3. Los dos meses
+presentan un tren de ondas que ocupan aproximadamente 1/3 de círculo de
+latitud. A pesar de que la amplitud máxima de 1985 es menor que la de
+1988, el tren de ondas de 1988 se ve algo más claro que el de 1985.
 
 El par septiembre de 2000 y diciembre de 1990 es más claro. Ambas
-medidas de amplitud son mayores en 1990 y, en efecto, el campo de Z*
-tiene una estructura de QS3 zonal más clara que el de 2000. Sin embargo,
-las anomalías sí están presentes en 1990 --un tren de ondas similar al
-de enero de 1985, aunque con distinta fase-- son más intensas, por lo
-que su efecto local puede ser mayor que las de 2000.
+medidas de amplitud son mayores en 1990 (\autoref{fig:ampl-max-mean}) y,
+en efecto, el campo de Z* (\autoref{fig:ghz-ncep-select}) tiene una
+estructura de QS3 zonal más clara que el de 2000. Sin embargo, las
+anomalías sí están presentes en 1990 --un tren de ondas similar al de
+enero de 1985, aunque con distinta fase-- son más intensas, por lo que
+su efecto local puede ser mayor que las de 2000.
 
 Más extrema aún es la diferencia entre septiembre de 2000 y octubre de
-2003. Ambos meses tienen una métrica de amplitud similares, pero la QS3
-es apenas distinguible en el segundo mes.
+2003. Ambos meses tienen una métrica de amplitud similares
+(\autoref{fig:ampl-max-mean}), pero la QS3 es apenas distinguible en el
+segundo mes (\autoref{fig:ghz-ncep-select}).
 
-Estos casos ilustran algunas limitaciones del análisis que continua.
+Estos casos ilustran algunas limitaciones del análisis que sigue.
 Algunos problemas son inherentes al intentar representar una estructura
 con variabilidad espacial a partir de un sólo número y otros están
-atados a la limitación de la descomposición de Fourier que trata toda
+atados a la limitación de la descomposición de fourier que trata toda
 onda como una onda
 planetaria.\todo{Aclarar qué comparación ilustra qué problema}
 
@@ -950,10 +952,10 @@ amplitud media\todo{expresar mejor esto}.
 
 El ciclo anual de la amplitud media se muestra en la
 Figura~\ref{fig:ampl-ts1} donde los puntos son datos puntuales. La
-amplitud máxima en invierno es evidente, así como la mayor variabilidad.
-Esto es de esperarse en una variable definida positiva que toma valores
-cercanos a cero. Notar que la amplitud media no es mínima en primavera,
-en contraste con lo observado en el análisis climatológico
+amplitud máxima se da en agosto así como la mayor variabilidad. Esto es
+de esperarse en una variable definida positiva que toma valores cercanos
+a cero. Notar que la amplitud media no es mínima en los meses de
+primavera, en contraste con lo observado en el análisis climatológico
 (\autoref{fig:ampl-ncep}) y los campos reconstruidos
 (\autoref{fig:qs3-ncep}). La resolución a este problema radica en el
 análisis de la fase (\autoref{fase}).
@@ -1005,10 +1007,10 @@ puntos en el eje vertical no tiene significado geográfico.
 Se observa el ciclo anual en la fase ya se podía apreciar en la
 \autoref{fig:qs3-ncep}. La fase media se centra en 55°O en enero y se
 desplaza a 90°O en junio con valores intermedios en los meses de
-transición. Es esperable que esta variación anual implica que
-circulación causada por la QS3 tenga impactos contrarios en verano
-comparado con invierno; alternando entre advecciones de aire del norte y
-del sur sobre el continente.
+transición. El continente queda al este del máximo de geopotencial en
+invierno que, por balance geostrófico, implica vientos del sur. En
+verano se da la situación contraria. Esto reslata que el efecto de la
+QS3 sobre Sudamérica depende de forma cruicial en la fase.
 
 Superpuesto a el ciclo anual, en la \autoref{fig:fase-boxplot} también
 se puede apreciar la variabilidad interanual para cada mes. Ésta es
@@ -1175,7 +1177,7 @@ El uso de componentes principales para el análisis de una onda que
 cambia de fase es similar a la metodología utilizada para el monitoreo
 de la MJO\todo{cita de MJO} por lo que sería posible su utilización como
 indicador de la actividad de la QS3 distinto de la amplitud media de
-Fourier. La exploración de dicho indicador está por fuera del objetivo
+fourier. La exploración de dicho indicador está por fuera del objetivo
 de este trabajo.
 
 Una desventaja de esta clasificación es que no todas las estaciones
@@ -1265,8 +1267,6 @@ generales no cambian.
 \includegraphics[ ]{fig/tesis/cor-campo2-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo2 - SÓLO BORRADOR}\label{fig:cor-campo2}
 \end{figure}
 
-\todo[inline]{hasta acá}
-
 \begin{figure}
 \includegraphics[ ]{fig/tesis/r2-cor2-1} \caption{Relación entre R2 medio y R2 reconstruido. - fig:r2-cor2 - SÓLO BORRADOR}\label{fig:r2-cor2}
 \end{figure}
@@ -1274,6 +1274,13 @@ generales no cambian.
 Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 
 \section{Regresiones}\label{regresiones}
+
+Los campos de QS3 reconstruida a partir de fourier permiten conocer la
+forma idealizada del campo de geopotencial asociado a esa onda, pero por
+su naturaleza no permiten conocer el estado típico de la atmósfera
+cuando la QS3 está activa. Haciendo la regresión entre el índice de QS3
+obtenido en la sección anterior, se pueden
+obtener\ldots{}\todo{me estoy haciendo lio con esto...}
 
 \subsection{Geopotencial}\label{geopotencial}
 
@@ -1286,17 +1293,87 @@ Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 \caption{Regresión sobre amplitud. - fig:regr-gh-ncep}\label{fig:regr-gh-ncep}
 \end{figure}
 
-Cosas para ver:\\
-* Además los patrones de onda 3, en julio y diciembre aparece un patrón
-de SAM positivo y negativo respectivamente.
+En la \autoref{fig:regr-gh-ncep} se muestra la regresión del campo de Z
+con la amplitud media de la QS3. Las variables están estandarizados de
+manera que los valores en la figura representan el cambio típico en el
+campo de Z relacionado con el aumento de la amplitud media de la QS3 en
+1 desvío estándar. Existe mucha heterogeneidad en las caracterśiticas
+presentes en los distintos meses.
+
+Enero tiene una señal importante al sur del Pacífico, donde se observa
+un tren de ondas originado al este de Nueva Zelanda, y al sur del
+Índico, donde hay un máximo de geopotencial. En ferbero, la estructura
+se mantiene similar, pero con menor propagación meridional, una
+intensificación del anticiclón en Sudamérica y un debilitamiento del
+ubicado al sur del Índico. En marzo, está presente una QS3 con mínima
+variación meridional que ocupa todo el círculo de latitud entre 60°S y
+45°S. Abril es similar a marzo, pero sin centros ciclónicos. En mayo,
+aparece nuevamente un tren de ondas con propagación meridional pero en
+vez de terminar al sur de Sudamérica, lo hace en el Mar de Weddell.
+Junio, al igual que marzo, presenta una estructura de QS3 zonal, pero
+menos definida y, consistente con el corrimiento de la fase observado en
+la \autoref{fase} (\autoref{fig:fase-boxplot}), con los centros
+ciclónicos y anticiclónicos desplazados hacia el oeste.
+
+\begin{longtable}[]{@{}rrr@{}}
+\caption{Correlación entre QS3 y SAM - NO SE PUBLICA}\tabularnewline
+\toprule
+month & p.value & estimate\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+month & p.value & estimate\tabularnewline
+\midrule
+\endhead
+1 & 0.4352 & 0.1454\tabularnewline
+2 & 0.3666 & 0.1679\tabularnewline
+3 & 0.1898 & 0.2419\tabularnewline
+4 & 0.8678 & 0.0312\tabularnewline
+5 & 0.6560 & -0.0833\tabularnewline
+6 & 0.3847 & -0.1618\tabularnewline
+7 & 0.0009 & -0.5670\tabularnewline
+8 & 0.1330 & -0.2759\tabularnewline
+9 & 0.1355 & 0.2742\tabularnewline
+10 & 0.0930 & 0.3070\tabularnewline
+11 & 0.5600 & -0.1088\tabularnewline
+12 & 0.0225 & 0.4086\tabularnewline
+\bottomrule
+\end{longtable}
+
+En julio, el patroń de QS3 se ve opacao por anomalías positiva de
+geopotencial en latitues antárticas y negativas en latitudes medias. En
+la \autoref{fig:regr-gh-polar} se muestran los mismos campos que en la
+\autoref{fig:regr-gh-ncep} pero en coordenadas polares para julio y
+diciembre. En esta proyección es fácil identificar el patrón similar al
+SAM negativo\todo{buscar cita a SAM} presente en julio y el SAM positivo
+presente en diciembre. En efecto, la correlación entre el índice SAM y
+la amplitud media de la QS3 es -0.57 (p-valor \(\sim 9\times 10^{-4}\))
+para julio y 0.41 (p-valor \(\sim 0.0225\)) para
+diciembre\footnote{Correlación de Pearson, tests a dos colas}. Estos dos
+meses son los únicos con una relación significativa con al menos 95\% de
+confianza.
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/regr-gh-polar-1} \caption{Igual que figura  XX, pero en proyección polar para julio y septiembre.{fig:regr-gh-polar}}\label{fig:regr-gh-polar}
+\includegraphics[ ]{fig/tesis/regr-gh-polar-1} \caption{Igual que figura  XX, pero en proyección polar para julio y septiembre. - fig:regr-gh-polar}\label{fig:regr-gh-polar}
 \end{figure}
 
 \begin{figure}
-\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM{fig:sam-ampl}}\label{fig:sam-ampl}
+\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM - fig:sam-ampl - SÓLO BORRADOR}\label{fig:sam-ampl}
 \end{figure}
+
+Volviendo a la \autoref{fig:regr-gh-ncep}, agosto muestra una estructura
+de QS3 zonal salvo en la región de Sudamérica, donde el centro
+anticiclónico esperado a partir de una QS3 se encuentra a mayor latitud,
+sobre la Península Antártica. Septiembre muestra un tren de ondas
+similar al de enero pero con una conexión clara entre las anomalías
+sobre Sudamérica y las del sur del Índico\todo{expresar esto mejor}. En
+octubre, el patrón de QS3 se ve claramente en los máximos de Z, pero no
+tanto en los mínimos y el tren de ondas Pacífico-Atlántico con signo
+invertido (ciclón sobre Sudamérica). El campo de noviembre es muy
+similar al de abril; hay indicios de un tren de ondas proveniente del
+sur de Autralia hacia Sudamérica. Finalmente, en diciembre se tiene un
+patrón similar a enero pero modificado por la señal de la SAM positiva
+detectada en el párrafo anterior.
 
 \subsection{Función Corriente}\label{funcion-corriente-1}
 
@@ -1306,10 +1383,21 @@ de SAM positivo y negativo respectivamente.
 
 }
 
-\caption{Regresión de Psi con la amplitud. - fig:regr-psi-ncep}\label{fig:regr-psi-ncep}
+\caption{Regresión de Psi con la amplitud (anomalía zonal). - fig:regr-psi-ncep}\label{fig:regr-psi-ncep}
 \end{figure}
 
+En la \autoref{fig:regr-psi-ncep} se muestra la anomalía zonal de la
+regresión de \(\psi\) con la amplitud media de la QS3 junto con los
+flujos de actividad de onda calculados a partir del mismo. A partir de
+la misma se puede confirmar la existencia de los trenes de onda
+identificados en la \autoref{fig:regr-gh-ncep} y ampliar el análisis a
+los trópicos. En mayo, por ejemplo, aparece claramente una fuente de
+actividad de onda sobre Indonesia que genera un flujo hacia el sur de de
+Sudamérica y otro hacia el Pacífico central.
+
 \section{Composición de campos.}\label{composicion-de-campos.}
+
+\todo[inline]{Me parece que toda esta sección está de más. La composición de campos no suma nada por encima de la regresión. Dan los mismos campos e incluso la discusión sobre la fase que no coincide ya lo escribí en la \autoref{fase}. Quizás se le puede sacar algo de jugo a mostrar los casos individuales, pero por ahora lo salteo.}
 
 Descripción de la selección.
 
@@ -1397,11 +1485,58 @@ externa.
 
 }
 
-\caption{Regresión de SST con la amplitud de la onda 3{fig:regr-sst-ncep}}\label{fig:regr-sst-ncep}
+\caption{Regresión de SST con la amplitud de la onda 3 - fig:regr-sst-ncep}\label{fig:regr-sst-ncep}
 \end{figure}
 
-Campos de correlación con SST y OLR, principalmente ¿Discusión de otros
-forzantes?
+En la \autoref{fig:regr-sst-ncep} se muestra la regresión de SST sobre
+la amplitud de la QS3 con las regiones con p-valor nominalmente menor a
+0.01\footnote{Notar que se trata de un p-valor nominal sin tener en cuenta problemas de multiplicidad o autocorrelación}
+marcadas con líneas negras. Los valores son casi nulos o sin
+significancia en todos los meses y los pocos patrones obserados no son
+estables. Existe una señal en el pacífico ecuatorial en febrero, mayor,
+septiembre, nboviembre y diciembre (invertida en estos últimos dos) pero
+no alcanza significancia estadística en ningún caso. Diciembre es el mes
+con más áreas con señal importante, indicando que la QS3 durante este
+mes podriá estar asociada con aguas frías en el Pacífico sur y el
+Atlántico ecuatorial, y cálidas en el Atlántico sur.
+
+Existen algunas correspondencias entre este patrón de SST de la
+\autoref{fig:regr-sst-ncep} y las regresiones de \(\psi\) de la
+\autoref{fig:regr-gh-ncep}. Las regiones de aguas frías en el Pacífico
+sur presentes en agosto y diciembre coinciden con centros ciclónicos
+(máximos de \(\psi\)). La región de agua caliente en el pacífico central
+en febrero podría ser la fuente de los trenes de ondas originados al sur
+de la misma a partir de la generación de convección anómala de forma
+similar al máximo de SST en mayo en la costa este de Australia, o en
+enero al sur del Índico.
+
+\begin{figure}
+
+{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-olr-ncep-1} 
+
+}
+
+\caption{Regresión de QS3 con OLR - fig:regr-olr-ncep}\label{fig:regr-olr-ncep}
+\end{figure}
+
+La regresión de la amplitud de QS3 con radiación saliente de onda larga
+(OLR) se muestra en la \autoref{fig:regr-olr-ncep} donde valores
+negativos (colores rojos) indican convección anómala intensificada y
+viceversa. El mes con mayor señal es debrero, con convección intensa en
+el Pacífico central e inhibida en el Pacífico occidental. Este patrón
+tipo El Niño coincide con la regresión en SST
+(\autoref{fig:regr-sst-ncep}) y es similar al que se observa en mayo y
+septiembre, aunque en éstos es menos intenso. El agua ecuatorial fría de
+diciembre, en cambio, tiene su correlato en una convección inhibida en
+el pacífico central e intensificada en Indonesia, asemejándose a un
+patró tipo La Niña.
+
+La consistencia física entre las regresiones de SST y OLR no deberían
+ser indicio de robustez ya que la correlación negativa entre ambas
+variables en la región del Pacífico ecuatorial implica que no son
+variables independientes. La falta de significancia estadística parace
+mostrar que la señal de la SST sobre la QS3, de existir, es menor a la
+que puede detectarse con estos datos y esta metodología.
 
 \chapter{Experimentos}\label{experimentos}
 
@@ -1418,46 +1553,6 @@ Validación de la corrida control
 Acá un problemita es que en speedy no tengo el nivel de 50hPa, sólo
 tengo 925, 850, 700, 500, 300, 200, 100, 30. Podría usar 30, pero eso es
 la tapa del modelo\ldots{}
-
-\begin{figure}
-\includegraphics[ ]{fig/tesis/cor-sp-nc-1} \caption{Correlación lineal entre campos de SPEEDY y NCEP.{fig:cor-sp-nc}}\label{fig:cor-sp-nc}
-\end{figure}
-
-\begin{itemize}
-\item
-  Altura geopotencial (gh) Para el caso del campo total, la correlación
-  del campo es buena (\textgreater{}0.8)en casi todos los niveles y
-  meses, excepto en 30hPa durante verano donde los campos ¡está
-  anticorrelacionados! La parte asimétrica zonal muestra valores
-  menores, indicando que gran parte de la correlación del campo total se
-  debe a la capacidad del modelo de reproducir el gradiente meridional.
-  Sin embargo, se siguen obteniendo correlaciones \textgreater{}0.6 en
-  casi todos los niveles y estaciones. Se observa un mínimo relativo en
-  500hPa donde en se tienen correlaciones menores durante casi todo el
-  año y uno en niveles altos centrado en invierno y primavera.
-\item
-  Viento zonal (U) Las correlaciones con el campo total son
-  \textgreater{}=0.8 en todo el año y todos los niveles, sin embargo, la
-  parte asimétrica muestra correlaciones mucho más baja con un máximo de
-  \textasciitilde{}0.6 en 925hPa. Esto indica que el modelo resuelve
-  correctamente la estructura media del Jet, pero no sus variaciones
-  zonales.
-\item
-  Viento meridional (V) Los campos de correlación son prácticamente
-  idénticos entre parte total y parte asimétrica. Ésta muestra un patrón
-  de bajas correlaciones en general.
-\item
-  Temperatura (T) La correlación con el campo total muestra una
-  estructura similar que la altura geopotencial, con una excelente
-  correlación en todos los meses para niveles mayores a 200hPa, pero
-  anticorrelacionado en niveles altos en todos los meses salvo en
-  invierno. La parte asimétrica muestra correlaciones bajas en todos los
-  niveles salvo en 925hPa.
-\item
-  Gradiente meridional de vorticidad absoluta. Tiene correlación
-  moderada con un mínimo relativo en 200hPa en verano que en las otras
-  estacione se convierte en un máximo.
-\end{itemize}
 
 \subsection{Altura Geopotencial}\label{altura-geopotencial-1}
 
@@ -1604,7 +1699,7 @@ En promedio zonal, sin embargo, SPEEDY funciona bien.
 \subsection{Onda 3}\label{onda-3-1}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de Fourier (speedy en sombreado, ncep en contornos). - fig:ampl-sp-nc}\label{fig:ampl-sp-nc}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de fourier (speedy en sombreado, ncep en contornos). - fig:ampl-sp-nc}\label{fig:ampl-sp-nc}
 \end{figure*}
 
 \begin{figure*}

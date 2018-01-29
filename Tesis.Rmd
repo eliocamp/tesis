@@ -32,6 +32,8 @@ link-citations: yes
 params: 
     draft: TRUE
 biblio-style: apalike
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -1799,7 +1801,7 @@ sam.cor <- index[sam, on = "date"] %>%
 knitr::kable(sam.cor, caption = "Correlación entre QS3 y SAM - NO SE PUBLICA", digits = 4)
 ```
 
-En julio, el patroń de QS3 se ve opacao por anomalías positiva de geopotencial en latitues antárticas y negativas en latitudes medias. En la \autoref{fig:regr-gh-polar} se muestran los mismos campos que en la \autoref{fig:regr-gh-ncep} pero en coordenadas polares para julio y diciembre. En esta proyección es fácil identificar el patrón similar al SAM negativo\todo{buscar cita a SAM} presente en julio y el SAM positivo presente en diciembre. En efecto, la correlación entre el índice SAM y la amplitud media de la QS3 es `r round(sam.cor[7]$estimate, 2)` (p-valor $\sim$ `r round(sam.cor[7]$p.value, 4)`) para julio y `r round(sam.cor[12]$estimate, 2)` (p-valor $\sim$ `r round(sam.cor[12]$p.value, 4)`) para diciembre\footnote{Correlación de Pearson, tests a dos colas}. Estos dos meses son los únicos con una relación significativa con al menos 95% de confianza.
+En julio, el patroń de QS3 se ve opacao por anomalías positiva de geopotencial en latitues antárticas y negativas en latitudes medias. En la \autoref{fig:regr-gh-polar} se muestran los mismos campos que en la \autoref{fig:regr-gh-ncep} pero en coordenadas polares para julio y diciembre. En esta proyección es fácil identificar el patrón similar al SAM negativo\todo{buscar cita a SAM} presente en julio y el SAM positivo presente en diciembre. En efecto, la correlación entre el índice SAM y la amplitud media de la QS3 es `r round(sam.cor[7]$estimate, 2)` (p-valor $\sim `r round(sam.cor[7, p.value], 4)`$) para julio y `r round(sam.cor[12, estimate], 2)` (p-valor $\sim `r round(sam.cor[12, p.value], 4)`$) para diciembre\footnote{Correlación de Pearson, tests a dos colas}. Estos dos meses son los únicos con una relación significativa con al menos 95% de confianza.
 
 ```{r regr-gh-polar, fig.cap = "Igual que figura  XX, pero en proyección polar para julio y septiembre."}
 binwidth <- 10
@@ -1877,9 +1879,9 @@ ggplot(stream.reg[regressor == "amplitude" & lat <= 0],
 
 En la \autoref{fig:regr-psi-ncep} se muestra la anomalía zonal de la regresión de $\psi$ con la amplitud media de la QS3 junto con los flujos de actividad de onda calculados a partir del mismo. A partir de la misma se puede confirmar la existencia de los trenes de onda identificados en la \autoref{fig:regr-gh-ncep} y ampliar el análisis a los trópicos. En mayo, por ejemplo, aparece claramente una fuente de actividad de onda sobre Indonesia que genera un flujo hacia el sur de de Sudamérica y otro hacia el Pacífico central. 
 
-\todo[inline]{hasta acá}
-
 ## Composición de campos. 
+
+\todo[inline]{Me parece que toda esta sección está de más. La composición de campos no suma nada por encima de la regresión. Dan los mismos campos e incluso la discusión sobre la fase que no coincide ya lo escribí en la \autoref{fase}. Quizás se le puede sacar algo de jugo a mostrar los casos individuales, pero por ahora lo salteo.}
 
 ```{r calc-qs-fields}
 setnames(fields, c("gh.z", "gh", "QS3"), c("ncep.z", "ncep", "qs3"))
@@ -2043,9 +2045,9 @@ Estos gráficos me parecen importantes para ver lo que hay "adentro" de la compo
 file <- "DATA/sst.regr.Rds"
 
 sst.regr <- cache.file(file, {
-    sst <- ReadNetCDF("DATA/NCEP/sst.nc", vars = "sst") %>% 
-        .[, date := as.Date(date), by = date]
-    sst.regr <- sst[index[, .(date, amplitude, phase)], on = "date"] %>% 
+    ReadNetCDF("DATA/NCEP/sst.nc", vars = "sst") %>% 
+        .[, date := as.Date(date), by = date] %>% 
+        .[index[, .(date, amplitude, phase)], on = "date"] %>% 
         .[, ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
                                                   amplitude = amplitude/sd(amplitude), 
                                                   phase = phase),
@@ -2063,11 +2065,11 @@ sst.regr[, estimate.full := ifelse(is.na(estimate),
 
 binwidth <- 0.15
 ggplot(sst.regr[regressor == "amplitude"], aes(lon, lat)) +
-    stat_contour_fill(aes(z = estimate.full), binwidth = binwidth, 
+    geom_contour_fill(aes(z = estimate.full), binwidth = binwidth, 
                       complete = FALSE, exclude = 0) +
     # stat_contour(aes(z = estimate), binwidth = binwidth) +
     # geom_raster(aes(ifelse(is.na(estimate), lon, NA)), fill = "white") +
-    stat_contour(aes(z = t), breaks = c(2, 3), color = "black", size = 0.2) +
+    stat_contour(aes(z = t), breaks = qnorm(0.01/2, lower.tail = FALSE), color = "black", size = 0.2) +
     map.world +
     scale_fill_divergent(breaks = MakeBreaks(binwidth),
                          guide = guide_colorstrip_bottom()) +
@@ -2076,9 +2078,52 @@ ggplot(sst.regr[regressor == "amplitude"], aes(lon, lat)) +
     facet_wrap(~month, labeller = labeller(month = month.abb_sp))
 ```
 
+En la \autoref{fig:regr-sst-ncep} se muestra la regresión de SST sobre la amplitud de la QS3 con las regiones con p-valor nominalmente menor a 0.01\footnote{Notar que se trata de un p-valor nominal sin tener en cuenta problemas de multiplicidad o autocorrelación} marcadas con líneas negras. Los valores son casi nulos o sin significancia en todos los meses y los pocos patrones obserados no son estables. Existe una señal en el pacífico ecuatorial en febrero, mayor, septiembre, nboviembre y diciembre (invertida en estos últimos dos) pero no alcanza significancia estadística en ningún caso. Diciembre es el mes con más áreas con señal importante, indicando que la QS3 durante este mes podriá estar asociada con aguas frías en el Pacífico sur y el Atlántico ecuatorial, y cálidas en el Atlántico sur. 
 
-Campos de correlación con SST y OLR, principalmente
-¿Discusión de otros forzantes?
+Existen algunas correspondencias entre este patrón de SST de la \autoref{fig:regr-sst-ncep} y las regresiones de $\psi$ de la \autoref{fig:regr-gh-ncep}. Las regiones de aguas frías en el Pacífico sur presentes en agosto y diciembre coinciden con centros ciclónicos (máximos de $\psi$). La región de agua caliente en el pacífico central en febrero podría ser la fuente de los trenes de ondas originados al sur de la misma a partir de la generación de convección anómala de forma similar al máximo de SST en mayo en la costa este de Australia, o en enero al sur del Índico. 
+
+
+```{r calc-regre-olr}
+file <- "DATA/olr.regr.Rds"
+
+olr.regr <- cache.file(file, {
+    ReadNetCDF("DATA/NCEP/olr.mon.mean_sub.nc") %>% 
+        .[, date := as.Date(date), by = date] %>% 
+        .[index[, .(date, amplitude, phase)], on = "date"] %>% 
+        .[, ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
+                                                  amplitude = amplitude/sd(amplitude), 
+                                                  phase = phase),
+                                            olr)),
+          by = .(lon, lat, month(date))] %>% 
+        .[, t := abs(estimate)/se]
+})
+```
+
+```{r regr-olr-ncep, fig.cap = "Regresión de QS3 con OLR", fig.class = "fullpage"}
+olr.regr[, estimate.full := ifelse(is.na(estimate), 
+                                   mean(estimate, na.rm = T), 
+                                   estimate), 
+         by = regressor]
+
+binwidth <- 2
+ggplot(olr.regr[regressor == "amplitude"], aes(lon, lat)) +
+    geom_contour_fill(aes(z = estimate.full), binwidth = binwidth, 
+                      complete = FALSE, exclude = 0) +
+    # stat_contour(aes(z = estimate), binwidth = binwidth) +
+    # geom_raster(aes(ifelse(is.na(estimate), lon, NA)), fill = "white") +
+    stat_contour(aes(z = t), breaks = qnorm(0.01/2, lower.tail = FALSE), color = "black", size = 0.2) +
+    map.world +
+    scale_fill_divergent(breaks = MakeBreaks(binwidth),
+                         low = scales::muted("red"), high = scales::muted("blue"),
+                         guide = guide_colorstrip_bottom()) +
+    scale_s_map() +
+    coord_quickmap() +
+    facet_wrap(~month, labeller = labeller(month = month.abb_sp))
+```
+
+La regresión de la amplitud de QS3 con radiación saliente de onda larga (OLR) se muestra en la \autoref{fig:regr-olr-ncep} donde valores negativos (colores rojos) indican convección anómala intensificada y viceversa. El mes con mayor señal es debrero, con convección intensa en el Pacífico central e inhibida en el Pacífico occidental. Este patrón tipo El Niño coincide con la regresión en SST (\autoref{fig:regr-sst-ncep}) y es similar al que se observa en mayo y septiembre, aunque en éstos es menos intenso. El agua ecuatorial fría de diciembre, en cambio, tiene su correlato en una convección inhibida en el pacífico central e intensificada en Indonesia, asemejándose a un patró tipo La Niña. 
+
+La consistencia física entre las regresiones de SST y OLR no deberían ser indicio de robustez ya que la correlación negativa entre ambas variables en la región del Pacífico ecuatorial implica que no son variables independientes. La falta de significancia estadística parace mostrar que la señal de la SST sobre la QS3, de existir, es menor a la que puede detectarse con estos datos y esta metodología. 
 
 # Experimentos
 
@@ -2097,17 +2142,18 @@ speedy <- cache.file(file.speedy, {
     rbindlist(lapply(seq_along(runs), function (x) {
         ReadNetCDF(paste0("DATA/SPEEDY/attm-", runs[x], "_HS.nc"), 
                    vars = vars)[, run := runs[x]]
-    }))
+    })) %>% 
+        .[, run := factor(run, levels = runs)] %>% 
+        .[, t := t - 273.15] %>% 
+        .[, c(vars.z) := lapply(.SD, Anomaly), 
+          by = .(lat, lev, date, run), .SDcols = -"lon"] %>% 
+        .[, c("amplitude", "phase", "r2") := FitQsWave(gh, 3),
+          by = .(lat, lev, date, run)] %>% 
+        .[, QS3 := amplitude*cos(3*(lon*pi/180 - phase))]
 })
-speedy[, run := factor(run, levels = runs)]
-speedy[, t := t - 273.15]
+```
 
-speedy[, c(vars.z) := lapply(.SD, Anomaly), 
-       by = .(lat, lev, date, run), .SDcols = -"lon"]
-speedy[, c("amplitude", "phase", "r2") := FitQsWave(gh, 3),
-       by = .(lat, lev, date, run)]
-speedy <- speedy[, QS3 := amplitude*cos(3*(lon*pi/180 - phase))]
-
+```{r calc-sp}
 speedy.mean.season <- speedy[, lapply(.SD, mean), 
                              by = .(lon, lat, lev, season(date), run)]
 
@@ -2129,70 +2175,6 @@ speedy.mean.season[lev == 200,
 * Comparación campos medios. 
 
 Acá un problemita es que en speedy no tengo el nivel de 50hPa, sólo tengo `r unique(speedy$lev)`. Podría usar 30, pero eso es la tapa del modelo...
-
-```{r calc-interp-ncep}
-lons <- unique(speedy.mean.season$lon)
-lats <- unique(speedy.mean.season$lat)
-ncep.interp <- 
-    ncep.mean.season %>% 
-    melt(id.vars = c("season", "lon", "lat", "lev")) %>% 
-    .[variable %in% c(names(vars), vars.z, "eta.dy")] %>% 
-    .[, Interpolate.DT(value, lon, lat, lats, lons), 
-      by = .(lev, season, variable)]
-```
-
-
-```{r calc-cor-sp-nc}
-sp.nc <-  melt(speedy.mean.season[run == "Control"][, run := NULL], 
-               id.vars = c("season", "lon", "lat", "lev")) %>% 
-    .[ncep.interp, on = c("variable", "season", "lon", "lat", "lev")] %>% 
-    .[!is.na(value) & !is.na(i.value)]
-
-cor.sp_nc <- sp.nc[, .(cor = cor(value, i.value)),
-                   by = .(season, lev, variable)]
-
-cor.sp_nc[, zonal := substr(variable, 
-                            stri_length(variable) - 1, 
-                            stri_length(variable)) == ".z"] 
-cor.sp_nc[zonal == TRUE, 
-          variable := substr(variable, 
-                             1, 
-                             stri_length(variable) - 2)]
-```
-
-```{r cor-sp-nc, fig.cap = "Correlación lineal entre campos de SPEEDY y NCEP.", fig.height = 5, fig.publish = FALSE}
-ggplot(cor.sp_nc, aes(lev, cor, color = zonal)) +
-    geom_line() +
-    coord_flip() +
-    scale_x_level(breaks = plot.levs, name = "Nivel") +
-    scale_y_continuous(name = "Correlación") +
-    scale_color_brewer(palette = "Set1", name = "", 
-                       labels = c("TRUE" = "Anomalía", "FALSE" = "Completa")) +
-    facet_grid(season~variable, 
-               labeller = labeller(variable = c(gh = "Altura Geopotencial",
-                                                u = "Viento zonal",
-                                                v = "Viento meridional",
-                                                eta.dy = "Gradiente meridinoal\nde vorticidad absoluta",
-                                                t = "Temperatura"))) 
-
-```
-
-
-* Altura geopotencial (gh)
-Para el caso del campo total, la correlación del campo es buena (>0.8)en casi todos los niveles y meses, excepto en 30hPa durante verano donde los campos ¡está anticorrelacionados! La parte asimétrica zonal muestra valores menores, indicando que gran parte de la correlación del campo total se debe a la capacidad del modelo de reproducir el gradiente meridional. Sin embargo, se siguen obteniendo correlaciones >0.6 en casi todos los niveles y estaciones. Se observa un mínimo relativo en 500hPa donde en se tienen correlaciones menores durante casi todo el año y uno en niveles altos centrado en invierno y primavera.
-
-* Viento zonal (U)
-Las correlaciones con el campo total son >=0.8 en todo el año y todos los niveles, sin embargo, la parte asimétrica muestra correlaciones mucho más baja con un máximo de \~0.6 en 925hPa. Esto indica que el modelo resuelve correctamente la estructura media del Jet, pero no sus variaciones zonales. 
-
-* Viento meridional (V)
-Los campos de correlación son prácticamente idénticos entre parte total y parte asimétrica. Ésta muestra un patrón de bajas correlaciones en general.
-
-* Temperatura (T)
-La correlación con el campo total muestra una estructura similar que la altura geopotencial, con una excelente correlación en todos los meses para niveles mayores a 200hPa, pero anticorrelacionado en niveles altos en todos los meses salvo en invierno. La parte asimétrica muestra correlaciones bajas en todos los niveles salvo en 925hPa. 
-
-* Gradiente meridional de vorticidad absoluta. 
-Tiene correlación moderada con un mínimo relativo en 200hPa en verano que en las otras estacione se convierte en un máximo. 
-
 
 ### Altura Geopotencial
 
