@@ -1,8 +1,16 @@
 ---
-title: "Untitled"
+title: "Tesis"
+subtitle: "Una tesis"
 author: "Elio Campitelli"
-date: "January 17, 2018"
+date: ""
+lang: es-AR
+bibliography: [Papers/Biblio.bib, Papers/packages.bib]
+geometry: "inner = 5cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm"
 documentclass: book
+classoption: a4paper
+knit: (function(file, encoding, ...) {
+    rmarkdown::render(file, encoding = encoding, 
+                output_dir = "docs/")})
 output:
     pdf_document:
       fig_height: 3
@@ -13,55 +21,394 @@ output:
       toc: yes
       toc_depth: 4
 header-includes: 
+    - \linespread{1.25}
+    - \usepackage{subfig}
+    - \usepackage{hyperref}
+    - \usepackage{marginnote}
     - \usepackage[nomarkers,figuresonly]{endfloat}
-bibliography: Papers/Biblio.bib
+    - \usepackage{pdflscape}
+    - \DeclareDelayedFloatFlavor{landscape}{figure}
+    - \usepackage[spanish]{todonotes}
+    - \usepackage{wrapfig}
+link-citations: yes
+params: 
+    draft: TRUE
+biblio-style: apalike
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = FALSE,
+                      echo = FALSE, 
+                      cache = TRUE, 
+                      force.cap = TRUE,
+                      fig.class = "pagewidth",
+                      fig.ncol = 1,
+                      fig.publish = TRUE,
+                      cache.lazy = TRUE,
+                      cache.path = "cache/tesis/",
+                      fig.path = "fig/tesis/",
+                      out.extra = " ",
+                      warning = FALSE,
+                      message = FALSE)
+
+library(tufte)
+library(data.table)
+library(ggplot2)
+library(dplyr)
+library(metR) 
+library(WaveletComp)
+library(patchwork)
+library(circular)
+
+knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"), 
+                 file = "Papers/packages.bib")
+
+source("scripts/helperfun.R")
+
+# Plot thingys
+
+data.world <- BuildMap(res = 1, smooth = 1)
+map.world <- geom_map2(data.world)
+map.SH <- geom_map2(data.world[lat %b% c(-90, 0)])
+
+
+pres <- ReadNetCDF("DATA/NCEP/srfp.mon.mean.nc")
+pres.mean <- pres[, .(pres = median(pres)), by = lat]
+pres.mean <- rbind(data.table(lat = 0.0, pres = Inf), 
+                   pres.mean, 
+                   data.table(lat = -90.0, pres = Inf))
+surface <- geom_polygon(data = pres.mean, aes(y = pres), fill = "white", 
+                        alpha = 0.5, color = "gray30", size = 0.5)
+pres <- pres[, .(pres = mean(pres)), by = .(lon, lat)]
+
+theme_elio <- theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", legend.box = "vertical",
+          panel.spacing.y = unit(5, "mm"),
+          panel.spacing.x = unit(5, "mm"),
+          legend.spacing = unit(2, "mm"),
+          plot.margin = grid::unit(rep(3, 4), "mm"),
+          legend.title = element_blank(),
+          panel.grid = element_line(color = "black", size = 0.2, linetype = 3),
+          panel.ontop = TRUE)
+theme_set(theme_elio)
+
+# For vertical cross-sections
+coord_section <- function(ratio = 20, ...) coord_fixed(ratio = 20, ...)
+
+## Hooks.
+
+## Force captions
+plot_hook <- knitr::knit_hooks$get("plot")
+knitr::knit_hooks$set(
+    plot = function(x, options) {
+        if (options$force.cap == TRUE & is.null(options$fig.cap)) {
+            stop("All figures must have captions.")
+        }
+        if (params$draft == TRUE) {
+            options$fig.cap <- paste0(options$fig.cap, " - fig:", 
+                                      knitr::opts_current$get("label"))
+        }
+        if (options$fig.publish == FALSE) {
+            options$fig.cap <- paste0(options$fig.cap, " - SÓLO BORRADOR")
+        }
+        if (options$fig.publish == TRUE | params$draft == TRUE) {
+            plot_hook(x, options)
+        }
+    })
+
+knitr::knit_hooks$set(
+    rotate = function(before, options, envir) {
+        if (before) {
+            return("\\begin{landscape}")
+        } else{
+            return("\\end{landscape}")
+        }
+    }
+)
+
+## Figure classes
+DefineClass <- function(class.opts) {
+    class.name <- deparse(substitute(class.opts))
+    class.fun <- function(options) {
+        class <- options[[class.name]]
+        class <- class.opts[[class]]
+        options[names(class)] <- class
+        options
+    }
+    invisible(knitr::opts_hooks$set(
+        setNames(list(class.fun), class.name)
+    ))
+}
+
+page.width <- 210 - 30 - 30
+text.width <- page.width - 20
+text.height <- page.height <- 297 - 25 - 25
+
+fig.class <- list(
+    pagewidth = list(
+        fig.width = page.width/25.4,
+        out.width = paste0(page.width, "mm"),
+        # fig.align = "center",
+        fig.env = "figure*",
+        out.extra = " "
+    ),
+    textwidth = list(
+        fig.width = text.width/25.4,
+        out.width = paste0(text.width, "mm"),
+        fig.env = "figure",
+        fig.align = "center",
+        out.extra = " "
+    ),
+    fullpage = list(
+        fig.width = (page.height - 20)/25.4,
+        fig.height = page.width/25.4,
+        out.width = paste0(page.height - 20, "mm"),
+        fig.align = "center",
+        rotate = TRUE,
+        out.extra = ""
+        # out.extra = "angle=90"
+    ),
+    vfullpage = list(
+        fig.width = page.width/25.4,
+        fig.height = (page.height - 20)/25.4,
+        out.width = paste0(page.width, "mm"),
+        fig.align = "center"
+    ),
+    halfpage = list(
+        # out.width = "7.3cm",
+        fig.width = (page.width/2)/25.4,
+        out.width = paste0(page.width/2, "mm")
+    ),
+    
+    medium = list(
+        fig.width = 8,
+        fig.height = 4,
+        # out.width = "\\textwidth",
+        # out.height = "0.25\\textheight",
+        fig.align = "center")
+)
+
+DefineClass(fig.class)
+
+setDTthreads(3)
 ```
 
-# R Markdown
-@Vera2004
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Resumen.
 
-```{r pressure2, echo=FALSE, fig.cap = "Caption"}
-plot(pressure)
+
+```{r read-ncep, cache = FALSE}
+file.ncep <- "DATA/NCEP/ncep.vars.Rds"
+ncep <- cache.file(file.ncep, {
+    ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean_sub.nc", vars = c(gh = "hgt"))
+    setnames(ncep, "level", "lev")
+    ncep <- 
+        ncep[, t := ReadNetCDF("DATA/NCEP/air.mon.mean_sub.nc", 
+                               out = "vector")[[1]]] %>% 
+        .[, u := ReadNetCDF("DATA/NCEP/uwnd.mon.mean_sub.nc", 
+                            out = "vector")[[1]]] %>% 
+        .[, v := ReadNetCDF("DATA/NCEP/vwnd.mon.mean_sub.nc", 
+                            out = "vector")[[1]]]
+    
+    vars <- c("gh", "t", "u", "v")
+    vars.z <- paste0(vars, ".z")
+    ncep[, c(vars.z) := lapply(.SD, Anomaly), by = .(lat, lev, date), .SDcols = -"lon"]
+    ncep
+})
+
+
+ncep[, date := as.Date(date), by = date]
+ncep.mean <- ncep[, lapply(.SD, mean), 
+                  by = .(lat, lon, lev, month(date))]
+
+ncep.mean.season <- ncep.mean[, lapply(.SD, mean), 
+                              by = .(lon, lat, lev, season(month))]
 ```
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+\todo[inline]{Listado de abreviaturas}
+\todo[inline]{Revisar TODOS los epígrafes}
 
-```{r cars}
-summary(cars)
+
+
+# Introducción
+
+
+* Antecedentes    
+Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre las climatologías disponibles y sus limitaciones. 
+* Objetivo General
+* Objetivo particular 
+
+Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
+
+# Métodos y Materiales
+
+\todo[inline]{Agregar en algún lugar algo sobre las estadísticas circulares}
+
+## Conceptos básicos
+
+* Ondas cuasiestacionarias
+* fourier
+* wavelets
+* Flujo de actividad de onda.
+
+\todo[inline]{chequear este paper: https://link.springer.com/article/10.1007/s00024-012-0635-9}
+
+```{r fitqs-ncep}
+ncep.qs.all <- ncep[, FitQsWave(gh, k = 1:4), by = .(lat, lev, date)]
 ```
 
-\processdelayedfloats
 
-# Including Plots
+Ejemplo:
 
-You can also embed plots, for example:
+```{r calc-fourier-ejemplo}
+# set.seed(2)
+select.date <- as.Date("1999-03-01")
+wave <- ncep[date == select.date & lev == 300, 
+             .(lon, lat, date, gh)]
+wave[, gh.z := Anomaly(gh), by = .(lat)][
+    , k := "campo"]
 
-```{r pressure, echo=FALSE, fig.cap = "Caption"}
-plot(pressure)
+lons <- unique(ncep$lon)
+qs.wave <- ncep.qs.all[date == select.date & lev == 300 & k < 4, 
+                       .(lon = lons, 
+                         gh.z = amplitude*cos(k*(lons*pi/180 - phase))),
+                       by = .(lat, date, k)]
+wave <- rbind(wave[, -c("gh")], qs.wave)
+wave[, k := factor(k, levels = c("campo", 1:3))]
 ```
 
-\processdelayedfloats
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r fourier-ejemplo, fig.class = "pagewidth", fig.cap = "Ejemplo fourier"}
+binwidth <- 20
+ggplot(RepeatLon(wave), aes(lon, lat)) +
+    stat_contour_fill(aes(z = gh.z), 
+                      binwidth = binwidth, size = 0.5) +
+    map.SH +
+    scale_s_map() +
+    scale_fill_divergent(name = "", 
+                         binwidth = binwidth, 
+                         guide = guide_colorstrip_bottom()) +
+    theme(axis.title = element_blank()) +
+    facet_wrap(~ k, ncol = 4) +
+    coord_polar()
+
+```
+
+Cosas para ver de \autoref{fig:fourier-ejemplo}:   
+Descripción del "rol" de cada número de onda en generar el campo final. 
+La QS1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean continuos.
 
 
-# Referencias
-
-<div id="refs"></div>
-
-\newpage
-
-\appendix
+* Wavelets 
 
 
-# Apéndice 1
+```{r calc-wavelet-ejemplo}
+test <- ncep[lev == 300 & date == as.Date("2008-09-01") & lat %~% -60]
+test.1 <- copy(test)
+test.2 <- copy(test)
+test.1[, lon := lon - 360]
+test.2[, lon := lon + 360]
+test.a <- rbind(test.1, test, test.2)
 
-Apéndice
+dlon <- diff(ncep$lon[1:2])
+w <- WaveletComp::WaveletTransform(test.a$gh.z, dt = 1, upperPeriod = 360/dlon)
 
-@Quintanar1995
+ampl <- w$Ampl*sd(test.a$gh.z)
+dimnames(ampl) <- list(period = w$Period, lon = test.a$lon)
+ampl <- as.data.table(melt(ampl))
+ampl[, period := period*dlon]
+ampl1 <- ampl[Between(lon, c(0, 360), include = c(T, F))]
+ampl1[, lat := -60]
+
+test <- ncep[lev == 300 & date == as.Date("2008-09-01") & lat %~% -45]
+test.1 <- copy(test)
+test.2 <- copy(test)
+test.1[, lon := lon - 360]
+test.2[, lon := lon + 360]
+test.a <- rbind(test.1, test, test.2)
+
+dlon <- diff(ncep$lon[1:2])
+w <- WaveletComp::WaveletTransform(test.a$gh.z, dt = 1, upperPeriod = 360/dlon)
+
+ampl <- w$Ampl*sd(test.a$gh.z)
+dimnames(ampl) <- list(period = w$Period, lon = test.a$lon)
+ampl <- as.data.table(melt(ampl))
+ampl[, period := period*dlon]
+ampl2 <- ampl[Between(lon, c(0, 360), include = c(T, F))]
+ampl2[, lat := -45]
+ampl <- rbind(ampl1, ampl2)
+
+ncep.wv <- ncep[date == as.Date("2008-09-01") & lev == 300,
+                .(lon = lon, gh.z = gh.z,
+                  amplitude = unlist(PeriodicWavelet(gh, 3))),
+                by = .(lat, lev, date)]
+```
+
+
+```{r wavelet-ejemplo, fig.show = "hold", fig.env = "figure*", fig.height = 70/25.4, fig.cap = "Wavelets", fig.class = "halfpage", fig.subcap = c("Campo", "Análisis de Wavelets en círculos de latitud señalados."), fig.ncol = 2}
+
+ggplot(RepeatLon(ncep.wv[date == as.Date("2008-09-01") & lev == 300]), 
+       aes(lon, lat)) +
+    stat_contour_fill(aes(z = gh.z), exclude = 0,
+                      binwidth = 75, size = 0.3) +
+    stat_contour(aes(z = amplitude, color = ..level..), 
+                 binwidth = 15, size = 0.4) +
+    geom_hline(yintercept = -60, linetype = 2) +
+    geom_hline(yintercept = -45, linetype = 2) +
+    map.SH +
+    scale_y_latitude(limits = c(-90, 0)) +
+    scale_x_longitude() +
+    scale_color_viridis_c(name = "Amplitud de onda 3", 
+                          breaks = MakeBreaks(25, 0),
+                          guide = "none") +
+    scale_fill_divergent(guide = guide_colorstrip_bottom(15),
+                         breaks = MakeBreaks(binwidth = 75)) +
+    theme(axis.title = element_blank()) +
+    scale_linetype_discrete(name = "Anomalía zonal de geopotencial", drop = T) +
+    coord_polar()
+
+ggplot(ampl, aes(lon, 360/period)) +
+    # geom_tile(aes(fill = value)) +
+    stat_contour(aes(z = value, color = ..level..), binwidth = 15) +
+    # geom_contour(aes(z = pval), breaks = c(0.001), color = "black") +
+    scale_y_continuous(name = "Número de onda zonal", 
+                       breaks = 1:10, limits = c(NA, 5), 
+                       expand = c(0, 0)) +
+    scale_x_longitude(name = "longitud") +
+    geom_hline(yintercept = 3, linetype = 3, alpha = 0.4) +
+    scale_color_viridis_c(breaks = MakeBreaks(15),
+                          guide = guide_colorstrip_bottom(15, inside = T)) +
+    facet_wrap(~lat, ncol = 2, labeller = labeller(lat = AddPreffix("Latitud: ")))
+```
+
+Cosas para ver:    
+Cambio en el máximo. Localización en vez de un número para cada latitud. 
+
+
+## Fuentes de datos
+
+## Descripción de SPEEDY
+
+# Climatología observada
+
+En esta sección se presentan campos medios y anomalías zonales de altura geopotencial, temperatura, viento zonal, viento meridinal, gradiente meridional de vorticidad absoluta y el número de onda estacionario, y función corriente como introducción general al estado medio de la atmósfera sobre el cual se desarrollan las ondas estacionarias. Luego se analizan los campos de amplitud y varianza explicada por las ondas cuasiestacionarias (QS) en sí mismas. 
+
+## Altura geopotencial
+
+Campo medio:
+
+```{r gh-ncep, fig.class = "fullpage", fig.cap = "Campo de Z (NCEP)"}
+plot.levs <- c(500, 300, 200, 100, 50)
+binwidth <- 250
+ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
+    geom_contour_fine(aes(z = gh), binwidth = binwidth, color = "black") +
+    map.SH +
+    geom_label_contour2(aes(z = gh, label = ..level..), binwidth = binwidth,
+                        size = 1.6) +
+    scale_s_map() +
+    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
+    coord_quickmap() 
+```
+

@@ -957,7 +957,7 @@ geom_contour_back <- function(...) {
     geom_contour(..., color = "black", size = 0.2, alpha = 0.5)
 }
 geom_label_contour_back <- function(...) {
-    geom_label_contour2(..., alpha = 0.5)
+    geom_label_contour2(..., alpha = 0.5, size = 3)
 }
 
 geom_contour_fine <- function(...) geom_contour(..., size = 0.4)

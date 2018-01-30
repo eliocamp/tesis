@@ -1,0 +1,7 @@
+\begin{sidewaysfigure}
+\centering
+\includegraphics{test_files/figure-latex/pressure2-1.pdf}
+\caption{Caption}
+\end{sidewaysfigure}
+\efloatseparator
+ 
