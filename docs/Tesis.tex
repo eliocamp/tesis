@@ -95,6 +95,8 @@
 \usepackage{hyperref}
 \usepackage{marginnote}
 \usepackage[nomarkers,figuresonly]{endfloat}
+\usepackage{pdflscape}
+\DeclareDelayedFloatFlavor{landscape}{figure}
 \usepackage[spanish]{todonotes}
 \usepackage{wrapfig}
 
@@ -191,14 +193,15 @@ cuasiestacionarias (QS) en sí mismas.
 
 Campo medio:
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/gh-ncep-1} 
 
 }
 
 \caption{Campo de Z (NCEP) - fig:gh-ncep}\label{fig:gh-ncep}
 \end{figure}
+\end{landscape}
 
 El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra
 una estructura más zonal en el HS que en el HN en todos los niveles y
@@ -218,18 +221,19 @@ vórtice polar que aisla las latitudes polares de las latitudes medias.
 En 200hPa, en cambio, es evidencia del jet subtropical, que es más
 estable a lo largo de todo el año.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/ghdy-ncep-corte-1} \caption{Gradiente meridional de Z - fig:ghdy-ncep-corte - SÓLO BORRADOR}\label{fig:ghdy-ncep-corte}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ghdy-ncep-corte-1} \caption{Gradiente meridional de Z - fig:ghdy-ncep-corte - SÓLO BORRADOR}\label{fig:ghdy-ncep-corte}
+\end{figure*}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-ncep-1} 
 
 }
 
 \caption{Anomalía zonal de altura geopotencial. - fig:ghz-ncep}\label{fig:ghz-ncep}
 \end{figure}
+\end{landscape}
 
 Las anomalías zonales de geopotencial (Z*, \autoref{fig:ghz-ncep})
 muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima
@@ -271,9 +275,9 @@ meridionales asociados se reducen considerablemente. \todo{¿Por qué?}
 \caption{Corte zonal de anomalía de geopotencial en -60°. - fig:ghz-ncep-corte60}\label{fig:ghz-ncep-corte60}
 \end{figure}
 
-\begin{figure}
-\subfloat[u*v*\label{fig:uzvz-ncep-corte1}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[ ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte - SÓLO BORRADOR}\label{fig:uzvz-ncep-corte}
-\end{figure}
+\begin{figure*}
+\subfloat[u*v*\label{fig:uzvz-ncep-corte1}]{\includegraphics[width=150mm, ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[width=150mm, ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte - SÓLO BORRADOR}\label{fig:uzvz-ncep-corte}
+\end{figure*}
 
 El ciclo anual de la amplitud de las ondas estacionarias se observa en
 \autoref{fig:sd-gh-ncep}, donde se muestra el desvío estándar de Z por
@@ -294,14 +298,15 @@ octubre, y el mínimo entre febrero y abril, según el nivel.
 
 \section{Temperatura}\label{temperatura}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/t-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/t-ncep-1} 
 
 }
 
 \caption{Temperatura media. - fig:t-ncep}\label{fig:t-ncep}
 \end{figure}
+\end{landscape}
 
 Pasando a la temperatura, en la \autoref{fig:t-ncep} puede verse que, al
 igual que el campo de geopotencial, tiene una estructura principalmente
@@ -330,14 +335,15 @@ polar con amplitud, extensión y altura máxima en invierno y mínima en
 verano. El máximo relativo de tempertura observado por encima de 100hPa
 se da como consecuencia de estos dos mínimos.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/tz-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/tz-ncep-1} 
 
 }
 
 \caption{Anomalía zonal de temperatura. - fig:tz-ncep}\label{fig:tz-ncep}
 \end{figure}
+\end{landscape}
 
 En la \autoref{fig:tz-ncep} se muestran las anomalías zonales de
 temperatura. En 850hPa se aprecia mejor el efecto del contraste de
@@ -386,14 +392,15 @@ segundo está presente principalmente en invierno y primavera, e
 incipiente en otoño. En la estratósfera se observan vientos del este en
 latitudes bajas que son más intensos en verano y otoño.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/u-ncep-1} 
 
 }
 
 \caption{Viento zonal. - fig:u-ncep}\label{fig:u-ncep}
 \end{figure}
+\end{landscape}
 
 En la \autoref{fig:u-ncep} se observa que el jet subpolar es más intenso
 al sur de África, donde además se encuentra en una latitud más
@@ -419,14 +426,15 @@ divergencias en niveles altos y convergencias en niveles bajos (no se
 muestra). Evidencia de la circulación tropical forzada por la
 temperatura superficial del pacífico.\todo{buscar cita.}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/uz-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/uz-ncep-1} 
 
 }
 
 \caption{Anomalía zonal de viento zonal. - fig:uz-ncep}\label{fig:uz-ncep}
 \end{figure}
+\end{landscape}
 
 Los campos de viento zonal, temperatura y altura geopotencial están
 ligados por el balance de viento geostrófico y de viento térmico. El
@@ -465,14 +473,15 @@ En el resto del dominio, la media zonal es prácticamente nula, lo cual
 implica que la anomalía zonal de V es prácticamente idéntica al campo
 total; por lo tanto, sólo se muestra éste último.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/v-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/v-ncep-1} 
 
 }
 
 \caption{Viento meridional medio. - fig:v-ncep}\label{fig:v-ncep}
 \end{figure}
+\end{landscape}
 
 Los campos horizontales de V se muestran en la \autoref{fig:v-ncep}.
 Consistente con los campos de Z* (\autoref{fig:ghz-ncep}), en niveles
@@ -496,14 +505,15 @@ de niveles altos generada por la convección anómala. El Sudamérica, la
 alta de Bolivia genera viento hacia el norte y hacia el sur al este y al
 oeste de Bolivia respectivamente.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghminus1-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/ghminus1-ncep-1} 
 
 }
 
 \caption{Z* menos QS1. - fig:ghminus1-ncep - SÓLO BORRADOR}\label{fig:ghminus1-ncep}
 \end{figure}
+\end{landscape}
 
 \section{Gradiente meridional de vorticidad
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
@@ -512,14 +522,15 @@ En la teoría de propagación meridional de ondas de Rossby, el gradiente
 meridional de vorticidad absoluta (\(\psi_y\))
 \todo[inline]{es importante porque blavalbla ¿Resumen de la deducción en James?}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/etady-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/etady-ncep-1} 
 
 }
 
 \caption{Gradiente meridional de vorticidad absoluta * 1e11 - fig:etady-ncep}\label{fig:etady-ncep}
 \end{figure}
+\end{landscape}
 
 La \autoref{fig:etady-ncep} muestra que el campo de \(\psi_y\) tiene dos
 regiones con valores negativos. La primera, centrada sobre Nueva
@@ -550,24 +561,25 @@ propagarse meridionalmente dentro de una franja angosta de latitudes,
 entre 60°S y 50°S. Una región donde este modo muestra un máximo de
 amplitud (\autoref{fig:ampl-ncep}).
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa. - fig:ks-ncep}\label{fig:ks-ncep}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa. - fig:ks-ncep}\label{fig:ks-ncep}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/ks-ncep-cortelev-1} \caption{Número de onda estacionario en 180° - fig:ks-ncep-cortelev - SÓLO BORRADOR}\label{fig:ks-ncep-cortelev}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ks-ncep-cortelev-1} \caption{Número de onda estacionario en 180° - fig:ks-ncep-cortelev - SÓLO BORRADOR}\label{fig:ks-ncep-cortelev}
+\end{figure*}
 
 \section{Función corriente}\label{funcion-corriente}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/psi-ncep-1} 
 
 }
 
 \caption{Función corriente x 1099 - fig:psi-ncep}\label{fig:psi-ncep}
 \end{figure}
+\end{landscape}
 
 Para analizar la influencia tropical en la circulación no es posible
 usar la altura geopotencial, ya que el balance geostrófico pierde
@@ -617,14 +629,15 @@ y mayormente en invierno. La QS4 explica muy poca varianza a excepción
 de cerca de superficie entre 15°S y 30°S. Ondas más cortas son aún menos
 importantes (no se muestra).
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/r2-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/r2-ncep-1} 
 
 }
 
 \caption{$R^2$ de fourier. - fig:r2-ncep}\label{fig:r2-ncep}
 \end{figure}
+\end{landscape}
 
 El \(r^2\) permite analizar la importancia relativa de cada modo con
 respecto a la variabilidad total, pero lo que importa desde el punto de
@@ -656,14 +669,15 @@ Finalmente, fuera de la superficie, la QS4 presenta un máximo de
 amplitud bien definido sólo en verano. El máximo entre 15°S y 30°S sigue
 presente.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ampl-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/ampl-ncep-1} 
 
 }
 
 \caption{Ampllitud de fourier. - fig:ampl-ncep}\label{fig:ampl-ncep}
 \end{figure}
+\end{landscape}
 
 \todo[inline]{Acá podría poner alguna reflexión general de lo que se ve. Por ejemplo, cómo en verano la variabilidad está más acotada a la tropóstera mientras que en invierno y primavera hay más contacto con la estratósfera.}
 
@@ -762,9 +776,9 @@ siempre es menor que la media de la
 amplitud.\todo{Esta es una propiedad general que SIEMPRE se cumple. En realidad podría ir en metodología}.
 Las principales diferencias se dan en las anomalías zonales.
 
-\begin{figure}
-\subfloat[Haciendo la amplitud del campo medio\label{fig:waveletz-ncep1}]{\includegraphics[ ]{fig/tesis/waveletz-ncep-1} }\newline\subfloat[Haciendo el valor medio de la amplitud.\label{fig:waveletz-ncep2}]{\includegraphics[ ]{fig/tesis/waveletz-ncep-2} }\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
-\end{figure}
+\begin{figure*}
+\subfloat[Haciendo la amplitud del campo medio\label{fig:waveletz-ncep1}]{\includegraphics[width=150mm, ]{fig/tesis/waveletz-ncep-1} }\newline\subfloat[Haciendo el valor medio de la amplitud.\label{fig:waveletz-ncep2}]{\includegraphics[width=150mm, ]{fig/tesis/waveletz-ncep-2} }\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
+\end{figure*}
 
 tiene un máximo de anomalías zonales al sur del Pacífico en 60°S
 presente durante todo el año.
@@ -787,14 +801,15 @@ al sur del Índico y positivas al sur del Pacífico durante todo el año.
 
 \todo{Estoy pensando en no poner la \autoref{fig:wavelet-ncep-corte} porque no encuentro mucho para decir y no veo que se gane demasiado. Queda para el doctorado? :P}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/wavelet-ncep-corte-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/wavelet-ncep-corte-1} 
 
 }
 
 \caption{Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado). - fig:wavelet-ncep-corte}\label{fig:wavelet-ncep-corte}
 \end{figure}
+\end{landscape}
 
 Cosas para ver:\\
 * Si bien el máximo medio de la amplitud se da en
@@ -805,9 +820,9 @@ asciende a entre 100 y 50hPa en invierno y primavera alrededor de 120°O.
 Además, durante estas estaciones hay indicación de que el máximo cambia
 de latitud con la altura.
 
-\begin{figure}
-\subfloat[campo\label{fig:estacionaridad1}]{\includegraphics[ ]{fig/tesis/estacionaridad-1} }\newline\subfloat[media zonal\label{fig:estacionaridad2}]{\includegraphics[ ]{fig/tesis/estacionaridad-2} }\caption{Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?) - fig:estacionaridad - SÓLO BORRADOR}\label{fig:estacionaridad}
-\end{figure}
+\begin{figure*}
+\subfloat[campo\label{fig:estacionaridad1}]{\includegraphics[width=150mm, ]{fig/tesis/estacionaridad-1} }\newline\subfloat[media zonal\label{fig:estacionaridad2}]{\includegraphics[width=150mm, ]{fig/tesis/estacionaridad-2} }\caption{Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?) - fig:estacionaridad - SÓLO BORRADOR}\label{fig:estacionaridad}
+\end{figure*}
 
 Las diferencias vistas en la \autoref{fig:waveletz-ncep} están
 relacionadas con la estacionariedad\todo{¿Es una palabra?} de las ondas
@@ -820,9 +835,9 @@ estacionariedad sería máxima en latitudes bajas y al rederor de 50°S
 30°S y 75°S. \todo{¿Mostrar el gŕafico \ref{fig:estacionaridad}?}
 \todo[inline]{Esta discusión también aplica a fourier (\autoref{fig:estacionaridad-fourier}), en realidad, pero ahí no estoy mostrando ambos resultados porque da parecido. Quizás este párrafo se puede mover.. o borrar todo si resulta puro sinsentido.}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/estacionaridad-fourier-1} \caption{Estacionaridad según fourier - fig:estacionaridad-fourier - SÓLO BORRADOR}\label{fig:estacionaridad-fourier}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/estacionaridad-fourier-1} \caption{Estacionaridad según fourier - fig:estacionaridad-fourier - SÓLO BORRADOR}\label{fig:estacionaridad-fourier}
+\end{figure*}
 
 Estas observaciones destacan la utilidad de wavelets en el análisis de
 ondas cuasiestacionarias. Mientras que el tratamiento con fourier asume
@@ -838,9 +853,9 @@ un campo en modos oscilatorios con distinto número de onda. El análisis
 de una QS específica, por lo tanto, está contaminado por la actividad de
 otras QS con longitud de onda cercana.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/wavelet-reconstr-1} \caption{Reconstrucción de QS3 usando wavelets - fig:wavelet-reconstr - SÓLO BORRADOR}\label{fig:wavelet-reconstr}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/wavelet-reconstr-1} \caption{Reconstrucción de QS3 usando wavelets - fig:wavelet-reconstr - SÓLO BORRADOR}\label{fig:wavelet-reconstr}
+\end{figure*}
 
 Wavelets, en resumen, puede entenderse como una \emph{corrección} a
 fourier que agrega información de asimetrías zonales. Dado que la
@@ -937,9 +952,9 @@ atados a la limitación de la descomposición de fourier que trata toda
 onda como una onda
 planetaria.\todo{Aclarar qué comparación ilustra qué problema}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/cor-mean-max-1} \caption{Correlación entre amplitud máxima y media.{fig:cor-mean-max}}\label{fig:cor-mean-max}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/cor-mean-max-1} \caption{Correlación entre amplitud máxima y media. - fig:cor-mean-max}\label{fig:cor-mean-max}
+\end{figure*}
 
 Es importante tener en cuenta que estos 9 casos fueron seleccionados
 específicamente para ilustrar estas limitaciones y que no son
@@ -974,27 +989,28 @@ y 1999-2005) y otras con persistencia de anomalías positivas o negativas
 (2005-2009 y 2012-2015). No hay evidencia visual de periodicidades ni de
 una tendencia secular.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/wavelet-period-1} \caption{Análisis de wavelet para la amplitud de la onda 3. - fig:wavelet-period - SÓLO BORRADOR}\label{fig:wavelet-period}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/wavelet-period-1} \caption{Análisis de wavelet para la amplitud de la onda 3. - fig:wavelet-period - SÓLO BORRADOR}\label{fig:wavelet-period}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/acf-ampl-1} \caption{Función de autocorrelación para la amplitud media anual de la onda 3 - fig:acf-ampl - SÓLO BORRADOR}\label{fig:acf-ampl}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/acf-ampl-1} \caption{Función de autocorrelación para la amplitud media anual de la onda 3 - fig:acf-ampl - SÓLO BORRADOR}\label{fig:acf-ampl}
+\end{figure*}
 
 \section{Fase}\label{fase}
 
 Además de la amplitud, las sondas planetarias se caracterizan por su
 fase. \todo[inline]{intro sobre la fase}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/fase-boxplot-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/fase-boxplot-1} 
 
 }
 
 \caption{Ciclo anual de la fase (20 mayores amplitudes para cada mes) - fig:fase-boxplot}\label{fig:fase-boxplot}
 \end{figure}
+\end{landscape}
 
 La \autoref{fig:fase-boxplot} muestra la fase media (localización media
 del máximo de geopotencial) y el rango delimitado por \(\pm\) 1 desvío
@@ -1126,9 +1142,9 @@ PC & \(R^2\)\tabularnewline
 \bottomrule
 \end{longtable}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/eof-1} \caption{Primeras dos componentes principales del campo de QS3 - fig:eof}\label{fig:eof}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/eof-1} \caption{Primeras dos componentes principales del campo de QS3 - fig:eof}\label{fig:eof}
+\end{figure*}
 
 La forma de las dos primeras componentes principales del campo de QS3
 (\autoref{fig:eof-field}) son dos QS3 en cuadratura cuya combinación
@@ -1153,9 +1169,9 @@ posible clasificarlos juntos como meses de ``no estacionaridad''
 indicando que se trata de una época del año donde la QS3 no está
 presente.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/pc1-pc2-1} \caption{Valor medio de las dos primeras componentes principales del campo de QS3 - fig:pc1-pc2}\label{fig:pc1-pc2}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/pc1-pc2-1} \caption{Valor medio de las dos primeras componentes principales del campo de QS3 - fig:pc1-pc2}\label{fig:pc1-pc2}
+\end{figure*}
 
 El efecto de esta nueva clasificación en los campos medios se presenta
 en las figuras \ref{fig:qs3-qsseason-ncep} y \ref{qs3-qsseason-ncep}.
@@ -1184,9 +1200,9 @@ Una desventaja de esta clasificación es que no todas las estaciones
 tienen la misma cantidad de meses, lo cual dificulta la comparación
 estadística entre distintas estaciones. \#\# Persistencia (ver dónde va)
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes. - fig:lag-cor}\label{fig:lag-cor}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes. - fig:lag-cor}\label{fig:lag-cor}
+\end{figure*}
 
 En la \autoref{fig:lag-cor} se muestra la correlación del campo de QS3
 de cada mes con los demás. La línea escalonada marca la separación del
@@ -1224,9 +1240,9 @@ horizontal de dicha propiedad. Para esto, se toma como \(r^2\) la
 correlación cuadrada entre el valor de Z* y el de QS3 para cada punto de
 grilla y cada mes.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/cor-campo-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo}\label{fig:cor-campo}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/cor-campo-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo}\label{fig:cor-campo}
+\end{figure*}
 
 Los campos horizontales de \(r^2\) para 300hPa se muestran en la
 \autoref{fig:cor-camp}, con los centros de máximas anomalías marcados
@@ -1263,13 +1279,13 @@ debilitamiento del los máximos durante EFM y una fuerte intensificación
 del máximo del Atlántico durante DN (no se muestra). Las características
 generales no cambian.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/cor-campo2-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo2 - SÓLO BORRADOR}\label{fig:cor-campo2}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/cor-campo2-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo2 - SÓLO BORRADOR}\label{fig:cor-campo2}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/r2-cor2-1} \caption{Relación entre R2 medio y R2 reconstruido. - fig:r2-cor2 - SÓLO BORRADOR}\label{fig:r2-cor2}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/r2-cor2-1} \caption{Relación entre R2 medio y R2 reconstruido. - fig:r2-cor2 - SÓLO BORRADOR}\label{fig:r2-cor2}
+\end{figure*}
 
 Conclusión: no voy a usar el r2 a partir del campo reconstruido.
 
@@ -1284,14 +1300,15 @@ obtener\ldots{}\todo{me estoy haciendo lio con esto...}
 
 \subsection{Geopotencial}\label{geopotencial}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-gh-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/regr-gh-ncep-1} 
 
 }
 
 \caption{Regresión sobre amplitud. - fig:regr-gh-ncep}\label{fig:regr-gh-ncep}
 \end{figure}
+\end{landscape}
 
 En la \autoref{fig:regr-gh-ncep} se muestra la regresión del campo de Z
 con la amplitud media de la QS3. Las variables están estandarizados de
@@ -1353,13 +1370,13 @@ diciembre\footnote{Correlación de Pearson, tests a dos colas}. Estos dos
 meses son los únicos con una relación significativa con al menos 95\% de
 confianza.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/regr-gh-polar-1} \caption{Igual que figura  XX, pero en proyección polar para julio y septiembre. - fig:regr-gh-polar}\label{fig:regr-gh-polar}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/regr-gh-polar-1} \caption{Igual que figura  XX, pero en proyección polar para julio y septiembre. - fig:regr-gh-polar}\label{fig:regr-gh-polar}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM - fig:sam-ampl - SÓLO BORRADOR}\label{fig:sam-ampl}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM - fig:sam-ampl - SÓLO BORRADOR}\label{fig:sam-ampl}
+\end{figure*}
 
 Volviendo a la \autoref{fig:regr-gh-ncep}, agosto muestra una estructura
 de QS3 zonal salvo en la región de Sudamérica, donde el centro
@@ -1377,14 +1394,15 @@ detectada en el párrafo anterior.
 
 \subsection{Función Corriente}\label{funcion-corriente-1}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-psi-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/regr-psi-ncep-1} 
 
 }
 
 \caption{Regresión de Psi con la amplitud (anomalía zonal). - fig:regr-psi-ncep}\label{fig:regr-psi-ncep}
 \end{figure}
+\end{landscape}
 
 En la \autoref{fig:regr-psi-ncep} se muestra la anomalía zonal de la
 regresión de \(\psi\) con la amplitud media de la QS3 junto con los
@@ -1401,14 +1419,15 @@ Sudamérica y otro hacia el Pacífico central.
 
 Descripción de la selección.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/seleccion-tabla-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/seleccion-tabla-1} 
 
 }
 
-\caption{Tabla de selección{fig:seleccion-tabla}}\label{fig:seleccion-tabla}
+\caption{Tabla de selección - fig:seleccion-tabla}\label{fig:seleccion-tabla}
 \end{figure}
+\end{landscape}
 
 Cosas para ver:\\
 Años con coincidencia, años sin coincidencia. Meses donde la fase
@@ -1430,7 +1449,7 @@ que desdibujan el patrón.
 
 }
 
-\caption{Tabla de interacción{fig:interaccion-tabla}}\label{fig:interaccion-tabla}
+\caption{Tabla de interacción - fig:interaccion-tabla}\label{fig:interaccion-tabla}
 \end{figure}
 
 Cosas para ver:\\
@@ -1438,14 +1457,15 @@ Ambos criterios coinciden en casi todos los años seleccionados, así que
 no hay mucha diferencia. En efecto, las composiciones son casi iguales
 (no se muestra). Voy a usar la amplitud.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/gh-comp-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/gh-comp-1} 
 
 }
 
-\caption{Composición de campos{fig:gh-comp}}\label{fig:gh-comp}
+\caption{Composición de campos - fig:gh-comp}\label{fig:gh-comp}
 \end{figure}
+\end{landscape}
 
 \begin{figure}
 
@@ -1479,14 +1499,15 @@ externa.
 
 \subsection{SST}\label{sst}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-sst-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/regr-sst-ncep-1} 
 
 }
 
 \caption{Regresión de SST con la amplitud de la onda 3 - fig:regr-sst-ncep}\label{fig:regr-sst-ncep}
 \end{figure}
+\end{landscape}
 
 En la \autoref{fig:regr-sst-ncep} se muestra la regresión de SST sobre
 la amplitud de la QS3 con las regiones con p-valor nominalmente menor a
@@ -1510,14 +1531,15 @@ de la misma a partir de la generación de convección anómala de forma
 similar al máximo de SST en mayo en la costa este de Australia, o en
 enero al sur del Índico.
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/regr-olr-ncep-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/regr-olr-ncep-1} 
 
 }
 
 \caption{Regresión de QS3 con OLR - fig:regr-olr-ncep}\label{fig:regr-olr-ncep}
 \end{figure}
+\end{landscape}
 
 La regresión de la amplitud de QS3 con radiación saliente de onda larga
 (OLR) se muestra en la \autoref{fig:regr-olr-ncep} donde valores
@@ -1542,42 +1564,61 @@ que puede detectarse con estos datos y esta metodología.
 
 \section{Validación SPEEDY}\label{validacion-speedy}
 
-Validación de la corrida control
+Para la validación de SPEEDY con respecto a NCEP se muestran los niveles
+de 200hPa y 500hPa como representación de niveles altos y medios
+respectivamente. Las conclusiones no cambian sustancialmente en el resto
+de los niveles.
 
-\begin{itemize}
-\tightlist
-\item
-  Comparación campos medios.
-\end{itemize}
-
-Acá un problemita es que en speedy no tengo el nivel de 50hPa, sólo
-tengo 925, 850, 700, 500, 300, 200, 100, 30. Podría usar 30, pero eso es
-la tapa del modelo\ldots{}
+Una primer gran limitación de SPEEDY es su pobre representación de la
+estratósfera. Sólo el más alto de sus 8 niveles está en la estatósfera
+(30hPa) y al ser la \emph{tapa} del modelo, que tiene una ``esponja''
+para evitar la propagación de ondas de gravedad
+(\autoref{descripción-de-speedy}), no es un nivel con información
+confiable.
 
 \subsection{Altura Geopotencial}\label{altura-geopotencial-1}
 
 Anomalía
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-sp-nc-1} 
-
-}
-
-\caption{Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos){fig:ghz-sp-nc}}\label{fig:ghz-sp-nc}
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-dif-sp-nc-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-sp-nc-1} 
 
 }
 
-\caption{Diferencia entre speedy y ncep{fig:ghz-dif-sp-nc}}\label{fig:ghz-dif-sp-nc}
+\caption{Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos) - fig:ghz-sp-nc}\label{fig:ghz-sp-nc}
 \end{figure}
+\end{landscape}
 
-Veredicto:\\
-* Agarra bien la anomalía zonal aunque con magnitud menor.
+El campo medio de geopotencial está bien representado en el modelo (no
+se muestra) mientras que las mayores diferencias se encuentran en el
+campo de anomalías zonales. El mismo se muestra en la
+\autoref{fig:ghz-sp-nc} donde en sombreado se muestra el campo de SPEEDY
+y en contornos el correspondiente a NCEP (convención que se mantendrá en
+el resto de las figuras de validación). Speedy representa correctamente
+la estructura aproximadamente barotrópica equivalente de las anomalías
+zonales. Reproduce el patrón de QS1 y su intensificación en invierno,
+aunque en verano es demasiado débil y en invierno demasiado intenso. Por
+ejemplo, en primavera el máximo de Z en 500hPa en 60°S supera los 120mgp
+en SPEEDY mientras que en NCEP no llega a 80mgp.
+
+Si bien la ubicación de los máximos y mínimos de Z en SPEEDY es
+aproximadamente la correcta no logra capturar parte de la estructura
+fina. En 500hPa durante otoño, invierno y primavera, SPEEDY presenta un
+sólo máximo en 120°O a pesar de que NCEP tiene dos máximos
+identificables con ciclos anuales independientes.
+
+\todo[inline]{No sé bien qué decir de la diferencia. ¿Tiene sentido hablar de los aparentes trenes de onda?}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-dif-sp-nc-1} 
+
+}
+
+\caption{Diferencia entre speedy y ncep - fig:ghz-dif-sp-nc}\label{fig:ghz-dif-sp-nc}
+\end{figure}
+\end{landscape}
 
 \begin{figure}
 
@@ -1585,29 +1626,49 @@ Veredicto:\\
 
 }
 
-\caption{Corte zonal de anomalía de geopotencial en -60° (speedy sombreado, ncep contornos).{fig:ghz-sp-nc-corte60}}\label{fig:ghz-sp-nc-corte60}
+\caption{Corte zonal de anomalía de geopotencial en -60° (speedy sombreado, ncep contornos). - fig:ghz-sp-nc-corte60}\label{fig:ghz-sp-nc-corte60}
 \end{figure}
 
-El corte zonal evidencia que además de tener menor amplitud, la
-estructura vertical de las anomalías es barotrópica equivalente en
-Speedy, a diferencia de la estructura baroclínica de NCEP.
+En la \autoref{fig:ghz-sp-nc-corte60} se muestra el corte de Z* en 60°S.
+Se evidencia la falta de inclinación de las anomalías zonales de SPEEDY,
+las cuales son mcho más barotrópicas que en las observaciones. Esto
+indica que la QS1 en SPEEDY no está asociada a transporte de calor hacia
+el polo, por lo que es de esperarse que los términos en la ecuación de
+balande de energía tengan distinta magnitud
+relativa\todo{no sé si se entiende bien lo que quiero decir}.
 
 \subsection{Temperatura}\label{temperatura-1}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/t-nc-sp-1} \caption{Temperatura{fig:t-nc-sp}}\label{fig:t-nc-sp}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/t-nc-sp-1} \caption{Temperatura - fig:t-nc-sp}\label{fig:t-nc-sp}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/tz-sp-nc-1} \caption{T*{fig:tz-sp-nc}}\label{fig:tz-sp-nc}
-\end{figure}
+En la \autoref{fig:t-nc-sp} se muestra el campo total de temperatura de
+SPEEDY en sombreado y NCEP en líneas. En 850hPa y 500hPa, ambos campos
+son muy similares, tanto en el gradiente meridional como en las anomalas
+zonales (que se muestran mejor en la \autoref{fig:tz-nc-sp}). En niveles
+altos (200hPa) las simulación control diverge considerablemente de las
+observaciones. En verano y en otoño, SPEEDY muestra un gradiente
+meridional mucho más importante que NCEP y en invierno y primavera el
+gradiente máximo se da entre 30°S y 45°S para SPEEDY, y en 60°S en NCEP.
 
-En 850 tiene una fuerte onda 1 en latitudes polares producida por la
-topografía de la Antártida y representa bien las anomalías causadas por
-los continentes, aunque en menor amplitud.\\
-En 200, falla miserablemente. La onda 1 polar que se ve bien claro en
-NCEP ni aparece en SPEEDY, mientras que en latitudes medias aparecen
-ligeras anomalías que no se observan en las observaciones.
+En cuanto a las anomalías zonales (\autoref{fig:tz-sp-nc}), éstas
+coinciden en niveles bajos, donde la influencia superficial es
+importante, pero divergen en altura. En 500hPa, las anomalías Antárticas
+de SPEEDY coinciden aproximadamente en ubicación con las de NCEP aunque
+son ligeramente más débiles en invierno y primavera. En 60°S, en verano
+hay buena coincidencia, pero entre otoño e invierno la QS1 observada en
+esas latitudes virtualmente desaparece en SPEEDY mientras que en
+primavera vuelve a crecer incluso con mayor intensidad que en NCEP. En
+200hPa, SPEEDY carece casi totalmente de anomalías zonales
+significativas al sur de los 45°S durante todo el año a diferencia de
+NCEP, que muestra una estructura de QS1 bien definida con máxima
+amplitud en primavera. Al norte de esa latitud las anomalías de SPEEDY
+coinciden mejor con NCEP.
+
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/tz-sp-nc-1} \caption{T* - fig:tz-sp-nc}\label{fig:tz-sp-nc}
+\end{figure*}
 
 \subsection{Viento zonal}\label{viento-zonal-1}
 
@@ -1620,6 +1681,14 @@ ligeras anomalías que no se observan en las observaciones.
 \caption{Viento zonal medio (speedy contornos, ncep sombreado). - fig:u-sp-nc-corte}\label{fig:u-sp-nc-corte}
 \end{figure}
 
+En la \autoref{fig:u-sp-nc-corte} se muestra el viento zonal para SPEEDY
+y NCEP. El jet subtropical se encuentra más al norte y ligéramente más
+elevado en verano, así como considerablemente más intenso en todas las
+estaciones. La falta de niveles verticales se hace evidente en la falta
+de un jet polar.
+
+\todo[inline]{hasta acá}
+
 Cosas para ver:\\
 * Speedy no logra desarrollar un jet polar por la falta de niveles
 verticales en la estratósfera. Tampoco reproduce los estes
@@ -1629,18 +1698,19 @@ su máximo se da ligéramente en niveles más altos en NCEP.
 Campo medio (me parece que no lo voy a poner, no agrega información que
 no esté en el anterior y en el de geopotencial.)
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/u-sp-nc-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/u-sp-nc-1} 
 
 }
 
-\caption{Viento zonal (contornos ncep, sombreado speedy).{fig:u-sp-nc}}\label{fig:u-sp-nc}
+\caption{Viento zonal (contornos ncep, sombreado speedy). - fig:u-sp-nc}\label{fig:u-sp-nc}
 \end{figure}
+\end{landscape}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/u-dif-sp-nc-1} \caption{Diferencia entre ncep y speedy en viento zonal{fig:u-dif-sp-nc}}\label{fig:u-dif-sp-nc}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/u-dif-sp-nc-1} \caption{Diferencia entre ncep y speedy en viento zonal - fig:u-dif-sp-nc}\label{fig:u-dif-sp-nc}
+\end{figure*}
 
 Cosas para ver:\\
 Jet polar en invierno y primavera en niveles altos (\textless{} 100
@@ -1649,14 +1719,15 @@ hPa). Jest subtropical en niveles ``medios''.
 \subsection{Gradiente meridional de vorticidad
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta-1}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/etady-sp-nc-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/etady-sp-nc-1} 
 
 }
 
-\caption{Gradiente meridional de vorticidad absoluta (speedy).{fig:etady-sp-nc}}\label{fig:etady-sp-nc}
+\caption{Gradiente meridional de vorticidad absoluta (speedy). - fig:etady-sp-nc}\label{fig:etady-sp-nc}
 \end{figure}
+\end{landscape}
 
 Comparando con la figura \autoref{fig:eta-dy-ncep}, los gradientes son
 menores y más zonales. Es significativo que la región ``prohibida'' en
@@ -1666,9 +1737,9 @@ invierno de niveles altos es menor en 200hPa y casi desaparece en
 \subsection{Número de onda
 estacionaria}\label{numero-de-onda-estacionaria}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/ks-sp-1} \caption{Número de onda estacionario en 300hPa (speedy).{fig:ks-sp}}\label{fig:ks-sp}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ks-sp-1} \caption{Número de onda estacionario en 300hPa (speedy). - fig:ks-sp}\label{fig:ks-sp}
+\end{figure*}
 
 Comparando con \autoref{fig:k-steady-ncep} la mayor diferencia es la
 desaparición de una región de propagación impedida en
@@ -1680,21 +1751,22 @@ desaparición de una región de propagación impedida en
 
 }
 
-\caption{Número de onda estacionario medio por círculo de latitud.{fig:ks-sp-nc-corte}}\label{fig:ks-sp-nc-corte}
+\caption{Número de onda estacionario medio por círculo de latitud. - fig:ks-sp-nc-corte}\label{fig:ks-sp-nc-corte}
 \end{figure}
 
 En promedio zonal, sin embargo, SPEEDY funciona bien.
 
 \subsection{Función corriente}\label{funcion-corriente-2}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi-sp-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/psi-sp-1} 
 
 }
 
-\caption{Función corriente x 1099{fig:psi-sp}}\label{fig:psi-sp}
+\caption{Función corriente x 1099 - fig:psi-sp}\label{fig:psi-sp}
 \end{figure}
+\end{landscape}
 
 \subsection{Onda 3}\label{onda-3-1}
 
@@ -1703,7 +1775,7 @@ En promedio zonal, sin embargo, SPEEDY funciona bien.
 \end{figure*}
 
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs2-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep){fig:qs2-sp-nc}}\label{fig:qs2-sp-nc}
+\includegraphics[width=150mm, ]{fig/tesis/qs2-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep) - fig:qs2-sp-nc}\label{fig:qs2-sp-nc}
 \end{figure*}
 
 La onda 3 no está muy bien representada en el modelo. Aunque la
@@ -1716,89 +1788,93 @@ primavera.
 
 Comparación entre corridas \#\#\# Altura geopotencial
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/ghz-sp-runs-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-sp-runs-1} 
 
 }
 
-\caption{Anomalía zonal de altura geopotencial.{fig:ghz-sp-runs}}\label{fig:ghz-sp-runs}
+\caption{Anomalía zonal de altura geopotencial. - fig:ghz-sp-runs}\label{fig:ghz-sp-runs}
 \end{figure}
+\end{landscape}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Control - corrida para Z* - fig:ghz-dif-sp-runs}\label{fig:ghz-dif-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Control - corrida para Z* - fig:ghz-dif-sp-runs}\label{fig:ghz-dif-sp-runs}
+\end{figure*}
 
 \subsection{Temperatura}\label{temperatura-2}
 
 ONo hay casi diferencia entre las corridas.
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/t-sp-runs-1} \caption{Temperatura media en 850hPa.{fig:t-sp-runs}}\label{fig:t-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/t-sp-runs-1} \caption{Temperatura media en 850hPa. - fig:t-sp-runs - SÓLO BORRADOR}\label{fig:t-sp-runs}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/tz-sp-runs-1} \caption{Temperatura media en 850hPa.{fig:tz-sp-runs}}\label{fig:tz-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/tz-sp-runs-1} \caption{Temperatura media en 850hPa. - fig:tz-sp-runs}\label{fig:tz-sp-runs}
+\end{figure*}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/tz-dif-sp-runs-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/tz-dif-sp-runs-1} 
 
 }
 
 \caption{Diferencia Control - corrida para T* - fig:tz-dif-sp-runs}\label{fig:tz-dif-sp-runs}
 \end{figure}
+\end{landscape}
 
 \subsection{Viento zonal}\label{viento-zonal-2}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/uz-sp-runs-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/uz-sp-runs-1} 
 
 }
 
-\caption{Viento zonal{fig:uz-sp-runs}}\label{fig:uz-sp-runs}
+\caption{Viento zonal - fig:uz-sp-runs}\label{fig:uz-sp-runs}
 \end{figure}
+\end{landscape}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/u-dif-sp-runs-1} \caption{Diferencia control - corrida para U. - fig:u-dif-sp-runs}\label{fig:u-dif-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/u-dif-sp-runs-1} \caption{Diferencia control - corrida para U. - fig:u-dif-sp-runs}\label{fig:u-dif-sp-runs}
+\end{figure*}
 
 \subsection{Función corriente}\label{funcion-corriente-3}
 
-\begin{figure}
+\begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,angle=90]{fig/tesis/psi-sp-runs-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/psi-sp-runs-1} 
 
 }
 
-\caption{Anomalía zonal de función corriente y flujos de acción de onda.{fig:psi-sp-runs}}\label{fig:psi-sp-runs}
+\caption{Anomalía zonal de función corriente y flujos de acción de onda. - fig:psi-sp-runs}\label{fig:psi-sp-runs}
 \end{figure}
+\end{landscape}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/psiz-dif-sp-runs-1} \caption{Diferencia en psi.z y flujos de acción de onda.{fig:psiz-dif-sp-runs}}\label{fig:psiz-dif-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/psiz-dif-sp-runs-1} \caption{Diferencia en psi.z y flujos de acción de onda. - fig:psiz-dif-sp-runs}\label{fig:psiz-dif-sp-runs}
+\end{figure*}
 
 \subsection{Onda 3}\label{onda-3-2}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/ampl-sp-runs-1} \caption{Amplitud media de la onda 3 para cada corrida. - fig:ampl-sp-runs}\label{fig:ampl-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-runs-1} \caption{Amplitud media de la onda 3 para cada corrida. - fig:ampl-sp-runs}\label{fig:ampl-sp-runs}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/ampl-dif-sp-runs-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida. - fig:ampl-dif-sp-runs}\label{fig:ampl-dif-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/ampl-dif-sp-runs-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida. - fig:ampl-dif-sp-runs}\label{fig:ampl-dif-sp-runs}
+\end{figure*}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/index-sp-boxplot-1} \caption{Ciclo anual de amplitud de onda 3.{fig:index-sp-boxplot}}\label{fig:index-sp-boxplot}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/index-sp-boxplot-1} \caption{Ciclo anual de amplitud de onda 3. - fig:index-sp-boxplot}\label{fig:index-sp-boxplot}
+\end{figure*}
 
 \section{Regresión}\label{regresion}
 
-\begin{figure}
-\includegraphics[ ]{fig/tesis/regr-psi-sp-runs-1} \caption{Regresión en función corriente. - fig:regr-psi-sp-runs}\label{fig:regr-psi-sp-runs}
-\end{figure}
+\begin{figure*}
+\includegraphics[width=150mm, ]{fig/tesis/regr-psi-sp-runs-1} \caption{Regresión en función corriente. - fig:regr-psi-sp-runs}\label{fig:regr-psi-sp-runs}
+\end{figure*}
 
 \section{Cosas inesperadas\ldots{}}\label{cosas-inesperadas}
 

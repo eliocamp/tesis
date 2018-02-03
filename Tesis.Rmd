@@ -9,7 +9,7 @@ geometry: "inner = 5cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm"
 documentclass: book
 classoption: a4paper
 knit: (function(file, encoding, ...) {
-    rmarkdown::render(file, encoding = encoding, 
+    rmarkdown::render(file, encoding = encoding,
                 output_dir = "docs/")})
 output:
     pdf_document:
@@ -2403,8 +2403,6 @@ ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs2],
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) 
 ```
 
-\todo[inline]{hasta acá}
-
 ### Viento zonal
 
 ```{r u-sp-nc-corte, fig.class = "textwidth", fig.cap = "Viento zonal medio (speedy contornos, ncep sombreado)."}
@@ -2412,7 +2410,7 @@ speedy.mean.season[run == "Control",
                    .(u = mean(u)), 
                    by = .(lat, lev, season)] %>% 
     ggplot(aes(lat, lev)) +
-    geom_contour_fill(aes(z = u), binwidth = 5, exclude = 0, complete = FALSE) +
+    geom_contour_fill(aes(z = u), binwidth = 5) +
     geom_contour_back(aes(z = u, linetype = factor(-sign(..level..))), 
                       binwidth = 5,
                       data = ncep.mean.season[, .(u = mean(u)), 
@@ -2431,6 +2429,9 @@ speedy.mean.season[run == "Control",
     facet_wrap(~season)
 ```
 
+En la \autoref{fig:u-sp-nc-corte} se muestra el viento zonal para SPEEDY y NCEP. El jet subtropical se encuentra más al norte y ligéramente más elevado en verano, así como considerablemente más intenso en todas las estaciones. La falta de niveles verticales se hace evidente en la falta de un jet polar. 
+
+\todo[inline]{hasta acá}
 
 Cosas para ver:    
 * Speedy no logra desarrollar un jet polar por la falta de niveles verticales en la estratósfera. Tampoco reproduce los estes estratosféricos en latitudes bajas. Su jet subtropical es más intenso y su máximo se da ligéramente en niveles más altos en NCEP. 
@@ -2537,7 +2538,7 @@ Comparando con \autoref{fig:k-steady-ncep} la mayor diferencia es la desaparici�
 
 
 ```{r ks-sp-nc-corte, fig.class = "textwidth", fig.cap = "Número de onda estacionario medio por círculo de latitud."}
-rbind(ks[lon %~% 180][, mod := "NCEP"], 
+rbind(ncep.mean.season[lev == 300, .(lon, lat, lev, season, k, k.full)][lon %~% 180][, mod := "NCEP"], 
       sp.ks[lon %~% 180][, mod := "SPEEDY"]) %>%
     .[, k := ifelse(k > 9 | !is.finite(k), NA, k)] %>% 
     ggplot(aes(lat, k, color = mod)) +
@@ -2556,7 +2557,6 @@ En promedio zonal, sin embargo, SPEEDY funciona bien.
 
 
 ```{r psi-sp, fig.class = "fullpage", fig.cap = "Función corriente x 1099"}
-
 binwidth <- 5
 ggplot(speedy.mean.season[run == "Control" & lev == 200], aes(lon, lat)) +
     stat_contour_fill(aes(z = psi.z),

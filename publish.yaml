@@ -1,0 +1,39 @@
+---
+title: "Tesis"
+subtitle: "Una tesis"
+author: "Elio Campitelli"
+date: ""
+lang: es-AR
+bibliography: [Papers/Biblio.bib, Papers/packages.bib]
+geometry: "inner = 5cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm"
+documentclass: book
+classoption: a4paper
+knit: (function(file, encoding, ...) {
+    rmarkdown::render(file, encoding = encoding,
+                output_dir = "docs/")})
+output:
+    pdf_document:
+      fig_height: 3
+      fig_width: 6
+      keep_tex: yes
+      latex_engine: xelatex
+      number_sections: yes
+      toc: yes
+      toc_depth: 4
+header-includes: 
+    - \linespread{1.25}
+    - \usepackage{subfig}
+    - \usepackage{hyperref}
+    - \usepackage{marginnote}
+    - \usepackage[nomarkers,figuresonly]{endfloat}
+    - \usepackage{pdflscape}
+    - \DeclareDelayedFloatFlavor{landscape}{figure}
+    - \usepackage[spanish]{todonotes}
+    - \usepackage{wrapfig}
+link-citations: yes
+params: 
+    draft: TRUE
+biblio-style: apalike
+editor_options: 
+  chunk_output_type: console
+---
