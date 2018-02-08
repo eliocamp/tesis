@@ -1,4 +1,6 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Caption}}{12}{figure.A.1}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces a figure in chapter 1}}{6}{figure.1.1}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces a second figure in chapter 1}}{7}{figure.1.2}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces a figure in chapter 2}}{8}{figure.2.1}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces a second figure in chapter 2}}{9}{figure.2.2}

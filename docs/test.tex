@@ -1,213 +1,41 @@
-\documentclass[spanish,a4paper]{book}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-\fi
-% use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-\usepackage[inner = 5cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm]{geometry}
-\usepackage{hyperref}
-\hypersetup{unicode=true,
-            pdftitle={Tesis},
-            pdfauthor={Elio Campitelli},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[shorthands=off,main=spanish]{babel}
-\else
-  \usepackage{polyglossia}
-  \setmainlanguage[]{spanish}
-\fi
-\usepackage{graphicx,grffile}
+\documentclass{book}
+\usepackage{etoolbox}
+\usepackage[nomarkers]{endfloat}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
-
-%%% Change title format to be more compact
-\usepackage{titling}
-
-% Create subtitle command for use in maketitle
-\newcommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
-\setlength{\droptitle}{-2em}
-  \title{Tesis}
-  \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
-\subtitle{Una tesis}
-  \author{Elio Campitelli}
-  \preauthor{\centering\large\emph}
-  \postauthor{\par}
-  \date{}
-  \predate{}\postdate{}
-
-\linespread{1.25}
-\usepackage{subfig}
-\usepackage{hyperref}
-\usepackage{marginnote}
-\usepackage[nomarkers,figuresonly]{endfloat}
-\usepackage{pdflscape}
-\DeclareDelayedFloatFlavor{landscape}{figure}
-\usepackage[spanish]{todonotes}
-\usepackage{wrapfig}
-
-\begin{document}
-\maketitle
-
+\@ifpackageloaded{endfloat}
 {
-\setcounter{tocdepth}{3}
-\tableofcontents
-}
-Resumen.
+ \efloat@condopen{fff}
+ \pretocmd\@chapter{\immediate\write\efloat@postfff{\noexpand\stepcounter{chapter}}}{}{\fail}
+ \AtBeginFigures{\setcounter{chapter}{0}}
+}{}
 
-\todo[inline]{Listado de abreviaturas}
-\todo[inline]{Revisar TODOS los epígrafes}
+\makeatother
+\usepackage{hyperref}
+\begin{document}
+\chapter{A}
 
-\chapter{Introducción}\label{introduccion}
-
-\begin{itemize}
-\tightlist
-\item
-  Antecedentes\\
-  Además de lo que hay en lo de las becas + lo que fui encontrando,
-  agregar sobre las climatologías disponibles y sus limitaciones.
-\item
-  Objetivo General
-\item
-  Objetivo particular
-\end{itemize}
-
-Esto es para probar una referencia bibliográfica: Vera et~al.
-(\protect\hyperlink{ref-Vera2004}{2004}) y (Vera et~al.
-\protect\hyperlink{ref-Vera2004}{2004})
-
-\chapter{Métodos y Materiales}\label{metodos-y-materiales}
-
-\todo[inline]{Agregar en algún lugar algo sobre las estadísticas circulares}
-
-\section{Conceptos básicos}\label{conceptos-basicos}
-
-\begin{itemize}
-\tightlist
-\item
-  Ondas cuasiestacionarias
-\item
-  fourier
-\item
-  wavelets
-\item
-  Flujo de actividad de onda.
-\end{itemize}
-
-\todo[inline]{chequear este paper: https://link.springer.com/article/10.1007/s00024-012-0635-9}
-
-Ejemplo:
-
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-1} \caption{Ejemplo fourier - fig:fourier-ejemplo}\label{fig:fourier-ejemplo}
-\end{figure*}
-
-Cosas para ver de \autoref{fig:fourier-ejemplo}:\\
-Descripción del ``rol'' de cada número de onda en generar el campo
-final. La QS1 es la principal, marcando altas presiones al sur del
-pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple
-haciendo que los máximos y mínimos no sean continuos.
-
-\begin{itemize}
-\tightlist
-\item
-  Wavelets
-\end{itemize}
-
-\begin{figure*}
-\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets - fig:wavelet-ejemplo}\label{fig:wavelet-ejemplo}
-\end{figure*}
-
-Cosas para ver:\\
-Cambio en el máximo. Localización en vez de un número para cada latitud.
-
-\section{Fuentes de datos}\label{fuentes-de-datos}
-
-\section{Descripción de SPEEDY}\label{descripcion-de-speedy}
-
-\chapter{Climatología observada}\label{climatologia-observada}
-
-En esta sección se presentan campos medios y anomalías zonales de altura
-geopotencial, temperatura, viento zonal, viento meridinal, gradiente
-meridional de vorticidad absoluta y el número de onda estacionario, y
-función corriente como introducción general al estado medio de la
-atmósfera sobre el cual se desarrollan las ondas estacionarias. Luego se
-analizan los campos de amplitud y varianza explicada por las ondas
-cuasiestacionarias (QS) en sí mismas.
-
-\section{Altura geopotencial}\label{altura-geopotencial}
-
-Campo medio:
-
-\begin{landscape}\begin{figure}
-
-{\centering \includegraphics[width=227mm,]{fig/tesis/gh-ncep-1} 
-
-}
-
-\caption{Campo de Z (NCEP) - fig:gh-ncep}\label{fig:gh-ncep}
+\begin{figure}
+\caption{a figure in chapter 1}\label{fig:1}
 \end{figure}
-\end{landscape}
 
-\hypertarget{refs}{}
-\hypertarget{ref-Vera2004}{}
-Vera, Carolina, Gabriel Silvestri, Vicente Barros, y Andrea Carril.
-2004. «Differences in El Niño response over the Southern Hemisphere».
-\emph{Journal of Climate} 17 (9): 1741-53.
-doi:\href{https://doi.org/10.1175/1520-0442(2004)017\%3C1741:DIENRO\%3E2.0.CO;2}{10.1175/1520-0442(2004)017\textless{}1741:DIENRO\textgreater{}2.0.CO;2}.
+\begin{figure}
+\caption{a second figure in chapter 1}\label{fig:12}
+\end{figure}
+
+see \ref{fig:1} and \ref{fig:12}
+
+\chapter{B}
+
+see \ref{fig:21} and \ref{fig:2}
+
+
+\begin{figure}
+\caption{a figure in chapter 2}\label{fig:21}
+\end{figure}
+
+\begin{figure}
+\caption{a second figure in chapter 2}\label{fig:2}
+\end{figure}
 
 
 \end{document}

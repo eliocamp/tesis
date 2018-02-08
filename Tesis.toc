@@ -1,0 +1,49 @@
+\select@language {spanish}
+\contentsline {chapter}{\numberline {1}Introducción}{5}{chapter.1}
+\contentsline {chapter}{\numberline {2}Métodos y Materiales}{7}{chapter.2}
+\contentsline {section}{\numberline {2.1}Conceptos básicos}{7}{section.2.1}
+\contentsline {section}{\numberline {2.2}Fuentes de datos}{7}{section.2.2}
+\contentsline {section}{\numberline {2.3}Descripción de SPEEDY}{7}{section.2.3}
+\contentsline {chapter}{\numberline {3}Climatología observada}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Altura geopotencial}{9}{section.3.1}
+\contentsline {section}{\numberline {3.2}Temperatura}{10}{section.3.2}
+\contentsline {section}{\numberline {3.3}Viento zonal}{11}{section.3.3}
+\contentsline {section}{\numberline {3.4}Viento meridional}{12}{section.3.4}
+\contentsline {section}{\numberline {3.5}Gradiente meridional de vorticidad absoluta}{13}{section.3.5}
+\contentsline {section}{\numberline {3.6}Función corriente}{13}{section.3.6}
+\contentsline {section}{\numberline {3.7}Ondas Quasiestacionarias}{14}{section.3.7}
+\contentsline {chapter}{\numberline {4}Onda 3}{17}{chapter.4}
+\contentsline {section}{\numberline {4.1}Características típicas}{17}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Wavelets}{18}{subsection.4.1.1}
+\contentsline {section}{\numberline {4.2}Antecedentes}{19}{section.4.2}
+\contentsline {section}{\numberline {4.3}Amplitud}{20}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Máximo o media.}{20}{subsection.4.3.1}
+\contentsline {section}{\numberline {4.4}Fase}{21}{section.4.4}
+\contentsline {section}{\numberline {4.5}Estaciones}{23}{section.4.5}
+\contentsline {section}{\numberline {4.6}R2}{25}{section.4.6}
+\contentsline {section}{\numberline {4.7}Regresiones}{26}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}Geopotencial}{26}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}Función Corriente}{27}{subsection.4.7.2}
+\contentsline {section}{\numberline {4.8}Composición de campos.}{27}{section.4.8}
+\contentsline {section}{\numberline {4.9}Fuentes de variabilidad interna}{28}{section.4.9}
+\contentsline {section}{\numberline {4.10}Fuentes externas}{28}{section.4.10}
+\contentsline {subsection}{\numberline {4.10.1}SST}{28}{subsection.4.10.1}
+\contentsline {chapter}{\numberline {5}Experimentos}{31}{chapter.5}
+\contentsline {section}{\numberline {5.1}Validación SPEEDY}{31}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Altura Geopotencial}{31}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Temperatura}{32}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Viento zonal}{32}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Gradiente meridional de vorticidad absoluta}{33}{subsection.5.1.4}
+\contentsline {subsection}{\numberline {5.1.5}Número de onda estacionaria}{33}{subsection.5.1.5}
+\contentsline {subsection}{\numberline {5.1.6}Función corriente}{33}{subsection.5.1.6}
+\contentsline {subsection}{\numberline {5.1.7}Onda 3}{33}{subsection.5.1.7}
+\contentsline {section}{\numberline {5.2}Comparación}{33}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Temperatura}{33}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Viento zonal}{34}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}Función corriente}{34}{subsection.5.2.3}
+\contentsline {subsection}{\numberline {5.2.4}Onda 3}{34}{subsection.5.2.4}
+\contentsline {section}{\numberline {5.3}Regresión}{34}{section.5.3}
+\contentsline {section}{\numberline {5.4}Cosas inesperadas\ldots {}}{34}{section.5.4}
+\contentsline {chapter}{\numberline {6}Conclusiones}{35}{chapter.6}
+\contentsline {chapter}{\numberline {7}Agradecimientos}{37}{chapter.7}
+\contentsline {chapter}{Referencias}{39}{chapter*.46}

@@ -13,6 +13,8 @@ knit: (function(file, encoding, ...) {
                 output_dir = "docs/")})
 output:
     pdf_document:
+      includes: 
+        in_header: header.tex
       fig_height: 3
       fig_width: 6
       keep_tex: yes
@@ -20,16 +22,6 @@ output:
       number_sections: yes
       toc: yes
       toc_depth: 4
-header-includes: 
-    - \linespread{1.25}
-    - \usepackage{subfig}
-    - \usepackage{hyperref}
-    - \usepackage{marginnote}
-    - \usepackage[nomarkers,figuresonly]{endfloat}
-    - \usepackage{pdflscape}
-    - \DeclareDelayedFloatFlavor{landscape}{figure}
-    - \usepackage[spanish]{todonotes}
-    - \usepackage{wrapfig}
 link-citations: yes
 params: 
     draft: TRUE
@@ -116,7 +108,7 @@ knitr::knit_hooks$set(
         if (options$fig.publish == FALSE) {
             options$fig.cap <- paste0(options$fig.cap, " - SÓLO BORRADOR")
         }
-        if (options$fig.publish == TRUE | params$draft == TRUE) {
+        if (options$fig.publish == TRUE) {
             plot_hook(x, options)
         }
     }
@@ -184,7 +176,6 @@ fig.class <- list(
         fig.width = (page.width/2)/25.4,
         out.width = paste0(page.width/2, "mm")
     ),
-    
     medium = list(
         fig.width = 8,
         fig.height = 4,
@@ -206,7 +197,7 @@ Resumen.
 file.ncep <- "DATA/NCEP/ncep.vars.Rds"
 ncep <- cache.file(file.ncep, {
     ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean_sub.nc", vars = c(gh = "hgt"))
-    setnames(ncep, "level", "lev")
+    setnames(ncep, c("level", "time"), c("lev", "date")) 
     ncep <- 
         ncep[, t := ReadNetCDF("DATA/NCEP/air.mon.mean_sub.nc", 
                                out = "vector")[[1]]] %>% 
@@ -233,7 +224,13 @@ ncep.mean.season <- ncep.mean[, lapply(.SD, mean),
 \todo[inline]{Listado de abreviaturas}
 \todo[inline]{Revisar TODOS los epígrafes}
 
-
+<!-- \usepackage{etoolbox} -->
+<!-- \@ifpackageloaded{endfloat} -->
+<!-- { -->
+<!--  \efloat@condopen{fff} -->
+<!--  \pretocmd\@chapter{\immediate\write\efloat@postfff{\noexpand\stepcounter{chapter}}}{}{\fail} -->
+<!--  \AtBeginFigures{\setcounter{chapter}{0}} -->
+<!-- }{} -->
 
 # Introducción
 
@@ -416,9 +413,9 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
 ```
 
 
-El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra una estructura más zonal en el HS que en el HN en todos los niveles y estaciones. En verano el gradiente meridional de Z es máximo en 200hPa, reduciéndose en 500hPa y por encima de 100hPa. En 50hPa el gradiente es prácticamente nulo y en niveles superiores, éste se invierte en comparación a los inferiores (no se muestra). En otoño el máximo de gradiente todavía se da en 200hPa, pero continua siendo intenso en niveles superiores. En invierno y primavera, el mayor gradiente se da en 50hPa y es mucho más intenso que los observados en los demás niveles o estaciones. En contraste con el resto de los niveles, 50hPa y 100hPa tienen mucha más variabilidad estacional. 
+El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra una estructura marcadamente zonal en todos los niveles y estaciones. En verano el gradiente meridional de Z es máximo en 200hPa, reduciéndose en 500hPa y por encima de 100hPa. En 50hPa el gradiente es prácticamente nulo y en niveles superiores, éste se invierte en comparación a los inferiores (no se muestra). En otoño el máximo de gradiente todavía se da en 200hPa, pero continua siendo intenso en niveles superiores. En invierno y primavera, el mayor gradiente se da en 50hPa y es mucho más intenso que los observados en los demás niveles o estaciones. En contraste con el resto de los niveles, 50hPa y 100hPa tienen mucha más variabilidad estacional. 
 
-El aumento del gradiente meridional de geopotencial en invierno y primavera en niveles altos está relacionado con la generación del vórtice polar que aisla las latitudes polares de las latitudes medias. En 200hPa, en cambio, es evidencia del jet subtropical, que es más estable a lo largo de todo el año. 
+El aumento del gradiente meridional de geopotencial en invierno y primavera en niveles altos está relacionado con la generación del vórtice polar\todo{cita} que aisla las latitudes polares de las latitudes medias. En 200hPa, en cambio, es evidencia del jet subtropical, que es más estable a lo largo de todo el año. 
 
 ```{r ghdy-ncep-corte, fig.cap = "Gradiente meridional de Z", fig.publish = FALSE}
 ncep.mean.season[, mean(gh), by = .(lat, lev, season)] %>% 
@@ -458,7 +455,7 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
 
 Las anomalías zonales de geopotencial (Z\*, \autoref{fig:ghz-ncep}) muestran una preponderancia de una onda 1 (QS1) con una amplitud máxima en la estratósfera de primavera. Pueden diferenciarse dos QS1 distintas; una centrada en ~60°S y con el centro anticiclónico al rededor de la línea de fecha, y la otra sobre la costa del continente y el centro anticiclónico entre 120 y 60°O. @Quintanar1995 concluyó que el primero está asociado principalmente con forzantes de latitudes bajas mientras que el segundo responde a la orografía del continente antártico. 
 
-En latitudes tropicales, en verano hay una anomalía negativa sobre el Pacífico este con máxima amplitud en 200hPa que está presente en las otras estaciones con menor intensidad. Sobre Sudamérica, en verano y primavera en ese mismo nivel aparece un centro anticiclónico con un centro ciclónico al noroeste. Estas anomalías (la alta de Bolivia y la baja del noroeste) son caracetrísticas del Sistema Monzónico Sudamericano\todo{buscar cita}.
+En latitudes tropicales, en verano hay una anomalía negativa sobre el Pacífico este con máxima amplitud en 200hPa que está presente en las otras estaciones con menor intensidad. Sobre Sudamérica, en verano y primavera en ese mismo nivel aparece un centro anticiclónico con un centro ciclónico al noroeste. Estas anomalías (la alta de Bolivia y la baja del noroeste) son caracetrísticas del Sistema Monzónico Sudamericano [@Vera2006].
 
 En la \autoref{fig:ghz-ncep-corte69} se muestra un corte zonal en 60°S de Z\*. Se aprecia la coherencia vertical de la QS1 y es evidente la inclinación hacia el oeste con la altura en todas las estaciones salvo en verano.
 
@@ -530,10 +527,11 @@ ggplot(ncep.mean.season[lev %in% c(plot.levs, 850)], aes(lon, lat)) +
     facet_grid(lev~season, labeller = labeller(lev = lev.lab))
 ```
 
-Pasando a la temperatura, en la \autoref{fig:t-ncep} puede verse que, al igual que el campo de geopotencial, tiene una estructura principalmente zonal en todos los niveles y estaciones. Por debajo de los 200hPa, donde el gradiente meridional de temperatura es mínimo, la temperatura disminuye con la latitud en todas las estaciones. Por encima de este nivel, en cambio, en verano la temperatura crece con la latitud, y en el resto de las estaciones muestra un máximo centrado en 60°S en otoño y en 45°S en invierno y primavera. El nivel de 850hPa se ve particularmente deformado por los contrastes de temperatura zonales como el máximo sobre Australia en verano. 
+Al igual que el campo de geopotencial, la temperatura (\autoref{fig:t-ncep}) tiene una estructura principalmente zonal en todos los niveles y estaciones. Por debajo de los 200hPa, donde el gradiente meridional de temperatura es mínimo, la temperatura disminuye con la latitud en todas las estaciones. Por encima de este nivel, en cambio, en verano la temperatura crece con la latitud, y en el resto de las estaciones muestra un máximo centrado en 60°S en otoño y en 45°S en invierno y primavera. El campo de temperatura en el nivel de 850hPa se ve particularmente deformado por los contrastes de temperatura zonales como el máximo sobre Australia en verano. 
 
 ```{r t-ncep-corte, fig.class = "textwidth", fig.cap = "Corte meridional de temperatura media."}
 binwidth <- 10
+
 ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
        aes(lat, lev)) +
     geom_contour_fill(aes(z = t), binwidth = binwidth) +
@@ -547,7 +545,7 @@ ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
     facet_wrap(~season)
 ```
 
-Haciendo un promedio zonal como se muestra en la \autoref{fig:t-ncep-corte}, se observa un mínimo de temperatura se da en la estatósfera tropical durante todo el año y uno en la estatósfera polar con amplitud, extensión y altura máxima en invierno y mínima en verano. El máximo relativo de tempertura observado por encima de 100hPa se da como consecuencia de estos dos mínimos. 
+El un promedio zonal de la temperatura se muestra en la \autoref{fig:t-ncep-corte}. Al norte de los 45° durante todo el año la tempertura decrece con la altura por debajo de los 100hPa aproximadamente, donde alcanza un mínimo que marca la tropopausa, y crece por encima. La altura del mínimo de temperatura varía mucho al sur de los 45°, siendo mínima en verano (300hPa) y máxima en invierno y otoño (30hPa). Hay que tener encuenta, sin embargo, que la tropopausa no está bien definida en el invierno Antártico [@Zangl2001; ]\todo{conseguir este paper http://www.jstor.org/stable/26255916} por lo que el uso de la tropopausa térmica no es conveniente. @Zangl2001, utilizando datos de ERA para el período 1979-93, encontraron que la tropopausa térmica varía entre los 320hPa en enero y los 170hPa en agosto aunque advierten que el uso del criterio término es "problemático" en el invierno antártico. 
 
 ```{r tz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de temperatura."}
 binwidth <- 1
@@ -798,7 +796,7 @@ ggplot(ncep.mean.season[lon %~% 180], aes(lat, lev))+
 
 ```{r read-psi}
 stream <- ReadNetCDF("DATA/NCEP/stream.mon.mean.nc") %>% 
-    setnames("level", "lev") %>% 
+    setnames(c("level", "time"), c("lev", "date")) %>% 
     .[lat <= 40]
 stream[, psi.z := Anomaly(psi), by = .(lat, date)]
 stream[, date := as.Date(date), by = date]
@@ -969,8 +967,6 @@ ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
 ```
 
 En la \autoref{fig:qs3sd-ncep} se muestra el desvío estándar de la reconstrucción de la QS3. La variabilidad máxima se da entre los centros ciclónicos y anticiclónicos (marcados en la \autoref{fig:qs3sd-ncep} con contornos negros), indicando que la variabilidad del geopotencial asociada a la QS3 se debe al corrimiento de la fase. 
-
-\todo[inline]{hasta acá revision}
 
 ### Wavelets
 
@@ -2065,6 +2061,7 @@ file <- "DATA/sst.regr.Rds"
 
 sst.regr <- cache.file(file, {
     ReadNetCDF("DATA/NCEP/sst.nc", vars = "sst") %>% 
+        setnames("time", "date") %>% 
         .[, date := as.Date(date), by = date] %>% 
         .[index[, .(date, amplitude, phase)], on = "date"] %>% 
         .[, ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
@@ -2106,7 +2103,8 @@ Existen algunas correspondencias entre este patrón de SST de la \autoref{fig:re
 file <- "DATA/olr.regr.Rds"
 
 olr.regr <- cache.file(file, {
-    ReadNetCDF("DATA/NCEP/olr.mon.mean_sub.nc") %>% 
+    ReadNetCDF("DATA/NCEP/olr.mon.mean_sub.nc") %>%
+        setnames("time", "date") %>% 
         .[, date := as.Date(date), by = date] %>% 
         .[index[, .(date, amplitude, phase)], on = "date"] %>% 
         .[, ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
@@ -2294,7 +2292,7 @@ En la \autoref{fig:ghz-sp-nc-corte60} se muestra el corte de Z\* en 60°S. Se ev
 
 ### Temperatura 
 
-```{r t-nc-sp, fig.cap = "Temperatura"}
+```{r t-nc-sp, fig.cap = "Temperatura", fig.class = "fullpage"}
 
 binwidth <- 5
 cowplot::plot_grid({
@@ -2429,36 +2427,32 @@ speedy.mean.season[run == "Control",
     facet_wrap(~season)
 ```
 
-En la \autoref{fig:u-sp-nc-corte} se muestra el viento zonal para SPEEDY y NCEP. El jet subtropical se encuentra más al norte y ligéramente más elevado en verano, así como considerablemente más intenso en todas las estaciones. La falta de niveles verticales se hace evidente en la falta de un jet polar. 
+En la \autoref{fig:u-sp-nc-corte} se muestra el viento zonal para SPEEDY y NCEP. El jet subtropical se encuentra más al norte y ligéramente más elevado en verano, así como considerablemente más intenso en todas las estaciones. La principal discrepancia se da en altura. Por encima de los 30hPa, SPEEDY carece de niveles verticales y aún por debajo no logra desarrollar un jet polar. En invierno y primavera hay un aumento del viento zonal con la altura en latitudes donde debería estar el jet, pero no llega a formar un máximo ni alcanza las magnitudes observadas en NCEP. Esta falta de niveles verticales también se observa en los estes ecuatoriales de menor magnitud en verano y otoño. 
 
-\todo[inline]{hasta acá}
+Dada la importancia del jet polar en la dinámica atmosférica durante los meses de invierno y primavera\todo{cita}, su mala representación es una limitación muy importante del modelo SPEEDY. 
 
-Cosas para ver:    
-* Speedy no logra desarrollar un jet polar por la falta de niveles verticales en la estratósfera. Tampoco reproduce los estes estratosféricos en latitudes bajas. Su jet subtropical es más intenso y su máximo se da ligéramente en niveles más altos en NCEP. 
-
-Campo medio (me parece que no lo voy a poner, no agrega información que no esté en el anterior y en el de geopotencial.)
 
 ```{r u-sp-nc, fig.class = "fullpage", fig.cap = "Viento zonal (contornos ncep, sombreado speedy)."}
+binwidth <- 5
 ggplot(RepeatLon(speedy.mean.season[run == "Control" & lev == 200]), aes(lon, lat)) +
-    geom_contour_fill(aes(z = u), binwidth = 5) +
+    geom_contour_fill(aes(z = u), binwidth = binwidth) +
     geom_contour_back(aes(z = u, linetype = factor(-sign(..level..))), 
-                      binwidth = 5, 
+                      binwidth = binwidth, 
                       data = RepeatLon(ncep.mean.season[lev == 200])) +
     geom_label_contour_back(aes(z = u, label = ..level..), 
-                            binwidth = 5, 
+                            binwidth = binwidth, 
                             data = RepeatLon(ncep.mean.season[lev == 200])) +
-    # geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
+    # geom_contour(aes(z = u, color = ..level..), binwidth = binwidth, size = 0.1) +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
     scale_fill_divergent(name = "U", breaks = MakeBreaks(5),
-                         guide = guide_colorstrip_bottom(),
-                         limits = c(-20, 70)) +
+                         guide = guide_colorstrip_bottom()) +
     scale_linetype(guide = "none") +
     # coord_quickmap() +
     coord_polar() +
     # coord_map(projection = "stereographic", orientation = c(-90, 0, 0)) +
-    facet_grid(lev~season, labeller = labeller(lev = lev.lab))
+    facet_wrap(~season, labeller = labeller())
 ```
 
 
@@ -2483,15 +2477,18 @@ Jet polar en invierno y primavera en niveles altos (< 100 hPa). Jest subtropical
 ### Gradiente meridional de vorticidad absoluta
 
 ```{r etady-sp-nc, fig.class = "fullpage", fig.cap = "Gradiente meridional de vorticidad absoluta (speedy)."}
-binwidth <- 1
+mult <- 1e11
+binwidth <- 1e-11*mult
 ggplot(speedy.mean.season[run == "Control" & lev == 200 & lat > -85], 
-       aes(lon, lat, z = eta.dy*1e11)) +
-    # stat_contour_fill(binwidth = binwidth) +
-    geom_contour_fine(binwidth = binwidth, color = "black") +
+       aes(lon, lat, z = eta.dy*mult)) +
+    stat_contour_fill(binwidth = binwidth) +
+    # geom_contour_fine(binwidth = binwidth, color = "black") +
     geom_label_contour2(aes(label = ..level..), 
                         binwidth = binwidth) +
-    stat_filter(aes(filter = eta.dy <= 0), geom = "tile",
-                color = "gray50", fill = "gray50") +
+    stat_contour_fill(breaks = 0, 
+                      fill = "grey80", alpha = 0.5, complete = FALSE) +
+    # stat_filter(aes(filter = eta.dy <= 0), geom = "tile",
+                # color = "gray50", fill = "gray50") +
     # stat_contour_fill(breaks = 0,
     # fill = "black", complete = FALSE) +
     geom_contour_fine(breaks = 0, color = "black") +
@@ -2506,39 +2503,36 @@ ggplot(speedy.mean.season[run == "Control" & lev == 200 & lat > -85],
     facet_wrap( ~ season, labeller = labeller(lev = lev.lab))
 ```
 
-Comparando con la figura \autoref{fig:eta-dy-ncep}, los gradientes son menores y más zonales. Es significativo que la región "prohibida" en invierno de niveles altos es menor en 200hPa y casi desaparece en 300hPa. 
+Comparando con la figura \autoref{fig:etady-ncep} (nivel de 200hPa), se ve que la franja de máximo gradiente presente en todas las estaciones es más zonal en el caso de SPEEDY y corrida hacia el sur en verano. La región de gradientes negativos que se desarrolla en invierno sobre Nueva Zelanda tiene menor extensión y no aparece en otoño ni primavera. 
 
 
-### Número de onda estacionaria
-
-```{r ks-sp, fig.cap = "Número de onda estacionario en 300hPa (speedy).", fig.height = 6}
+```{r ks-sp,  include = FALSE, fig.cap = "Número de onda estacionario en 300hPa (speedy).", fig.height = 6}
 a <- 6371000
 
-speedy.mean.season[, k := sqrt(eta.dy/u)*(a*cos(lat*pi/180))] 
-sp.ks <- speedy.mean.season[run == "Control" & lev == 300,
+speedy.mean.season[, k := sqrt(eta.dy/u)*(a*cos(lat*pi/180))]
+sp.ks <- speedy.mean.season[run == "Control" & lev == 200,
                             .(lon, lat, lev, season, k)]
 sp.ks[ , k.full := ifelse(is.na(k) | k > 10, -1, k)]
-
-ggplot(sp.ks, aes(lon, lat)) +
-    geom_contour_fine(aes(z = k.full), breaks = 0:9, color = "black") +
-    # stat_contour(aes(z = k.full),
-    #              breaks = c(2.5, 3.5), color = "black") +
-    geom_label_contour2(aes(z = k.full, label = ..level..),
-                        breaks = 0:9, skip = 0) +
-    stat_filter(aes(filter = k.full == -1), geom = "tile", color = "gray50",
-                fill = "gray50") +
-    map.SH +
-    scale_s_map() +
-    scale_fill_viridis_c(breaks = 1:9, guide = guide_colorstrip_bottom()) +
-    coord_quickmap() +
-    facet_wrap(~season)
+# 
+# ggplot(sp.ks, aes(lon, lat)) +
+#     geom_contour_fine(aes(z = k.full), breaks = 0:9, color = "black") +
+#     # stat_contour(aes(z = k.full),
+#     #              breaks = c(2.5, 3.5), color = "black") +
+#     geom_label_contour2(aes(z = k.full, label = ..level..),
+#                         breaks = 0:9, skip = 0) +
+#     stat_filter(aes(filter = k.full == -1), geom = "tile", color = "gray50",
+#                 fill = "gray50") +
+#     map.SH +
+#     scale_s_map() +
+#     scale_fill_viridis_c(breaks = 1:9, guide = guide_colorstrip_bottom()) +
+#     coord_quickmap() +
+#     facet_wrap(~season)
 ```
 
-Comparando con \autoref{fig:k-steady-ncep} la mayor diferencia es la desaparición de una región de propagación impedida en ~-40° en el Índico y el Pacífico en Otoño. 
-
+En la \autoref{fig:ks-sp-nc-corte} se muestra un corte meridional del número de onda estacionario en 180°. En verano no hay regiones prohibidas en ningún modelo, pero la región entre 45°S y 60°S aparece como un mínimo en SPEEDY y un máximo en NCEP. Esto implica que la propagación meridional inhibida para un amplio rango de números de onda en SPEEDY pero no en NCEP. En particular, la QS3 puede propagarse meridionalmente en las observaciones, pero no en el modelo. En otoño la situación es inversa: al rededor de 40°S, NCEP muestra una región con número de onda estacionario imaginario, impidiendo la propagación meridional, mientras que en SPEEDY no existe tan impedimento. La QS3 nuevamente se ve afectada, teniendo propagación meridional irrestricta al norte de 60°S en SPEEDY pero quedando atrapada al sur de 50°S en las observaciones. En invierno y primavera la cooncordancia entre SPEEDY y NCEP es mayor. 
 
 ```{r ks-sp-nc-corte, fig.class = "textwidth", fig.cap = "Número de onda estacionario medio por círculo de latitud."}
-rbind(ncep.mean.season[lev == 300, .(lon, lat, lev, season, k, k.full)][lon %~% 180][, mod := "NCEP"], 
+rbind(ncep.mean.season[lev == 200, .(lon, lat, lev, season, k, k.full)][lon %~% 180][, mod := "NCEP"], 
       sp.ks[lon %~% 180][, mod := "SPEEDY"]) %>%
     .[, k := ifelse(k > 9 | !is.finite(k), NA, k)] %>% 
     ggplot(aes(lat, k, color = mod)) +
@@ -2548,30 +2542,34 @@ rbind(ncep.mean.season[lev == 300, .(lon, lat, lev, season, k, k.full)][lon %~% 
     scale_x_latitude(name = "Latitud", ticks = 15) +
     scale_color_brewer(palette = "Set1") +
     facet_wrap(~season) +
-    coord_flip()
+    coord_flip() + theme(aspect.ratio = 1)
 ```
-
-En promedio zonal, sin embargo, SPEEDY funciona bien. 
 
 ### Función corriente
 
-
 ```{r psi-sp, fig.class = "fullpage", fig.cap = "Función corriente x 1099"}
-binwidth <- 5
-ggplot(speedy.mean.season[run == "Control" & lev == 200], aes(lon, lat)) +
-    stat_contour_fill(aes(z = psi.z),
+psi.sp <- ReadNetCDF("DATA/SPEEDY/attm-Control.nc", vars = "psi", 
+                         subset = list(lat = -90:31, lev = 200)) %>% 
+    .[, psi := psi*1e6] %>% 
+    .[, .(psi = mean(psi)), by = .(lon, lat, season(time))] %>% 
+    .[, psi.z := Anomaly(psi), by = .(lat, season)] %>% 
+    .[, c("f.lon", "f.lat") := WaveFlux(.SD, p = 200), by = .(season)]
+
+mult <- 1e-9
+binwidth <- 0.005
+ggplot(psi.sp, aes(lon, lat)) +
+    stat_contour_fill(aes(z = psi.z*mult),
                       binwidth = binwidth,
                       complete = FALSE, exclude = 0) +
-    geom_contour_fine(aes(z = psi), 
-                      binwidth = 20,
+    geom_contour_fine(aes(z = psi*mult), 
+                      binwidth = 0.02,
                       color = "black") +
-    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 3,
-                min.mag = 1e-14,
-                scale = 5e14) +
-    map.SH +
+    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 1, min.mag = 0.05, 
+                scale = 50, size = 0.2) +
+    map.world +
     # scale_s_map() +
     scale_x_longitude(limits = c(0, 360)) +
-    scale_y_latitude() +
+    scale_y_latitude(limits = c(-90, 30)) +
     scale_fill_divergent(breaks = MakeBreaks(binwidth),
                          guide = guide_colorstrip_bottom()) +
     facet_wrap(~season) +
@@ -2579,12 +2577,14 @@ ggplot(speedy.mean.season[run == "Control" & lev == 200], aes(lon, lat)) +
     coord_quickmap()
 ```
 
+La función corriente en 200hPa de SPEEDY se muestra en la \autoref{fig:psi-sp} (donde el sombreado corresponde a la anomalía zonal y las felchas a los flujos de actividad de onda) en comparación con los mismos campos de NCEP (\autoref{fig:psi-ncep}; notar que en NCEP está en coordenadas $\sigma$) existe una correspondencia general buena en los trópicos. La localización de los máximos y mínimos coincide en aproximadamente en todas las estaciones. En verano y primavera no aparece la alta de Bolivia relacionada con el SAMS, pero sí la baja del noroeste. La intensidad de las anomalías es menor en todas las estaciones, especialmente en el HN. Consecuentemente, también tienen menor magnitud los flujos de actividad de onda
+
 ### Onda 3
 
 
 ```{r ampl-sp-nc, fig.class = "pagewidth", fig.cap = "Amplitud de fourier (speedy en sombreado, ncep en contornos)."}
 
-qs.sp.season <-speedy[, lapply(.SD, mean),
+qs.sp.season <- speedy[, lapply(.SD, mean),
                       by = .(lat, lev, season(date), run), 
                       .SDcols = c("amplitude", "phase", "r2")]
 # breaks <- 2^seq(0, log2(650), by = 0.5)

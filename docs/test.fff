@@ -1,0 +1,22 @@
+\stepcounter {chapter}
+\begin{figure}
+\caption{a figure in chapter 1}\label{fig:1}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\caption{a second figure in chapter 1}\label{fig:12}
+\end{figure}
+\efloatseparator
+ 
+\stepcounter {chapter}
+\begin{figure}
+\caption{a figure in chapter 2}\label{fig:21}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\caption{a second figure in chapter 2}\label{fig:2}
+\end{figure}
+\efloatseparator
+ 

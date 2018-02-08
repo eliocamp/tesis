@@ -1,0 +1,104 @@
+\select@language {spanish}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Ejemplo fourier - fig:fourier-ejemplo\relax }}{44}{figure.caption.48}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Wavelets - fig:wavelet-ejemplo\relax }}{45}{figure.caption.49}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Campo}}}{45}{subfigure.2.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Análisis de Wavelets en círculos de latitud señalados.}}}{45}{subfigure.2.2}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Campo de Z (NCEP) - fig:gh-ncep\relax }}{46}{figure.caption.50}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Gradiente meridional de Z - fig:ghdy-ncep-corte - SÓLO BORRADOR\relax }}{47}{figure.caption.51}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Anomalía zonal de altura geopotencial. - fig:ghz-ncep\relax }}{48}{figure.caption.52}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Corte zonal de anomalía de geopotencial en -60°. - fig:ghz-ncep-corte60\relax }}{49}{figure.caption.53}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Transportes - fig:uzvz-ncep-corte - SÓLO BORRADOR\relax }}{50}{figure.caption.54}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {u*v*}}}{50}{subfigure.5.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {T*v*}}}{50}{subfigure.5.2}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Desvío estándar por círculo de latitud. - fig:sd-gh-ncep\relax }}{51}{figure.caption.55}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Temperatura media. - fig:t-ncep\relax }}{52}{figure.caption.56}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Corte meridional de temperatura media. - fig:t-ncep-corte\relax }}{53}{figure.caption.57}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Anomalía zonal de temperatura. - fig:tz-ncep\relax }}{54}{figure.caption.58}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Corte zonal de anomalía de temperatura en -60°. - fig:t-ncep-corte60\relax }}{55}{figure.caption.59}
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Viento zonal medio. - fig:u-ncep-corte\relax }}{56}{figure.caption.60}
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Viento zonal. - fig:u-ncep\relax }}{57}{figure.caption.61}
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Anomalía zonal de viento zonal. - fig:uz-ncep\relax }}{58}{figure.caption.62}
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Media zonal del viento meridional. - fig:v-ncep-corte\relax }}{59}{figure.caption.63}
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Viento meridional medio. - fig:v-ncep\relax }}{60}{figure.caption.64}
+\contentsline {figure}{\numberline {3.16}{\ignorespaces Z* menos QS1. - fig:ghminus1-ncep - SÓLO BORRADOR\relax }}{61}{figure.caption.65}
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Gradiente meridional de vorticidad absoluta * 1e11 - fig:etady-ncep\relax }}{62}{figure.caption.66}
+\contentsline {figure}{\numberline {3.18}{\ignorespaces Número de onda estacionario en 200hPa. - fig:ks-ncep\relax }}{63}{figure.caption.67}
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Número de onda estacionario en 180° - fig:ks-ncep-cortelev - SÓLO BORRADOR\relax }}{64}{figure.caption.68}
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Función corriente x 1099 - fig:psi-ncep\relax }}{65}{figure.caption.69}
+\contentsline {figure}{\numberline {3.21}{\ignorespaces $R^2$ de fourier. - fig:r2-ncep\relax }}{66}{figure.caption.70}
+\contentsline {figure}{\numberline {3.22}{\ignorespaces Ampllitud de fourier. - fig:ampl-ncep\relax }}{67}{figure.caption.71}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Media de reconstrucción de onda 3. - fig:qs3-ncep\relax }}{68}{figure.caption.72}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Corte - fig:qs3-ncep-corte\relax }}{69}{figure.caption.73}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Desvío estándar de la reconstrucción de QS3. - fig:qs3sd-ncep\relax }}{70}{figure.caption.74}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Amplitud de wavelets (sombreados) y de fourier (contornos) - fig:wavelet-fourier-ncep\relax }}{71}{figure.caption.75}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep\relax }}{72}{figure.caption.76}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Haciendo la amplitud del campo medio}}}{72}{subfigure.5.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Haciendo el valor medio de la amplitud.}}}{72}{subfigure.5.2}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Corte zonal en -60° de la amplitud media de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado). - fig:wavelet-ncep-corte\relax }}{73}{figure.caption.77}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?) - fig:estacionaridad - SÓLO BORRADOR\relax }}{74}{figure.caption.78}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {campo}}}{74}{subfigure.7.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {media zonal}}}{74}{subfigure.7.2}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Estacionaridad según fourier - fig:estacionaridad-fourier - SÓLO BORRADOR\relax }}{75}{figure.caption.79}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Reconstrucción de QS3 usando wavelets - fig:wavelet-reconstr - SÓLO BORRADOR\relax }}{76}{figure.caption.80}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media. - fig:ampl-max-mean\relax }}{77}{figure.caption.81}
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Anomalía zonal geopotencial en 300hPa para fechas seleccionadas. - fig:ghz-ncep-select\relax }}{78}{figure.caption.82}
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Correlación entre amplitud máxima y media. - fig:cor-mean-max\relax }}{79}{figure.caption.83}
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Amplitud media - fig:ampl-ts\relax }}{80}{figure.caption.84}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Ciclo anual}}}{80}{subfigure.13.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Serie temporal}}}{80}{subfigure.13.2}
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Análisis de wavelet para la amplitud de la onda 3. - fig:wavelet-period - SÓLO BORRADOR\relax }}{81}{figure.caption.85}
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Función de autocorrelación para la amplitud media anual de la onda 3 - fig:acf-ampl - SÓLO BORRADOR\relax }}{82}{figure.caption.86}
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Ciclo anual de la fase (20 mayores amplitudes para cada mes) - fig:fase-boxplot\relax }}{83}{figure.caption.87}
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Primeras dos componentes principales del campo de QS3 - fig:eof\relax }}{84}{figure.caption.88}
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Valor medio de las dos primeras componentes principales del campo de QS3 - fig:pc1-pc2\relax }}{85}{figure.caption.89}
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Media de reconstrucción de onda 3 en 300hPa - fig:qs3-qsseason-ncep\relax }}{86}{figure.caption.90}
+\contentsline {figure}{\numberline {4.20}{\ignorespaces Corte - fig:qs3-qsseason-ncep-corte\relax }}{87}{figure.caption.91}
+\contentsline {figure}{\numberline {4.21}{\ignorespaces Correlación lageada para cada mes con los 12 sigientes. - fig:lag-cor\relax }}{88}{figure.caption.92}
+\contentsline {figure}{\numberline {4.22}{\ignorespaces Correlación cuadrada media para estaciones según onda3. - fig:cor-campo\relax }}{89}{figure.caption.93}
+\contentsline {figure}{\numberline {4.23}{\ignorespaces Correlación cuadrada media para estaciones según onda3. - fig:cor-campo2 - SÓLO BORRADOR\relax }}{90}{figure.caption.94}
+\contentsline {figure}{\numberline {4.24}{\ignorespaces Relación entre R2 medio y R2 reconstruido. - fig:r2-cor2 - SÓLO BORRADOR\relax }}{91}{figure.caption.95}
+\contentsline {figure}{\numberline {4.25}{\ignorespaces Regresión sobre amplitud. - fig:regr-gh-ncep\relax }}{92}{figure.caption.96}
+\contentsline {figure}{\numberline {4.26}{\ignorespaces Igual que figura XX, pero en proyección polar para julio y septiembre. - fig:regr-gh-polar\relax }}{93}{figure.caption.97}
+\contentsline {figure}{\numberline {4.27}{\ignorespaces Relación entre amplitud media de la onda 3 y el SAM - fig:sam-ampl - SÓLO BORRADOR\relax }}{94}{figure.caption.98}
+\contentsline {figure}{\numberline {4.28}{\ignorespaces Regresión de Psi con la amplitud (anomalía zonal). - fig:regr-psi-ncep\relax }}{95}{figure.caption.99}
+\contentsline {figure}{\numberline {4.29}{\ignorespaces Tabla de selección - fig:seleccion-tabla\relax }}{96}{figure.caption.100}
+\contentsline {figure}{\numberline {4.30}{\ignorespaces Tabla de interacción - fig:interaccion-tabla\relax }}{97}{figure.caption.101}
+\contentsline {figure}{\numberline {4.31}{\ignorespaces Composición de campos - fig:gh-comp\relax }}{98}{figure.caption.102}
+\contentsline {figure}{\numberline {4.32}{\ignorespaces Campos para los 10 eneros seleccionados. - fig:gh-qs3-select-ene\relax }}{99}{figure.caption.103}
+\contentsline {figure}{\numberline {4.33}{\ignorespaces Campos para los 10 septiembres seleccionados. - fig:gh-qs3-select-sep\relax }}{100}{figure.caption.104}
+\contentsline {figure}{\numberline {4.34}{\ignorespaces Regresión de SST con la amplitud de la onda 3 - fig:regr-sst-ncep\relax }}{101}{figure.caption.105}
+\contentsline {figure}{\numberline {4.35}{\ignorespaces Regresión de QS3 con OLR - fig:regr-olr-ncep\relax }}{102}{figure.caption.106}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Anomalía zonal de altura geopotencial (speedy sombreado, ncep contornos) - fig:ghz-sp-nc\relax }}{103}{figure.caption.107}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Diferencia entre speedy y ncep - fig:ghz-dif-sp-nc\relax }}{104}{figure.caption.108}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Corte zonal de anomalía de geopotencial en -60° (speedy sombreado, ncep contornos). - fig:ghz-sp-nc-corte60\relax }}{105}{figure.caption.109}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Temperatura - fig:t-nc-sp\relax }}{106}{figure.caption.110}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces T* - fig:tz-sp-nc\relax }}{107}{figure.caption.111}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Viento zonal medio (speedy contornos, ncep sombreado). - fig:u-sp-nc-corte\relax }}{108}{figure.caption.112}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Viento zonal (contornos ncep, sombreado speedy). - fig:u-sp-nc\relax }}{109}{figure.caption.113}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Diferencia entre ncep y speedy en viento zonal - fig:u-dif-sp-nc\relax }}{110}{figure.caption.114}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Gradiente meridional de vorticidad absoluta (speedy). - fig:etady-sp-nc\relax }}{111}{figure.caption.115}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Número de onda estacionario en 300hPa (speedy). - fig:ks-sp\relax }}{112}{figure.caption.116}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Número de onda estacionario medio por círculo de latitud. - fig:ks-sp-nc-corte\relax }}{113}{figure.caption.117}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Función corriente x 1099 - fig:psi-sp\relax }}{114}{figure.caption.118}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Amplitud de fourier (speedy en sombreado, ncep en contornos). - fig:ampl-sp-nc\relax }}{115}{figure.caption.119}
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep) - fig:qs2-sp-nc\relax }}{116}{figure.caption.120}
+\contentsline {figure}{\numberline {5.15}{\ignorespaces Anomalía zonal de altura geopotencial. - fig:ghz-sp-runs\relax }}{117}{figure.caption.121}
+\contentsline {figure}{\numberline {5.16}{\ignorespaces Diferencia Control - corrida para Z* - fig:ghz-dif-sp-runs\relax }}{118}{figure.caption.122}
+\contentsline {figure}{\numberline {5.17}{\ignorespaces Temperatura media en 850hPa. - fig:t-sp-runs - SÓLO BORRADOR\relax }}{119}{figure.caption.123}
+\contentsline {figure}{\numberline {5.18}{\ignorespaces Temperatura media en 850hPa. - fig:tz-sp-runs\relax }}{120}{figure.caption.124}
+\contentsline {figure}{\numberline {5.19}{\ignorespaces Diferencia Control - corrida para T* - fig:tz-dif-sp-runs\relax }}{121}{figure.caption.125}
+\contentsline {figure}{\numberline {5.20}{\ignorespaces Viento zonal - fig:uz-sp-runs\relax }}{122}{figure.caption.126}
+\contentsline {figure}{\numberline {5.21}{\ignorespaces Diferencia control - corrida para U. - fig:u-dif-sp-runs\relax }}{123}{figure.caption.127}
+\contentsline {figure}{\numberline {5.22}{\ignorespaces Anomalía zonal de función corriente y flujos de acción de onda. - fig:psi-sp-runs\relax }}{124}{figure.caption.128}
+\contentsline {figure}{\numberline {5.23}{\ignorespaces Diferencia en psi.z y flujos de acción de onda. - fig:psiz-dif-sp-runs\relax }}{125}{figure.caption.129}
+\contentsline {figure}{\numberline {5.24}{\ignorespaces Amplitud media de la onda 3 para cada corrida. - fig:ampl-sp-runs\relax }}{126}{figure.caption.130}
+\contentsline {figure}{\numberline {5.25}{\ignorespaces Diferencia de amplitud entre la corrida control y cada corrida. - fig:ampl-dif-sp-runs\relax }}{127}{figure.caption.131}
+\contentsline {figure}{\numberline {5.26}{\ignorespaces Ciclo anual de amplitud de onda 3. - fig:index-sp-boxplot\relax }}{128}{figure.caption.132}
+\contentsline {figure}{\numberline {5.27}{\ignorespaces Regresión en función corriente. - fig:regr-psi-sp-runs\relax }}{129}{figure.caption.133}

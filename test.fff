@@ -1,7 +1,22 @@
-\begin{sidewaysfigure}
-\centering
-\includegraphics{test_files/figure-latex/pressure2-1.pdf}
-\caption{Caption}
-\end{sidewaysfigure}
+\stepcounter {chapter}
+\begin{figure}
+\caption{a figure in chapter 1}\label{fig:1}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\caption{a second figure in chapter 1}
+\end{figure}
+\efloatseparator
+ 
+\stepcounter {chapter}
+\begin{figure}
+\caption{a figure in chapter 2}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\caption{a second figure in chapter 2}\label{fig:2}
+\end{figure}
 \efloatseparator
  

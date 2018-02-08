@@ -1,0 +1,18 @@
+\linespread{1.25}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{marginnote}
+\usepackage[nomarkers,figuresonly]{endfloat}
+\usepackage{pdflscape}
+\DeclareDelayedFloatFlavor{landscape}{figure}
+\usepackage[spanish]{todonotes}
+\usepackage{wrapfig}
+    
+\makeatletter
+\@ifpackageloaded{endfloat}
+{
+ \efloat@condopen{fff}
+ \pretocmd\@chapter{\immediate\write\efloat@postfff{\noexpand\stepcounter{chapter}}}{}{\fail}
+ \AtBeginFigures{\setcounter{chapter}{0}}
+}{}
+\makeatother

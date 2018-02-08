@@ -99,6 +99,15 @@
 \DeclareDelayedFloatFlavor{landscape}{figure}
 \usepackage[spanish]{todonotes}
 \usepackage{wrapfig}
+    
+\makeatletter
+\@ifpackageloaded{endfloat}
+{
+ \efloat@condopen{fff}
+ \pretocmd\@chapter{\immediate\write\efloat@postfff{\noexpand\stepcounter{chapter}}}{}{\fail}
+ \AtBeginFigures{\setcounter{chapter}{0}}
+}{}
+\makeatother
 
 \begin{document}
 \maketitle
@@ -204,22 +213,22 @@ Campo medio:
 \end{landscape}
 
 El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muestra
-una estructura más zonal en el HS que en el HN en todos los niveles y
-estaciones. En verano el gradiente meridional de Z es máximo en 200hPa,
-reduciéndose en 500hPa y por encima de 100hPa. En 50hPa el gradiente es
-prácticamente nulo y en niveles superiores, éste se invierte en
-comparación a los inferiores (no se muestra). En otoño el máximo de
-gradiente todavía se da en 200hPa, pero continua siendo intenso en
-niveles superiores. En invierno y primavera, el mayor gradiente se da en
-50hPa y es mucho más intenso que los observados en los demás niveles o
-estaciones. En contraste con el resto de los niveles, 50hPa y 100hPa
-tienen mucha más variabilidad estacional.
+una estructura marcadamente zonal en todos los niveles y estaciones. En
+verano el gradiente meridional de Z es máximo en 200hPa, reduciéndose en
+500hPa y por encima de 100hPa. En 50hPa el gradiente es prácticamente
+nulo y en niveles superiores, éste se invierte en comparación a los
+inferiores (no se muestra). En otoño el máximo de gradiente todavía se
+da en 200hPa, pero continua siendo intenso en niveles superiores. En
+invierno y primavera, el mayor gradiente se da en 50hPa y es mucho más
+intenso que los observados en los demás niveles o estaciones. En
+contraste con el resto de los niveles, 50hPa y 100hPa tienen mucha más
+variabilidad estacional.
 
 El aumento del gradiente meridional de geopotencial en invierno y
 primavera en niveles altos está relacionado con la generación del
-vórtice polar que aisla las latitudes polares de las latitudes medias.
-En 200hPa, en cambio, es evidencia del jet subtropical, que es más
-estable a lo largo de todo el año.
+vórtice polar\todo{cita} que aisla las latitudes polares de las
+latitudes medias. En 200hPa, en cambio, es evidencia del jet
+subtropical, que es más estable a lo largo de todo el año.
 
 \begin{figure*}
 \includegraphics[width=150mm, ]{fig/tesis/ghdy-ncep-corte-1} \caption{Gradiente meridional de Z - fig:ghdy-ncep-corte - SÓLO BORRADOR}\label{fig:ghdy-ncep-corte}
@@ -251,7 +260,7 @@ otras estaciones con menor intensidad. Sobre Sudamérica, en verano y
 primavera en ese mismo nivel aparece un centro anticiclónico con un
 centro ciclónico al noroeste. Estas anomalías (la alta de Bolivia y la
 baja del noroeste) son caracetrísticas del Sistema Monzónico
-Sudamericano\todo{buscar cita}.
+Sudamericano (Vera et~al. \protect\hyperlink{ref-Vera2006}{2006}).
 
 En la \autoref{fig:ghz-ncep-corte69} se muestra un corte zonal en 60°S
 de Z*. Se aprecia la coherencia vertical de la QS1 y es evidente la
@@ -308,16 +317,16 @@ octubre, y el mínimo entre febrero y abril, según el nivel.
 \end{figure}
 \end{landscape}
 
-Pasando a la temperatura, en la \autoref{fig:t-ncep} puede verse que, al
-igual que el campo de geopotencial, tiene una estructura principalmente
-zonal en todos los niveles y estaciones. Por debajo de los 200hPa, donde
-el gradiente meridional de temperatura es mínimo, la temperatura
-disminuye con la latitud en todas las estaciones. Por encima de este
-nivel, en cambio, en verano la temperatura crece con la latitud, y en el
-resto de las estaciones muestra un máximo centrado en 60°S en otoño y en
-45°S en invierno y primavera. El nivel de 850hPa se ve particularmente
-deformado por los contrastes de temperatura zonales como el máximo sobre
-Australia en verano.
+Al igual que el campo de geopotencial, la temperatura
+(\autoref{fig:t-ncep}) tiene una estructura principalmente zonal en
+todos los niveles y estaciones. Por debajo de los 200hPa, donde el
+gradiente meridional de temperatura es mínimo, la temperatura disminuye
+con la latitud en todas las estaciones. Por encima de este nivel, en
+cambio, en verano la temperatura crece con la latitud, y en el resto de
+las estaciones muestra un máximo centrado en 60°S en otoño y en 45°S en
+invierno y primavera. El campo de temperatura en el nivel de 850hPa se
+ve particularmente deformado por los contrastes de temperatura zonales
+como el máximo sobre Australia en verano.
 
 \begin{figure}
 
@@ -328,12 +337,21 @@ Australia en verano.
 \caption{Corte meridional de temperatura media. - fig:t-ncep-corte}\label{fig:t-ncep-corte}
 \end{figure}
 
-Haciendo un promedio zonal como se muestra en la
-\autoref{fig:t-ncep-corte}, se observa un mínimo de temperatura se da en
-la estatósfera tropical durante todo el año y uno en la estatósfera
-polar con amplitud, extensión y altura máxima en invierno y mínima en
-verano. El máximo relativo de tempertura observado por encima de 100hPa
-se da como consecuencia de estos dos mínimos.
+El un promedio zonal de la temperatura se muestra en la
+\autoref{fig:t-ncep-corte}. Al norte de los 45° durante todo el año la
+tempertura decrece con la altura por debajo de los 100hPa
+aproximadamente, donde alcanza un mínimo que marca la tropopausa, y
+crece por encima. La altura del mínimo de temperatura varía mucho al sur
+de los 45°, siendo mínima en verano (300hPa) y máxima en invierno y
+otoño (30hPa). Hay que tener encuenta, sin embargo, que la tropopausa no
+está bien definida en el invierno Antártico {[}Zängl
+(\protect\hyperlink{ref-Zangl2001}{2001});
+{]}\todo{conseguir este paper http://www.jstor.org/stable/26255916} por
+lo que el uso de la tropopausa térmica no es conveniente. Zängl
+(\protect\hyperlink{ref-Zangl2001}{2001}), utilizando datos de ERA para
+el período 1979-93, encontraron que la tropopausa térmica varía entre
+los 320hPa en enero y los 170hPa en agosto aunque advierten que el uso
+del criterio término es ``problemático'' en el invierno antártico.
 
 \begin{landscape}\begin{figure}
 
@@ -741,8 +759,6 @@ reconstrucción de la QS3. La variabilidad máxima se da entre los centros
 ciclónicos y anticiclónicos (marcados en la \autoref{fig:qs3sd-ncep} con
 contornos negros), indicando que la variabilidad del geopotencial
 asociada a la QS3 se debe al corrimiento de la fase.
-
-\todo[inline]{hasta acá revision}
 
 \subsection{Wavelets}\label{wavelets}
 
@@ -1639,9 +1655,15 @@ relativa\todo{no sé si se entiende bien lo que quiero decir}.
 
 \subsection{Temperatura}\label{temperatura-1}
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/t-nc-sp-1} \caption{Temperatura - fig:t-nc-sp}\label{fig:t-nc-sp}
-\end{figure*}
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=227mm,]{fig/tesis/t-nc-sp-1} 
+
+}
+
+\caption{Temperatura - fig:t-nc-sp}\label{fig:t-nc-sp}
+\end{figure}
+\end{landscape}
 
 En la \autoref{fig:t-nc-sp} se muestra el campo total de temperatura de
 SPEEDY en sombreado y NCEP en líneas. En 850hPa y 500hPa, ambos campos
@@ -1684,19 +1706,17 @@ coinciden mejor con NCEP.
 En la \autoref{fig:u-sp-nc-corte} se muestra el viento zonal para SPEEDY
 y NCEP. El jet subtropical se encuentra más al norte y ligéramente más
 elevado en verano, así como considerablemente más intenso en todas las
-estaciones. La falta de niveles verticales se hace evidente en la falta
-de un jet polar.
+estaciones. La principal discrepancia se da en altura. Por encima de los
+30hPa, SPEEDY carece de niveles verticales y aún por debajo no logra
+desarrollar un jet polar. En invierno y primavera hay un aumento del
+viento zonal con la altura en latitudes donde debería estar el jet, pero
+no llega a formar un máximo ni alcanza las magnitudes observadas en
+NCEP. Esta falta de niveles verticales también se observa en los estes
+ecuatoriales de menor magnitud en verano y otoño.
 
-\todo[inline]{hasta acá}
-
-Cosas para ver:\\
-* Speedy no logra desarrollar un jet polar por la falta de niveles
-verticales en la estratósfera. Tampoco reproduce los estes
-estratosféricos en latitudes bajas. Su jet subtropical es más intenso y
-su máximo se da ligéramente en niveles más altos en NCEP.
-
-Campo medio (me parece que no lo voy a poner, no agrega información que
-no esté en el anterior y en el de geopotencial.)
+Dada la importancia del jet polar en la dinámica atmosférica durante los
+meses de invierno y primavera\todo{cita}, su mala representación es una
+limitación muy importante del modelo SPEEDY.
 
 \begin{landscape}\begin{figure}
 
@@ -1729,21 +1749,26 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta-1}
 \end{figure}
 \end{landscape}
 
-Comparando con la figura \autoref{fig:eta-dy-ncep}, los gradientes son
-menores y más zonales. Es significativo que la región ``prohibida'' en
-invierno de niveles altos es menor en 200hPa y casi desaparece en
-300hPa.
+Comparando con la figura \autoref{fig:etady-ncep} (nivel de 200hPa), se
+ve que la franja de máximo gradiente presente en todas las estaciones es
+más zonal en el caso de SPEEDY y corrida hacia el sur en verano. La
+región de gradientes negativos que se desarrolla en invierno sobre Nueva
+Zelanda tiene menor extensión y no aparece en otoño ni primavera.
 
-\subsection{Número de onda
-estacionaria}\label{numero-de-onda-estacionaria}
-
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ks-sp-1} \caption{Número de onda estacionario en 300hPa (speedy). - fig:ks-sp}\label{fig:ks-sp}
-\end{figure*}
-
-Comparando con \autoref{fig:k-steady-ncep} la mayor diferencia es la
-desaparición de una región de propagación impedida en
-\textasciitilde{}-40° en el Índico y el Pacífico en Otoño.
+En la \autoref{fig:ks-sp-nc-corte} se muestra un corte meridional del
+número de onda estacionario en 180°. En verano no hay regiones
+prohibidas en ningún modelo, pero la región entre 45°S y 60°S aparece
+como un mínimo en SPEEDY y un máximo en NCEP. Esto implica que la
+propagación meridional inhibida para un amplio rango de números de onda
+en SPEEDY pero no en NCEP. En particular, la QS3 puede propagarse
+meridionalmente en las observaciones, pero no en el modelo. En otoño la
+situación es inversa: al rededor de 40°S, NCEP muestra una región con
+número de onda estacionario imaginario, impidiendo la propagación
+meridional, mientras que en SPEEDY no existe tan impedimento. La QS3
+nuevamente se ve afectada, teniendo propagación meridional irrestricta
+al norte de 60°S en SPEEDY pero quedando atrapada al sur de 50°S en las
+observaciones. En invierno y primavera la cooncordancia entre SPEEDY y
+NCEP es mayor.
 
 \begin{figure}
 
@@ -1753,8 +1778,6 @@ desaparición de una región de propagación impedida en
 
 \caption{Número de onda estacionario medio por círculo de latitud. - fig:ks-sp-nc-corte}\label{fig:ks-sp-nc-corte}
 \end{figure}
-
-En promedio zonal, sin embargo, SPEEDY funciona bien.
 
 \subsection{Función corriente}\label{funcion-corriente-2}
 
@@ -1767,6 +1790,18 @@ En promedio zonal, sin embargo, SPEEDY funciona bien.
 \caption{Función corriente x 1099 - fig:psi-sp}\label{fig:psi-sp}
 \end{figure}
 \end{landscape}
+
+La función corriente en 200hPa de SPEEDY se muestra en la
+\autoref{fig:psi-sp} (donde el sombreado corresponde a la anomalía zonal
+y las felchas a los flujos de actividad de onda) en comparación con los
+mismos campos de NCEP (\autoref{fig:psi-ncep}; notar que en NCEP está en
+coordenadas \(\sigma\)) existe una correspondencia general buena en los
+trópicos. La localización de los máximos y mínimos coincide en
+aproximadamente en todas las estaciones. En verano y primavera no
+aparece la alta de Bolivia relacionada con el SAMS, pero sí la baja del
+noroeste. La intensidad de las anomalías es menor en todas las
+estaciones, especialmente en el HN. Consecuentemente, también tienen
+menor magnitud los flujos de actividad de onda
 
 \subsection{Onda 3}\label{onda-3-1}
 
@@ -1915,11 +1950,22 @@ Trenberth, Kevin E., y K. C. Mo. 1985. «Blocking in the Southern
 Hemisphere».
 doi:\href{https://doi.org/10.1175/1520-0493(1985)113\%3C0003:BITSH\%3E2.0.CO;2}{10.1175/1520-0493(1985)113\textless{}0003:BITSH\textgreater{}2.0.CO;2}.
 
+\hypertarget{ref-Vera2006}{}
+Vera, Carolina, W. Higgins, J. Amador, T. Ambrizzi, R. Garreaud, D.
+Gochis, D. Gutzler, et~al. 2006. «Toward a unified view of the American
+monsoon systems». \emph{Journal of Climate} 19 (20): 4977-5000.
+doi:\href{https://doi.org/10.1175/JCLI3896.1}{10.1175/JCLI3896.1}.
+
 \hypertarget{ref-Vera2004}{}
 Vera, Carolina, Gabriel Silvestri, Vicente Barros, y Andrea Carril.
 2004. «Differences in El Niño response over the Southern Hemisphere».
 \emph{Journal of Climate} 17 (9): 1741-53.
 doi:\href{https://doi.org/10.1175/1520-0442(2004)017\%3C1741:DIENRO\%3E2.0.CO;2}{10.1175/1520-0442(2004)017\textless{}1741:DIENRO\textgreater{}2.0.CO;2}.
+
+\hypertarget{ref-Zangl2001}{}
+Zängl, G. 2001. «The tropopause in the polar regions». \emph{Journal of
+Climate} 14 (14): 3117-39.
+doi:\href{https://doi.org/10.1175/1520-0442(2001)014\%3C3117:TTITPR\%3E2.0.CO;2}{10.1175/1520-0442(2001)014\textless{}3117:TTITPR\textgreater{}2.0.CO;2}.
 
 
 \end{document}
