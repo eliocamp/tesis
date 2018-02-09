@@ -523,15 +523,7 @@ de niveles altos generada por la convección anómala. El Sudamérica, la
 alta de Bolivia genera viento hacia el norte y hacia el sur al este y al
 oeste de Bolivia respectivamente.
 
-\begin{landscape}\begin{figure}
-
-{\centering \includegraphics[width=227mm,]{fig/tesis/ghminus1-ncep-1} 
-
-}
-
-\caption{Z* menos QS1. - fig:ghminus1-ncep - SÓLO BORRADOR}\label{fig:ghminus1-ncep}
-\end{figure}
-\end{landscape}
+\begin{landscape}\end{landscape}
 
 \section{Gradiente meridional de vorticidad
 absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
@@ -1809,19 +1801,54 @@ menor magnitud los flujos de actividad de onda
 \includegraphics[width=150mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de fourier (speedy en sombreado, ncep en contornos). - fig:ampl-sp-nc}\label{fig:ampl-sp-nc}
 \end{figure*}
 
+En la \autoref{fig:ampl-sp-nc} se muestra la amplitud de la QS3 media
+para SPEEDY en contornos y NCEP en líneas. En verano, entre 45°S y 60°S
+SPEEDY coincide con NCEP en la localización y extension del máximo, pero
+subestima la intensidad. El máximo secundario en latitudes bajas aparece
+más al sur y en un nivel más alto en SPEEDY. En otoño, speedy carece
+casi por completo de señal de QS3 en comparación con NCEP. Si se calcula
+la amplitud media de la QS3 SPEEDY sí tiene una señal importante (no se
+muestra), indicando que la diferencia con NCEP se debe no a la falta de
+una onad 3, sino a su característica no estacionaria. En invierno, la
+amplitud de la QS3 media está subestimada en SPEEDY y corrida hacia el
+polo. Además, está mucho más restringida a niveles troposféricos en
+comparación con NCEP; posiblemente como consecuencia de la falta de
+niveles verticales y la mala representación del jet polar. En primavera,
+por el contrario, la señal en SPEEDY es considerablemente mayor que en
+NCEP.
+
+La QS3 reconstruida para SPEEDY se muestra en la \autoref{fig:qs3-sp-nc}
+donde además de confirmarse la variación de la amplitud prevista a
+partir de la \autoref{ampl-sp-nc}, se puede apreciar la estructura
+horizontal. En verano, invierno y privamera, la inclinación de los
+centros es hacia el este, contraria a las observaciones e indicando
+transporte de cantidad de movimiento zonal hacia el norte en vez de
+hacia el sur. En otoño, por supuesto, el campo de QS3 de SPEEDY es
+virtualmente nulo.
+
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs2-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep) - fig:qs2-sp-nc}\label{fig:qs2-sp-nc}
+\includegraphics[width=150mm, ]{fig/tesis/qs3-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep) - fig:qs3-sp-nc}\label{fig:qs3-sp-nc}
 \end{figure*}
 
-La onda 3 no está muy bien representada en el modelo. Aunque la
-estructura vertical y la posición meridional está bien (salvo en otoño),
-la amplitud es mucho menor. La fase, además, está corrida ligeramente en
-verano, pero quedando en cuadratura en invierno y defasado 180 en
-primavera.
+\section{Comparación entre corridas}\label{comparacion-entre-corridas}
 
-\section{Comparación}\label{comparacion}
+Como se vio en la sección XX, además de la corrida Control, se
+realizaron 3 corridas para evaluar la sensibilidad de la QS3 a distintos
+parámetros del modelo. \textbf{NOLAND} es idéndica a \textbf{Control} a
+excepción de que se desactivaron los modelos de mar, hielo y tierra y se
+reemplazó la SST por su media climatológica mensual. \textbf{SSTZONAL}
+es similar, pero la SST fue reemplazada por su media zonal mensual.
 
-Comparación entre corridas \#\#\# Altura geopotencial
+\subsection{Altura geopotencial}\label{altura-geopotencial-2}
+
+Los campos de Z* en 200hPa para cada corrida se muestra en la
+\autoref{fig:ghz-sp-runs}. La corrida NOLAND no presenta diferencias
+obvias con respecto a Control. SSTZONAL en cambio, muestra una clara
+disminución de las anomalías zonales. Todas las corridas presentan una
+QS1 en altas latitudes con máximo en invierno pero su intensidad es
+notablemente menor en SSTZONAL en comparación a las otras dos. La QS1 en
+latitudes polares, en cambio, mantiene su amplitud en todas las
+corridas.
 
 \begin{landscape}\begin{figure}
 
@@ -1833,21 +1860,45 @@ Comparación entre corridas \#\#\# Altura geopotencial
 \end{figure}
 \end{landscape}
 
+La figura \autoref{fig:ghz-dif-sp-runs} muestra la diferencia entre Z*
+de la corrida Control y las corridas de sensibilidad. NOLAND sólo
+muestra cambios significativos en invierno y primavera, donde la
+diferencia es un tren de ondas con propagación meridional que une el
+Índico con el Atlántico con número de onda planetaria 3. Un tren de
+ondas similar fue identificado en las observaciones en la
+\autoref{sec:viento-meridional}. Por qué sólo es reproducido por SPEEDY
+cuando se elimina la interacción entre atmósfera y suelo es difícil de
+determinar.
+
+La diferencia entre SSTZONAL y Control se da principalmente entre 45°S y
+60°S y responde a la casi desaparición de la QS1 en esas latitudes.
+Estos resultados son consistentes con los de Quintanar y Mechoso
+(\protect\hyperlink{ref-Quintanar1995}{1995}) dado que la eliminación de
+las anomalías zonales reduciría la convección anómala que genera los
+trenes de onda que ellos concluyeron son el principal sostén de este
+patrón. En invierno y primavera, está presente el tren de ondas
+observado en NOLAND - Control, pero con menor amplitud. Esto quizás se
+deba a que éste se encuentra enmascarado por los otros cambios.
+
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Control - corrida para Z* - fig:ghz-dif-sp-runs}\label{fig:ghz-dif-sp-runs}
+\includegraphics[width=150mm, ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Corrida - control para Z* - fig:ghz-dif-sp-runs}\label{fig:ghz-dif-sp-runs}
 \end{figure*}
 
 \subsection{Temperatura}\label{temperatura-2}
 
-ONo hay casi diferencia entre las corridas.
+La \autoref{fig:tzdif-sp-runs} presenta la diferencia de temperatura en
+850hPa entre las corridas. Para NOLAND, las únicas diferencias se dan en
+la Antártida en verano e invierno, donde ésta simula temperaturas
+menores y mayores respectivamente. Al no tener un suelo que interactúa
+con el aire, es posible???
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/t-sp-runs-1} \caption{Temperatura media en 850hPa. - fig:t-sp-runs - SÓLO BORRADOR}\label{fig:t-sp-runs}
-\end{figure*}
-
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/tz-sp-runs-1} \caption{Temperatura media en 850hPa. - fig:tz-sp-runs}\label{fig:tz-sp-runs}
-\end{figure*}
+SSTZONAl tiene las mismas diferencias que NOLAND en la Antártida, a la
+que se le suman diferencias en latitude más bajas a causa de la
+eliminación de los contrastes zonales de SST. Durante todo el año hay
+temperaturas mayores en la costa este del Pacífico y menores en la
+oeste, indicando una situación tipo Niño que, en realidad representan la
+desaparición de la lengua fría al este y la pileta de agua cálida al
+oeste.
 
 \begin{landscape}\begin{figure}
 
@@ -1855,7 +1906,7 @@ ONo hay casi diferencia entre las corridas.
 
 }
 
-\caption{Diferencia Control - corrida para T* - fig:tz-dif-sp-runs}\label{fig:tz-dif-sp-runs}
+\caption{Diferencia Control - corrida para T - fig:tz-dif-sp-runs}\label{fig:tz-dif-sp-runs}
 \end{figure}
 \end{landscape}
 
@@ -1863,17 +1914,31 @@ ONo hay casi diferencia entre las corridas.
 
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/uz-sp-runs-1} 
+{\centering \includegraphics[width=227mm,]{fig/tesis/u-dif-sp-runs-1} 
 
 }
 
-\caption{Viento zonal - fig:uz-sp-runs}\label{fig:uz-sp-runs}
+\caption{Diferencia control - corrida para U. - fig:u-dif-sp-runs}\label{fig:u-dif-sp-runs}
 \end{figure}
 \end{landscape}
 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/u-dif-sp-runs-1} \caption{Diferencia control - corrida para U. - fig:u-dif-sp-runs}\label{fig:u-dif-sp-runs}
-\end{figure*}
+La diferencia del viento meridional entre corridas se muestra en la
+\autoref{fig:u-dif-sp-runs}. NOLAND - Control casi nulas diferencias en
+otoño. En verano NOLAND tiene vientos más inensos al norte y sur de
+Nueva Zelanda y menos intensos sobre ésta región, indicando una
+intensificación de los bloqueos con respeto a la corrida Control; el
+mismo patrón se observa en primavera. En invierno y primavera hay
+valores positivos en latitudes bajas indicando un debilitamiento de los
+alisios.
+
+En SSTZONAL el patrón de aumento de los bloqueos se ve intensificado. En
+otoño, invierno y primavera se observan franjas de valores negativos al
+sur de 30° y positivos al norte, indicando que el jet se encuentra
+desplazado hacia el norte. En las regiones ecuatoriales, los alisios son
+más intensos durante todo el año, lo cual resulta paradójico dada la
+estructura tipo Niño observada en la \autoref{fig:tzdif-sp-runs}.
+
+\todo[inline]{hasta acá}
 
 \subsection{Función corriente}\label{funcion-corriente-3}
 
@@ -1912,6 +1977,8 @@ ONo hay casi diferencia entre las corridas.
 \end{figure*}
 
 \section{Cosas inesperadas\ldots{}}\label{cosas-inesperadas}
+
+me dio neumonía. :(
 
 \begin{itemize}
 \tightlist

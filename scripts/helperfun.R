@@ -953,8 +953,8 @@ qs.season <- function(month) {
 }
 
 
-geom_contour_back <- function(...) {
-    geom_contour(..., color = "black", size = 0.2, alpha = 0.5)
+geom_contour_back <- function(..., color = "black", size = 0.2, alpha = 0.5) {
+    geom_contour(..., color = color, size = size, alpha = alpha)
 }
 geom_label_contour_back <- function(...) {
     geom_label_contour2(..., alpha = 0.5, size = 3)

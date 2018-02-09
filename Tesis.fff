@@ -553,11 +553,6 @@
 \end{landscape}
 \efloatseparator
  
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ks-sp-1} \caption{Número de onda estacionario en 300hPa (speedy). - fig:ks-sp}\label{fig:ks-sp}
-\end{figure*}
-\efloatseparator
- 
 \begin{figure}
 
 {\centering \includegraphics[width=130mm, ]{fig/tesis/ks-sp-nc-corte-1}
