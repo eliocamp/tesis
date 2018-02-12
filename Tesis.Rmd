@@ -2150,7 +2150,7 @@ La consistencia física entre las regresiones de SST y OLR no deberían ser indi
 ## Validación SPEEDY
 
 ```{r read-speedy, cache = FALSE}
-vars <- c(gh = "gh", u = "u", t = "temp", psi = "psi", v = "v")
+vars <- c(gh = "gh", u = "u", t = "temp", v = "v")
 vars.z <- paste0(names(vars), ".z")
 
 runs <- c("Control", "NOLAND", "SSTZONAL") 
@@ -2168,6 +2168,18 @@ speedy <- cache.file(file.speedy, {
           by = .(lat, lev, date, run)] %>% 
         .[, QS3 := amplitude*cos(3*(lon*pi/180 - phase))]
 })
+
+
+psi.sp <- rbindlist(lapply(seq_along(runs), function(x){
+    ReadNetCDF(paste0("DATA/SPEEDY/attm-", runs[x], ".nc"), 
+               vars = "psi", 
+               subset = list(lat = -90:31, lev = 200)) %>%
+        .[, run := runs[x]] %>% 
+        setnames("time", "date") %>% 
+        .[, psi := psi*1e6] %>%
+        .[, psi.z := Anomaly(psi), by = .(lat, date)]
+    # .[, c("f.lon", "f.lat") := WaveFlux(.SD, p = 200), by = .(date)]
+}))
 ```
 
 ```{r calc-sp}
@@ -2194,9 +2206,6 @@ speedy.mean.season[, zeta.dy := Derivate(zeta ~ lon + lat,
 
 speedy.mean.season[, eta.dy := zeta.dy + f.dy(lat)]
 speedy.mean.season[, `:=`(zeta = NULL, zeta.dy = NULL)]
-speedy.mean.season[lev == 200, 
-                   c("f.lon", "f.lat") := WaveFlux(.SD, p = 200), 
-                   by = .(season, run)]
 ```
 
 ```{r calc-sp-nc}
@@ -2256,8 +2265,6 @@ El campo medio de geopotencial está bien representado en el modelo (no se muest
 
 Si bien la ubicación de los máximos y mínimos de Z en SPEEDY es aproximadamente la correcta no logra capturar parte de la estructura fina. En 500hPa durante otoño, invierno y primavera, SPEEDY presenta un sólo máximo en 120°O a pesar de que NCEP tiene dos máximos identificables con ciclos anuales independientes. 
 
-\todo[inline]{No sé bien qué decir de la diferencia. ¿Tiene sentido hablar de los aparentes trenes de onda?}
-
 ```{r ghz-dif-sp-nc, fig.class = "fullpage", fig.cap = "Diferencia entre speedy y ncep"}
 binwidth <- 20
 ggplot(sp.nc[lev %in% plot.levs.sp & variable == "gh.z"], aes(lon, lat)) +
@@ -2272,6 +2279,7 @@ ggplot(sp.nc[lev %in% plot.levs.sp & variable == "gh.z"], aes(lon, lat)) +
     coord_quickmap()
 ```
 
+En la \autoref{fig:ghz-dif-sp-nc} se muestra la diferencia entre el campo de Z\* de NCEP y SPEEDY. En verano y otoño la principal diferencia radica en que NCEP muestra una alta más intensa de la QS1 al norte de 60°S. En invierno y primavera se observa un tren de ondas con propagación medirional que une el Índico con el Atlántico con número de onda planetaria 3. Un tren de ondas similar fue identificado en las observaciones en la \autoref{sec:viento-meridional}. Su aparición al hacer la resta NCEP - SPEEDY indica que el mismo no está presente en la corrida Control. 
 
 ```{r ghz-sp-nc-corte60, fig.class = "textwidth", fig.cap = "Corte zonal de anomalía de geopotencial en -60° (speedy sombreado, ncep contornos)."}
 binwidth <- 20
@@ -2297,7 +2305,6 @@ En la \autoref{fig:ghz-sp-nc-corte60} se muestra el corte de Z\* en 60°S. Se ev
 ### Temperatura 
 
 ```{r t-nc-sp, fig.cap = "Temperatura", fig.class = "fullpage"}
-
 binwidth <- 5
 cowplot::plot_grid({
     ggplot(speedy.mean.season[run == "Control" & lev %in% 200], aes(lon, lat, z = t)) +
@@ -2552,16 +2559,24 @@ rbind(ncep.mean.season[lev == 200, .(lon, lat, lev, season, k, k.full)][lon %~% 
 ### Función corriente
 
 ```{r psi-sp, fig.class = "fullpage", fig.cap = "Función corriente x 1099"}
-psi.sp <- ReadNetCDF("DATA/SPEEDY/attm-Control.nc", vars = "psi", 
-                     subset = list(lat = -90:31, lev = 200)) %>% 
-    .[, psi := psi*1e6] %>% 
-    .[, .(psi = mean(psi)), by = .(lon, lat, season(time))] %>% 
-    .[, psi.z := Anomaly(psi), by = .(lat, season)] %>% 
-    .[, c("f.lon", "f.lat") := WaveFlux(.SD, p = 200), by = .(season)]
+psi.sp.season <- psi.sp[, lapply(.SD, mean), 
+                        by = .(lon, lat, lev, season(date), run)] %>% 
+    .[, c("f.lon", "f.lat") := WaveFlux(.SD, p = 200), by = .(season, run, lev)]
+
+sp.l <- melt(psi.sp.season, 
+             id.vars = c("lon", "lat", "lev", "season", "run"))
+s <- sp.l[, value[run == "Control"]]
+sp.l[, dif := value - s, by = run]
+run.dif <- setNames(paste0(runs[-1], "-\n Control"),
+                    runs[-1])
+psi.dif <- dcast(sp.l[run != "Control"][, -c("value")], 
+                 ... ~ variable, 
+                 value.var = "dif")
+remove(sp.l)
 
 mult <- 1e-9
 binwidth <- 0.005
-ggplot(psi.sp, aes(lon, lat)) +
+ggplot(psi.sp.season[run == "Control"], aes(lon, lat)) +
     stat_contour_fill(aes(z = psi.z*mult),
                       binwidth = binwidth,
                       complete = FALSE, exclude = 0) +
@@ -2672,7 +2687,7 @@ ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
     facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
 ```
 
-La figura \autoref{fig:ghz-dif-sp-runs} muestra la diferencia entre Z\* de la corrida Control y las corridas de sensibilidad. NOLAND sólo muestra cambios significativos en invierno y primavera, donde la diferencia es un tren de ondas con propagación meridional que une el Índico con el Atlántico con número de onda planetaria 3. Un tren de ondas similar fue identificado en las observaciones en la \autoref{sec:viento-meridional}. Por qué sólo es reproducido por SPEEDY cuando se elimina la interacción entre atmósfera y suelo es difícil de determinar. 
+La figura \autoref{fig:ghz-dif-sp-runs} muestra la diferencia entre Z\* de la corrida Control y las corridas de sensibilidad. NOLAND sólo muestra cambios significativos en invierno y primavera, donde la diferencia es un tren de ondas de propagación meridional muy similar al observado en la \autoref{fig:ghz-dif-sp-nc} y presente en las observaciones (\autoref{sec:viento-meridional}). Es decir que a pesar de que la corrida Control carece del mismo, éste se desarrolla correctamente si se elimina la variabilidad de la temperatura superficial y su interacción con la atmósfera. 
 
 La diferencia entre SSTZONAL y Control se da principalmente entre 45°S y 60°S y responde a la casi desaparición de la QS1 en esas latitudes. Estos resultados son consistentes con los de @Quintanar1995 dado que la eliminación de las anomalías zonales reduciría la convección anómala que genera los trenes de onda que ellos concluyeron son el principal sostén de este patrón. En invierno y primavera, está presente el tren de ondas observado en NOLAND - Control, pero con menor amplitud. Esto quizás se deba a que éste se encuentra enmascarado por los otros cambios. 
 
@@ -2795,55 +2810,59 @@ La diferencia del viento meridional entre corridas se muestra en la \autoref{fig
 
 En SSTZONAL el patrón de aumento de los bloqueos se ve intensificado. En otoño, invierno y primavera se observan franjas de valores negativos al sur de 30° y positivos al norte, indicando que el jet se encuentra desplazado hacia el norte. En las regiones ecuatoriales, los alisios son más intensos durante todo el año, lo cual resulta paradójico dada la estructura tipo Niño observada en la \autoref{fig:tzdif-sp-runs}. 
 
-\todo[inline]{hasta acá}
-
 ### Función corriente
 
 ```{r psi-sp-runs, fig.class = "fullpage", fig.cap = "Anomalía zonal de función corriente y flujos de acción de onda."}
-binwidth <- 2
-ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
-    geom_contour_fill(aes(z = psi.z), 
+mult <- 1e-9
+binwidth <- 0.005
+ggplot(psi.sp.season, aes(lon, lat)) +
+    geom_contour_fill(aes(z = psi.z*mult), 
                       binwidth = binwidth,
-                      exclude = 0) +
+                      exclude = 0, complete = FALSE) +
     scale_fill_divergent(name = "Z*", 
                          breaks = MakeBreaks(binwidth),
                          guide = guide_colorstrip_bottom()) +
-    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 3,
-                min.mag = 1e-14,
-                scale = 5e14) +
+    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 1,
+                min.mag = 0.05,
+                scale = 50, size = 0.2) +
     scale_linetype(guide = "none") +
-    map.SH +
-    scale_y_latitude() +
-    scale_x_longitude() +
+    map.world +
+    scale_s_map(limits.lat = c(-90, 30)) +
     coord_quickmap() +
     facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
 ```
 
+En la \autoref{fig:psi-sp-runs} se muestra la anomalía zonal de la función corriente para cada corrida y los flujos de acción de onda. La misma es consistente con las observaciones generales de la \autoref{fig:ghz-sp-runs}. Para todos los meses las anomalías en SSTZONAL son muy menores que las otras dos corridas y los flujos de actividad de onda son casi nulos en el HS y menores que las otras dos corridas en los trópicos del HN. La persistencia de las anomalías en el HN en comparación con el HS sugiere que el forzante principal de estos patrones de onda es el orográfico, ya que éste es el único forzante zonalmente asimétrico en SSTZONAL. 
+
+Para la corrida NOLAND, las diferencias son mínimas en verano y otoño. En invierno y primavera se observan anomalías más intensas al rededor de 30° y los flujos de acción de onda que son más hacia el sur al rededor de 60°E en comparación a la corrida Control. Nuevamente, esto es consistente con lo visto en la \autoref{fig:ghz-dif-sp-runs} donde en NOLAND aparecía el tren de ondas desde el Índico hacia el pacífico que estaba ausente en la corrida Control.
 
 ```{r psiz-dif-sp-runs, fig.cap = "Diferencia en psi.z y flujos de acción de onda."}
-binwidth <- 2
-ggplot(sp.dif[lev == 200], aes(lon, lat, z = psi.z)) +
+mult <- 1e-9
+binwidth <- 0.005
+ggplot(psi.dif, aes(lon, lat, z = psi.z*mult)) +
     geom_contour_fill(binwidth = binwidth,
                       # breaks = MakeBreaks(binwidth),
                       exclude = 0) +
     scale_fill_divergent(name = "Z*", 
                          breaks = MakeBreaks(binwidth),
                          guide = guide_colorstrip_bottom()) +
-    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 3,
-                min.mag = 1e-14,
-                scale = 5e14) +
+    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 1,
+                min.mag = 0.05,
+                scale = 50, size = 0.2) +
     scale_linetype(guide = "none") +
-    map.SH +
-    scale_y_latitude() +
-    scale_x_longitude() +
+    map.world +
+    scale_s_map(limits.lat = c(-90, 30)) +
     coord_quickmap() +
     facet_grid(run ~ season, labeller = labeller(run = run.dif)) 
 ```
 
+La diferencia de la anomalía zonal función corriente y de los flujos de acción de onda entre las corridas se muestra en la \autoref{fig:psiz-dif-sp}. Las diferencias indicadas en los párrafos anteriores se muestran con más claridad. 
+
+\todo[inline]{Esto es medio poco y podría borrarse. No sé.}
 
 ### Onda 3
 
-```{r ampl-sp-runs, fig.cap = c("Amplitud media de la onda 3 para cada corrida."), fig.height = 5}
+```{r ampl-sp-runs, fig.cap = c("Amplitud de la onda 3 media para cada corrida."), fig.height = 5}
 sp.levs <- unique(speedy$lev)
 binwidth <- 5
 ggplot(qs.sp.season, aes(lat, lev)) +
@@ -2853,73 +2872,159 @@ ggplot(qs.sp.season, aes(lat, lev)) +
     scale_fill_viridis_c(guide = guide_colorstrip_bottom(),
                          breaks = MakeBreaks(binwidth)) +
     ylab("Nivel") + xlab("Latitud") +
+    surface +
     coord_latlev() +
     facet_grid(run ~ season)
 ```
 
+En la \autoref{fig:ampl-sp-runs} se muestra la amplitud de la QS3 para cada estación y cada corrida. En verano se observa una reducción de la señal de la QS3 en 60°S entre Control, NOLAND y SSTZONAL además de un ligero corrimiento hacia el sur. La señal de más al norte, en cambio, no presenta cambios importantes más allá del mismo corrimiento que la señal anterior. En otoño la poca señal existente en Control prácticamente desaparece en en SSTZONAl, pero no hay cambios en NOLAND. En SSTZONAL hay un aumento de la amplitud de la QS3 en la costa antártica.  
+
+En invierno, NOLAND tiene la mayor señal de QS3 entre las simulaciones y Control, la mínima. Esto posiblemente se deba a la aparición del tren de ondas desde el Índico identificado en la \autoref{fig:ghz-dif-sp-runs}. Primavera es la estación con el cambio más dramático. Pasa de tener la señal más alta en la Corrrida control a tener una de las menores en NOLAND y SSTZONAL. La amplitud de la QS3 en 60°S y 300hPa desaparece prácticamente en su totalidad
+
+\todo[inline]{de nuevo las diferencias no muestran nada distinto que no se vea en los campos. Quizás lo saco.}
+
 ```{r ampl-dif-sp-runs, fig.cap = "Diferencia de amplitud entre la corrida control y cada corrida.", fig.height = 5}
-qs.sp.season[, dif := qs.sp.season[run == "Control", amplitude] - 
-                 amplitude,
+qs.sp.season[, dif := amplitude - qs.sp.season[run == "Control", amplitude],
              by = run]
 binwidth <- 2
-dif <- setNames(paste0("Control - ", runs[-1]),
+dif <- setNames(paste0(runs[-1], " -\nControl"),
                 runs[-1])
-ggplot(qs.sp.season[run != "Control"], aes(lat, lev, z = dif)) +
-    geom_contour_fill(binwidth = binwidth, exclude = 0, complete = F) +
+ggplot(qs.sp.season[run != "Control"], aes(lat, lev)) +
+    geom_contour_fill(aes(z = dif), binwidth = binwidth, exclude = 0, complete = F) +
     scale_y_level(breaks = sp.levs) +
     scale_x_latitude(trans = "reverse") +
     scale_fill_divergent(guide = guide_colorstrip_bottom(),
                          breaks = MakeBreaks(binwidth)) +
     coord_latlev() +
+    # surface + 
     facet_grid(run ~ season, 
                labeller = labeller(run = dif))
 ```
+
+Es importante notar que estas observaciones son sensibles a la metodología utilizada. La \autoref{fig:ampl-mean-sp-runs} muestra la amplitud media de la QS3 para cada corrida y es útil compararla con la \autoref{fig:ampl-sp-runs} (que muestra la amplitud de la QS3 media). Verano se comporta de manera similar, con una ligera disminución de la señal en NOLAND y SSTZONAL. 
+
+Otoño tiene un gran cambio. Tanto la corrida Control como NOLAND y SSTZONAL tienen una señal fuerte que no cambia significativamente entre corridas. Esto indica que la baja señal en otoño en SPEEDY tiene es causada por que la onda 3 está presente mes a mes, pero no estacionariamente. Lo mismo parece suceder invierno de la corrida Control y primavera de NOLAND y SSTZONAL.
+
+```{r ampl-mean-sp-runs, fig.cap = c("Amplitud media de la onda 3 mensual para cada corrida."), fig.height = 5}
+mean.qs.sp <- speedy[lon == 0, .(amplitude = mean(amplitude)), 
+                     by = .(lat, lev, run, season(date))] 
+
+sp.levs <- unique(speedy$lev)
+binwidth <- 5
+ggplot(mean.qs.sp, aes(lat, lev)) +
+    geom_contour_fill(aes(z = amplitude), binwidth = binwidth) +
+    scale_x_latitude(trans = "reverse") +
+    scale_y_level(breaks = sp.levs)+
+    scale_fill_viridis_c(guide = guide_colorstrip_bottom(),
+                         breaks = MakeBreaks(binwidth)) +
+    ylab("Nivel") + xlab("Latitud") +
+    surface +
+    coord_latlev() +
+    facet_grid(run ~ season)
+```
+
+
+<!-- ```{r} -->
+<!-- sp.index[, density.circular(phase.c, bw = 10)[c("x", "y")], by = .(season(date), run)] %>% -->
+<!--     ggplot(aes(x*180/pi/3, color = run)) +  -->
+<!--     geom_line(aes(color = run, y = y)) +  -->
+<!--     geom_rug(data = copy(sp.index)[, season := season(date)], -->
+<!--              aes(x = phase*180/pi), alpha = 0.5) + -->
+<!--     facet_wrap(~season) +  -->
+<!--     scale_x_continuous(limits = c(0, 120)) -->
+<!-- ``` -->
+
 
 ```{r calc-sp-index}
 levs.index <- c(700, 300, 100)
 lats.index <- c(-65, -40)
 levs.index <- c(100, 700)
 
+speedy[, phase.c := circular(phase*3, modulo = "2pi")]
 sp.index <- speedy[(lev %b% levs.index) & 
                        (lat %b% lats.index) & 
                        lon == 0,
                    .(amplitude   = mean(amplitude),
                      r2          = mean(r2),
-                     phase  = mode.circular(phase)),
+                     phase  = mean.circular(phase.c)/3),
                    by = .(date, run)]
+sp.index[, phase.c := circular(phase*3, modulo = "2pi")]
+```
+
+```{r sd-fase-sp-runs, fig.cap = "Desvío estándar (en grados) de la fase media mensual para cada estación y cada corrida."}
+sp.index[, .(sd = sd.circular(phase.c)*180/pi/3), by = .(run, season(date))] %>% 
+    ggplot(aes(factor(season), sd)) +
+    geom_col(aes(fill = run), position = "dodge", width = 0.5) +
+    geom_hline(yintercept = 30, size = 0.3) +
+    scale_y_continuous(name = "SD de la fase") +
+    scale_x_discrete(name = "") +
+    scale_fill_brewer(palette = "Set1") +
+    theme(panel.grid.major.x = element_blank())
 ```
 
 
+Para profundizar en esta observación, la \autoref{fig:sd-fase-sp-runs} muestra el desvío estándar de la fase media mensual para cada estación y corrida. Si se asume distribución normal, aproximadamente el 95% de los datos están en un rango de $\pm 2\sigma$ al rededor de la media. Como la fase está acotada entre 0° y 120°, valores de $\sigma$ por encima de 30° implica que los datos están distribuidos casi uniformemente en todo el dominio.
 
+En verano, el desvío es mínimo y aumenta ligeramente en NOLAND y SSTZONAL pero siempre por debajo de los 30°. En otoño, todas las corridas muestran valores altos muy por encima de los 30°, indicando que hay muy poca estacionaridad en todas las corridas. En invierno, la corrida Control está en el límite de los 30° y NOLAND y SSTZONAL tienen valores menores. En primavera, la corrida Control tiene valores mínimos de $\sigma$ mientras que NOLAND y SSTZONAL presentan valores muy altos, por encima de los 30°. Estos valores son consistentes con lo observado en la comparación de las figuras\ \ref{fig:ampl-dif-sp-runs} y\ \ref{fig: ampl-mean-sp-runs} y sugieren que las diferencias observadas entre las corridas en la señal de la QS3 se deben principalmente a mayor o menor estacionaridad y no a una mayor o menor amplitud de las onda planetaria 3. 
+
+En la \autoref{fig:index-sp-boxplot}, se muestra el ciclo anual de la amplitud de la onda 3 para cada corrida. La amplitud media en ningún mes presenta cambios significativos entre los modelos, dando más peso a la hipótesis de que los cambios observados en la señal de la QS3 se deben a cambios en la variabiliad de la fase. 
 
 ```{r index-sp-boxplot, fig.cap = "Ciclo anual de amplitud de onda 3."}
-ggplot(sp.index, aes(factor(month(date)), amplitude, color = run)) +
-    geom_boxplot() +
-    scale_color_brewer(palette = "Set1") +
-    scale_x_discrete(breaks = 1:12, labels = month.abb_sp, name = "Mes") +
-    scale_y_continuous(name = "Amplitud")
+
+ggplot(sp.index, aes(factor(month(date)), amplitude)) +
+    # geom_violin() +
+    geom_boxplot(aes(fill = run)) +
+    scale_fill_brewer(palette = "Set1") +
+    scale_x_discrete(name = "Mes", labels = month.abb_sp) +
+    scale_y_continuous(name = "Amplitud") +
+    theme(panel.grid.major.x = element_blank())
 ```
 
 
 
-
-## Regresión
-
+### Regresiones
 
 ```{r calc-regr-psi-sp}
 regr.file <- "DATA/regression-exps.Rds"
-regr.exps <- cache.file(regr.file, {
-    speedy[lev == 300, ] %>% 
-        .[sp.index[, .(date, run, amplitude, phase)], 
-          on = c("date", "run")] %>% 
-        .[, 
-          ExtractLm(RcppArmadillo::fastLm(cbind(mean = 1, 
-                                                amplitude = amplitude/sd(amplitude),
-                                                phase = phase),
-                                          psi)), 
-          by = .(lon, lat, month(date), run)]
+regr.psi.sp <- cache.file(regr.file, {
+    psi.sp[, .(lon, lat, date, run, psi)] %>% 
+        .[sp.index[, .(date, run, amplitude, phase)], on = c("date", "run")] %>% 
+        .[, ExtractLm(
+            RcppArmadillo::fastLm(cbind(mean = 1,
+                                        amplitude = amplitude/sd(amplitude), 
+                                        phase = phase),
+                                  psi)),
+          keyby = .(lat, lon, month(date), run)] %>% 
+        .[, t := abs(estimate)/se] %>% 
+        .[, estimate.z := Anomaly(estimate),
+          by = .(lat, month, run, regressor)] %>% 
+        setnames("estimate.z", "psi.z") %>% 
+        .[, c("f.lon", "f.lat") := WaveFlux(.SD), by = .(regressor, month, run)]
 })
 ```
+
+```{r}
+mult <- 1e-9
+binwidth <- 0.0005
+ggplot(regr.psi.sp[regressor == "amplitude", ], aes(lon, lat)) +
+    geom_contour_fill(aes(z = psi.z*mult), 
+                      binwidth = binwidth,
+                      exclude = 0, complete = FALSE) +
+    scale_fill_divergent(name = "Z*", 
+                         breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 1,
+                min.mag = 0.005,
+                scale = 500, size = 0.2) +
+    scale_linetype(guide = "none") +
+    map.world +
+    scale_s_map(limits.lat = c(-90, 30)) +
+    coord_quickmap() +
+    facet_grid_paginate(run ~ month, ncol = 3, nrow = 3, page = 1, byrow = F,
+                        labeller = labeller(month = month.abb_sp))
+```
+
+\todo[inline]{hasta acá}
 
 ```{r regr-psi-sp-runs, fig.cap = "Regresión en función corriente."}
 binwidth <- 1
