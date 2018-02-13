@@ -224,21 +224,23 @@ ncep.mean.season <- ncep.mean[, lapply(.SD, mean),
 \todo[inline]{Listado de abreviaturas}
 \todo[inline]{Revisar TODOS los epígrafes}
 
-<!-- \usepackage{etoolbox} -->
-<!-- \@ifpackageloaded{endfloat} -->
-<!-- { -->
-<!--  \efloat@condopen{fff} -->
-<!--  \pretocmd\@chapter{\immediate\write\efloat@postfff{\noexpand\stepcounter{chapter}}}{}{\fail} -->
-<!--  \AtBeginFigures{\setcounter{chapter}{0}} -->
-<!-- }{} -->
-
 # Introducción
 
+La variabilidad del clima en el sur de Sudamérica (SSA) desde escalas sinópticas e intraestacionales hasta escalas interanuales y más largas, es en buena parte remotamente influenciada tanto por las condiciones del clima en las regiones tropicales como en las regiones extratropicales (ej. Vera y otros (2006)). Si bien la influencia tropical ha sido y es extensamente estudiada, aquella asociada con las fuentes de variabilidad en regiones de latitudes medias y subpolares no lo ha sido tanto. Motiva el hecho que mientras que el clima en la zona tropical exhibe altos niveles de predictibilidad (en escalas estacionales asociados con el fenómeno del Niño-Oscilación del Sur (ENSO) y en escalas intraestacionales con la oscilación de Madden-Julian (MJO)), esos niveles en promedio decaen fuera de esa región. Sin embargo, estudios recientes de la variabilidad climática en las regiones subpolares y polares del Hemisferio Sur (HS) destacan la actividad del Modo Anular del Sur (conocido por su sigla en inglés SAM) como una fuente de variabilidad climática de significativa influencia sobre los continentes del HS y en particular del SSA (ej. Silvestri y Vera (2009) en escalas interanuales y Alvarez y otros (2014) en escalas intraestacionales). La distribución espacial del SAM se caracteriza por una anomalía de presión o altura geopotencial sobre el continente antártico y anomalías de signo opuesto en latitudes medias, generalmente asociadas con un patrón de onda planetario de números de onda zonal entre 3 y 4 (patrón conocido generalmente como “la onda 3” o por su sigla en inglés ZW3). Si bien la alternancia del signo entre las anomalías polares y extratropicales del SAM se asocia con intensificaciones y debilitamiento de los vientos Oestes que caracterizan las latitudes medias del HS, las causas por las cuales estas variaciones se asocian con el desarrollo de la ZW3 no se conocen del todo todavía. Teniendo en cuenta el impacto que su desarrollo tiene en el establecimiento y persistencia de condiciones climáticas en el SSA amerita esta investigación.
 
 * Antecedentes    
+
+Viejos estudios, como el realizado por Trenberth y Mo (1985), muestran una recurrencia importante en la ocurrencia de anticiclones de bloqueo simultáneos en diferentes regiones del HS (sur de Sudamérica, sur de Nueva Zelandia y porción central del Océano Indico), favorecida por el establecimiento de un patrón de ZW3. Desde ese momento hasta la actualidad diferentes estudios se concentraron en entender la influencia de los bloqueos sobre el clima de Sudamérica y su relación con la ZW3 (ej. Rao y otros, 2004), pero como se mencionó anteriormente muy poca atención ha recibido el estudio de las causas que dan lugar al establecimiento del patrón de ZW3. Quintanar y Mechoso (1995) realizaron experimentos de sensibilidad similares a los propuestos en este trabajo pero se centraron en la onda planetaria 1. Encontraron que las condiciones térmico-orográficas sobre la Antártida no eran suficientes para explicar la onda 1 planetaria de latitudes subpolares, por lo que concluyen que forzantes remotos deberían jugar un papel. 
+
+Estudios sobre el flujo medio zonal del HS muestran que tiende a ser bastante simétrico zonalmente, sin embargo presenta importantes asimetrías asociadas principalmente por las ondas planetarias de número de onda 1 y 3 o ZW3.  Estas ondas zonales tienden a ser cuasi-estacionarias y exhiben importantes variabilidades temporales (ej. Van Loon y Jenne, 1972). En particular, se ha documentado que la ZW3 presenta una estructura barotrópica con variabilidad en escalas diarias-semanales (ej. Kidson, 1988), estacionales (ej. Mo y White, 1985) y más largas (ej. Karoly 1989). Mo and White (1985) en particular mostraron que existen ubicaciones preferenciales para los centros de acción de la ZW3. Cai y otros (1999) evaluaron la habilidad del modelo CSIRO en representar la ZW3 y encontraron que proporcionaba una representación adecuada de la misma. 
+
+El papel de las condiciones de superficie en el desarrollo de la ZW3 es también considerado. Raphael (1998) examinó la ZW3 en el modelo CCM del NCAR (versiones 1 y 3) y encontró que ambas versiones simulaban diferente a la ZW3, siendo los resultados sensibles al grado de representación del modelo tanto de la interacción mar-atmósfera como de las condiciones de hielo marino en las zonas polares. Raphael (2007) complementa estos resultados encontrando correlaciones significativas entre un índice de la actividad de la ZW3 (Raphael (2004)) y la extensión de hielo marítimo antártico. Este es un resultado importante ya que a pesar de que la ZW3 puede desarrollarse solamente por la dinámica interna de la atmósfera (ej. Simpson y otros. 2013), estos dos trabajos muestran que los modelos pueden reproducirla y que existen evidencias de que las condiciones superficiales pueden influenciar su actividad. Asimismo, Raphael (2003) encontró importantes variaciones interanuales experimentadas por la ZW3 entre 1958 y 1996, aparentemente relacionadas con variaciones en la frecuencia del ENSO, que también influenciaron las asimetrías del SAM (Fogt y otros 2012). 
+
 Además de lo que hay en lo de las becas + lo que fui encontrando, agregar sobre las climatologías disponibles y sus limitaciones. 
-* Objetivo General
-* Objetivo particular 
+
+
+En consecuencia el objetivo principal de este plan es: entender los mecanismos que explican el desarrollo de la onda planetaria 3 (ZW3) en la circulación del Hemisferio Sur mediante simulaciones numéricas realizadas con el modelo SPEEDY.
+
 
 Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
 
@@ -547,7 +549,7 @@ ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
     facet_wrap(~season)
 ```
 
-El un promedio zonal de la temperatura se muestra en la \autoref{fig:t-ncep-corte}. Al norte de los 45° durante todo el año la tempertura decrece con la altura por debajo de los 100hPa aproximadamente, donde alcanza un mínimo que marca la tropopausa, y crece por encima. La altura del mínimo de temperatura varía mucho al sur de los 45°, siendo mínima en verano (300hPa) y máxima en invierno y otoño (30hPa). Hay que tener encuenta, sin embargo, que la tropopausa no está bien definida en el invierno Antártico [@Zangl2001; ]\todo{conseguir este paper http://www.jstor.org/stable/26255916} por lo que el uso de la tropopausa térmica no es conveniente. @Zangl2001, utilizando datos de ERA para el período 1979-93, encontraron que la tropopausa térmica varía entre los 320hPa en enero y los 170hPa en agosto aunque advierten que el uso del criterio término es "problemático" en el invierno antártico. 
+El un promedio zonal de la temperatura se muestra en la \autoref{fig:t-ncep-corte}. Al norte de los 45° durante todo el año la tempertura decrece con la altura por debajo de los 100hPa aproximadamente, donde alcanza un mínimo que marca la tropopausa, y crece por encima. La altura del mínimo de temperatura varía mucho al sur de los 45°, siendo mínima en verano (300hPa) y máxima en invierno y otoño (30hPa). Hay que tener encuenta, sin embargo, que la tropopausa no está bien definida en el invierno Antártico [@Court1942 @Zangl2001] por lo que el uso de la tropopausa térmica no es conveniente. @Zangl2001, utilizando datos de ERA para el período 1979-93, encontraron que la tropopausa térmica varía entre los 320hPa en enero y los 170hPa en agosto aunque advierten que el uso del criterio término es "problemático" en el invierno antártico. 
 
 ```{r tz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de temperatura."}
 binwidth <- 1
@@ -2962,7 +2964,6 @@ sp.index[, .(sd = sd.circular(phase.c)*180/pi/3), by = .(run, season(date))] %>%
     theme(panel.grid.major.x = element_blank())
 ```
 
-
 Para profundizar en esta observación, la \autoref{fig:sd-fase-sp-runs} muestra el desvío estándar de la fase media mensual para cada estación y corrida. Si se asume distribución normal, aproximadamente el 95% de los datos están en un rango de $\pm 2\sigma$ al rededor de la media. Como la fase está acotada entre 0° y 120°, valores de $\sigma$ por encima de 30° implica que los datos están distribuidos casi uniformemente en todo el dominio.
 
 En verano, el desvío es mínimo y aumenta ligeramente en NOLAND y SSTZONAL pero siempre por debajo de los 30°. En otoño, todas las corridas muestran valores altos muy por encima de los 30°, indicando que hay muy poca estacionaridad en todas las corridas. En invierno, la corrida Control está en el límite de los 30° y NOLAND y SSTZONAL tienen valores menores. En primavera, la corrida Control tiene valores mínimos de $\sigma$ mientras que NOLAND y SSTZONAL presentan valores muy altos, por encima de los 30°. Estos valores son consistentes con lo observado en la comparación de las figuras\ \ref{fig:ampl-dif-sp-runs} y\ \ref{fig: ampl-mean-sp-runs} y sugieren que las diferencias observadas entre las corridas en la señal de la QS3 se deben principalmente a mayor o menor estacionaridad y no a una mayor o menor amplitud de las onda planetaria 3. 
@@ -2979,7 +2980,6 @@ ggplot(sp.index, aes(factor(month(date)), amplitude)) +
     scale_y_continuous(name = "Amplitud") +
     theme(panel.grid.major.x = element_blank())
 ```
-
 
 
 ### Regresiones
@@ -3003,49 +3003,36 @@ regr.psi.sp <- cache.file(regr.file, {
 })
 ```
 
-```{r}
+```{r psi-regr-runs, cache = FALSE, fig.cap = "Regresión de psi con la amplitud de la QS3.", fig.subcap = c("DEF", "MAM", "JJA", "SON"), fig.class = "fullpage", fig.show = "hold"}
 mult <- 1e-9
 binwidth <- 0.0005
-ggplot(regr.psi.sp[regressor == "amplitude", ], aes(lon, lat)) +
-    geom_contour_fill(aes(z = psi.z*mult), 
-                      binwidth = binwidth,
-                      exclude = 0, complete = FALSE) +
-    scale_fill_divergent(name = "Z*", 
-                         breaks = MakeBreaks(binwidth),
-                         guide = guide_colorstrip_bottom()) +
-    geom_vector(aes(dx = f.lon, dy = f.lat), skip = 1,
-                min.mag = 0.005,
-                scale = 500, size = 0.2) +
-    scale_linetype(guide = "none") +
-    map.world +
-    scale_s_map(limits.lat = c(-90, 30)) +
-    coord_quickmap() +
-    facet_grid_paginate(run ~ month, ncol = 3, nrow = 3, page = 1, byrow = F,
-                        labeller = labeller(month = month.abb_sp))
+
+regr.psi.sp[, monthf := factor(month, levels = c(12, 1:11), ordered = T)]
+
+lapply(1:4, function(n){
+    print(
+        ggplot(regr.psi.sp[regressor == "amplitude", ], aes(lon, lat)) +
+            geom_contour_fill(aes(z = psi.z*mult), 
+                              binwidth = binwidth,
+                              exclude = 0, complete = FALSE) +
+            scale_fill_divergent(name = "Z*", 
+                                 breaks = MakeBreaks(binwidth),
+                                 guide = guide_colorstrip_bottom()) +
+            geom_vector(aes(dx = f.lon, dy = f.lat), skip = 1,
+                        min.mag = 0.005,
+                        scale = 500, size = 0.2) +
+            scale_linetype(guide = "none") +
+            map.world +
+            scale_s_map(limits.lat = c(-90, 30)) +
+            coord_quickmap() +
+            facet_grid_paginate(run ~ monthf, nrow = 3, ncol = 3, page = n,
+                                labeller = labeller(monthf = month.abb_sp))
+    )
+})
 ```
+
 
 \todo[inline]{hasta acá}
-
-```{r regr-psi-sp-runs, fig.cap = "Regresión en función corriente."}
-binwidth <- 1
-regr.exps[regressor == "amplitude"] %>%
-    .[, lapply(.SD, mean, na.rm = T), 
-      by = .(lon, lat, run, season(month), regressor)] %>% 
-    .[, psi.z := Anomaly(estimate), by = .(run, season, lat)] %>% 
-    .[, c("fx", "fy") := WaveFlux(.SD, p = 300), by = .(run, season)] %>%
-    ggplot(aes(lon, lat, z = psi.z)) +
-    geom_contour_fill(binwidth = binwidth, exclude = 0) +
-    geom_vector(aes(dx = fx, dy = fy), skip = 3,
-                min.mag = 1e-15,
-                scale = 1e15) +
-    map.SH +
-    scale_s_map() +
-    scale_fill_divergent(breaks = MakeBreaks(binwidth),
-                         guide = guide_colorstrip_bottom()) +
-    coord_quickmap() +
-    facet_grid(run ~ season)
-```
-
 
 
 

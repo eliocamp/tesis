@@ -963,6 +963,10 @@ geom_label_contour_back <- function(...) {
 geom_contour_fine <- function(...) geom_contour(..., size = 0.4)
 stat_contour_fine <- function(...) stat_contour(..., size = 0.4)
 
+geom_cross <- function(x = 0, y = 0, ...) {
+    list(geom_vline(xintercept = x, ...),
+        geom_hline(yintercept = y, ...))
+}
 
 labeller.date <- function(sep = " - ") {
     function(s) {
