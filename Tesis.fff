@@ -1,19 +1,19 @@
 \stepcounter {chapter}
 \stepcounter {chapter}
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/fourier-ejemplo-1} \caption{Ejemplo fourier - fig:fourier-ejemplo}\label{fig:fourier-ejemplo}
+\includegraphics[width=155mm, ]{fig/tesis/fourier-ejemplo-1} \caption{Ejemplo fourier - fig:fourier-ejemplo}\label{fig:fourier-ejemplo}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-1} }\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=75mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets - fig:wavelet-ejemplo}\label{fig:wavelet-ejemplo}
+\subfloat[Campo\label{fig:wavelet-ejemplo1}]{\includegraphics[width=77.5mm, ]{fig/tesis/wavelet-ejemplo-1} }\subfloat[Análisis de Wavelets en círculos de latitud señalados.\label{fig:wavelet-ejemplo2}]{\includegraphics[width=77.5mm, ]{fig/tesis/wavelet-ejemplo-2} }\caption{Wavelets - fig:wavelet-ejemplo}\label{fig:wavelet-ejemplo}
 \end{figure*}
 \efloatseparator
  
 \stepcounter {chapter}
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/gh-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/gh-ncep-1}
 
 }
 
@@ -22,14 +22,19 @@
 \end{landscape}
 \efloatseparator
  
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ghdy-ncep-corte-1} \caption{Gradiente meridional de Z - fig:ghdy-ncep-corte - SÓLO BORRADOR}\label{fig:ghdy-ncep-corte}
-\end{figure*}
+\begin{figure}
+
+{\centering \includegraphics[width=135mm, ]{fig/tesis/sd-gh-ncep-1}
+
+}
+
+\caption{Desvío estándar por círculo de latitud. - fig:sd-gh-ncep}\label{fig:sd-gh-ncep}
+\end{figure}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-ncep-1}
 
 }
 
@@ -40,7 +45,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ghz-ncep-corte60-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/ghz-ncep-corte60-1}
 
 }
 
@@ -48,24 +53,9 @@
 \end{figure}
 \efloatseparator
  
-\begin{figure*}
-\subfloat[u*v*\label{fig:uzvz-ncep-corte1}]{\includegraphics[width=150mm, ]{fig/tesis/uzvz-ncep-corte-1} }\newline\subfloat[T*v*\label{fig:uzvz-ncep-corte2}]{\includegraphics[width=150mm, ]{fig/tesis/uzvz-ncep-corte-2} }\caption{Transportes - fig:uzvz-ncep-corte - SÓLO BORRADOR}\label{fig:uzvz-ncep-corte}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure}
-
-{\centering \includegraphics[width=130mm, ]{fig/tesis/sd-gh-ncep-1}
-
-}
-
-\caption{Desvío estándar por círculo de latitud. - fig:sd-gh-ncep}\label{fig:sd-gh-ncep}
-\end{figure}
-\efloatseparator
- 
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/t-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/t-ncep-1}
 
 }
 
@@ -76,7 +66,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/t-ncep-corte-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/t-ncep-corte-1}
 
 }
 
@@ -86,7 +76,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/tz-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/tz-ncep-1}
 
 }
 
@@ -97,7 +87,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/t-ncep-corte60-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/t-ncep-corte60-1}
 
 }
 
@@ -107,7 +97,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/u-ncep-corte-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/u-ncep-corte-1}
 
 }
 
@@ -117,7 +107,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/u-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/u-ncep-1}
 
 }
 
@@ -128,7 +118,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/uz-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/uz-ncep-1}
 
 }
 
@@ -139,7 +129,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/v-ncep-corte-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/v-ncep-corte-1}
 
 }
 
@@ -149,7 +139,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/v-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/v-ncep-1}
 
 }
 
@@ -158,41 +148,13 @@
 \end{landscape}
 \efloatseparator
  
+\begin{landscape}\end{landscape}
+
+\section{Función corriente}\label{funcion-corriente}
+
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/ghminus1-ncep-1}
-
-}
-
-\caption{Z* menos QS1. - fig:ghminus1-ncep - SÓLO BORRADOR}\label{fig:ghminus1-ncep}
-\end{figure}
-\end{landscape}
-\efloatseparator
- 
-\begin{landscape}\begin{figure}
-
-{\centering \includegraphics[width=227mm,]{fig/tesis/etady-ncep-1}
-
-}
-
-\caption{Gradiente meridional de vorticidad absoluta * 1e11 - fig:etady-ncep}\label{fig:etady-ncep}
-\end{figure}
-\end{landscape}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa. - fig:ks-ncep}\label{fig:ks-ncep}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ks-ncep-cortelev-1} \caption{Número de onda estacionario en 180° - fig:ks-ncep-cortelev - SÓLO BORRADOR}\label{fig:ks-ncep-cortelev}
-\end{figure*}
-\efloatseparator
- 
-\begin{landscape}\begin{figure}
-
-{\centering \includegraphics[width=227mm,]{fig/tesis/psi-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-ncep-1}
 
 }
 
@@ -203,7 +165,23 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/r2-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/etady-ncep-1}
+
+}
+
+\caption{Gradiente meridional de vorticidad absoluta * 1e11 - fig:etady-ncep}\label{fig:etady-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ks-ncep-1} \caption{Número de onda estacionario en 200hPa. - fig:ks-ncep}\label{fig:ks-ncep}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/r2-ncep-1}
 
 }
 
@@ -214,7 +192,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/ampl-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/ampl-ncep-1}
 
 }
 
@@ -225,23 +203,23 @@
  
 \stepcounter {chapter}
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-1} \caption{Media de reconstrucción de onda 3. - fig:qs3-ncep}\label{fig:qs3-ncep}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-1} \caption{Media de reconstrucción de onda 3. - fig:qs3-ncep}\label{fig:qs3-ncep}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte - fig:qs3-ncep-corte}\label{fig:qs3-ncep-corte}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte - fig:qs3-ncep-corte}\label{fig:qs3-ncep-corte}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3. - fig:qs3sd-ncep}\label{fig:qs3sd-ncep}
+\includegraphics[width=155mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3. Se incluyen en negro, contornos que describen la posición de los centros de las perturbaciones. - fig:qs3sd-ncep}\label{fig:qs3sd-ncep}
 \end{figure*}
 \efloatseparator
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/wavelet-fourier-ncep-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/wavelet-fourier-ncep-1}
 
 }
 
@@ -249,14 +227,20 @@
 \end{figure}
 \efloatseparator
  
-\begin{figure*}
-\subfloat[Haciendo la amplitud del campo medio\label{fig:waveletz-ncep1}]{\includegraphics[width=150mm, ]{fig/tesis/waveletz-ncep-1} }\newline\subfloat[Haciendo el valor medio de la amplitud.\label{fig:waveletz-ncep2}]{\includegraphics[width=150mm, ]{fig/tesis/waveletz-ncep-2} }\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
-\end{figure*}
+\begin{landscape}\begin{figure}
+
+{\centering \subfloat[Haciendo la amplitud del campo medio\label{fig:waveletz-ncep1}]{\includegraphics[width=247mm,]{fig/tesis/waveletz-ncep-1} }\newline\subfloat[Haciendo el valor medio de la amplitud.\label{fig:waveletz-ncep2}]{\includegraphics[width=247mm,]{fig/tesis/waveletz-ncep-2} }
+
+}
+
+\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
+\end{figure}
+\end{landscape}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/wavelet-ncep-corte-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/wavelet-ncep-corte-1}
 
 }
 
@@ -266,53 +250,28 @@
 \efloatseparator
  
 \begin{figure*}
-\subfloat[campo\label{fig:estacionaridad1}]{\includegraphics[width=150mm, ]{fig/tesis/estacionaridad-1} }\newline\subfloat[media zonal\label{fig:estacionaridad2}]{\includegraphics[width=150mm, ]{fig/tesis/estacionaridad-2} }\caption{Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?) - fig:estacionaridad - SÓLO BORRADOR}\label{fig:estacionaridad}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-max-mean-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media. - fig:ampl-max-mean}\label{fig:ampl-max-mean}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/estacionaridad-fourier-1} \caption{Estacionaridad según fourier - fig:estacionaridad-fourier - SÓLO BORRADOR}\label{fig:estacionaridad-fourier}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas. - fig:ghz-ncep-select}\label{fig:ghz-ncep-select}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/wavelet-reconstr-1} \caption{Reconstrucción de QS3 usando wavelets - fig:wavelet-reconstr - SÓLO BORRADOR}\label{fig:wavelet-reconstr}
+\includegraphics[width=155mm, ]{fig/tesis/cor-mean-max-1} \caption{Correlación entre amplitud máxima y media. - fig:cor-mean-max}\label{fig:cor-mean-max}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-max-mean-1} \caption{Distribució de amplitud para 12 fechas. En rojo la amplitud máxima, en azul la amplitud media. - fig:ampl-max-mean}\label{fig:ampl-max-mean}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Anomalía zonal geopotencial en 300hPa para fechas seleccionadas. - fig:ghz-ncep-select}\label{fig:ghz-ncep-select}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/cor-mean-max-1} \caption{Correlación entre amplitud máxima y media. - fig:cor-mean-max}\label{fig:cor-mean-max}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\subfloat[Ciclo anual\label{fig:ampl-ts1}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal\label{fig:ampl-ts2}]{\includegraphics[width=150mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media - fig:ampl-ts}\label{fig:ampl-ts}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/wavelet-period-1} \caption{Análisis de wavelet para la amplitud de la onda 3. - fig:wavelet-period - SÓLO BORRADOR}\label{fig:wavelet-period}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/acf-ampl-1} \caption{Función de autocorrelación para la amplitud media anual de la onda 3 - fig:acf-ampl - SÓLO BORRADOR}\label{fig:acf-ampl}
+\subfloat[Ciclo anual\label{fig:ampl-ts1}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal\label{fig:ampl-ts2}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-2} }\caption{Amplitud media - fig:ampl-ts}\label{fig:ampl-ts}
 \end{figure*}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/fase-boxplot-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/fase-boxplot-1}
 
 }
 
@@ -322,48 +281,38 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/eof-1} \caption{Primeras dos componentes principales del campo de QS3 - fig:eof}\label{fig:eof}
+\includegraphics[width=155mm, ]{fig/tesis/eof-1} \caption{Primeras dos componentes principales del campo de QS3 - fig:eof}\label{fig:eof}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/pc1-pc2-1} \caption{Valor medio de las dos primeras componentes principales del campo de QS3 - fig:pc1-pc2}\label{fig:pc1-pc2}
+\includegraphics[width=155mm, ]{fig/tesis/pc1-pc2-1} \caption{Valor medio de las dos primeras componentes principales del campo de QS3 - fig:pc1-pc2}\label{fig:pc1-pc2}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3-qsseason-ncep-1} \caption{Media de reconstrucción de onda 3 en 300hPa - fig:qs3-qsseason-ncep}\label{fig:qs3-qsseason-ncep}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-1} \caption{Media de reconstrucción de onda 3 en 300hPa - fig:qs3-qsseason-ncep}\label{fig:qs3-qsseason-ncep}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1} \caption{Corte - fig:qs3-qsseason-ncep-corte}\label{fig:qs3-qsseason-ncep-corte}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1} \caption{Corte - fig:qs3-qsseason-ncep-corte}\label{fig:qs3-qsseason-ncep-corte}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes. - fig:lag-cor}\label{fig:lag-cor}
+\includegraphics[width=155mm, ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes. - fig:lag-cor}\label{fig:lag-cor}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/cor-campo-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo}\label{fig:cor-campo}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/cor-campo2-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo2 - SÓLO BORRADOR}\label{fig:cor-campo2}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/r2-cor2-1} \caption{Relación entre R2 medio y R2 reconstruido. - fig:r2-cor2 - SÓLO BORRADOR}\label{fig:r2-cor2}
+\includegraphics[width=155mm, ]{fig/tesis/cor-campo-1} \caption{Correlación cuadrada media para estaciones según onda3. - fig:cor-campo}\label{fig:cor-campo}
 \end{figure*}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/regr-gh-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-gh-ncep-1}
 
 }
 
@@ -373,18 +322,13 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/regr-gh-polar-1} \caption{Igual que figura  XX, pero en proyección polar para julio y septiembre. - fig:regr-gh-polar}\label{fig:regr-gh-polar}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/sam-ampl-1} \caption{Relación entre amplitud media de la onda 3 y el SAM - fig:sam-ampl - SÓLO BORRADOR}\label{fig:sam-ampl}
+\includegraphics[width=155mm, ]{fig/tesis/regr-gh-polar-1} \caption{Igual que figura  XX, pero en proyección polar para julio y septiembre. - fig:regr-gh-polar}\label{fig:regr-gh-polar}
 \end{figure*}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/regr-psi-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-psi-ncep-1}
 
 }
 
@@ -395,7 +339,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/seleccion-tabla-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/seleccion-tabla-1}
 
 }
 
@@ -406,7 +350,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/interaccion-tabla-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/interaccion-tabla-1}
 
 }
 
@@ -416,7 +360,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/gh-comp-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/gh-comp-1}
 
 }
 
@@ -427,7 +371,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-ene-1}
+{\centering \includegraphics[width=155mm, ]{fig/tesis/gh-qs3-select-ene-1}
 
 }
 
@@ -437,7 +381,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=150mm, ]{fig/tesis/gh-qs3-select-sep-1}
+{\centering \includegraphics[width=155mm, ]{fig/tesis/gh-qs3-select-sep-1}
 
 }
 
@@ -447,7 +391,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/regr-sst-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-sst-ncep-1}
 
 }
 
@@ -458,7 +402,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/regr-olr-ncep-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-olr-ncep-1}
 
 }
 
@@ -470,7 +414,7 @@
 \stepcounter {chapter}
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-sp-nc-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-sp-nc-1}
 
 }
 
@@ -481,7 +425,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-dif-sp-nc-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-dif-sp-nc-1}
 
 }
 
@@ -492,7 +436,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ghz-sp-nc-corte60-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/ghz-sp-nc-corte60-1}
 
 }
 
@@ -502,7 +446,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/t-nc-sp-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/t-nc-sp-1}
 
 }
 
@@ -512,13 +456,13 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/tz-sp-nc-1} \caption{T* - fig:tz-sp-nc}\label{fig:tz-sp-nc}
+\includegraphics[width=155mm, ]{fig/tesis/tz-sp-nc-1} \caption{T* - fig:tz-sp-nc}\label{fig:tz-sp-nc}
 \end{figure*}
 \efloatseparator
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/u-sp-nc-corte-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/u-sp-nc-corte-1}
 
 }
 
@@ -528,7 +472,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/u-sp-nc-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/u-sp-nc-1}
 
 }
 
@@ -538,13 +482,13 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/u-dif-sp-nc-1} \caption{Diferencia entre ncep y speedy en viento zonal - fig:u-dif-sp-nc}\label{fig:u-dif-sp-nc}
+\includegraphics[width=155mm, ]{fig/tesis/u-dif-sp-nc-1} \caption{Diferencia entre ncep y speedy en viento zonal - fig:u-dif-sp-nc}\label{fig:u-dif-sp-nc}
 \end{figure*}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/etady-sp-nc-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/etady-sp-nc-1}
 
 }
 
@@ -555,7 +499,7 @@
  
 \begin{figure}
 
-{\centering \includegraphics[width=130mm, ]{fig/tesis/ks-sp-nc-corte-1}
+{\centering \includegraphics[width=135mm, ]{fig/tesis/ks-sp-nc-corte-1}
 
 }
 
@@ -565,7 +509,7 @@
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/psi-sp-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-sp-1}
 
 }
 
@@ -575,18 +519,18 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de fourier (speedy en sombreado, ncep en contornos). - fig:ampl-sp-nc}\label{fig:ampl-sp-nc}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de fourier (speedy en sombreado, ncep en contornos). - fig:ampl-sp-nc}\label{fig:ampl-sp-nc}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/qs2-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep) - fig:qs2-sp-nc}\label{fig:qs2-sp-nc}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep) - fig:qs3-sp-nc}\label{fig:qs3-sp-nc}
 \end{figure*}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/ghz-sp-runs-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-sp-runs-1}
 
 }
 
@@ -596,50 +540,35 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Control - corrida para Z* - fig:ghz-dif-sp-runs}\label{fig:ghz-dif-sp-runs}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/t-sp-runs-1} \caption{Temperatura media en 850hPa. - fig:t-sp-runs - SÓLO BORRADOR}\label{fig:t-sp-runs}
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/tz-sp-runs-1} \caption{Temperatura media en 850hPa. - fig:tz-sp-runs}\label{fig:tz-sp-runs}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-dif-sp-runs-1} \caption{Diferencia Corrida - control para Z* - fig:ghz-dif-sp-runs}\label{fig:ghz-dif-sp-runs}
 \end{figure*}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/tz-dif-sp-runs-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/tz-dif-sp-runs-1}
 
 }
 
-\caption{Diferencia Control - corrida para T* - fig:tz-dif-sp-runs}\label{fig:tz-dif-sp-runs}
+\caption{Diferencia Control - corrida para T - fig:tz-dif-sp-runs}\label{fig:tz-dif-sp-runs}
 \end{figure}
 \end{landscape}
 \efloatseparator
  
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/uz-sp-runs-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/u-dif-sp-runs-1}
 
 }
 
-\caption{Viento zonal - fig:uz-sp-runs}\label{fig:uz-sp-runs}
+\caption{Diferencia control - corrida para U. - fig:u-dif-sp-runs}\label{fig:u-dif-sp-runs}
 \end{figure}
 \end{landscape}
 \efloatseparator
  
-\begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/u-dif-sp-runs-1} \caption{Diferencia control - corrida para U. - fig:u-dif-sp-runs}\label{fig:u-dif-sp-runs}
-\end{figure*}
-\efloatseparator
- 
 \begin{landscape}\begin{figure}
 
-{\centering \includegraphics[width=227mm,]{fig/tesis/psi-sp-runs-1}
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-sp-runs-1}
 
 }
 
@@ -649,28 +578,66 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/psiz-dif-sp-runs-1} \caption{Diferencia en psi.z y flujos de acción de onda. - fig:psiz-dif-sp-runs}\label{fig:psiz-dif-sp-runs}
+\includegraphics[width=155mm, ]{fig/tesis/psiz-dif-sp-runs-1} \caption{Diferencia en psi.z y flujos de acción de onda. - fig:psiz-dif-sp-runs}\label{fig:psiz-dif-sp-runs}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-sp-runs-1} \caption{Amplitud media de la onda 3 para cada corrida. - fig:ampl-sp-runs}\label{fig:ampl-sp-runs}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-sp-runs-1} \caption{Amplitud de la onda 3 media para cada corrida. - fig:ampl-sp-runs}\label{fig:ampl-sp-runs}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/ampl-dif-sp-runs-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida. - fig:ampl-dif-sp-runs}\label{fig:ampl-dif-sp-runs}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-dif-sp-runs-1} \caption{Diferencia de amplitud entre la corrida control y cada corrida. - fig:ampl-dif-sp-runs}\label{fig:ampl-dif-sp-runs}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/index-sp-boxplot-1} \caption{Ciclo anual de amplitud de onda 3. - fig:index-sp-boxplot}\label{fig:index-sp-boxplot}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-mean-sp-runs-1} \caption{Amplitud media de la onda 3 mensual para cada corrida. - fig:ampl-mean-sp-runs}\label{fig:ampl-mean-sp-runs}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=150mm, ]{fig/tesis/regr-psi-sp-runs-1} \caption{Regresión en función corriente. - fig:regr-psi-sp-runs}\label{fig:regr-psi-sp-runs}
+\includegraphics[width=155mm, ]{fig/tesis/sd-fase-sp-runs-1} \caption{Desvío estándar (en grados) de la fase media mensual para cada estación y cada corrida. - fig:sd-fase-sp-runs}\label{fig:sd-fase-sp-runs}
 \end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/index-sp-boxplot-1} \caption{Ciclo anual de amplitud de onda 3. - fig:index-sp-boxplot}\label{fig:index-sp-boxplot}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}
+
+```
+## [[1]]
+```
+
+```
+##
+## [[2]]
+```
+
+```
+##
+## [[3]]
+```
+
+```
+##
+## [[4]]
+```
+
+
+\begin{figure}
+
+{\centering \subfloat[DEF\label{fig:psi-regr-runs1}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-1} }\newline\subfloat[MAM\label{fig:psi-regr-runs2}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-2} }\newline\subfloat[JJA\label{fig:psi-regr-runs3}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-3} }\newline\subfloat[SON\label{fig:psi-regr-runs4}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-4} }\newline\subfloat[DEF\label{fig:psi-regr-runs5}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-5} }\newline\subfloat[MAM\label{fig:psi-regr-runs6}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-6} }\newline\subfloat[JJA\label{fig:psi-regr-runs7}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-7} }\newline\subfloat[SON\label{fig:psi-regr-runs8}]{\includegraphics[width=247mm,]{fig/tesis/psi-regr-runs-8} }
+
+}
+
+\caption{Regresión de psi con la amplitud de la QS3. - fig:psi-regr-runs}\label{fig:psi-regr-runs}
+\end{figure}
+\end{landscape}
 \efloatseparator
  
 \stepcounter {chapter}

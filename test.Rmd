@@ -297,6 +297,7 @@ ggplot(RepeatLon(wave), aes(lon, lat)) +
 ```
 
 Cosas para ver de \autoref{fig:fourier-ejemplo}:   
+la \@ref(fig:fourier-ejemplo)
 Descripción del "rol" de cada número de onda en generar el campo final. 
 La QS1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean continuos.
 
