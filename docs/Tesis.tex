@@ -248,7 +248,8 @@ HS. Los objetivos particulares son
   superficie.
 \end{itemize}
 
-Esto de abajo se va a borrar?:
+XXX Esto de abajo probablemente se va a borrar; no sé bien dónde ponerlo
+XXX
 
 Muchas variables atmosféricas varían con la longitud en menor medida que
 con la latitud o la altura de manera que resulta natural descomponer
@@ -292,9 +293,10 @@ Se utilizó el modelo SPEEDY (Molteni
 sensibilidad (descriptas en el capítulo~\ref{experimentos}). El modelo
 SPEEDY es un modelo de complejidad intermedia basado en ecuaciones
 primitivas espectrales y parametrizaciones simplificadas. En su versión
-41, posee una truncación espectral hasta el número de onda 30
-(equivalente a una resolución de 3.75° en longitud y latitud) y 8
-niveles verticales entre 925hPa y 30hPa.
+41, posee una resolución horizontal espectral de T30 (3,75° en longitud
+y latitud y 8 niveles verticales entre 925hPa y 30hPa. El modelo incluye
+parametrizaciones de las diferentes formas de convección, radiación,
+flujos y difusión vertical.
 
 Una primera gran limitación de SPEEDY es su pobre representación de la
 estratósfera. Sólo el más alto de sus 8 niveles está en la estatósfera
@@ -304,13 +306,18 @@ información confiable. Esto limita seriamente la posibilidad de
 describir numéricamente lo que ocurre en la estratosfera, como por
 ejemplo la dinámica del vórtice polar.
 
+Sin embargo por su bajo costo computacional y su buen desempeño para
+simular ciertas características globales de interés para Sudamérica
+(Barreiro, Díaz, y Renom \protect\hyperlink{ref-Barreiro2014}{2014}) se
+decidió utilizarlo en este trabajo.
+
 \section{Metodología}\label{metodologia}
 
 La caracterización de las ondas cuasiestacionarias a partir de Fourier
-puede realizarse descomponiendo los campos medios o calculando las
-características medias de la descomposición de los campos instantáneos
-(mensuales, en este caso). Si bien pueden dar resultados similares,
-ambas estrategias brindan distinta información.
+puede realizarse descomponiendo los campos medios climatológicos o
+calculando las características medias de la descomposición de los campos
+instantáneos (mensuales, en este caso). Si bien pueden dar resultados
+similares, ambas estrategias brindan distinta información.
 
 Al calcular la amplitud y la fase de cada onda planteria a partir de los
 campos medios, se obtiene una descripción de las ondas presentes en los
@@ -358,6 +365,47 @@ Para el cálculo de wavelets se utilizó la función
 Schmidbauer \protect\hyperlink{ref-R-WaveletComp}{2014}) que utiliza un
 wavelet de Morlet.
 
+La influencia tropical en la variabilidad del clima extratropical se
+explica mediante la propgación meridional de ondas de Rossby. La teoría
+lineal de ondas de Rossby barotrópicas predice que ésta propagación
+depende de las condiciones del entorno (James
+\protect\hyperlink{ref-James}{1994}). En particular, el número de onda
+meridional está dado por
+
+\[
+l = \pm \sqrt{\frac{\eta_{y}}{U} - k^2}
+\]
+
+donde \(\eta_{y}\) es el gradiente meridional de vorticidad absoluta,
+\(U\) es la velocidad zonal del estado básico y \(k\) es el número de
+onda zonal. La propagación meridional sólo es posible si \(l\) es real.
+Esto requiere que
+
+\[
+\frac{\eta_{y}}{U} = K_s \ge k 
+\] donde \(K_s\) es el número de onda estacionario, el cual debe ser
+mayor que el número de onda zonal para permitir la propagación
+meridional.
+
+El flujo de actividad de onda, es un vector que, bajo ciertas
+suposiciones, es paralelo a la velocidad de grupo de las ondas de
+Rossby, lo cual permite cuantificar la propagación meridional y zonal de
+las mismas (James \protect\hyperlink{ref-James}{1994}). En este estudio,
+ésta variable se la calculó a partir de las anomalías zonales de función
+corriente según
+
+\[
+\begin{aligned}
+F_\lambda &= \frac{p}{2000a^2\cos\phi}\left[ \left( \frac{\partial \psi^*}{\partial \lambda} \right)^2 - \psi^*\frac{\partial^2 \psi^*}{\partial \lambda^2}  \right] \\
+F_\phi &= \frac{p}{2000a^2} \left( \frac{\partial \psi^*}{\partial \lambda}\frac{\partial \psi^*}{\partial \phi}  - \psi^* \frac{\partial^2 \psi^*}{\partial \lambda \partial \phi} \right) 
+\end{aligned}
+\]
+
+donde \(p\) es la presión, \(\phi\) la latidud, \(\lambda\) la longitud,
+\(a\) es el radio de la Tierra (tomado como 6371km) y \(\psi^*\) es la
+anomalía zonal de la función corriente (Vera et~al.
+\protect\hyperlink{ref-Vera2004}{2004}).
+
 En el capítulo~\ref{onda-3} se elaboró un índice de actividad de la QS3
 a partir de la amplitud media de Fourier. Existen múltiples índices
 similares presentes en la literatura. Algunos son definidos a partir
@@ -388,23 +436,6 @@ construyó un índice de actividad de onda planetaria a partir de la
 transformada de Hilbert que no tiene estas limitaciones pero no
 distingue entre la actividad de distintos números de onda.
 
-El flujo de actividad de onda es un vector que, bajo ciertas
-suposiciones, es paralelo a la velocidad de grupo de las ondas de Rossby
-(James \protect\hyperlink{ref-James}{1994}). En este estudio se la
-calculó a partir de las anomalías zonales de función corriente según
-
-\[
-\begin{aligned}
-F_\lambda &= \frac{p}{2000a^2\cos\phi}\left[ \left( \frac{\partial \psi^*}{\partial \lambda} \right)^2 - \psi^*\frac{\partial^2 \psi^*}{\partial \lambda^2}  \right] \\
-F_\phi &= \frac{p}{2000a^2} \left( \frac{\partial \psi^*}{\partial \lambda}\frac{\partial \psi^*}{\partial \phi}  - \psi^* \frac{\partial^2 \psi^*}{\partial \lambda \partial \phi} \right) 
-\end{aligned}
-\]
-
-donde \(p\) es la presión, \(\phi\) la latidud, \(\lambda\) la longitud,
-\(a\) es el radio de la Tierra (tomado como 6371km) y \(\psi^*\) es la
-anomalía zonal de la función corriente (Vera et~al.
-\protect\hyperlink{ref-Vera2004}{2004}).
-
 El análisis de componentes principales se realizó mediante la función
 \texttt{EOF()} del paquete \texttt{metR} (Campitelli
 \protect\hyperlink{ref-R-metR}{2017}), la cual realiza una
@@ -431,15 +462,13 @@ ondas cuasiestacionarias (QS) en sí mismas.
 
 \section{Altura geopotencial}\label{altura-geopotencial}
 
-Campo medio:
-
 \begin{landscape}\begin{figure}
 
 {\centering \includegraphics[width=247mm,]{fig/tesis/gh-ncep-1} 
 
 }
 
-\caption{Campo de Z (NCEP) - fig:gh-ncep}\label{fig:gh-ncep}
+\caption{Campo de Z (NCEP)}\label{fig:gh-ncep}
 \end{figure}
 \end{landscape}
 
@@ -463,13 +492,13 @@ asociado con el jet subtropical, que es más intenso en invierno y más
 débil en verano.
 
 En la \autoref{fig:sd-gh.ncep} se muestra, para cada latitud y mes, el
-desvío estándar de la altura geopotencial con respecto a la media zonal
-(\(\sigma_z\)). En todos los niveles la variación meridional es muy
-similar con un máximo principal al rededor de 60°S durante todo el año y
-un máximo secundario en 30°S que aparece sólo entre junio y septiembre.
-El ciclo anual de \(\sigma_z\) también es similar entre niveles aunque
-con marcadas diferencias. En 100hPa el máximo absoluto se da en octubre,
-mientras que en los niveles más bajos, éste se da en agosto.
+desvío estándar de Z con respecto a la media zonal (\(\sigma_z\)). En
+todos los niveles la variación meridional es muy similar con un máximo
+principal al rededor de 60°S durante todo el año y un máximo secundario
+en 30°S que aparece sólo entre junio y septiembre. El ciclo anual de
+\(\sigma_z\) también es similar entre niveles aunque con marcadas
+diferencias. En 100hPa el máximo absoluto se da en octubre, mientras que
+en los niveles más bajos, éste se da en agosto.
 
 \begin{figure}
 
@@ -477,7 +506,7 @@ mientras que en los niveles más bajos, éste se da en agosto.
 
 }
 
-\caption{Desvío estándar por círculo de latitud. - fig:sd-gh-ncep}\label{fig:sd-gh-ncep}
+\caption{Desvío estándar por círculo de latitud.}\label{fig:sd-gh-ncep}
 \end{figure}
 
 \begin{landscape}\begin{figure}
@@ -486,7 +515,7 @@ mientras que en los niveles más bajos, éste se da en agosto.
 
 }
 
-\caption{Anomalía zonal de altura geopotencial. - fig:ghz-ncep}\label{fig:ghz-ncep}
+\caption{Anomalía zonal de altura geopotencial.}\label{fig:ghz-ncep}
 \end{figure}
 \end{landscape}
 
@@ -526,9 +555,7 @@ perturbaciones estacionarias están asociadas con transporte hacia el
 polo tanto de cantidad de movimiento zonal como de temperatura, por las
 perturbaciones (James \protect\hyperlink{ref-James}{1994}). En verano
 las anomalías zonales tienen una estructura barotrópica equivalente y
-carecen de inclinación en la horizontal, así como los transportes
-meridionales asociados se reducen considerablemente en la estratósfera.
-\todo{¿Por qué?}
+carecen de inclinación en la horizontal.
 
 \begin{figure}
 
@@ -536,7 +563,7 @@ meridionales asociados se reducen considerablemente en la estratósfera.
 
 }
 
-\caption{Corte zonal de anomalía de geopotencial en -60°. - fig:ghz-ncep-corte60}\label{fig:ghz-ncep-corte60}
+\caption{Corte zonal de anomalía de geopotencial en -60°.}\label{fig:ghz-ncep-corte60}
 \end{figure}
 
 \section{Temperatura}\label{temperatura}
@@ -547,7 +574,7 @@ meridionales asociados se reducen considerablemente en la estratósfera.
 
 }
 
-\caption{Temperatura media. - fig:t-ncep}\label{fig:t-ncep}
+\caption{Temperatura media.}\label{fig:t-ncep}
 \end{figure}
 \end{landscape}
 
@@ -576,7 +603,7 @@ mientras que en 45°S el ciclo es el inverso.
 
 }
 
-\caption{Corte meridional de temperatura media. - fig:t-ncep-corte}\label{fig:t-ncep-corte}
+\caption{Corte meridional de temperatura media.}\label{fig:t-ncep-corte}
 \end{figure}
 
 El promedio zonal de la temperatura se muestra en la
@@ -601,7 +628,7 @@ del criterio término es ``problemático'' en el invierno antártico.
 
 }
 
-\caption{Anomalía zonal de temperatura. - fig:tz-ncep}\label{fig:tz-ncep}
+\caption{Anomalía zonal de temperatura.}\label{fig:tz-ncep}
 \end{figure}
 \end{landscape}
 
@@ -629,14 +656,16 @@ desaparece por encima de 100hPa.
 
 }
 
-\caption{Corte zonal de anomalía de temperatura en -60°. - fig:t-ncep-corte60}\label{fig:t-ncep-corte60}
+\caption{Corte zonal de anomalía de temperatura en -60°.}\label{fig:t-ncep-corte60}
 \end{figure}
 
 En la \autoref{fig:t-nceo-corte60} se muestra un corte vertical-zonal en
-60°S de la anomalía zonal de temperatura. En invierno y primavera la
-estructura vertical tiene una inclinación hacia el oeste con la altura
-por encima de los 300hPa, pero es barotrópica equivalente por debajo de
-ese nivel.
+60°S de la anomalía zonal de temperatura. Las anomalías por debajo de
+300hPa mantienen su intensidad durante todo el año, aunque tienen más
+extensión en invierno y primavera en comparación con verano y otoño y
+son barotrópicas equivalentes. Por encima de 300hPa, en cambio, se
+observa un importante ciclo anual con máximo en primavera y mínimo en
+verano con importante inclinación hacia el oeste con la altura.
 
 \section{Viento zonal}\label{viento-zonal}
 
@@ -646,7 +675,7 @@ ese nivel.
 
 }
 
-\caption{Viento zonal medio. - fig:u-ncep-corte}\label{fig:u-ncep-corte}
+\caption{Viento zonal medio.}\label{fig:u-ncep-corte}
 \end{figure}
 
 La media zonal del viento zonal (\autoref{fig:u-ncep-corte}) muestra dos
@@ -669,22 +698,29 @@ otoño.
 \end{figure}
 \end{landscape}
 
-En la \autoref{fig:u-ncep} se observa que el jet subpolar es más intenso
-al sur de África, donde además se encuentra en una latitud más
-ecuatorial que en la región del Pacífico. El jet subtropical también
-tiene un máximo al sur de África y otro al norte de Nueva Zelanda
---especialmente en invierno--, donde además se produce una bifurcación
-del jet. Se trata de una región de persistentes y frecuentes bloqueos
-(ej. Trenberth y Mo \protect\hyperlink{ref-Trenberth1985}{1985}).
+En la \autoref{fig:u-ncep} se muestra el viento zonal medio. Se observa,
+principalmente en invierno y primavera por encima de 100hPa, que el jet
+subpolar es más intenso al sur de África, donde además se encuentra en
+una latitud más ecuatorial que en la región del Pacífico. El jet
+subtropical también tiene un máximo al sur de África y otro al norte de
+Nueva Zelanda --especialmente en invierno--, donde además se produce una
+bifurcación del jet. Se trata de una región de persistentes y frecuentes
+bloqueos (ej. Trenberth y Mo
+\protect\hyperlink{ref-Trenberth1985}{1985}).
 
 Esta bifurcación del jet sobre Nueva Zelanda se evidencia en el campo de
-anomalías zonales de viento zonal (\autoref{fig:uz-ncep}) como anomalías
-negativas durante todo el año. Este campo también presenta varios pares
-de QS1 antisimétricos respecto a 60°S. Estas anomalías se corresponden
-con la variación meridional del jet observado en la \autoref{fig:u-ncep}
-y son consistentes con la QS1 de geopotencial observada en la
-\autoref{fig:ghz-ncep}, las cuales generan viento zonal anómalo del este
-y del oeste al norte y sur del anticiclón respectivamente.
+anomalías zonales de viento zonal (\autoref{fig:uz-ncep}) como una
+anomalía negativa sobre la isla acompañada por anomalías positivas al
+norte y sur. Este campo también presenta varios pares de QS1
+antisimétricos respecto a 60°S. Estas anomalías se corresponden con la
+variación meridional del jet observado en la \autoref{fig:u-ncep} y son
+consistentes con la QS1 de geopotencial observada en la
+\autoref{fig:ghz-ncep}. Por el balance de viento geostrófico centros
+anticilónico de Z* están flanqueados por anomalías zonales negativas de
+viento zonal al norte y positivas al sur y viceversa para los centros
+ciclónicos. Además, como el viento zonal no depende del parámetro de
+Coriolis como Z, esto permite la identificación de QS en regiones
+tropicales. Un ejemplo de esto XXXX???
 
 En verano, entre 300hPa y 100hPa sobre el Pacífico ecuatorial existe una
 zona de anomalías del viento zonal positivas al este y negativas al
@@ -824,10 +860,6 @@ invierno transportando energía hacia el sur.
 \section{Propagacion Meridional de Ondas de
 Rossby}\label{propagacion-meridional-de-ondas-de-rossby}
 
-En la teoría de propagación meridional de ondas de Rossby, el gradiente
-meridional de vorticidad absoluta (\(\psi_y\))
-\todo[inline]{es importante porque blavalbla ¿Resumen de la deducción en James?}
-
 \begin{landscape}\begin{figure}
 
 {\centering \includegraphics[width=247mm,]{fig/tesis/etady-ncep-1} 
@@ -842,9 +874,9 @@ La \autoref{fig:etady-ncep} muestra el campo de \(\psi_y\) con una
 región con valores negativos centrada sobre Nueva Zelanda, en invierno
 entre 300hPa y 200hPa, coincidiendo con la región de bloqueos. Está
 flanqueada por el jet subtropical intenso y el jet subpolar más al sur,
-dando lugar a gradientes meridionales de U negativos más intensos que
-\(\beta\). Otras regiones con valores negativos se distinguen en la
-costa antártica.
+dando lugar a gradientes meridionales de viento zonal negativos más
+intensos que \(\beta\). Otras regiones con valores negativos se
+distinguen en la costa antártica.
 
 Valores de \(\psi_y\) negativos son un factor que impiden la propagación
 meridional de ondas de Rossby barotrópicas. Esta figura reproduce y
@@ -884,13 +916,6 @@ en producirla.
 \end{landscape}
 
 \section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}
-
-Como se describió en \autoref{métodos-y-materiales}, el análisis
-estacional de la amplitud y \(r^2\) de Fourier puede hacerse a partir de
-la media delos campos mensuales o aplicando Fourier a los campos
-estacionales. En el caso de los datos de NCEP existe poca diferencia,
-por lo que sólo se muestran los resultados conseguidos mediante esta
-última metodología.
 
 La \autoref{fig:r2-ncep} muestra el corte vertical-meridional de \(r^2\)
 de Fourier para las ondas estacionarias 1 a 4. Consistente con lo
@@ -953,7 +978,10 @@ presente.
 \end{figure}
 \end{landscape}
 
-\todo[inline]{Acá podría poner alguna reflexión general de lo que se ve. Por ejemplo, cómo en verano la variabilidad está más acotada a la tropóstera mientras que en invierno y primavera hay más contacto con la estratósfera.}
+XXX Acá podría poner alguna reflexión general de lo que se ve. Por
+ejemplo, cómo en verano la variabilidad está más acotada a la tropóstera
+mientras que en invierno y primavera hay más contacto con la
+estratósfera. XXX
 
 \chapter{Onda 3}\label{onda-3}
 
@@ -1005,10 +1033,19 @@ fase, descripta previamente.
 Asimismo, se observa que existe una variación estacional en la
 inclinación vertical de las perturbaciones. En invierno se observa una
 ligera inclinación hacia el oeste por debajo de los 300hPa. Algo que no
-se detecta en las otras estaciones. La teoría de ondas de Rossby indica
-que una inclinación hacia el oeste está asociada con transporte de calor
-hacia el polo por las perturbaciones (James
-\protect\hyperlink{ref-James}{1994}).
+se detecta en las otras estaciones.
+
+XXX Esto es lo que puso Carolina, pero yo no lo veo. XXX
+
+Asimismo, se observa que existe una variación estacional en la
+inclinación vertical de las perturbaciones. En invierno la inclinación
+hacia el oeste es muy importante en la troposfera, estando presente
+también en primavera. En cambio, no se detecta en la troposfera de
+verano y otoño.
+
+La teoría de ondas de Rossby indica que una inclinación hacia el oeste
+está asociada con transporte de calor hacia el polo por las
+perturbaciones (James \protect\hyperlink{ref-James}{1994}).
 
 \begin{figure*}
 \includegraphics[width=155mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar de la reconstrucción de QS3. Se incluyen en negro, contornos que describen la posición de los centros de las perturbaciones. - fig:qs3sd-ncep}\label{fig:qs3sd-ncep}
@@ -1033,22 +1070,21 @@ estación.
 \caption{Amplitud de wavelets (sombreados) y de Fourier (contornos) - fig:wavelet-fourier-ncep}\label{fig:wavelet-fourier-ncep}
 \end{figure}
 
-Como se describió en el capítulo 2, se utilizó la metodología de
-wavelets como alternativa a la de Fourier para aislar la QS3. La
-amplitud media obtenida mediante wavelets
-\todo{agregar referencia a sección} es virtualmente idéntica a la
-amplitud obtenida con Fourier (\autoref{fig:wavelet-fourier-ncep}).
+Como se describió en el capítulo~\ref{metodologia}, se utilizó la
+metodología de wavelets como alternativa a la de Fourier para aislar la
+QS3. La amplitud media obtenida mediante wavelets es virtualmente
+idéntica a la amplitud obtenida con Fourier
+(\autoref{fig:wavelet-fourier-ncep}).
 
-La metodología de wavelets también permite obtener información de la
-variación meridional de la amplitud de la QS3. Al igual que con Fourier,
-esto puede hacerse promediando estacionalmente la amplitud de los campos
+La metodología de wavelets también permite obtener información sobre la
+variación meridional de la amplitud de la QS3, obteniendo así campos
+horizontales de la amplitud de la QS3. Al igual que con Fourier, esto
+puede hacerse promediando estacionalmente la amplitud de los campos
 mensuales o calculando la amplitud de los campos estacionales. Los
 valores de amplitud media zonal como los mostrados en la
 \autoref{fig:wavelet-fourier-ncep} son similares en ambas metodologías
 (no se muestra) pero sí hay diferencias en las anomalías con respecto a
 la media zonal.
-
-\todo[inline]{OK, esto está todo mal. En realidad no hay tantas diferencias importantes. Ambas metodologías muestran una franja de anomalías positivas que va desde el índico sur hasta el pacífico sur. La diferencia principal es que en la amplitud de la media las anomalías son más intensas en ~45°S y en la media de la amplitud es en ~65°S}
 
 \begin{figure}
 
@@ -1056,38 +1092,50 @@ la media zonal.
 
 }
 
-\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa. - fig:waveletz-ncep}\label{fig:waveletz-ncep}
+\caption{Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa.}\label{fig:waveletz-ncep}
 \end{figure}
 
 Las anomalías zonales de la amplitud de la QS3 según wavelets se
 muestran en la \autoref{fig:waveletz-ncep} para los dos métodos
-utilizados. Los valores positivos representan regiones donde la amplitud
-de la QS3 es mayor que la media zonal y viceversa. Al norte de los 30°S,
-ambas metodologías dan resultados similares: en primavera, verano y
-otoño hay anomalías zonales positivas sobre el Pacífico y negativas en
-el Índico, indicando que en estas latitudes la QS3 tiene mayor amplitud
-en el hemisferio occidental que en el oriental.
+utilizados para el nivel de 300hPa. Los valores positivos representan
+regiones donde la amplitud de la QS3 es mayor que la media zonal y
+viceversa. Al norte de los 30°S, ambas metodologías coinciden resultados
+similares: en verano, otoño y primavera hay anomalías zonales positivas
+sobre el Pacífico y negativas en el Índico, indicando que en estas
+latitudes la QS3 tiene mayor amplitud en el hemisferio occidental que en
+el oriental. En invierno, no hay anomalías zonales importantes en esta
+región.
 
-Al sur de 30°S las dos metodologías divergen. La anomalía zonal de la
-amplitud media de la QS3 del campo medio
-(Figura~\ref{fig:waveletz-ncep1}) tiene, en todas las estaciones, un
-máximo al sur del Índico centrado en 45°S que se desplaza hacia el este
-en latitudes más altas. Existe un segundo máximo en altas latitudes que
-en otoño y primavera se encuentran en 120°E y en invierno se encuentra
-en 180°. La media de la amplitud de la QS3
-(Figura~\ref{fig:waveletz-ncep2}), en cambio tiene anomalías negativas
-al sur del Índico y positivas al sur del Pacífico durante todo el año.
+Al sur de 30°S las dos metodologías divergen. Ambas metodologías
+presentan en todas las estaciones, una región elongada de máxima
+ampltiud desde el sur del Índico centrado en 45°S que se desplaza hacia
+el este en latitudes más altas hasta llegar al los 60°S aproximadamente.
+La principal diferencia entre las metodologías es que la amplitud de la
+media estacional suele tener los máximos desvíos en 45°S, mientras que
+la media de la amplitud instantánea tiene su máximo al sur de los 60°S.
 
-Las diferencias vistas en la \autoref{fig:waveletz-ncep} están
-relacionadas con la estacionariedad\todo{¿Es una palabra?} de las ondas
-\todo{de nuevo, esto es general para la metodología, la explicación va en métodos},
-se puede utilizar la relación entre ambas para generar un \emph{índice
-de estacionariedad} \todo{¿Estoy seguro de que esto es así?}. Cuanto más
-similar sea el resultado, más estacionarias son las ondas. Así, la
-estacionariedad sería máxima en latitudes bajas y al rederor de 50°S
---principalmente en verano-- y mínima en dos franjas angostas cerca de
-30°S y 75°S. \todo{¿Mostrar el gŕafico \ref{fig:estacionaridad}?}
-\todo[inline]{Esta discusión también aplica a Fourier (\autoref{fig:estacionaridad-fourier}), en realidad, pero ahí no estoy mostrando ambos resultados porque da parecido. Quizás este párrafo se puede mover.. o borrar todo si resulta puro sinsentido.}
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/estacionaridad-1} \caption{Razón entre la de amplitud de la media estacional y media de la amplitud.}\label{fig:estacionaridad}
+\end{figure*}
+
+Estas diferencias en la \autoref{fig:waveletz-ncep} están relacionadas
+con la estacionariedad de las ondas y se puede utilizar la relación
+entre ambas para generar un índice de estacionariedad definido como el
+cociente entre la amplitud de la media y la media de la amplitud.
+Valores cercanos a 1, indican que el carácter estacionario de las ondas
+sería el dominante, mientras que valores cercanos a 0 implican que las
+ondas no tienen una localización preferencial. El temapo de este índice
+de estacionariedad se muestra en la \autoref{fig:estacionaridad}. La
+máxima estacionaridad se consigue en el verano tropical, pero esto se
+debe a que la actividad de ondas estacionarias es casi nula.
+
+Aproximadamente entre 30° y 60° se observa una banda de alta
+estacionaridad, consistente con la región con mayor amplitud de QS3
+(\autoref{fig:qs3-ncep}), que presenta un máximo al sur del Índico. Esto
+sugiere que esta región la actividad de onda es particularmente
+estacionaria, en contra de la sugerencia de Hobbs y Raphael
+(\protect\hyperlink{ref-Hobbs2010}{2010}) de que el principal patrón
+estacionario se da en el Pacífico Sur.
 
 Estas observaciones destacan la utilidad de wavelets en el análisis de
 ondas cuasiestacionarias. Mientras que el tratamiento con Fourier asume
@@ -1104,10 +1152,11 @@ de una QS específica, por lo tanto, está contaminado por la actividad de
 otras QS con longitud de onda cercana.
 
 Wavelets, en resumen, puede entenderse como una \emph{corrección} a
-Fourier que agrega información de asimetrías zonales. Dado que la
-variabilidad zonal es del orden de un 10\% de la amplitud media, en lo
-que sigue de la tesis se utilizará sólo Fourier, dejando el análisis e
-interpretación de wavelets para futuros trabajos.
+Fourier que agrega información de asimetrías zonales. Si embargo, dado
+que la variabilidad zonal es del orden de un 10\% de la amplitud media,
+en lo que sigue de la tesis se utilizará sólo fourier, dejando el
+análisis e interpretación de estudios de la QS3 utilizando wavelets para
+futuros trabajos.
 
 \section{Amplitud}\label{amplitud}
 
@@ -1551,7 +1600,8 @@ los trópicos. En mayo, por ejemplo, aparece claramente una fuente de
 actividad de onda sobre Indonesia que genera un flujo hacia el sur de de
 Sudamérica y otro hacia el Pacífico central.
 
-\chapter{Experimentos}\label{experimentos}
+\chapter{Simulaciones con el modelo
+SPEEDY}\label{simulaciones-con-el-modelo-speedy}
 
 Se realizaron tres corridas entre enero de 1985 y diciembre de 2014. En
 la corrida \textbf{Control}, la temperatura de la superficie del mar es
@@ -1570,7 +1620,7 @@ En este capítulo primero se realiza una validación de la corrida Control
 con respecto a los datos de NCEP. Luego se comparan los resultados de
 las otras dos corridas.
 
-\section{Validación SPEEDY}\label{validacion-speedy}
+\section{Validación}\label{validacion}
 
 Para la validación de SPEEDY con respecto a NCEP se muestran los niveles
 de 200hPa y 500hPa como representación de niveles altos y medios
@@ -1836,7 +1886,8 @@ virtualmente nulo.
 \includegraphics[width=155mm, ]{fig/tesis/qs3-sp-nc-1} \caption{Media de reconstrucción de onda 3 (sombreado speedy, contornos ncep) - fig:qs3-sp-nc}\label{fig:qs3-sp-nc}
 \end{figure*}
 
-\section{Comparación entre corridas}\label{comparacion-entre-corridas}
+\section{Experimentos de
+sensibilidad}\label{experimentos-de-sensibilidad}
 
 Como se vio en la sección XX, además de la corrida Control, se
 realizaron 3 corridas para evaluar la sensibilidad de la QS3 a distintos
@@ -2104,6 +2155,13 @@ Alvarez, Mariano S., C. S. Vera, G. N. Kiladis, y B. Liebmann. 2014.
 «Intraseasonal variability in South America during the cold season».
 \emph{Climate Dynamics} 42 (11-12): 3253-69.
 doi:\href{https://doi.org/10.1007/s00382-013-1872-z}{10.1007/s00382-013-1872-z}.
+
+\hypertarget{ref-Barreiro2014}{}
+Barreiro, Marcelo, Nicolas Díaz, y Madeleine Renom. 2014. «Role of the
+global oceans and land-atmosphere interaction on summertime interdecadal
+variability over northern Argentina». \emph{Climate Dynamics} 42 (7-8):
+1733-53.
+doi:\href{https://doi.org/10.1007/s00382-014-2088-6}{10.1007/s00382-014-2088-6}.
 
 \hypertarget{ref-Berbery1992}{}
 Berbery, E H, J Nogués-Paegle, y J D Horel. 1992. «Wavelike southern

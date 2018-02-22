@@ -32,9 +32,9 @@ params:
 biblio-style: apalike
 ---
 
-knit: (function(file, encoding, ...) {
-    rmarkdown::render(file, encoding = encoding,
-                output_dir = "docs/")})
+<!-- knit: (function(file, encoding, ...) { -->
+<!--     rmarkdown::render(file, encoding = encoding, -->
+<!--                 output_dir = "docs/")}) -->
                 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(tidy = FALSE,
@@ -272,7 +272,7 @@ En este capítulo se describen los datos utilizados en la presente investigació
 
 En los capítulos\ \ref{climatologia-observada} y\ \ref{onda-3} se analizan datos mensuales de altura geopotencial, temperatura, viento zonal, viento meridional y función corriente provenientes del Reanálisis NCEP/NCAR [@Kalnay1996] (de aquí en adelante NCEP) entre enero de 1985 y diciembre de 2015. Los mismos poseen una resolución de 2.5° en longitud y latitud y 17 niveles verticales entre 1000hPa y 10hPa. A partir de los datos mensuales se calcularon las medias estacionales definidas a partir de las estaciones climatológicas del hemisferio sur.
 
-Se utilizó el modelo SPEEDY [@Molteni2003] para realizar corridas de sensibilidad (descriptas en el capítulo\ \ref{experimentos}). El modelo SPEEDY es un modelo de complejidad intermedia basado en ecuaciones primitivas espectrales y parametrizaciones simplificadas. En su versión 41, posee una resolución horizontal espectral de T30 (3,75° en longitud y latitud y 8 niveles verticales entre 925hPa y 30hPa. El modelo incluye parametrizaciones de las diferentes formas de convección, radiación, flujos y difusión vertical.  
+Se utilizó el modelo SPEEDY [@Molteni2003] para realizar corridas de sensibilidad (descriptas en el capítulo\ \ref{experimentos-de-sensibilidad}). El modelo SPEEDY es un modelo de complejidad intermedia basado en ecuaciones primitivas espectrales y parametrizaciones simplificadas. En su versión 41, posee una resolución horizontal espectral de T30 (3,75° en longitud y latitud y 8 niveles verticales entre 925hPa y 30hPa. El modelo incluye parametrizaciones de las diferentes formas de convección, radiación, flujos y difusión vertical.  
 
 Una primera gran limitación de SPEEDY es su pobre representación de la estratósfera. Sólo el más alto de sus 8 niveles está en la estatósfera (30hPa) y al ser la tapa del modelo, que tiene una "esponja" para evitar la propagación de ondas de gravedad, no es un nivel con información confiable. Esto limita seriamente la posibilidad de describir numéricamente lo que ocurre en la estratosfera, como por ejemplo la dinámica del vórtice polar. 
 
@@ -290,9 +290,9 @@ Para la descomposición de los campos de geopotencial en modos de Fourier se uti
 
 En la descomposición de Fourier, el estudio de la fase requiere un tratamiento especial ya que se trata de una variable circular. Para el cálculo de estadísticas circulares se se utilizó el paquete `circular` [@R-circular].
 
-El análisis de wavelets es similar a Fourier pero permite describir oscilaciones localizadas en el dominio [@Torrence1998]. En el contexto de las ondas cuasiestacionarias, esto implica que en vez de obtener una amplitud y fase por cada círculo de latitud, se tiene una amplitud local que depende de la longitud. En la ciencias atmosféricas el análisis de wavelets se usa extensivamente en el análisis de periodicidades en el dominio tiempo [ej. @Raphael2004, @Kinnard2011] y de procesamiento de imágenes [ej. @Desrochers1999], pero existen pocos estudios que lo apliquen a dominios espaciales [ej. @Pinault2016] aunque sí hay aplicaciones de este tipo en la literatura de ecología [ej, @Mi2005]. 
+El análisis de wavelets es similar a Fourier pero permite describir oscilaciones localizadas en el dominio [@Torrence1998]. En el contexto de las ondas cuasiestacionarias, esto implica que en vez de obtener una amplitud y fase por cada círculo de latitud, se tiene una amplitud local que depende de la longitud. En la ciencias atmosféricas el análisis de wavelets se usa extensivamente en el análisis de periodicidades en el dominio tiempo [ej. @Raphael2004; @Kinnard2011] y de procesamiento de imágenes [ej. @Desrochers1999], pero existen pocos estudios que lo apliquen a dominios espaciales [ej. @Pinault2016] aunque sí hay aplicaciones de este tipo en la literatura de ecología [ej, @Mi2005]. 
 
-Para el cálculo de wavelets se utilizó la función `WaveletTransform()` del paquete `WaveletComp`[@R-WaveletComp] que utiliza un wavelet de Morlet.
+Para el cálculo de wavelets se utilizó la función `WaveletTransform()` del paquete `WaveletComp` [@R-WaveletComp] que utiliza un wavelet de Morlet.
 
 La influencia tropical en la variabilidad del clima extratropical se explica mediante la propgación meridional de ondas de Rossby. La teoría lineal de ondas de Rossby barotrópicas predice que ésta propagación depende de las condiciones del entorno [@James]. En particular, el número de onda meridional está dado por 
 
@@ -305,7 +305,7 @@ donde $\eta_{y}$ es el gradiente meridional de vorticidad absoluta, $U$ es la ve
 $$
 \frac{\eta_{y}}{U} = K_s \ge k 
 $$
-donde $\K_s$ es el número de onda estacionario, el cual debe ser mayor que el número de onda zonal para permitir la propagación meridional. 
+donde $K_s$ es el número de onda estacionario, el cual debe ser mayor que el número de onda zonal para permitir la propagación meridional. 
 
 El flujo de actividad de onda, es un vector que, bajo ciertas suposiciones, es paralelo a la velocidad de grupo de las ondas de Rossby, lo cual permite cuantificar la propagación meridional y zonal de las mismas [@James]. En este estudio, ésta variable se la calculó a partir de las anomalías zonales de función corriente según
 
@@ -967,13 +967,9 @@ wv.mean.season[, .(amplitude = mean(amplitude)),
 
 Como se describió en el capítulo\ \ref{metodologia}, se utilizó la metodología de wavelets como alternativa a la de Fourier para aislar la QS3. La amplitud media obtenida mediante wavelets es virtualmente idéntica a la amplitud obtenida con Fourier (\autoref{fig:wavelet-fourier-ncep}). 
 
-La metodología de wavelets también permite obtener información de la variación meridional de la amplitud de la QS3. Al igual que con Fourier, esto puede hacerse promediando estacionalmente la amplitud de los campos mensuales o calculando la amplitud de los campos estacionales. Los valores de amplitud media zonal como los mostrados en la \autoref{fig:wavelet-fourier-ncep} son similares en ambas metodologías (no se muestra) pero sí hay diferencias en las anomalías con respecto a la media zonal.
+La metodología de wavelets también permite obtener información sobre la variación meridional de la amplitud de la QS3, obteniendo así campos horizontales de la amplitud de la QS3. Al igual que con Fourier, esto puede hacerse promediando estacionalmente la amplitud de los campos mensuales o calculando la amplitud de los campos estacionales. Los valores de amplitud media zonal como los mostrados en la \autoref{fig:wavelet-fourier-ncep} son similares en ambas metodologías (no se muestra) pero sí hay diferencias en las anomalías con respecto a la media zonal.
 
-XXX
-OK, esto está todo mal. En realidad no hay tantas diferencias importantes. Ambas metodologías muestran una franja de anomalías positivas que va desde el índico sur hasta el pacífico sur. La diferencia principal es que en la amplitud de la media las anomalías son más intensas en ~45°S y en la media de la amplitud es en ~65°S
-XXX
-
-```{r waveletz-ncep, fig.cap = "Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa.", fig.class = "vfullpage"}
+```{r waveletz-ncep, fig.cap = "Campo medio de la amplitud de la onda 3 según wavelets (contornos) y su anomalía zonal (sombreado) en 300hPa.", fig.class = "vfullpage", publish = FALSE}
 wv.comp <- copy(wv.mean.season) %>% 
     setnames(c("amplitude", "i.amplitude"), c("Amplitud de \nla Media", "Media de \nla Amplitud")) %>% 
     melt(id.vars = c("lon", "lat", "lev", "season"), variable.name = "method") %>% 
@@ -999,34 +995,38 @@ wv.comp[lev == 300] %>%
     coord_quickmap()
 ```
 
+Las anomalías zonales de la amplitud de la QS3 según wavelets se muestran en la \autoref{fig:waveletz-ncep} para los dos métodos utilizados para el nivel de 300hPa. Los valores positivos representan regiones donde la amplitud de la QS3 es mayor que la media zonal y viceversa. Al norte de los 30°S, ambas metodologías coinciden resultados similares: en verano, otoño y primavera hay anomalías zonales positivas sobre el Pacífico y negativas en el Índico, indicando que en estas latitudes la QS3 tiene mayor amplitud en el hemisferio occidental que en el oriental. En invierno, no hay anomalías zonales importantes en esta región. 
 
-Las anomalías zonales de la amplitud de la QS3 según wavelets se muestran en la \autoref{fig:waveletz-ncep} para los dos métodos utilizados. Los valores positivos representan regiones donde la amplitud de la QS3 es mayor que la media zonal y viceversa. Al norte de los 30°S, ambas metodologías dan resultados similares: en primavera, verano y otoño hay anomalías zonales positivas sobre el Pacífico y negativas en el Índico, indicando que en estas latitudes la QS3 tiene mayor amplitud en el hemisferio occidental que en el oriental. 
+Al sur de 30°S las dos metodologías divergen. Ambas metodologías presentan en todas las estaciones, una región elongada de máxima ampltiud desde el sur del Índico centrado en 45°S que se desplaza hacia el este en latitudes más altas hasta llegar al los 60°S aproximadamente. La principal diferencia entre las metodologías es que la amplitud de la media estacional suele tener los máximos desvíos en 45°S, mientras que la media de la amplitud instantánea tiene su máximo al sur de los 60°S. 
 
-Al sur de 30°S las dos metodologías divergen. La anomalía zonal de la amplitud media de la QS3 del campo medio (Figura\ \ref{fig:waveletz-ncep1}) tiene, en todas las estaciones, un máximo al sur del Índico centrado en 45°S que se desplaza hacia el este en latitudes más altas. Existe un segundo máximo en altas latitudes que en otoño y primavera se encuentran en 120°E y en invierno se encuentra en 180°. La media de la amplitud de la QS3 (Figura\ \ref{fig:waveletz-ncep2}), en cambio tiene anomalías negativas al sur del Índico y positivas al sur del Pacífico durante todo el año. 
- 
-
-```{r estacionaridad, fig.cap = "Ratio de amplitud de la media y media de la amplitud (¿medida de estacionaridad?)", fig.subcap = c("campo", "media zonal"), fig.publish = FALSE, fig.sep = "\\newpage"}
+```{r estacionaridad, fig.cap = "Razón entre la de amplitud de la media estacional y media de la amplitud."}
+binwidth <- 0.1
 copy(wv.mean.season) %>% 
     .[, a.z := Anomaly(amplitude/i.amplitude),
       by = .(lat, season)] %>% 
     .[lev == 300] %>% 
     ggplot(aes(lon, lat)) +
-    geom_contour_fill(aes(z = amplitude/i.amplitude)) +
+    geom_contour_fill(aes(z = amplitude/i.amplitude), binwidth = binwidth) +
     map.SH +
-    scale_fill_viridis_c() +
+    scale_fill_viridis_c(limits = c(0, 1), 
+                         breaks = MakeBreaks(binwidth),
+                         guide = guide_colorstrip_bottom()) +
+    scale_s_map() +
+    coord_quickmap() +
     facet_wrap(~season) 
 
-wv.mean.season[lev == 300, .(mean(amplitude/i.amplitude)),
-               by = .(lat, season)] %>% 
-    ggplot(aes(lat, V1)) +
-    geom_line(aes(color = season)) +
-    scale_x_latitude() +
-    scale_y_continuous(name = "estacionaridad") + 
-    coord_flip()
+# wv.mean.season[lev == 300, .(mean(amplitude/i.amplitude)),
+#                by = .(lat, season)] %>% 
+#     ggplot(aes(lat, V1)) +
+#     geom_line(aes(color = season)) +
+#     scale_x_latitude() +
+#     scale_y_continuous(name = "estacionaridad") + 
+#     coord_flip()
 ```
 
-Las diferencias vistas en la \autoref{fig:waveletz-ncep} están relacionadas con la estacionariedad de las ondas \todo{de nuevo, esto es general para la metodología, la explicación va en métodos}, se puede utilizar la relación entre ambas para generar un *índice de estacionariedad* \todo{¿Estoy seguro de que esto es así?}. Cuanto más similar sea el resultado, más estacionarias son las ondas. Así, la estacionariedad sería máxima en latitudes bajas y al rederor de 50°S --principalmente en verano-- y mínima en dos franjas angostas cerca de 30°S y 75°S. \todo{¿Mostrar el gŕafico \ref{fig:estacionaridad}?}
-\todo[inline]{Esta discusión también aplica a Fourier (\autoref{fig:estacionaridad-fourier}), en realidad, pero ahí no estoy mostrando ambos resultados porque da parecido. Quizás este párrafo se puede mover.. o borrar todo si resulta puro sinsentido.}
+Estas diferencias en la \autoref{fig:waveletz-ncep} están relacionadas con la estacionariedad de las ondas y se puede utilizar la relación entre ambas para generar un índice de estacionariedad definido como el cociente entre la amplitud de la media y la media de la amplitud. Valores cercanos a 1, indican que el carácter estacionario de las ondas sería el dominante, mientras que valores cercanos a 0 implican que las ondas no tienen una localización preferencial. El temapo de este índice de estacionariedad se muestra en la \autoref{fig:estacionaridad}. La máxima estacionaridad se consigue en el verano tropical, pero esto se debe a que la actividad de ondas estacionarias es casi nula.
+
+Aproximadamente entre 30° y 60° se observa una banda de alta estacionaridad, consistente con la región con mayor amplitud de QS3 (\autoref{fig:qs3-ncep}), que presenta un máximo al sur del Índico. Esto sugiere que esta región la actividad de onda es particularmente estacionaria, en contra de la sugerencia de @Hobbs2010 de que el principal patrón estacionario se da en el Pacífico Sur.  
 
 ```{r estacionaridad-fourier, fig.cap = "Estacionaridad según Fourier", fig.publish = FALSE}
 ncep.qs.all %>% 
@@ -1041,15 +1041,6 @@ ncep.qs.all %>%
     scale_fill_viridis_c() +
     coord_latlev() +
     facet_wrap(~season)
-```
-
-```{r dif-wavelets}
-lats.index <- c(-65, -40)
-levs.index <- c(100, 700)
-wvdif <- wv.mean.season[lat %b% lats.index & lev %b% levs.index,
-                        sd(amplitude)/mean(amplitude), 
-                        by = .(lat, lev, season)] %>% 
-    .[, mean(V1)]*100
 ```
 
 
@@ -1073,8 +1064,7 @@ ggplot(ncep.mean.season[lev == 300], aes(lon, lat)) +
 
 ```
 
-Wavelets, en resumen, puede entenderse como una *corrección* a Fourier que agrega información de asimetrías zonales. Dado que la variabilidad zonal es del orden de un 10% de la amplitud media, en lo que sigue de la tesis se utilizará sólo Fourier, dejando el análisis e interpretación de wavelets para futuros trabajos. 
-
+Wavelets, en resumen, puede entenderse como una *corrección* a Fourier que agrega información de asimetrías zonales. Si embargo, dado que la variabilidad zonal es del orden de un 10% de la amplitud media, en lo que sigue de la tesis se utilizará sólo fourier, dejando el análisis e interpretación de estudios de la QS3 utilizando wavelets para futuros trabajos.
 
 ## Amplitud
 
