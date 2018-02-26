@@ -1,4 +1,4 @@
-\documentclass[spanish,a4paper,12p]{book}
+\documentclass[spanish,a4paper,12pt]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -90,7 +90,8 @@ la circulación atmosférica del Hemisferio Sur}
   \date{}
   \predate{}\postdate{}
 
-\linespread{1.25}
+\usepackage{setspace}
+\setstretch{1.5}
 \usepackage{subfig}
 \usepackage{hyperref}
 \usepackage{marginnote}
@@ -99,6 +100,8 @@ la circulación atmosférica del Hemisferio Sur}
 \DeclareDelayedFloatFlavor{landscape}{figure}
 \usepackage[spanish]{todonotes}
 \usepackage{wrapfig}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
     
 \makeatletter
 \@ifpackageloaded{endfloat}
@@ -114,72 +117,78 @@ la circulación atmosférica del Hemisferio Sur}
 \begin{document}
 \maketitle
 
-{
-\setcounter{tocdepth}{3}
-\tableofcontents
-}
 Resumen.
 
-\todo[inline]{Listado de abreviaturas}
-\todo[inline]{Revisar TODOS los epígrafes}
+\chapter*{Agradecimientos}
+
+A las médicas y enfermeras del Sanatorio Güemes que me cuidaron durante
+mi internación.
+
+\newpage
+
+\begin{center}\begin{minipage}{\dimexpr\paperwidth-7cm}
+\chapter*{Resumen}
+Este es el abstract balbalbalabla
+\end{minipage}
+\end{center}
+
+\setcounter{tocdepth}{3} \tableofcontents
 
 \listoffigures
 \newpage
 
 \chapter{Introducción}\label{introduccion}
 
-El flujo medio del hemisferio sur (HS) a pesar de tender a ser más
-zonalmente simétrico que el del HN presenta importantes asimetrías
-asociadas principalmente con las ondas planetarias de número de onda 1 y
-3 (QS1 y QS3) (Loon y Jenne, Roy \protect\hyperlink{ref-Loon1972}{1972};
-Trenberth \protect\hyperlink{ref-Trenberth1980a}{1980}). Estas ondas
-zonales tienden a ser cuasi-estacionarias y exhiben importantes
-variabilidades temporales (Loon y Jenne, Roy
-\protect\hyperlink{ref-Loon1972}{1972}). En particular, se ha
-documentado que la QS3 presenta una estructura barotrópica con
-variabilidad en escalas diarias-semanales (Kidson
-\protect\hyperlink{ref-Kidson1988}{1988}), estacionales (Mo y White
-\protect\hyperlink{ref-Mo1985}{1985}) y más largas (Karoly
+La variabilidad del clima en el sur de Sudamérica (SSA) es afectada
+tanto por la variabilidad en regiones de latitudes medias y polares
+como, remotamente, por las condiciones del clima en regiones tropicales
+y extratropicales (ej. Vera et~al.,
+\protect\hyperlink{ref-Vera2006}{2006}). Dado que éstas últimas exhiben
+altos niveles de predictibilidad (en escalas estacionales asociados con
+el fenómeno del Niño-Oscilación del Sur (ENSO) y en escalas
+intraestacionales con la oscilación de Madden-Julian (MJO)), su
+influencia ha sido y es más extensamente estudiada. Sin embargo,
+estudios recientes de la variabilidad climática en las regiones
+subpolares y polares del Hemisferio Sur (HS) destacan la actividad del
+Modo Anular del Sur (SAM, por sus siglas en inglés) como una fuente de
+variabilidad climática de significativa influencia sobre los continentes
+del HS y en particular del SSA (ej. Silvestri y Vera
+(\protect\hyperlink{ref-Silvestri2009}{2009}) en escalas interanuales y
+Alvarez et~al. (\protect\hyperlink{ref-Alvarez2014}{2014}) en escalas
+intraestacionales).
+
+La distribución espacial del SAM en su fase positiva se caracteriza por
+una anomalía negativa de presión o altura geopotencial sobre el
+continente antártico y anomalías de signo opuesto en latitudes medias.
+Esta estructura zonalmente simétrica generalmente está asociada con un
+patrón de onda planetario de números de onda zonal entre 3 y 4. La
+alternancia del signo entre las anomalías polares y extratropicales del
+SAM se asocia con intensificaciones y debilitamiento de los vientos
+Oestes que caracterizan las latitudes medias del HS. Si bien hay
+evidencia de que los flujos de cantidad de movimiento por las ondas
+planetarias de baja frecuencia son importantes en el proceso de
+debilitamiento de los Oestes (Lorenz y Hartmann,
+\protect\hyperlink{ref-Lorenz2001}{2001}; Simpson et~al.,
+\protect\hyperlink{ref-Simpson2013}{2013}) las causas por las cuales
+estas variaciones se asocian con el desarrollo de la QS3 aún no se
+conocen con certeza.
+
+Las ondas planetarias de número de onda 1 y 3 (QS1 y QS3) son las
+principales asimetrías zonales presentes en el flujo medio del HS (Loon
+y Jenne, Roy, \protect\hyperlink{ref-Loon1972}{1972}; Trenberth,
+\protect\hyperlink{ref-Trenberth1980a}{1980}). Estas ondas zonales
+tienden a ser cuasi-estacionarias y exhiben importantes variabilidades
+temporales (Loon y Jenne, Roy, \protect\hyperlink{ref-Loon1972}{1972}).
+En particular, se ha documentado que la QS3 presenta una estructura
+barotrópica con variabilidad en escalas diarias-semanales (Kidson,
+\protect\hyperlink{ref-Kidson1988}{1988}), estacionales (Mo y White,
+\protect\hyperlink{ref-Mo1985}{1985}) y más largas (Karoly,
 \protect\hyperlink{ref-Karoly1989}{1989}). Mo y White
 (\protect\hyperlink{ref-Mo1985}{1985}) mostraron que existen ubicaciones
 preferenciales para los centros de acción de la QS3. Por la antigüedad
 de muchos de estos trabajos, sus climatologías tienen limitaciones
 inherentes a la poca calidad de datos disponible en el HS previa a la
 era satelital.
-
-Estudios de la variabilidad climática en las regiones subpolares y
-polares del HS destacan la actividad del Modo Anular del Sur (SAM, por
-sus siglas en inglés) como una fuente de variabilidad climática de
-significativa influencia sobre los continentes del HS y en particular
-del sur de Sudamérica (SSA) (ej. Silvestri y Vera
-(\protect\hyperlink{ref-Silvestri2009}{2009}) en escalas interanuales y
-Alvarez et~al. (\protect\hyperlink{ref-Alvarez2014}{2014}) en escalas
-intraestacionales). La distribución espacial del SAM en su fase positiva
-se caracteriza por una anomalía negativa de presión o altura
-geopotencial sobre el continente antártico y anomalías de signo opuesto
-en latitudes medias. Esta estructura zonalmente simétrica generalmente
-está asociada con un patrón de onda planetario de números de onda zonal
-entre 3 y 4. La alternancia del signo entre las anomalías polares y
-extratropicales del SAM se asocia con intensificaciones y debilitamiento
-de los vientos Oestes que caracterizan las latitudes medias del HS. Si
-bien hay evidencia de que los feedbacks en los flujos de cantidad de
-movimiento por las ondas planetarias de baja frecuencia son importantes
-en el proceso de debilitamiento de los Oestes (Lorenz y Hartmann
-\protect\hyperlink{ref-Lorenz2001}{2001}; Simpson et~al.
-\protect\hyperlink{ref-Simpson2013}{2013}) las causas por las cuales
-estas variaciones se asocian con el desarrollo de la QS3 aún no se
-conocen con certeza.
-
-La influencia de estas fuentes de variabilidad extratropical en
-latitudes medias y subpolares no ha sido tan estudiada como la asociada
-a las fuentes tropicales, las cuales afectan remotamente la variabilidad
-del clima en el SSA desde escalas sinópticas e intraestacionales hasta
-escalas interanuales y más largas. (ej. Vera et~al.
-\protect\hyperlink{ref-Vera2006}{2006}). Esto se explica por los altos
-niveles de predictivilidad del clima de zonas tropicales (en escalas
-estacionales por el fenómeno del Niño-Oscilación del Sur (ENSO) y por la
-oscilación de Madden-Julian (MJO) en escalas intraestacionales) que en
-promedio decaen en latitudes más altas.
 
 Trenberth y Mo (\protect\hyperlink{ref-Trenberth1985}{1985}) mostraron
 una recurrencia importante en la ocurrencia de anticiclones de bloqueo
@@ -189,10 +198,9 @@ establecimiento de un patrón de QS3, aunque dejaron abierta la
 posibilidad de que éste se trate de un tren de ondas localizado en vez
 de una verdadera onda zonal. Desde ese momento hasta la actualidad
 diferentes estudios se concentraron en entender la influencia de los
-bloqueos sobre el clima de Sudamérica y su relación con la QS3 (ej. Rao,
-Fernandez, y Franchito \protect\hyperlink{ref-Rao2004}{2004}) o de su
-efecto en el hielo marítimo (ej. Raphael
-\protect\hyperlink{ref-Raphael2007a}{2007}) pero, como se mencionó
+bloqueos sobre el clima de Sudamérica y su relación con la QS3 (ej. Rao
+et~al., \protect\hyperlink{ref-Rao2004}{2004}) o de su efecto en el
+hielo marítimo (ej. {\textbf{???}}) pero, como se mencionó
 anteriormente, muy poca atención ha recibido el estudio de las causas
 que dan lugar al establecimiento de este patrón en un primer lugar.
 Quintanar y Mechoso
@@ -201,7 +209,7 @@ realizaron experimentos de sensibilidad similares a los propuestos en
 este trabajo pero centrados en la QS1. Encontraron que las condiciones
 térmico-orográficas sobre la Antártida no eran suficientes para explicar
 la QS1 de latitudes subpolares, por lo que concluyeron que los forzantes
-remotos deben jugar un papel importante. Wang, Kushner, y Waugh
+remotos deben jugar un papel importante. Wang et~al.
 (\protect\hyperlink{ref-Wang2013}{2013}) encontraron que la destrucción
 y recuperación de la capa de ozono está asociada a un aumento y
 disminución de la actividad de onda plantaria respectivamente, pero su
@@ -212,8 +220,8 @@ planetarias zonalmente simétricas y propusieron que ésta está mejor
 caracterizada por un par de anticilones al sur de Nueva Zelanda y al sur
 de Sudamérica.
 
-Cai, Baines, y Gordon (\protect\hyperlink{ref-Cai1999}{1999}) evaluaron
-la habilidad del modelo CSIRO para representar la QS3 y encontraron que
+Cai et~al. (\protect\hyperlink{ref-Cai1999}{1999}) evaluaron la
+habilidad del modelo CSIRO para representar la QS3 y encontraron que
 proporcionaba una representación adecuada de la misma. Raphael
 (\protect\hyperlink{ref-Raphael1998}{1998}) examinó la QS3 en el modelo
 CCM del NCAR (versiones 1 y 3) y encontró diferencias en cómo cada
@@ -221,17 +229,15 @@ versión simulaba la QS3, siendo los resultados sensibles al grado de
 representación del modelo tanto de la interacción mar-atmósfera como de
 las condiciones de hielo marino en las zonas polares. Este es un
 resultado importante ya que a pesar de que la QS3 puede desarrollarse
-solamente por la dinámica interna de la atmósfera (ej. Simpson et~al.
+solamente por la dinámica interna de la atmósfera (ej. Simpson et~al.,
 \protect\hyperlink{ref-Simpson2013}{2013}), estos trabajos muestran que
 los modelos pueden reproducirla y que existen evidencias de que las
 condiciones superficiales pueden influenciar su actividad. Asimismo,
 Raphael (\protect\hyperlink{ref-Raphael2003}{2003}) encontró importantes
 variaciones interanuales experimentadas por la QS3 entre 1958 y 1996,
 aparentemente relacionadas con variaciones en la frecuencia del ENSO,
-que también influenciaron las asimetrías del SAM (Fogt, Jones, y Renwick
+que también influenciaron las asimetrías del SAM (Fogt et~al.,
 \protect\hyperlink{ref-Fogt2012}{2012}).
-
-XXX Si bien están estos trabajos, pero no hubo mucho\ldots{}XXX
 
 En consecuencia el objetivo general de este plan es entender los
 mecanismos que explican el desarrollo de la QS3 en la circulación del
@@ -260,14 +266,14 @@ investigación y las metodologías que se aplicaron.
 En los capítulos~\ref{climatologia-observada} y~\ref{onda-3} se analizan
 datos mensuales de altura geopotencial, temperatura, viento zonal,
 viento meridional y función corriente provenientes del Reanálisis
-NCEP/NCAR (Kalnay et~al. \protect\hyperlink{ref-Kalnay1996}{1996}) (de
+NCEP/NCAR (Kalnay et~al., \protect\hyperlink{ref-Kalnay1996}{1996}) (de
 aquí en adelante NCEP) entre enero de 1985 y diciembre de 2015. Los
 mismos poseen una resolución de 2.5° en longitud y latitud y 17 niveles
 verticales entre 1000hPa y 10hPa. A partir de los datos mensuales se
 calcularon las medias estacionales definidas a partir de las estaciones
 climatológicas del hemisferio sur.
 
-Se utilizó el modelo SPEEDY (Molteni
+Se utilizó el modelo SPEEDY (Molteni,
 \protect\hyperlink{ref-Molteni2003}{2003}) para realizar corridas de
 sensibilidad (descriptas en el
 Capítulo~\ref{experimentos-de-sensibilidad}). El modelo SPEEDY es un
@@ -288,8 +294,8 @@ ejemplo la dinámica del vórtice polar.
 
 Sin embargo por su bajo costo computacional y su buen desempeño para
 simular ciertas características globales de interés para Sudamérica
-(Barreiro, Díaz, y Renom \protect\hyperlink{ref-Barreiro2014}{2014}) se
-decidió utilizarlo en este trabajo.
+(Barreiro et~al., \protect\hyperlink{ref-Barreiro2014}{2014}) se decidió
+utilizarlo en este trabajo.
 
 \section{Metodología}\label{metodologia}
 
@@ -309,11 +315,10 @@ simétrica zonal y es independiente de la longitud mientras que
 
 Estas ondas cuasiestacionarias (QS) representan una parte improtante de
 los flujos meridionales de calor y cantidad de movimiento junto con las
-ondas transcientes (James \protect\hyperlink{ref-James}{1994}) y en gran
-medida son forzadas por forzantes superficales como orografía y
+ondas transcientes (James, \protect\hyperlink{ref-James}{1994}) y en
+gran medida son forzadas por forzantes superficales como orografía y
 contrastes de temperatura así como por interacciones con los
-transcientes (Rao, Fernandez, y Franchito
-\protect\hyperlink{ref-Rao2004}{2004}).
+transcientes (Rao et~al., \protect\hyperlink{ref-Rao2004}{2004}).
 
 En este trabajo las anomalías zonales se calcularon como la diferencia
 entre la variable y su promedio zonal para cada círculo de latitud.
@@ -341,36 +346,35 @@ método AM.
 
 Para la descomposición de los campos de geopotencial en modos de Fourier
 se utilizó la función \texttt{FitQsWave()} del paquete \texttt{metR}
-(Campitelli \protect\hyperlink{ref-R-metR}{2017}).
+(Campitelli, \protect\hyperlink{ref-R-metR}{2017}).
 
 En la descomposición de Fourier, el estudio de la fase requiere un
 tratamiento especial ya que se trata de una variable circular. Para el
 cálculo de estadísticas circulares se se utilizó el paquete
-\texttt{circular} (Lund et~al.
+\texttt{circular} (Lund et~al.,
 \protect\hyperlink{ref-R-circular}{2017}).
 
 \emph{Wavelets}
 
 El análisis de wavelets es similar a Fourier pero permite describir
-oscilaciones localizadas en el dominio (Torrence y Compo
+oscilaciones localizadas en el dominio (Torrence y Compo,
 \protect\hyperlink{ref-Torrence1998}{1998}). En el contexto de las ondas
 cuasiestacionarias, esto implica que en vez de obtener una amplitud y
 fase por cada círculo de latitud, se tiene una amplitud local que
 depende de la longitud. En la ciencias atmosféricas el análisis de
 wavelets se usa extensivamente en el análisis de periodicidades en el
-dominio tiempo (ej. M. N. Raphael
-\protect\hyperlink{ref-Raphael2004}{2004}; Kinnard et~al.
-\protect\hyperlink{ref-Kinnard2011}{2011}) y de procesamiento de
-imágenes (ej. Desrochers y Yee
+dominio tiempo (ej. Raphael, \protect\hyperlink{ref-Raphael2004}{2004};
+Kinnard et~al., \protect\hyperlink{ref-Kinnard2011}{2011}) y de
+procesamiento de imágenes (ej. Desrochers y Yee,
 \protect\hyperlink{ref-Desrochers1999}{1999}), pero existen pocos
-estudios que lo apliquen a dominios espaciales (ej. Pinault
+estudios que lo apliquen a dominios espaciales (ej. Pinault,
 \protect\hyperlink{ref-Pinault2016}{2016}) aunque sí hay aplicaciones de
-este tipo en la literatura de ecología (ej, Mi et~al.
+este tipo en la literatura de ecología (ej, Mi et~al.,
 \protect\hyperlink{ref-Mi2005}{2005}).
 
 Para el cálculo de wavelets se utilizó la función
 \texttt{WaveletTransform()} del paquete \texttt{WaveletComp} (Roesch y
-Schmidbauer \protect\hyperlink{ref-R-WaveletComp}{2014}) que utiliza un
+Schmidbauer, \protect\hyperlink{ref-R-WaveletComp}{2014}) que utiliza un
 wavelet de Morlet.
 
 \emph{Índice de QS3}
@@ -381,13 +385,12 @@ y entre 700hPa y 100hPa. Existen múltiples índices similares presentes
 en la literatura. Algunos son definidos a partir anomalía zonales de
 geopotencial en puntos fijos cercanos a donde climatológicamente se dan
 los máximos de geopotencial asociados a la QS3. Así construyeron sus
-índices Mo y White (\protect\hyperlink{ref-Mo1985}{1985}), Cai, Baines,
-y Gordon (\protect\hyperlink{ref-Cai1999}{1999}) y Raphael
-(\protect\hyperlink{ref-Raphael2004a}{2004}) pero cada trabajo utilizó
-puntos ligeramente distintos a causa de las distintas climatologías
-analizadas y Raphael (\protect\hyperlink{ref-Raphael2004a}{2004}) además
-se basó en promedios trimestrales de en vez de medias mensuales. Yuan y
-Li (\protect\hyperlink{ref-Yuan2008}{2008}), utilizando una técnica
+índices Mo y White (\protect\hyperlink{ref-Mo1985}{1985}), Cai et~al.
+(\protect\hyperlink{ref-Cai1999}{1999}) y ({\textbf{???}}) pero cada
+trabajo utilizó puntos ligeramente distintos a causa de las distintas
+climatologías analizadas y ({\textbf{???}}) además se basó en promedios
+trimestrales de en vez de medias mensuales. Yuan y Li
+(\protect\hyperlink{ref-Yuan2008}{2008}), utilizando una técnica
 distinta, creó una serie temporal de actividad de la QS3 a partir de la
 primer componente principal del campo de viento meridional superficial,
 el cual resulta en un patrón de onda 3 consistente con climatologías
@@ -397,7 +400,7 @@ La principal limitación de estas metodologías es que, al basarse en
 patrones estacionarios (puntos fijos, componentes principales), no
 permiten cambios de fase en la onda planetaria. En particular, no
 capturan correctamente el corrimiento estacional en la posición de la
-QS3 (de aproximadamente 15° entre verano e invierno) (Loon y Jenne, Roy
+QS3 (de aproximadamente 15° entre verano e invierno) (Loon y Jenne, Roy,
 \protect\hyperlink{ref-Loon1972}{1972}) ni permiten capturar casos de
 actividad de onda intensa pero alejada de las zonas climatológicamente
 activas. Irving y Simmonds (\protect\hyperlink{ref-Irving2015}{2015})
@@ -429,7 +432,7 @@ es destructiva.
 La influencia tropical en la variabilidad del clima extratropical se
 explica mediante la propgación meridional de ondas de Rossby. La teoría
 lineal de ondas de Rossby barotrópicas predice que ésta propagación
-depende de las condiciones del entorno (James
+depende de las condiciones del entorno (James,
 \protect\hyperlink{ref-James}{1994}). En particular, el número de onda
 meridional está dado por
 
@@ -451,9 +454,9 @@ meridional.
 El flujo de actividad de onda, es un vector que, bajo ciertas
 suposiciones, es paralelo a la velocidad de grupo de las ondas de
 Rossby, lo cual permite cuantificar la propagación meridional y zonal de
-las mismas (James \protect\hyperlink{ref-James}{1994}). En este estudio,
-ésta variable se la calculó a partir de las anomalías zonales de función
-corriente según
+las mismas (James, \protect\hyperlink{ref-James}{1994}). En este
+estudio, ésta variable se la calculó a partir de las anomalías zonales
+de función corriente según
 
 \[
 \begin{aligned}
@@ -464,11 +467,11 @@ F_\phi &= \frac{p}{2000a^2} \left( \frac{\partial \psi^*}{\partial \lambda}\frac
 
 donde \(p\) es la presión, \(\phi\) la latidud, \(\lambda\) la longitud,
 \(a\) es el radio de la Tierra (tomado como 6371km) y \(\psi^*\) es la
-anomalía zonal de la función corriente (Vera et~al.
+anomalía zonal de la función corriente (Vera et~al.,
 \protect\hyperlink{ref-Vera2004}{2004}).
 
 El análisis de componentes principales se realizó mediante la función
-\texttt{EOF()} del paquete \texttt{metR} (Campitelli
+\texttt{EOF()} del paquete \texttt{metR} (Campitelli,
 \protect\hyperlink{ref-R-metR}{2017}), la cual realiza una
 descomposición en valores singulares de la matriz de datos. Este método
 es preferible al cálculo de autovalores y autovectores sobre la matriz
@@ -562,7 +565,7 @@ otras estaciones con menor intensidad. Sobre Sudamérica, en verano y
 primavera en ese mismo nivel aparece un centro anticiclónico con un
 centro ciclónico al noroeste. Estas anomalías (la alta de Bolivia y la
 baja del noroeste) son características del Sistema Monzónico
-Sudamericano (Vera et~al. \protect\hyperlink{ref-Vera2006}{2006}).
+Sudamericano (Vera et~al., \protect\hyperlink{ref-Vera2006}{2006}).
 
 En la \autoref{fig:ghz-ncep-corte60} se muestra un corte zonal en 60°S
 de Z*. Se aprecia la coherencia vertical de la QS1 y es evidente la
@@ -578,7 +581,7 @@ La inclinación hacia el oeste con la latitud (\autoref{fig:ghz-ncep}) y
 con la altura (\autoref{fig:ghz-ncep-corte60}) indican que las
 perturbaciones estacionarias están asociadas con transporte hacia el
 polo tanto de cantidad de movimiento zonal como de temperatura, por las
-perturbaciones (James \protect\hyperlink{ref-James}{1994}). En verano
+perturbaciones (James, \protect\hyperlink{ref-James}{1994}). En verano
 las anomalías zonales tienen una estructura barotrópica equivalente y
 carecen de inclinación en la horizontal.
 
@@ -628,7 +631,7 @@ aproximadamente, donde alcanza un mínimo que marca la tropopausa, y
 crece por encima. La altura del mínimo de temperatura varía mucho al sur
 de los 45°, siendo mínima en verano (300hPa) y máxima en invierno y
 otoño (30hPa). Hay que tener encuenta, sin embargo, que la tropopausa no
-está bien definida en el invierno Antártico (Court
+está bien definida en el invierno Antártico (Court,
 \protect\hyperlink{ref-Court1942}{1942} Zängl
 (\protect\hyperlink{ref-Zangl2001}{2001})) por lo que el uso de la
 tropopausa térmica no es conveniente. Zängl
@@ -710,7 +713,7 @@ una latitud más ecuatorial que en la región del Pacífico. El jet
 subtropical también tiene un máximo al sur de África y otro al norte de
 Nueva Zelanda --especialmente en invierno--, donde además se produce una
 bifurcación del jet. Se trata de una región de persistentes y frecuentes
-bloqueos (ej. Trenberth y Mo
+bloqueos (ej. Trenberth y Mo,
 \protect\hyperlink{ref-Trenberth1985}{1985}).
 
 Esta bifurcación del jet sobre Nueva Zelanda se evidencia en el campo de
@@ -769,9 +772,9 @@ Presente durante todo el año, también se observa un maximo de vientos
 del sur en la costa antártica. Esta es la señal de los vientos
 catabáticos antárticos producidos por una capa muy estable cerca de
 superficie y la consistente inclinación de la topografía del continente
-(King y Turner \protect\hyperlink{ref-King1997}{1997}). Aunque los datos
-allí pueden tener limitaciones por la falta de observaciones y la pobre
-representación de la orografía en los modelos.
+(King y Turner, \protect\hyperlink{ref-King1997}{1997}). Aunque los
+datos allí pueden tener limitaciones por la falta de observaciones y la
+pobre representación de la orografía en los modelos.
 
 \begin{landscape}\begin{figure}
 
@@ -810,7 +813,7 @@ troposfera alta sobre Sudamérica tropical anomalías positivas sobre el
 centro-este del continente y negativas en los océanos subyacentes. Tal
 patrón de ondas estacionario se relaciona con la presencia del Alta de
 Bolivia y las vaguadas estacionarias a sus lados, siendo la del este
-típicamente llamada la Baja del Nordeste (Vera et~al.
+típicamente llamada la Baja del Nordeste (Vera et~al.,
 \protect\hyperlink{ref-Vera2006}{2006}).
 
 No se muestran los campos de anomalías zonales de V ya que son
@@ -880,12 +883,12 @@ distinguen en la costa antártica.
 
 Valores de \(\psi_y\) negativos son un factor que impiden la propagación
 meridional de ondas de Rossby barotrópicas. Esta figura reproduce y
-extiende el resultado de Berbery, Nogués-Paegle, y Horel
+extiende el resultado de Berbery et~al.
 (\protect\hyperlink{ref-Berbery1992}{1992}) (su Figura~3) utilizando 5
 años de análisis objetivo del Centro Europeo de Predicción a Plazo Medio
 (ECMWF). Asimismo, aún con \(\psi_y\) positivo, las ondas de Rossby
 barotrópicas sólo se pueden propagar si su número de onda zonal es menor
-que el número de onda estacionario (James
+que el número de onda estacionario (James,
 \protect\hyperlink{ref-James}{1994}). En la \autoref{fig:ks-ncep} se
 muestra el número de onda estacionario para el nivel de 200hPa. Entre
 otoño y primavera, se destaca claramente la región del Pacífico Oeste en
@@ -1241,9 +1244,9 @@ El ciclo anual de \(I_3\) se muestra en la Figura~\ref{fig:ampl-ts1} a
 través de boxplots de los valores mensuales individuales. Los valores
 mayores de amplitud se dan en agosto y los mínimos en diciembre, y la
 variabilidad sigue un ciclo similar. Este ciclo anual es consistente con
-las climatologías previas (Loon y Jenne, Roy
-\protect\hyperlink{ref-Loon1972}{1972}; Karoly
-\protect\hyperlink{ref-Karoly1985}{1985}; M. N. Raphael
+las climatologías previas (Loon y Jenne, Roy,
+\protect\hyperlink{ref-Loon1972}{1972}; Karoly,
+\protect\hyperlink{ref-Karoly1985}{1985}; Raphael,
 \protect\hyperlink{ref-Raphael2004}{2004}). Se nota que \(I_3\) no es
 mínimo en los meses de primavera, en contraste con lo observado en el
 análisis climatológico (\autoref{fig:ampl-ncep}) y los campos
@@ -1265,7 +1268,7 @@ periodicidades ni de una tendencia secular.
 
 Un análisis de wavelets de la amplitud (previa eliminación del ciclo
 anual) presenta picos alrededor de 3, 12 y 24 meses, aunque ninguno es
-estadísticamente significativo (no se muestra). M. N. Raphael
+estadísticamente significativo (no se muestra). Raphael
 (\protect\hyperlink{ref-Raphael2004}{2004}), también utilizando wavelets
 en el perído 1958-2001, encontró que su índice de actividad de la QS3
 mostraba variabilidad importante de entre 4 y 12 años, algo que no se
@@ -1344,7 +1347,7 @@ utilizando la definición tradicional de las estaciones climatológicas
 embargo, como éstas son definidas a partir del ciclo anual de
 temperatura en latitudes medias, no constituyen necesariamente el mejor
 agrupamiento de los datos para otras variables u otras latitudes (por
-ejemplo, la Antártida (King y Turner
+ejemplo, la Antártida (King y Turner,
 \protect\hyperlink{ref-King1997}{1997})).
 
 Una metodología muy utilizada para la clasificación de campos es el
@@ -1446,7 +1449,7 @@ en AM y ASO en menor medida.
 
 La teoría de ondas de Rossby indica que una inclinación hacia el oeste
 está asociada con transporte de calor hacia el polo por las
-perturbaciones y propagación vertical de las mismas (James
+perturbaciones y propagación vertical de las mismas (James,
 \protect\hyperlink{ref-James}{1994}). Esto podría explicar la variación
 estacional de la extensión vertical de la QS3, la cual llegaría a la
 estratósfera alta en JJ, cuando la inclinación es máxima y quedaría
@@ -1487,7 +1490,7 @@ consecuencia del ciclo anual de la fase (\autoref{fig:fase-boxplot}).
 
 El uso de componentes principales para el análisis de una onda que
 cambia de fase es similar a la metodología utilizada para el monitoreo
-de la MJO (Wheeler y Hendon \protect\hyperlink{ref-Wheeler2004}{2004})
+de la MJO (Wheeler y Hendon, \protect\hyperlink{ref-Wheeler2004}{2004})
 por lo que sería posible su utilización como indicador de la actividad
 de la QS3 distinto de la amplitud media de Fourier. Una desventaja de la
 descomposición estacional obtenida es que no todas las estaciones tienen
@@ -1696,10 +1699,11 @@ sensibilidad realizados.
 Se realizó primero una corrida Control utilizando el modelo SPEEDY (de
 aquí en adelante SPEEDY). La misma cubrió el período 1985-2014, con los
 modelo de suelo y hielo activados y SST históricas provenientes de la
-base de datos HadISST (Rayner \protect\hyperlink{ref-Rayner2003}{2003}).
-Se utilizó una atmósfera en reposo como condición inicial observando que
-el tiempo de \emph{spin-up} es menor que un mes, por lo que se utilizó
-todos los meses de simulación.
+base de datos HadISST (Rayner,
+\protect\hyperlink{ref-Rayner2003}{2003}). Se utilizó una atmósfera en
+reposo como condición inicial observando que el tiempo de \emph{spin-up}
+es menor que un mes, por lo que se utilizó todos los meses de
+simulación.
 
 Para la validación de la corrida control de SPEEDY se utilizaron los
 reanálisis del NCEP/NCAR (de aquí en adelante NCEP) correspondientes a
@@ -2144,290 +2148,202 @@ entre las corridas en la señal de la QS3 se deben principalmente a mayor
 o menor estacionaridad y no a una mayor o menor amplitud de las onda
 planetaria 3.
 
-\section{Cosas inesperadas\ldots{}}\label{cosas-inesperadas}
-
-me dio neumonía. :(
-
-y pericarditis. :((
-
-\begin{itemize}
-\tightlist
-\item
-  ??
-\item
-  protif!
-\end{itemize}
-
 \chapter{Conclusiones}\label{conclusiones}
-
-\chapter{Agradecimientos}\label{agradecimientos}
-
-A las médicas y enfermeras del Sanatorio Güemes que me cuidaron durante
-mi internación.
 
 \chapter*{Referencias}\label{referencias}
 \addcontentsline{toc}{chapter}{Referencias}
 
 \hypertarget{refs}{}
 \hypertarget{ref-Alvarez2014}{}
-Alvarez, Mariano S., C. S. Vera, G. N. Kiladis, y B. Liebmann. 2014.
-«Intraseasonal variability in South America during the cold season».
-\emph{Climate Dynamics} 42 (11-12): 3253-69.
-doi:\href{https://doi.org/10.1007/s00382-013-1872-z}{10.1007/s00382-013-1872-z}.
+Alvarez, M.S., Vera, C.S., Kiladis, G.N., Liebmann, B., 2014.
+Intraseasonal variability in South America during the cold season. 42,
+11-12, 3253-3269.
 
 \hypertarget{ref-Barreiro2014}{}
-Barreiro, Marcelo, Nicolas Díaz, y Madeleine Renom. 2014. «Role of the
-global oceans and land-atmosphere interaction on summertime interdecadal
-variability over northern Argentina». \emph{Climate Dynamics} 42 (7-8):
-1733-53.
-doi:\href{https://doi.org/10.1007/s00382-014-2088-6}{10.1007/s00382-014-2088-6}.
+Barreiro, M., Díaz, N., Renom, M., 2014. Role of the global oceans and
+land-atmosphere interaction on summertime interdecadal variability over
+northern Argentina. 42, 7-8, 1733-1753.
 
 \hypertarget{ref-Berbery1992}{}
-Berbery, E H, J Nogués-Paegle, y J D Horel. 1992. «Wavelike southern
-hemisphere extratropical teleconnections». \emph{Journal of the
-Atmospheric Sciences} 49 (2): 155-77.
-doi:\href{https://doi.org/DOI:\%2010.1175/1520-0469(1992)049\%3C0155:WSHET\%3E2.0.CO;2}{DOI: 10.1175/1520-0469(1992)049\textless{}0155:WSHET\textgreater{}2.0.CO;2}.
+Berbery, E.H., Nogués-Paegle, J., Horel, J.D., 1992. Wavelike southern
+hemisphere extratropical teleconnections. 49, 2, 155-177.
 
 \hypertarget{ref-Cai1999}{}
-Cai, Wenju, Peter G. Baines, y Hal B. Gordon. 1999. «Southern mid- to
+Cai, W., Baines, P.G., Gordon, H.B., 1999. Southern mid- to
 high-latitude variability, a zonal wavenumber-3 pattern, and the
-Antarctic circumpolar wave in the CSIRO coupled model». \emph{Journal of
-Climate} 12 (10): 3087-3104.
-doi:\href{https://doi.org/10.1175/1520-0442(1999)012\%3C3087:SMTHLV\%3E2.0.CO;2}{10.1175/1520-0442(1999)012\textless{}3087:SMTHLV\textgreater{}2.0.CO;2}.
+Antarctic circumpolar wave in the CSIRO coupled model. 12, 10,
+3087-3104.
 
 \hypertarget{ref-R-metR}{}
-Campitelli, Elio. 2017. \emph{metR: Tools for Easier Analysis of
-Meteorological Fields}. \url{https://github.com/eliocamp/metR}.
+Campitelli, E., 2017. metR: Tools for Easier Analysis of Meteorological
+Fields. \url{https://github.com/eliocamp/metR}
 
 \hypertarget{ref-Court1942}{}
-Court, Arnold. 1942. «Tropopause Disappearance During the Antarctic
-Winter». \emph{Bulletin of the American Meteorological Society} 23 (5).
-American Meteorological Society: 220-38.
-doi:\href{https://doi.org/10.2307/26255916}{10.2307/26255916}.
+Court, A., 1942. Tropopause Disappearance During the Antarctic Winter.
+23, 5, 220-238.
 
 \hypertarget{ref-Desrochers1999}{}
-Desrochers, Paul R., y Samuel Y. K. Yee. 1999. «Wavelet Applications for
-Mesocyclone Identification in Doppler Radar Observations». \emph{Journal
-of Applied Meteorology} 38 (7): 965-80.
-doi:\href{https://doi.org/10.1175/1520-0450(1999)038\%3C0965:WAFMII\%3E2.0.CO;2}{10.1175/1520-0450(1999)038\textless{}0965:WAFMII\textgreater{}2.0.CO;2}.
+Desrochers, P.R., Yee, S.Y.K., 1999. Wavelet Applications for
+Mesocyclone Identification in Doppler Radar Observations. 38, 7,
+965-980.
 
 \hypertarget{ref-Fogt2012}{}
-Fogt, Ryan L., Julie M. Jones, y James Renwick. 2012. «Seasonal zonal
-asymmetries in the southern annular mode and their impact on regional
-temperature anomalies». \emph{Journal of Climate} 25 (18): 6253-70.
-doi:\href{https://doi.org/10.1175/JCLI-D-11-00474.1}{10.1175/JCLI-D-11-00474.1}.
+Fogt, R.L., Jones, J.M., Renwick, J., 2012. Seasonal zonal asymmetries
+in the southern annular mode and their impact on regional temperature
+anomalies. 25, 18, 6253-6270.
 
 \hypertarget{ref-Hobbs2010}{}
-Hobbs, William R., y Marilyn N. Raphael. 2010. «Characterizing the
-zonally asymmetric component of the SH circulation». \emph{Climate
-Dynamics} 35 (5): 859-73.
-doi:\href{https://doi.org/10.1007/s00382-009-0663-z}{10.1007/s00382-009-0663-z}.
+Hobbs, W.R., Raphael, M.N., 2010. Characterizing the zonally asymmetric
+component of the SH circulation. 35, 5, 859-873.
 
 \hypertarget{ref-Irving2015}{}
-Irving, Damien, y Ian Simmonds. 2015. «A novel approach to diagnosing
-Southern Hemisphere planetary wave activity and its influence on
-regional climate variability». \emph{Journal of Climate} 28 (23):
-9041-57.
-doi:\href{https://doi.org/10.1175/JCLI-D-15-0287.1}{10.1175/JCLI-D-15-0287.1}.
+Irving, D., Simmonds, I., 2015. A novel approach to diagnosing Southern
+Hemisphere planetary wave activity and its influence on regional climate
+variability. 28, 23, 9041-9057.
 
 \hypertarget{ref-James}{}
-James, I. N. 1994. \emph{Introduction to circulating atmospheres}.
-Cambridge: Cambridge University Press.
-doi:\href{https://doi.org/10.1017/CBO9780511622977}{10.1017/CBO9780511622977}.
+James, I.N., 1994. Introduction to circulating atmospheres. Cambridge
+University Press.
 
 \hypertarget{ref-Kalnay1996}{}
-Kalnay, E., M. Kanamitsu, R. Kistler, W. Collins, D. Deaven, L. Gandin,
-M. Iredell, et~al. 1996. «The NCEP/NCAR 40-year reanalysis project».
-\emph{Bulletin of the American Meteorological Society} 77 (3): 437-71.
-doi:\href{https://doi.org/10.1175/1520-0477(1996)077\%3C0437:TNYRP\%3E2.0.CO;2}{10.1175/1520-0477(1996)077\textless{}0437:TNYRP\textgreater{}2.0.CO;2}.
-
-\hypertarget{ref-Karoly1989}{}
-Karoly, David J. 1989. «Southern Hemisphere Circulation Features
-Associated with El Nino-Southern Ocscillation Events». \emph{Journal of
-Climate} 2 (11): 1239-52.
-doi:\href{https://doi.org/http://dx.doi.org/10.1175/1520-0442(1989)002\%3C1239:SHCFAW\%3E2.0.CO;2}{http://dx.doi.org/10.1175/1520-0442(1989)002\textless{}1239:SHCFAW\textgreater{}2.0.CO;2}.
+Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin,
+L., Iredell, M. et~al., 1996. The NCEP/NCAR 40-year reanalysis project.
+77, 3, 437-471.
 
 \hypertarget{ref-Karoly1985}{}
-Karoly, David J. 1985. «An atmospheric climatology of the Southern
+Karoly, D.J., 1985. An atmospheric climatology of the Southern
 Hemisphere based on ten years of daily numerical analyses(1972-82). II-
-Standing wave climatology». \emph{Australian Meteorological Magazine} 33
-(3): 105-16.
+Standing wave climatology. 33, 3, 105-116.
+
+\hypertarget{ref-Karoly1989}{}
+Karoly, D.J., 1989. Southern Hemisphere Circulation Features Associated
+with El Nino-Southern Ocscillation Events. 2, 11, 1239-1252.
 
 \hypertarget{ref-Kidson1988}{}
-Kidson, John W. 1988. «Interannual Variations in the Southern Hemisphere
-Circulation». \emph{Journal of Climate} 1 (12): 1177-98.
-doi:\href{https://doi.org/10.1175/1520-0442(1988)001\%3C1177:IVITSH\%3E2.0.CO;2}{10.1175/1520-0442(1988)001\textless{}1177:IVITSH\textgreater{}2.0.CO;2}.
+Kidson, J.W., 1988. Interannual Variations in the Southern Hemisphere
+Circulation. 1, 12, 1177-1198.
 
 \hypertarget{ref-King1997}{}
-King, J. C., y J. Turner. 1997. \emph{Antarctic Meteorology and
-Climatology}. Cambridge: Cambridge University Press.
-doi:\href{https://doi.org/10.1017/CBO9780511524967}{10.1017/CBO9780511524967}.
+King, J.C., Turner, J., 1997. Antarctic Meteorology and Climatology.
+Cambridge University Press.409 págs
 
 \hypertarget{ref-Kinnard2011}{}
-Kinnard, Christophe, Christian M Zdanowicz, David a Fisher, Elisabeth
-Isaksson, Anne de Vernal, y Lonnie G Thompson. 2011. «Reconstructed
-changes in Arctic sea ice over the past 1,450 years.» \emph{Nature} 479
-(7374). Nature Publishing Group: 509-12.
-doi:\href{https://doi.org/10.1038/nature10581}{10.1038/nature10581}.
+Kinnard, C., Zdanowicz, C.M., Fisher, D. a, Isaksson, E., Vernal, A. de,
+Thompson, L.G., 2011. Reconstructed changes in Arctic sea ice over the
+past 1,450 years. 479, 7374, 509-12.
 
 \hypertarget{ref-Loon1972}{}
-Loon, Harry van, y L. Jenne, Roy. 1972. «The Zonal Harmonic Standing
-Waves in the Southern Hemisphe». \emph{Journal of Geophysical Research}
-77 (6): 992-1003.
+Loon, H. van, Jenne, Roy, L., 1972. The Zonal Harmonic Standing Waves in
+the Southern Hemisphe. 77, 6, 992-1003.
 
 \hypertarget{ref-Lorenz2001}{}
-Lorenz, David J., y Dennis L. Hartmann. 2001. «Eddy--Zonal Flow Feedback
-in the Southern Hemisphere». \emph{Journal of the Atmospheric Sciences}
-58 (21): 3312-27.
-doi:\href{https://doi.org/10.1175/1520-0469(2001)058\%3C3312:EZFFIT\%3E2.0.CO;2}{10.1175/1520-0469(2001)058\textless{}3312:EZFFIT\textgreater{}2.0.CO;2}.
+Lorenz, D.J., Hartmann, D.L., 2001. Eddy--Zonal Flow Feedback in the
+Southern Hemisphere. 58, 21, 3312-3327.
 
 \hypertarget{ref-R-circular}{}
-Lund, Ulric, Claudio Agostinelli, Hiroyoshi Arai, Alessando Gagliardi,
-Eduardo Garcia Portugues, Dimitri Giunchi, Jean-Olivier Irisson, Matthew
-Pocernich, y Federico Rotolo. 2017. \emph{circular: Circular
-Statistics}. \url{https://CRAN.R-project.org/package=circular}.
+Lund, U., Agostinelli, C., Arai, H., Gagliardi, A., Portugues, E.G.,
+Giunchi, D., Irisson, J.-O. et~al., 2017. circular: Circular Statistics.
+\url{https://CRAN.R-project.org/package=circular}
 
 \hypertarget{ref-Mi2005}{}
-Mi, Xiangcheng, Haibao Ren, Zisheng Ouyang, Wei Wei, y Keping Ma. 2005.
-«The use of the Mexican Hat and the Morlet wavelets for detection of
-ecological patterns». \emph{Plant Ecology} 179 (1): 1-19.
-doi:\href{https://doi.org/10.1007/s11258-004-5089-4}{10.1007/s11258-004-5089-4}.
+Mi, X., Ren, H., Ouyang, Z., Wei, W., Ma, K., 2005. The use of the
+Mexican Hat and the Morlet wavelets for detection of ecological
+patterns. 179, 1, 1-19.
 
 \hypertarget{ref-Mo1985}{}
-Mo, Kingtse C., y Glenn H. White. 1985. «Teleconnections in the Southern
-Hemisphere». \emph{Monthly Weather Review} 113 (1): 22-37.
-doi:\href{https://doi.org/10.1175/1520-0493(1985)113\%3C0022:TITSH\%3E2.0.CO;2}{10.1175/1520-0493(1985)113\textless{}0022:TITSH\textgreater{}2.0.CO;2}.
+Mo, K.C., White, G.H., 1985. Teleconnections in the Southern Hemisphere.
+113, 1, 22-37.
 
 \hypertarget{ref-Molteni2003}{}
-Molteni, F. 2003. «Atmospheric simulations using a GCM with simplified
+Molteni, F., 2003. Atmospheric simulations using a GCM with simplified
 physical parametrizations. I: model climatology and variability in
-multi-decadal experiments». \emph{Climate Dynamics} 20 (2): 175-91.
-doi:\href{https://doi.org/10.1007/s00382-002-0268-2}{10.1007/s00382-002-0268-2}.
+multi-decadal experiments. 20, 2, 175-191.
 
 \hypertarget{ref-Pinault2016}{}
-Pinault, Jean Louis. 2016. «Long Wave Resonance in Tropical Oceans and
-Implications on Climate: The Pacific Ocean». \emph{Pure and Applied
-Geophysics} 173 (6): 2119-45.
-doi:\href{https://doi.org/10.1007/s00024-015-1212-9}{10.1007/s00024-015-1212-9}.
+Pinault, J.L., 2016. Long Wave Resonance in Tropical Oceans and
+Implications on Climate: The Pacific Ocean. 173, 6, 2119-2145.
 
 \hypertarget{ref-Quintanar1995a}{}
-Quintanar, Arturo I., y Carlos R. Mechoso. 1995a. «Quasi-stationary
-waves in the Southern Hemisphere. Part I: observational data».
-\emph{Journal of Climate} 8 (11): 2659-72.
-doi:\href{https://doi.org/10.1175/1520-0442(1995)008\%3C2659:QSWITS\%3E2.0.CO;2}{10.1175/1520-0442(1995)008\textless{}2659:QSWITS\textgreater{}2.0.CO;2}.
+Quintanar, A.I., Mechoso, C.R., 1995a. Quasi-stationary waves in the
+Southern Hemisphere. Part I: observational data. 8, 11, 2659-2672.
 
 \hypertarget{ref-Quintanar1995}{}
----------. 1995b. «Quasi-Stationary Waves in the Southern Hemisphere.
-Part II: Generation Mechanisms». \emph{Journal of Climate} 8 (11):
-2673-90.
-doi:\href{https://doi.org/10.1175/1520-0442(1995)008\%3C2673:QSWITS\%3E2.0.CO;2}{10.1175/1520-0442(1995)008\textless{}2673:QSWITS\textgreater{}2.0.CO;2}.
+Quintanar, A.I., Mechoso, C.R., 1995b. Quasi-Stationary Waves in the
+Southern Hemisphere. Part II: Generation Mechanisms. 8, 11, 2673-2690.
 
 \hypertarget{ref-Rao2004}{}
-Rao, V. Brahmananda, J. P. R. Fernandez, y S. H. Franchito. 2004.
-«Quasi-stationary waves in the southern hemisphere during El Nina and La
-Nina events». \emph{Annales Geophysicae} 22 (3): 789-806.
+Rao, V.B., Fernandez, J.P.R., Franchito, S.H., 2004. Quasi-stationary
+waves in the southern hemisphere during El Nina and La Nina events. 22,
+3, 789-806.
 
 \hypertarget{ref-Raphael2004}{}
-Raphael, M. N. 2004. «A zonal wave 3 index for the Southern Hemisphere».
-\emph{Geophysical Research Letters} 31 (23): 1-4.
-doi:\href{https://doi.org/10.1029/2004GL020365}{10.1029/2004GL020365}.
-
-\hypertarget{ref-Raphael2007a}{}
----------. 2007. «The influence of atmospheric zonal wave three on
-Antarctic sea ice variability». \emph{Journal of Geophysical Research
-Atmospheres} 112 (12): D12112.
-doi:\href{https://doi.org/10.1029/2006JD007852}{10.1029/2006JD007852}.
+Raphael, M.N., 2004. A zonal wave 3 index for the Southern Hemisphere.
+31, 23, 1-4.
 
 \hypertarget{ref-Raphael1998}{}
-Raphael, Marilyn N. 1998. «Quasi-stationary waves in the southern
-hemisphere: an examination of their simulation by the NCAR climate
-system model, with and without an interactive ocean». \emph{Journal of
-Climate} 11 (6): 1405-19.
+Raphael, M.N., 1998. Quasi-stationary waves in the southern hemisphere:
+an examination of their simulation by the NCAR climate system model,
+with and without an interactive ocean. 11, 6, 1405-1419.
 
 \hypertarget{ref-Raphael2003}{}
----------. 2003. «Recent, Large-Scale Changes in the Extratropical
-Southern Hemisphere Atmospheric Circulation». \emph{Journal of Climate}
-16: 2915-24.
-
-\hypertarget{ref-Raphael2004a}{}
----------. 2004. «A zonal wave 3 index for the Southern Hemisphere».
-\emph{Geophysical Research Letters} 31 (23): 1-4.
-doi:\href{https://doi.org/10.1029/2004GL020365}{10.1029/2004GL020365}.
+Raphael, M.N., 2003. Recent, Large-Scale Changes in the Extratropical
+Southern Hemisphere Atmospheric Circulation. 16, 2915-2924.
 
 \hypertarget{ref-Rayner2003}{}
-Rayner, N. A. 2003. «Global analyses of sea surface temperature, sea
-ice, and night marine air temperature since the late nineteenth
-century». \emph{Journal of Geophysical Research} 108 (D14): 4407.
-doi:\href{https://doi.org/10.1029/2002JD002670}{10.1029/2002JD002670}.
+Rayner, N.A., 2003. Global analyses of sea surface temperature, sea ice,
+and night marine air temperature since the late nineteenth century. 108,
+D14, 4407.
 
 \hypertarget{ref-R-WaveletComp}{}
-Roesch, Angi, y Harald Schmidbauer. 2014. \emph{WaveletComp:
-Computational Wavelet Analysis}.
-\url{https://CRAN.R-project.org/package=WaveletComp}.
+Roesch, A., Schmidbauer, H., 2014. WaveletComp: Computational Wavelet
+Analysis. \url{https://CRAN.R-project.org/package=WaveletComp}
 
 \hypertarget{ref-Silvestri2009}{}
-Silvestri, Gabriel, y Carolina Vera. 2009. «Nonstationary impacts of the
-southern annular mode on Southern Hemisphere climate». \emph{Journal of
-Climate} 22 (22): 6142-8.
-doi:\href{https://doi.org/10.1175/2009JCLI3036.1}{10.1175/2009JCLI3036.1}.
+Silvestri, G., Vera, C., 2009. Nonstationary impacts of the southern
+annular mode on Southern Hemisphere climate. 22, 22, 6142-6148.
 
 \hypertarget{ref-Simpson2013}{}
-Simpson, Isla R., Theodore G. Shepherd, Peter Hitchcock, y John F.
-Scinocca. 2013. «Southern annular mode dynamics in observations and
-models. part ii: Eddy Feedbacks». \emph{Journal of Climate} 26 (14):
-5220-41.
-doi:\href{https://doi.org/10.1175/JCLI-D-12-00495.1}{10.1175/JCLI-D-12-00495.1}.
+Simpson, I.R., Shepherd, T.G., Hitchcock, P., Scinocca, J.F., 2013.
+Southern annular mode dynamics in observations and models. part ii: Eddy
+Feedbacks. 26, 14, 5220-5241.
 
 \hypertarget{ref-Torrence1998}{}
-Torrence, Christopher, y Gilbert.\textasciitilde{}P. Compo. 1998. «A
-Practical Guide to Wavelet Analysis.» \emph{Bulletin of the American
-Meteorological Society} 79: 61-78.
-doi:\href{https://doi.org/10.1175/1520-0477(1998)079\%3C0061:APGTWA\%3E2.0.CO;2}{10.1175/1520-0477(1998)079\textless{}0061:APGTWA\textgreater{}2.0.CO;2}.
+Torrence, C., Compo, G., 1998. A Practical Guide to Wavelet Analysis.
+79, 61-78.
 
 \hypertarget{ref-Trenberth1980a}{}
-Trenberth, Kevin E. 1980. «Planetary Waves at 500 mb in the Southern
-Hemisphere». \emph{Monthly Weather Review} 108 (9): 1378-89.
-doi:\href{https://doi.org/10.1175/1520-0493(1980)108\%3C1378:PWAMIT\%3E2.0.CO;2}{10.1175/1520-0493(1980)108\textless{}1378:PWAMIT\textgreater{}2.0.CO;2}.
+Trenberth, K.E., 1980. Planetary Waves at 500 mb in the Southern
+Hemisphere. 108, 9, 1378-1389.
 
 \hypertarget{ref-Trenberth1985}{}
-Trenberth, Kevin E., y Kingtse C. Mo. 1985. «Blocking in the Southern
-Hemisphere». \emph{Monthly Weather Review} 113 (1): 3-21.
-doi:\href{https://doi.org/10.1175/1520-0493(1985)113\%3C0003:BITSH\%3E2.0.CO;2}{10.1175/1520-0493(1985)113\textless{}0003:BITSH\textgreater{}2.0.CO;2}.
+Trenberth, K.E., Mo, K.C., 1985. Blocking in the Southern Hemisphere.
+113, 1, 3-21.
 
 \hypertarget{ref-Vera2006}{}
-Vera, Carolina, W. Higgins, J. Amador, T. Ambrizzi, R. Garreaud, D.
-Gochis, D. Gutzler, et~al. 2006. «Toward a unified view of the American
-monsoon systems». \emph{Journal of Climate} 19 (20): 4977-5000.
-doi:\href{https://doi.org/10.1175/JCLI3896.1}{10.1175/JCLI3896.1}.
+Vera, C., Higgins, W., Amador, J., Ambrizzi, T., Garreaud, R., Gochis,
+D., Gutzler, D. et~al., 2006. Toward a unified view of the American
+monsoon systems. 19, 20, 4977-5000.
 
 \hypertarget{ref-Vera2004}{}
-Vera, Carolina, Gabriel Silvestri, Vicente Barros, y Andrea Carril.
-2004. «Differences in El Niño response over the Southern Hemisphere».
-\emph{Journal of Climate} 17 (9): 1741-53.
-doi:\href{https://doi.org/10.1175/1520-0442(2004)017\%3C1741:DIENRO\%3E2.0.CO;2}{10.1175/1520-0442(2004)017\textless{}1741:DIENRO\textgreater{}2.0.CO;2}.
+Vera, C., Silvestri, G., Barros, V., Carril, A., 2004. Differences in El
+Niño response over the Southern Hemisphere. 17, 9, 1741-1753.
 
 \hypertarget{ref-Wang2013}{}
-Wang, Lei, Paul J. Kushner, y Darryn W. Waugh. 2013. «Southern
-hemisphere stationary wave response to changes of ozone and greenhouse
-gases». \emph{Journal of Climate} 26 (24): 10205-17.
-doi:\href{https://doi.org/10.1175/JCLI-D-13-00160.1}{10.1175/JCLI-D-13-00160.1}.
+Wang, L., Kushner, P.J., Waugh, D.W., 2013. Southern hemisphere
+stationary wave response to changes of ozone and greenhouse gases. 26,
+24, 10205-10217.
 
 \hypertarget{ref-Wheeler2004}{}
-Wheeler, Matthew C., y Harry H. Hendon. 2004. «An All-Season Real-Time
-Multivariate MJO Index: Development of an Index for Monitoring and
-Prediction». \emph{Monthly Weather Review} 132 (8): 1917-32.
-doi:\href{https://doi.org/10.1175/1520-0493(2004)132\%3C1917:AARMMI\%3E2.0.CO;2}{10.1175/1520-0493(2004)132\textless{}1917:AARMMI\textgreater{}2.0.CO;2}.
+Wheeler, M.C., Hendon, H.H., 2004. An All-Season Real-Time Multivariate
+MJO Index: Development of an Index for Monitoring and Prediction. 132,
+8, 1917-1932.
 
 \hypertarget{ref-Yuan2008}{}
-Yuan, Xiaojun, y Cuihua Li. 2008. «Climate modes in southern high
-latitudes and their impacts on Antarctic sea ice». \emph{Journal of
-Geophysical Research: Oceans} 113 (6): 1-13.
-doi:\href{https://doi.org/10.1029/2006JC004067}{10.1029/2006JC004067}.
+Yuan, X., Li, C., 2008. Climate modes in southern high latitudes and
+their impacts on Antarctic sea ice. 113, 6, 1-13.
 
 \hypertarget{ref-Zangl2001}{}
-Zängl, G. 2001. «The tropopause in the polar regions». \emph{Journal of
-Climate} 14 (14): 3117-39.
-doi:\href{https://doi.org/10.1175/1520-0442(2001)014\%3C3117:TTITPR\%3E2.0.CO;2}{10.1175/1520-0442(2001)014\textless{}3117:TTITPR\textgreater{}2.0.CO;2}.
+Zängl, G., 2001. The tropopause in the polar regions. 14, 14, 3117-3139.
 
 
 \end{document}

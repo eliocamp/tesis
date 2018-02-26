@@ -1,0 +1,41 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Campitelli(2017)]{R-metR}
+Elio Campitelli.
+\newblock \emph{metR: Tools for Easier Analysis of Meteorological Fields},
+  2017.
+\newblock URL \url{https://github.com/eliocamp/metR}.
+\newblock R package version 0.0.9101.
+
+\bibitem[James(1994)]{James}
+I.~N. James.
+\newblock \emph{{Introduction to circulating atmospheres}}.
+\newblock Cambridge University Press, Cambridge, 1994.
+\newblock ISBN 9780511622977.
+\newblock \doi{10.1017/CBO9780511622977}.
+
+\bibitem[Vera et~al.(2004)Vera, Silvestri, Barros, and Carril]{Vera2004}
+Carolina Vera, Gabriel Silvestri, Vicente Barros, and Andrea Carril.
+\newblock {Differences in El Ni{\~{n}}o response over the Southern Hemisphere}.
+\newblock \emph{Journal of Climate}, 17\penalty0 (9):\penalty0 1741--1753,
+  2004.
+\newblock ISSN 08948755.
+\newblock \doi{10.1175/1520-0442(2004)017<1741:DIENRO>2.0.CO;2}.
+
+\bibitem[Wheeler and Hendon(2004)]{Wheeler2004}
+Matthew~C. Wheeler and Harry~H. Hendon.
+\newblock {An All-Season Real-Time Multivariate MJO Index: Development of an
+  Index for Monitoring and Prediction}.
+\newblock \emph{Monthly Weather Review}, 132\penalty0 (8):\penalty0 1917--1932,
+  2004.
+\newblock ISSN 0027-0644.
+\newblock \doi{10.1175/1520-0493(2004)132<1917:AARMMI>2.0.CO;2}.
+\newblock URL
+  \url{http://journals.ametsoc.org/doi/abs/10.1175/1520-0493{\%}282004{\%}29132{\%}3C1917{\%}3AAARMMI{\%}3E2.0.CO{\%}3B2}.
+
+\end{thebibliography}

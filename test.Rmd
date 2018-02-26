@@ -1,41 +1,30 @@
 ---
-title: "Tesis"
-subtitle: "Una tesis"
 author: "Elio Campitelli"
-date: ""
-lang: es-AR
-bibliography: [Papers/Biblio.bib, Papers/packages.bib]
-geometry: "inner = 5cm, outer = 5cm, top = 2.5cm, bottom = 2.5cm"
-documentclass: book
-classoption: a4paper
-knit: (function(file, encoding, ...) {
-    rmarkdown::render(file, encoding = encoding, 
-                output_dir = "docs/")})
+date: ''
 output:
-    pdf_document:
-      fig_height: 3
-      fig_width: 6
-      keep_tex: yes
-      latex_engine: xelatex
-      number_sections: yes
-      toc: yes
-      toc_depth: 4
-header-includes: 
-    - \linespread{1.25}
-    - \usepackage{subfig}
-    - \usepackage{hyperref}
-    - \usepackage{marginnote}
-    - \usepackage[nomarkers,figuresonly]{endfloat}
-    - \usepackage{pdflscape}
-    - \DeclareDelayedFloatFlavor{landscape}{figure}
-    - \usepackage[spanish]{todonotes}
-    - \usepackage{wrapfig}
-link-citations: yes
-params: 
-    draft: TRUE
-biblio-style: apalike
-editor_options: 
+  pdf_document:
+    fig_height: 8
+    fig_width: 8
+    includes:
+      in_header: header.tex
+    keep_tex: yes
+    latex_engine: xelatex
+    number_sections: yes
+    # toc: yes
+    # toc_depth: 4
+bibliography:
+    - Papers/Biblio.bib
+    - Papers/packages.bib
+documentclass: book
+editor_options:
   chunk_output_type: console
+geometry: inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm
+lang: es-AR
+link-citations: yes
+classoption: a4paper,12pt,oneside
+params:
+  draft: no
+csl: Papers/mi-meteorologica.csl
 ---
 
 ```{r setup, include=FALSE}
@@ -62,7 +51,7 @@ library(WaveletComp)
 library(patchwork)
 library(circular)
 
-knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"), 
+knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"),
                  file = "Papers/packages.bib")
 
 source("scripts/helperfun.R")
@@ -195,18 +184,63 @@ DefineClass(fig.class)
 setDTthreads(3)
 ```
 
+\frontmatter
 
-Resumen.
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.2\textwidth]{logoUBA}  \hfill \includegraphics[width=0.2\textwidth]{logoDCAO} \par
+	\vspace{0.5cm}
+	{\scshape\LARGE Universidad de Buenos Aires  \\
+	\large Facultad de Ciencias Exactas y Naturales \\
+Departamento de Ciencias de la Atmósfera y los Océanos	\par}
+	\vspace{0.5cm}
+	{\scshape\Large Tesis de Licenciatura en Ciencias de la Atmósfera\par}
+	\vspace{1cm}
+	{\huge\bfseries Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del Hemisferio Sur\par}
+	\vspace{1.5cm}
+	{\Large Tesista: Elio \textsc{Campitelli} \\
+		Directora:	Dra. Carolina Susana \textsc{Vera} \\
+		Asistente: Lic. Leandro \textsc{Díaz}
+	\par}
+	\vfill
+
+% Bottom of the page
+	{\large --2018--\par}
+\end{titlepage}
 
 
-\todo[inline]{Listado de abreviaturas}
-\todo[inline]{Revisar TODOS los epígrafes}
+
+\chapter*{Agradecimientos}
+
+A las médicas y enfermeras del Sanatorio Güemes que me cuidaron durante mi internación.
+
+\newpage
+
+\begin{center}\begin{minipage}{\dimexpr\paperwidth-7cm}
+\chapter*{Resumen}
+Este es el abstract balbalbalabla
+\end{minipage}
+\end{center}
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+
+\listoffigures
+\newpage
+
+\mainmatter
 
 
-`
+
 
 # Introducción
 
+@Wheeler2004 
+
+@James
+
+\cite{James}
+\citep{James, R-metR}
 
 * Antecedentes    
 Además de lo que hay en lo de las becas + lo que fui encontrando, Se utizó la función `FitQsWave()` del paquete `metR` [@R-metR]  agregar sobre las climatologías disponibles y sus limitaciones. 
