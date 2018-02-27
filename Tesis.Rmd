@@ -1,10 +1,10 @@
 ---
+title: Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación
+  atmosférica del Hemisferio Sur
 author: "Elio Campitelli"
 date: ''
-knit: (function(file, encoding, ...) {
-    rmarkdown::render(file, encoding = encoding,
-                output_dir = "docs/")})
 output:
+  word_document: default
   pdf_document:
     fig_height: 8
     fig_width: 8
@@ -13,24 +13,24 @@ output:
     keep_tex: yes
     latex_engine: xelatex
     number_sections: yes
-    # toc: yes
-    # toc_depth: 4
-bibliography:
-    - Papers/Biblio.bib
-    - Papers/packages.bib
+classoption: a4paper,12pt,oneside
 documentclass: book
 editor_options:
   chunk_output_type: console
 geometry: inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm
 lang: es-AR
 link-citations: yes
-classoption: a4paper,12pt,oneside
+csl: Papers/mi-meteorologica.csl
 params:
   draft: no
-csl: Papers/mi-meteorologica.csl
+bibliography:
+- Papers/Biblio.bib
+- Papers/packages.bib
 ---
 
-
+<!-- knit: (function(file, encoding, ...) { -->
+<!--     rmarkdown::render(file, encoding = encoding, -->
+<!--                 output_dir = "docs/")}) -->
                 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(tidy = FALSE,
@@ -2518,7 +2518,7 @@ sp.index <- speedy[(lev %b% levs.index) &
 sp.index[, phase.c := circular(phase*3, modulo = "2pi")]
 ```
 
-```{r sd-fase-sp-runs, fig.cap = "Desvío estándar (en grados) de la fase media mensual para cada estación y cada corrida.", fig.height = 6}
+```{r sd-fase-sp-runs, fig.cap = "Desvío estándar (en grados) de la fase media mensual para cada estación y cada corrida.", fig.height = 4}
 sp.index[, .(sd = sd.circular(phase.c)*180/pi/3), by = .(run, season(date))] %>% 
     ggplot(aes(factor(season), sd)) +
     geom_col(aes(fill = run), position = "dodge", width = 0.5) +

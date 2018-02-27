@@ -1,4 +1,4 @@
-\documentclass[spanish,a4paper,12pt]{book}
+\documentclass[spanish,a4paper,12pt,oneside]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -24,7 +24,6 @@
 \usepackage[inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del Hemisferio Sur},
             pdfauthor={Elio Campitelli},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -80,10 +79,9 @@
 }
 
 \setlength{\droptitle}{-2em}
-  \title{Estudio de los mecanismos físicos asociados con el patrón de onda 3 de
-la circulación atmosférica del Hemisferio Sur}
-  \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
+  \title{}
+  \pretitle{\vspace{\droptitle}}
+  \posttitle{}
   \author{Elio Campitelli}
   \preauthor{\centering\large\emph}
   \postauthor{\par}
@@ -114,21 +112,49 @@ la circulación atmosférica del Hemisferio Sur}
 \usepackage{helvet}
 \renewcommand{\familydefault}{\sfdefault}
 
-\begin{document}
-\maketitle
+\renewcommand{\figuresection}{Figuras}
 
-Resumen.
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.2\textwidth]{logoUBA}  \hfill \includegraphics[width=0.2\textwidth]{logoDCAO} \par
+    \vspace{0.5cm}
+    {\scshape\LARGE Universidad de Buenos Aires  \\
+    \large Facultad de Ciencias Exactas y Naturales \\
+Departamento de Ciencias de la Atmósfera y los Océanos  \par}
+    \vspace{0.5cm}
+    {\scshape\Large Tesis de Licenciatura en Ciencias de la Atmósfera\par}
+    \vspace{1cm}
+    {\huge\bfseries Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del Hemisferio Sur\par}
+    \vspace{1.5cm}
+    {\Large Tesista: Elio \textsc{Campitelli} \\
+        Directora:  Dra. Carolina Susana \textsc{Vera} \\
+        Asistente: Lic. Leandro \textsc{Díaz}
+    \par}
+    \vfill
+
+% Bottom of the page
+    {\large --2018--\par}
+\end{titlepage}
 
 \chapter*{Agradecimientos}
 
 A las médicas y enfermeras del Sanatorio Güemes que me cuidaron durante
-mi internación.
+mi internación. :P
 
 \newpage
 
 \begin{center}\begin{minipage}{\dimexpr\paperwidth-7cm}
 \chapter*{Resumen}
-Este es el abstract balbalbalabla
+
+Este trabajo estudia las características observadas de la onda cuasiestacionaria 3 (QS3) en el hemisferio sur a partir del reanálisis del NCEP/NCAR y analiza preliminarmente experimentos de sensibilidad utilizando el modelo SPEEDY del ICTP. La QS3 explica una parte importante de la circulación del hemisferio sur (HS) entre 40°S y 60°S y presenta ciclos anuales en amplitud y fase. La variabilidad estacional de la QS3 se describe mejor a partir de una clasificación alternativa (EFM, AM, JJ, ASO, ND). Una medida de estacionariedad sugiere que la QS3 es más estacionaria al sur del Índico que al sur del Pacífico. Regresiones a partir de un índice de actividad de la QS3 muestran que, según el mes, ésta está asociada tanto con estructuras de ondas planetarias de escala hemisférica como con trenes de onda más localizados. Esto sugiere un grado importante de heterogeneidad en los procesos vinculados a su generación, indicando la posibilidad de que un número de que la descripción de la onda 3 a partir de al descomposición de Fourier esté capturando un número de fenómenos independientes. 
+
+El análisis preliminar de los experimentos de sensibilidad sugieren que las anomalías zonales de geopotencial son sensibles a las condiciones de contorno inferior. La QS1 disminuye significativamente cuando se eliminan las anomalías zonales de SST, consistente con estudios previos que resaltaban el rol de los trópicos en la generación de este patrón. Cuando se elimina la interación suelo-atmósfera la amplitud de la QS3 aumenta en invierno y desaparece en primavera. Este cambio de sebe principalmente a variación en la estacionariedad de la onda 3, sugiriendo que la interacción con el suelo es importante para definir la localización de la misma y no tanto su amplitud. 
+
 \end{minipage}
 \end{center}
 
@@ -136,6 +162,8 @@ Este es el abstract balbalbalabla
 
 \listoffigures
 \newpage
+
+\mainmatter
 
 \chapter{Introducción}\label{introduccion}
 
@@ -200,10 +228,10 @@ de una verdadera onda zonal. Desde ese momento hasta la actualidad
 diferentes estudios se concentraron en entender la influencia de los
 bloqueos sobre el clima de Sudamérica y su relación con la QS3 (ej. Rao
 et~al., \protect\hyperlink{ref-Rao2004}{2004}) o de su efecto en el
-hielo marítimo (ej. {\textbf{???}}) pero, como se mencionó
-anteriormente, muy poca atención ha recibido el estudio de las causas
-que dan lugar al establecimiento de este patrón en un primer lugar.
-Quintanar y Mechoso
+hielo marítimo (ej. Raphael, \protect\hyperlink{ref-Raphael2007}{2007})
+pero, como se mencionó anteriormente, muy poca atención ha recibido el
+estudio de las causas que dan lugar al establecimiento de este patrón en
+un primer lugar. Quintanar y Mechoso
 (\protect\hyperlink{ref-Quintanar1995}{1995}\protect\hyperlink{ref-Quintanar1995}{b})
 realizaron experimentos de sensibilidad similares a los propuestos en
 este trabajo pero centrados en la QS1. Encontraron que las condiciones
@@ -273,7 +301,7 @@ verticales entre 1000hPa y 10hPa. A partir de los datos mensuales se
 calcularon las medias estacionales definidas a partir de las estaciones
 climatológicas del hemisferio sur.
 
-Se utilizó el modelo SPEEDY (Molteni,
+Se utilizó el modelo SPEEDY del ICTP (Molteni,
 \protect\hyperlink{ref-Molteni2003}{2003}) para realizar corridas de
 sensibilidad (descriptas en el
 Capítulo~\ref{experimentos-de-sensibilidad}). El modelo SPEEDY es un
@@ -299,7 +327,7 @@ utilizarlo en este trabajo.
 
 \section{Metodología}\label{metodologia}
 
-\emph{Perturbaciones}
+\section*{Perturbaciones}
 
 Muchas variables atmosféricas varían con la longitud en menor medida que
 con la latitud o la altura de manera que resulta natural descomponer
@@ -323,7 +351,7 @@ transcientes (Rao et~al., \protect\hyperlink{ref-Rao2004}{2004}).
 En este trabajo las anomalías zonales se calcularon como la diferencia
 entre la variable y su promedio zonal para cada círculo de latitud.
 
-\emph{Fourier}
+\section*{Fourier}
 
 La caracterización de las ondas cuasiestacionarias a partir de Fourier
 puede realizarse descomponiendo los campos medios climatológicos
@@ -354,7 +382,7 @@ cálculo de estadísticas circulares se se utilizó el paquete
 \texttt{circular} (Lund et~al.,
 \protect\hyperlink{ref-R-circular}{2017}).
 
-\emph{Wavelets}
+\section*{Wavelets}
 
 El análisis de wavelets es similar a Fourier pero permite describir
 oscilaciones localizadas en el dominio (Torrence y Compo,
@@ -377,7 +405,7 @@ Para el cálculo de wavelets se utilizó la función
 Schmidbauer, \protect\hyperlink{ref-R-WaveletComp}{2014}) que utiliza un
 wavelet de Morlet.
 
-\emph{Índice de QS3}
+\section*{Índice de QS3}
 
 En el \autoref{onda-3} se elaboró un índice de actividad de la QS3 a
 partir de la amplitud de Fourier promediada entre 65°S y 40°S de latitud
@@ -386,11 +414,12 @@ en la literatura. Algunos son definidos a partir anomalía zonales de
 geopotencial en puntos fijos cercanos a donde climatológicamente se dan
 los máximos de geopotencial asociados a la QS3. Así construyeron sus
 índices Mo y White (\protect\hyperlink{ref-Mo1985}{1985}), Cai et~al.
-(\protect\hyperlink{ref-Cai1999}{1999}) y ({\textbf{???}}) pero cada
-trabajo utilizó puntos ligeramente distintos a causa de las distintas
-climatologías analizadas y ({\textbf{???}}) además se basó en promedios
-trimestrales de en vez de medias mensuales. Yuan y Li
-(\protect\hyperlink{ref-Yuan2008}{2008}), utilizando una técnica
+(\protect\hyperlink{ref-Cai1999}{1999}) y Raphael
+(\protect\hyperlink{ref-Raphael2004}{2004}) pero cada trabajo utilizó
+puntos ligeramente distintos a causa de las distintas climatologías
+analizadas y Raphael (\protect\hyperlink{ref-Raphael2004}{2004}) además
+se basó en promedios trimestrales de en vez de medias mensuales. Yuan y
+Li (\protect\hyperlink{ref-Yuan2008}{2008}), utilizando una técnica
 distinta, creó una serie temporal de actividad de la QS3 a partir de la
 primer componente principal del campo de viento meridional superficial,
 el cual resulta en un patrón de onda 3 consistente con climatologías
@@ -408,7 +437,7 @@ construyó un índice de actividad de onda planetaria a partir de la
 transformada de Hilbert que no tiene estas limitaciones pero no
 distingue entre la actividad de distintos números de onda.
 
-\emph{Interferencia constructiva y destructiva}
+\section*{Interferencia constructiva y destructiva}
 
 En la \autoref{fase} se estimó la proporción de casos de interferencia
 destructiva a partir de la frecuencia relativa de casos donde la
@@ -427,7 +456,7 @@ y la sumatoria de ondas es constructiva. De lo contrario, la onda
 obtenida tiene una amplitud menor que las originales y la interferencia
 es destructiva.
 
-\emph{Herramientas dinámicas}
+\section*{Herramientas dinámicas}
 
 La influencia tropical en la variabilidad del clima extratropical se
 explica mediante la propgación meridional de ondas de Rossby. La teoría
@@ -728,7 +757,7 @@ anticilónico de Z* están flanqueados por anomalías zonales negativas de
 viento zonal al norte y positivas al sur y viceversa para los centros
 ciclónicos. Además, como el viento zonal no depende del parámetro de
 Coriolis como Z, esto permite la identificación de QS en regiones
-tropicales. Un ejemplo de esto XXXX???
+tropicales. Un ejemplo de esto XXX???
 
 En verano, entre 300hPa y 100hPa sobre el Pacífico ecuatorial existe una
 zona de anomalías del viento zonal positivas al este y negativas al
@@ -819,8 +848,6 @@ típicamente llamada la Baja del Nordeste (Vera et~al.,
 No se muestran los campos de anomalías zonales de V ya que son
 virtualmente idénticos a los campos de V porque la media zonal de esta
 variable es virtualmente nula en todo el dominio.
-
-\begin{landscape}\end{landscape}
 
 \section{Función corriente}\label{funcion-corriente}
 
@@ -981,11 +1008,6 @@ presente.
 \end{figure}
 \end{landscape}
 
-XXX Acá podría poner alguna reflexión general de lo que se ve. Por
-ejemplo, cómo en verano la variabilidad está más acotada a la tropóstera
-mientras que en invierno y primavera hay más contacto con la
-estratósfera. XXX
-
 \chapter{Onda 3}\label{onda-3}
 
 En este capítulo se analiza la climatología observada de la QS3 a partir
@@ -1048,7 +1070,7 @@ variabilidad del geopotencial asociada a la QS3 se debería
 principalmente corrimientos de la fase que ocurren dentro de cada
 estación.
 
-\subsection{Wavelets}\label{wavelets}
+\section*{Wavelets}
 
 \begin{figure*}
 \includegraphics[width=155mm, ]{fig/tesis/wavelet-fourier-ncep-1} \caption{Amplitud de la QS3 según wavelets (sombreados) y Fourier (contornos) (NCEP).}\label{fig:wavelet-fourier-ncep}
@@ -1560,7 +1582,7 @@ realiza asumiendo que se muestran las anomalías regresionadas
 correspondientes a un cambio positivo en la amplitud de la QS3 de 1
 desvío estándar.
 
-\subsection{Geopotencial}\label{geopotencial}
+\section*{Geopotencial}
 
 \begin{landscape}\begin{figure}
 
@@ -1626,7 +1648,7 @@ Sudamérica. En diciembre el patrón es similar al de enero pero
 modificado por el patrón anular similar a la fase positiva del SAM,
 discutido previamente.
 
-\subsection{Función Corriente}\label{funcion-corriente-1}
+\section*{Función Corriente}
 
 \begin{landscape}\begin{figure}
 
@@ -1861,7 +1883,7 @@ absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}
 
 }
 
-\caption{Gradiente meridional de vorticidad absoluta ($1\times10^11(ms)^{-1}$) (SPEEDY).}\label{fig:etady-sp-nc}
+\caption{Gradiente meridional de vorticidad absoluta ($1\times10^{11}(ms)^{-1}$) (SPEEDY).}\label{fig:etady-sp-nc}
 \end{figure}
 \end{landscape}
 
@@ -1943,6 +1965,8 @@ horizontal. En verano, invierno y privamera, la inclinación de los
 centros es hacia el este, contraria a las observaciones e indicando
 transporte de cantidad de movimiento zonal hacia el norte en vez de
 hacia el sur. En otoño el campo de QS3 de SPEEDY es virtualmente nulo.
+En invierno y primavera la fase de la onda simulada por SPEEDY está
+defasada 180° con respecto a la observada en NCEP.
 
 \begin{figure*}
 \includegraphics[width=155mm, ]{fig/tesis/qs3-sp-nc-1} \caption{Z* reconstruida a partir de la QS3 (SPEEDY sombreado, NCEP contornos).}\label{fig:qs3-sp-nc}
@@ -1953,9 +1977,9 @@ sensibilidad}\label{experimentos-de-sensibilidad}
 
 Además de la corrida Control, se realizaron 3 corridas para evaluar la
 sensibilidad de la QS3 a distintos parámetros del modelo.
-\textbf{NOLAND} es idéndica a \textbf{Control} a excepción de que se
+\textsc{NOLAND} es idéndica a \textsc{Control} a excepción de que se
 desactivaron los modelos de mar, hielo y tierra y se reemplazó la SST
-por su media climatológica mensual. \textbf{SSTZONAL} es similar, pero
+por su media climatológica mensual. \textsc{SSTZONAL} es similar, pero
 la SST fue reemplazada por su media zonal mensual.
 
 \subsection{Altura geopotencial}\label{altura-geopotencial-2}
@@ -2023,9 +2047,9 @@ cambios.
 \end{landscape}
 
 La diferencia del viento meridional entre corridas se muestra en la
-\autoref{fig:u-dif-sp-runs}. NOLAND - Control casi nulas diferencias en
-otoño. En verano NOLAND tiene vientos más inensos al norte y sur de
-Nueva Zelanda y menos intensos sobre ésta región, indicando una
+\autoref{fig:u-dif-sp-runs}. La resta NOLAND - Control muestra valores
+casi nulos en otoño. En verano NOLAND tiene vientos más inensos al norte
+y sur de Nueva Zelanda y menos intensos sobre ésta región, indicando una
 intensificación de los bloqueos con respeto a la corrida Control; el
 mismo patrón se observa en primavera. En invierno y primavera hay
 valores positivos en latitudes bajas indicando un debilitamiento de los
@@ -2081,14 +2105,15 @@ estaba ausente en la corrida Control.
 \end{figure}
 \end{landscape}
 
-En la \autoref{fig:ampl-sp-runs} se muestra la amplitud de la QS3 para
-cada estación y cada corrida. En verano se observa una reducción de la
-señal de la QS3 en 60°S entre Control, NOLAND y SSTZONAL además de un
-ligero corrimiento hacia el sur. La señal de más al norte, en cambio, no
-presenta cambios importantes más allá del mismo corrimiento que la señal
-anterior. En otoño la poca señal existente en Control prácticamente
-desaparece en en SSTZONAl, pero no hay cambios en NOLAND. En SSTZONAL
-hay un aumento de la amplitud de la QS3 en la costa antártica.
+En la \autoref{fig:ampl-sp-runs} se muestra la amplitud de la QS3
+(método AM) para cada estación y cada corrida. En verano se observa una
+reducción de la señal de la QS3 en 60°S entre Control, NOLAND y SSTZONAL
+además de un ligero corrimiento hacia el sur. La señal de más al norte,
+en cambio, no presenta cambios importantes más allá del mismo
+corrimiento que la señal anterior. En otoño la poca señal existente en
+Control prácticamente desaparece en en SSTZONAl, pero no hay cambios en
+NOLAND. En SSTZONAL hay un aumento de la amplitud de la QS3 en la costa
+antártica.
 
 En invierno, NOLAND tiene la mayor señal de QS3 entre las simulaciones y
 Control, la mínima. Esto posiblemente se deba a la aparición del tren de
@@ -2100,17 +2125,15 @@ prácticamente en su totalidad
 
 Es importante notar que estas observaciones son sensibles a la
 metodología utilizada. La \autoref{fig:ampl-mean-sp-runs} muestra la
-amplitud media de la QS3 para cada corrida y es útil compararla con la
-\autoref{fig:ampl-sp-runs} (que muestra la amplitud de la QS3 media).
-Verano se comporta de manera similar, con una ligera disminución de la
-señal en NOLAND y SSTZONAL.
-
-Otoño tiene un gran cambio. Tanto la corrida Control como NOLAND y
-SSTZONAL tienen una señal fuerte que no cambia significativamente entre
-corridas. Esto indica que la baja señal en otoño en SPEEDY tiene es
-causada por que la onda 3 está presente mes a mes, pero no
-estacionariamente. Lo mismo parece suceder invierno de la corrida
-Control y primavera de NOLAND y SSTZONAL.
+amplitud media de la QS3 a partir del método MA para cada corrida y es
+útil compararla con la \autoref{fig:ampl-sp-runs} (construida a partir
+del método AM). Verano se comporta de manera similar, con una ligera
+disminución de la señal en NOLAND y SSTZONAL pero Otoño tiene un gran
+cambio. Tanto la corrida Control como NOLAND y SSTZONAL tienen una señal
+fuerte que no cambia significativamente entre corridas. Esto indica que
+la baja señal en otoño en SPEEDY tiene es causada por que la onda 3 está
+presente mes a mes, pero no estacionariamente. Lo mismo parece suceder
+invierno de la corrida Control y primavera de NOLAND y SSTZONAL.
 
 \begin{landscape}\begin{figure}
 
@@ -2149,6 +2172,107 @@ o menor estacionaridad y no a una mayor o menor amplitud de las onda
 planetaria 3.
 
 \chapter{Conclusiones}\label{conclusiones}
+
+Este trabajo consistió en una investigación de las características de la
+onda onda planetaria de número de onda zonal 3 (QS3) y una primera
+exploración sobre las posibles causas de su establecimiento y
+variabilidad. Además de un análisis de la climatología observada de
+distintas variables atmosféricas en el reanálisis del NCEP/NCAR, se
+realizó una inspección de la amplitud, fase y varianza explicada de la
+QS3 y un análisis preliminar de su sensibiliad a los parámetros de
+superficie mediante simulaciones con el modelo SPEEDY del ICTP.
+
+Consistente con estudios previos basados en climatologías limitadas
+(Loon y Jenne, Roy, \protect\hyperlink{ref-Loon1972}{1972}), se mostró
+que la circulación de latitudes medias y polares del hemisferio sur (HS)
+está dominada por un patrón de QS1 y que la QS3 gana importancia en
+invierno en 45°S. Se extendieron estas climatologías utilizando datos
+más actuales de la era satelital.
+
+XXX ¿Algo más de la climatología observada? \ldots{}. XXX
+
+El análisis de la fase de la QS3 mostró un ciclo estacional de 35° de
+amplitud consistente con estudios previos pero además se observó una
+considerable variabilidad interanual para cada mes. Estos resultados
+resaltan la importancia de esta variable al momento de evaluar las
+influencias locales de la QS3 y deben tenerse en cuenta en los promedios
+climatológicos ya que pueden enmascarar una señal fuerte de onda 3
+mediante interferencia destructiva.
+
+Una exploración preliminar de la aplicación de wavelets al estudio de
+las ondas planetarias resultó prometedora. Al permitir variabilidad de
+la amplitud en la dirección zonal, posibilitaría capturar variaciones
+espaciales de las ondas en vez de tratarlas como características
+globales de que afectan homogeneamente a todo un círculo de latitud. A
+partir de ésta metodología se estudió preliminarmente la estacionariedad
+de las ondas planetarias y se encontró que la QS3 es más estacionaria en
+la región del Índico que en el pacífico. Su estudio más profundo será
+abordado en trabajos posteriores.
+
+La aplicación de análisis de componentes principales indicó que la
+estacionalidad de la QS3 no coincide exactamente con las estaciones
+climatológicas clásicas. Se concluyó que la división EFM, AM, JJ, ASO y
+ND reprsenta una mejor clasificación. La misma resaltó que durante
+noviembre y diciembre, la QS3 no presenta razgos de onda estacionaria y
+permitó destacar con mayor claridad la inclinación de la QS3 en la
+vertical durante junio y julio, sugiriendo que extensión vertical de la
+QS3 hasta la estratósfera se debe a la propagación vertical desde la
+tropósfera.
+
+A partir de las regresiónes entre las anomalías de altura geopotencial y
+la función corriente con un índice de actividad de la QS3 definido en
+este trabajo (\(I_3\)) se observó que la QS3 tiene comportamientos
+típicos muy heterogéneos según el mes. Existen meses donde la QS3 se
+asocia a importantes trenes de onda desde los trópicos y otros con una
+estructura más zonal. La asociación con el SAM sólo se observó en julio
+y diciembre. Esto puede indicar que la QS3 es en realidad una familia de
+fenómenos que tienen en común que en una descomposición de Fourier
+resultan en una onda 3 intensa.
+
+La corrida Control mostró que la habilidad del modelo SPEEDY para
+generar la QS3 varía considerablemente según la estación, con el peor
+desmpeño en otoño. La estructura horizontal de la QS3 simulada se
+caracterizó por inclinación de los centros hacia el este en todas las
+estaciones, contrario a la inclinación hacia el oeste presente en NCEP
+en verano, otoño y primavera y un defasaje de 180° con respecto a la QS3
+observada en NCEP.
+
+Se observó que a pesar de no desarrollar un jet subpolar --producto de
+su burda representación de la estratósfera-- el modelo reprodujo la QS1
+en la tropósfera y su variación estacional, aunque crudamente. A pesar
+de no carecer de inclinación con la altura --sugiriendo ausencia de
+propagación vertical--, la QS1 simulada por SPEEDY alcanza máximos en
+los niveles más altos disponibles.
+
+Los experimentos de sensibilidad mostraron variaciones importantes en la
+QS3 principalmente en invierno y primavera. En invierno eliminar la
+interacción entre la superficie y la atmósfera incrementó la intensidad
+de la QS3 en comparación con la corrida Control posiblemente por la
+aparición de un tren de ondas de número de onda zonal 3 con propagación
+meridional que está presente en las observaciones pero ausente en la
+corrida Control. En esa estación la eliminación de las anomalías zonales
+de SST en la corrida SSTZONAL no cambió la amplitud de la QS3
+sisgnificativamente en comparación con la NOLAND. En primavera el signo
+de los cambios es el contrario. En las corridas sin interacción
+atmósfera-suelo la QS3 desapareció casi por completo.
+
+La comparación entre el método AM y el MA para la caracterización de la
+onda 3 mostró que el cambio en la amplitud de la QS3 entre corridas no
+se debió a una disminución en la actividad de la onda planetaria 3 sino
+a una reducción en su estacionariedad. Esto sugiere que la onda 3 puede
+generarse a partir de la variabilidad interna de la atmósfera pero que
+las influencias superficiales cumplen un rol importante en su
+localización. Alternativamente, si se considera que distintos mecanismos
+posiblemente independientes pueden generar una señal de onda 3, es
+posible que los influenciados con las condiciones de superficie tengan
+características más estacionarias que los relacionados con la
+variabilidad interna de la atmósfera.
+
+Un análisis más completo de las corridas de sensibilidad realizadas será
+tema de futuras investigaciones así como el uso de modelos más
+sofisticados. En particular, dado que el modelo SPEEDY no mostró una
+representación satisfactoria de la QS3, no sería el modelo ideal para su
+investigación.
 
 \chapter*{Referencias}\label{referencias}
 \addcontentsline{toc}{chapter}{Referencias}
@@ -2288,6 +2412,10 @@ with and without an interactive ocean. 11, 6, 1405-1419.
 \hypertarget{ref-Raphael2003}{}
 Raphael, M.N., 2003. Recent, Large-Scale Changes in the Extratropical
 Southern Hemisphere Atmospheric Circulation. 16, 2915-2924.
+
+\hypertarget{ref-Raphael2007}{}
+Raphael, M.N., 2007. The influence of atmospheric zonal wave three on
+Antarctic sea ice variability. 112, 12, 1-9.
 
 \hypertarget{ref-Rayner2003}{}
 Rayner, N.A., 2003. Global analyses of sea surface temperature, sea ice,
