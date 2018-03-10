@@ -24,6 +24,7 @@
 \usepackage[inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
+            pdftitle={Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del HS},
             pdfauthor={Elio Campitelli},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -34,10 +35,8 @@
   \usepackage{polyglossia}
   \setmainlanguage[]{spanish}
 \fi
-\usepackage{biblatex}
-
-\addbibresource{Papers/Biblio.bib}
-\addbibresource{Papers/packages.bib}
+\usepackage{natbib}
+\bibliographystyle{apalike}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -82,9 +81,10 @@
 }
 
 \setlength{\droptitle}{-2em}
-  \title{}
-  \pretitle{\vspace{\droptitle}}
-  \posttitle{}
+  \title{Estudio de los mecanismos físicos asociados con el patrón de onda 3 de
+la circulación atmosférica del HS}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
   \author{Elio Campitelli}
   \preauthor{\centering\large\emph}
   \postauthor{\par}
@@ -115,7 +115,11 @@
 \usepackage{helvet}
 \renewcommand{\familydefault}{\sfdefault}
 
+\renewcommand{\figuresection}{Figuras}
+\AtBeginDocument{\let\maketitle\relax}
+
 \begin{document}
+\maketitle
 
 \frontmatter
 
@@ -163,11 +167,17 @@ Este es el abstract balbalbalabla
 
 \chapter{Introducción}\label{introduccion}
 
-\textcite{Wheeler2004}
+\citet{Wheeler2004}
 
-\textcite{James}
+\citet{James}
 
-\cite{James} \citep{James, R-metR}
+\citet{Loon1972}
+
+\cite{Loon1972}
+
+\cite{James}
+
+\citep{James, R-metR}
 
 \begin{itemize}
 \tightlist
@@ -175,7 +185,7 @@ Este es el abstract balbalbalabla
   Antecedentes\\
   Además de lo que hay en lo de las becas + lo que fui encontrando, Se
   utizó la función \texttt{FitQsWave()} del paquete \texttt{metR}
-  \autocite{R-metR} agregar sobre las climatologías disponibles y sus
+  \citep{R-metR} agregar sobre las climatologías disponibles y sus
   limitaciones.
 \item
   Objetivo General
@@ -183,8 +193,8 @@ Este es el abstract balbalbalabla
   Objetivo particular
 \end{itemize}
 
-Esto es para probar una referencia bibliográfica: \textcite{Vera2004} y
-\autocite{Vera2004}
+Esto es para probar una referencia bibliográfica: \citet{Vera2004} y
+\citep{Vera2004}
 
 \chapter{Métodos y Materiales}\label{metodos-y-materiales}
 
@@ -221,6 +231,8 @@ continuos.
   Wavelets
 \end{itemize}
 
+\citet{Loon1972}
+
 Cosas para ver:\\
 Cambio en el máximo. Localización en vez de un número para cada latitud.
 
@@ -242,7 +254,7 @@ cuasiestacionarias (QS) en sí mismas.
 
 Campo medio:
 
-\printbibliography
+\bibliography{Papers/Biblio.bib,Papers/packages.bib}
 
 
 \end{document}

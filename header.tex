@@ -3,7 +3,7 @@
 \usepackage{subfig}
 \usepackage{hyperref}
 \usepackage{marginnote}
-\usepackage[nomarkers,figuresonly]{endfloat}
+\usepackage[nomarkers,figuresonly,nofighead,nolists]{endfloat}
 \usepackage{pdflscape}
 \DeclareDelayedFloatFlavor{landscape}{figure}
 \usepackage[spanish]{todonotes}
@@ -24,3 +24,4 @@
 
 \renewcommand{\figuresection}{Figuras}
 \AtBeginDocument{\let\maketitle\relax}
+\usepackage[nottoc,notlot,notlof]{tocbibind}

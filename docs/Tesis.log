@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.8.22)  26 FEB 2018 17:48
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2017.8.22)  10 MAR 2018 00:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -740,13 +740,13 @@ tly
 )
 \Hy@SectionHShift=\skip52
 )
-Package hyperref Info: Option `unicode' set `true' on input line 29.
+Package hyperref Info: Option `unicode' set `true' on input line 30.
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 
 )
-Package hyperref Info: Option `breaklinks' set `true' on input line 29.
+Package hyperref Info: Option `breaklinks' set `true' on input line 30.
 
 (/usr/share/texlive/texmf-dist/tex/latex/polyglossia/polyglossia.sty
 Package: polyglossia 2015/08/06 v1.42.0 Alternative to Babel for XeLaTeX and Lu
@@ -762,22 +762,226 @@ File: gloss-spanish.ldf polyglossia: module for spanish
 )
 Package polyglossia Info: Default language is spanish.
 
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2016/03/03 v3.3 programmable bibliographies (PK/JW/AB)
+
+
+Package biblatex Warning: No "backend" specified, using Biber backend.
+(biblatex)                To use BibTeX, load biblatex with 
+(biblatex)                the "backend=bibtex" option.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex_.sty
+Package: biblatex_ 2016/03/03 v3.3 programmable bibliographies (biber) (PK/JW/A
+B)
+
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count156
+
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@tabx@nest=\count157
+\c@listtotal=\count158
+\c@listcount=\count159
+\c@liststart=\count160
+\c@liststop=\count161
+\c@citecount=\count162
+\c@citetotal=\count163
+\c@multicitecount=\count164
+\c@multicitetotal=\count165
+\c@instcount=\count166
+\c@maxnames=\count167
+\c@minnames=\count168
+\c@maxitems=\count169
+\c@minitems=\count170
+\c@citecounter=\count171
+\c@savedcitecounter=\count172
+\c@uniquelist=\count173
+\c@uniquename=\count174
+\c@refsection=\count175
+\c@refsegment=\count176
+\c@maxextratitle=\count177
+\c@maxextratitleyear=\count178
+\c@maxextrayear=\count179
+\c@maxextraalpha=\count180
+\c@abbrvpenalty=\count181
+\c@highnamepenalty=\count182
+\c@lownamepenalty=\count183
+\c@maxparens=\count184
+\c@parenlevel=\count185
+\blx@tempcnta=\count186
+\blx@tempcntb=\count187
+\blx@tempcntc=\count188
+\blx@maxsection=\count189
+\blx@maxsegment@0=\count190
+\blx@notetype=\count191
+\blx@parenlevel@text=\count192
+\blx@parenlevel@foot=\count193
+\blx@sectionciteorder@0=\count194
+\labelnumberwidth=\skip53
+\labelalphawidth=\skip54
+\biblabelsep=\skip55
+\bibitemsep=\skip56
+\bibnamesep=\skip57
+\bibinitsep=\skip58
+\bibparsep=\skip59
+\bibhang=\skip60
+\blx@bcfin=\read2
+\blx@bcfout=\write3
+\c@mincomprange=\count195
+\c@maxcomprange=\count196
+\c@mincompwidth=\count197
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'apalike.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count198
+\c@savedafterword=\count199
+\c@annotator=\count266
+\c@savedannotator=\count267
+\c@author=\count268
+\c@savedauthor=\count269
+\c@bookauthor=\count270
+\c@savedbookauthor=\count271
+\c@commentator=\count272
+\c@savedcommentator=\count273
+\c@editor=\count274
+\c@savededitor=\count275
+\c@editora=\count276
+\c@savededitora=\count277
+\c@editorb=\count278
+\c@savededitorb=\count279
+\c@editorc=\count280
+\c@savededitorc=\count281
+\c@foreword=\count282
+\c@savedforeword=\count283
+\c@holder=\count284
+\c@savedholder=\count285
+\c@introduction=\count286
+\c@savedintroduction=\count287
+\c@namea=\count288
+\c@savednamea=\count289
+\c@nameb=\count290
+\c@savednameb=\count291
+\c@namec=\count292
+\c@savednamec=\count293
+\c@translator=\count294
+\c@savedtranslator=\count295
+\c@shortauthor=\count296
+\c@savedshortauthor=\count297
+\c@shorteditor=\count298
+\c@savedshorteditor=\count299
+\c@labelname=\count300
+\c@savedlabelname=\count301
+\c@institution=\count302
+\c@savedinstitution=\count303
+\c@lista=\count304
+\c@savedlista=\count305
+\c@listb=\count306
+\c@savedlistb=\count307
+\c@listc=\count308
+\c@savedlistc=\count309
+\c@listd=\count310
+\c@savedlistd=\count311
+\c@liste=\count312
+\c@savedliste=\count313
+\c@listf=\count314
+\c@savedlistf=\count315
+\c@location=\count316
+\c@savedlocation=\count317
+\c@organization=\count318
+\c@savedorganization=\count319
+\c@origlocation=\count320
+\c@savedoriglocation=\count321
+\c@origpublisher=\count322
+\c@savedorigpublisher=\count323
+\c@publisher=\count324
+\c@savedpublisher=\count325
+\c@language=\count326
+\c@savedlanguage=\count327
+\c@pageref=\count328
+\c@savedpageref=\count329
+\shorthandwidth=\skip61
+\shortjournalwidth=\skip62
+\shortserieswidth=\skip63
+\shorttitlewidth=\skip64
+\shortauthorwidth=\skip65
+\shorteditorwidth=\skip66
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2016/03/03 v3.3 biblatex compatibility (PK/JW/AB)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex_.def' found.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex_.def
+File: biblatex_.def 
+\c@textcitecount=\count330
+\c@textcitetotal=\count331
+\c@textcitemaxnames=\count332
+\c@biburlnumpenalty=\count333
+\c@biburlucpenalty=\count334
+\c@biburllcpenalty=\count335
+\c@smartand=\count336
+)
+Package biblatex Info: Trying to load bibliography style 'apalike'...
+Package biblatex Info: ... file 'apalike.bbx' not found.
+
+
+! Package biblatex Error: Style 'apalike' not found.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.11467 \RequireBibliographyStyle{\blx@bbxfile}
+                                               
+The bibliography style 'apalike' could not be found.
+
+Package biblatex Info: Trying to load citation style 'apalike'...
+Package biblatex Info: ... file 'apalike.cbx' not found.
+
+! Package biblatex Error: Style 'apalike' not found.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.11468 \RequireCitationStyle{\blx@cbxfile}
+                                           
+The citation style 'apalike' could not be found.
+
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+)))
 (/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
-\LTleft=\skip53
-\LTright=\skip54
-\LTpre=\skip55
-\LTpost=\skip56
-\LTchunksize=\count156
+\LTleft=\skip67
+\LTright=\skip68
+\LTpre=\skip69
+\LTpost=\skip70
+\LTchunksize=\count337
 \LTcapwidth=\dimen161
 \LT@head=\box44
 \LT@firsthead=\box45
 \LT@foot=\box46
 \LT@lastfoot=\box47
-\LT@cols=\count157
-\LT@rows=\count158
-\c@LT@tables=\count159
-\c@LT@chunks=\count160
+\LT@cols=\count338
+\LT@rows=\count339
+\c@LT@tables=\count340
+\c@LT@chunks=\count341
 \LT@p@ftn=\toks27
 )
 (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
@@ -792,12 +996,12 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \cmidrulesep=\dimen169
 \cmidrulekern=\dimen170
 \defaultaddspace=\dimen171
-\@cmidla=\count161
-\@cmidlb=\count162
+\@cmidla=\count342
+\@cmidlb=\count343
 \@aboverulesep=\dimen172
 \@belowrulesep=\dimen173
-\@thisruleclass=\count163
-\@lastruleclass=\count164
+\@thisruleclass=\count344
+\@lastruleclass=\count345
 \@thisrulewidth=\dimen174
 )
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grffile.sty
@@ -814,9 +1018,9 @@ Package: parskip 2001/04/09 non-zero parskip adjustments
 )
 (/usr/share/texlive/texmf-dist/tex/latex/titling/titling.sty
 Package: titling 2009/09/04 v2.1d maketitle typesetting
-\thanksmarkwidth=\skip57
-\thanksmargin=\skip58
-\droptitle=\skip59
+\thanksmarkwidth=\skip71
+\thanksmargin=\skip72
+\droptitle=\skip73
 )
 (/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
@@ -838,37 +1042,37 @@ Package caption3 Info: TeX engine: e-TeX on input line 67.
 \caption@parindent=\dimen180
 \caption@hangindent=\dimen181
 )
-\c@ContinuedFloat=\count165
+\c@ContinuedFloat=\count346
 Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
 
 (/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2013/06/09 v1.4-94 longtable captions (AR)
 ))
-\c@KVtest=\count166
-\sf@farskip=\skip60
+\c@KVtest=\count347
+\sf@farskip=\skip74
 \sf@captopadj=\dimen182
-\sf@capskip=\skip61
-\sf@nearskip=\skip62
-\c@subfigure=\count167
-\c@subfigure@save=\count168
-\c@lofdepth=\count169
-\c@subtable=\count170
-\c@subtable@save=\count171
-\c@lotdepth=\count172
-\sf@top=\skip63
-\sf@bottom=\skip64
+\sf@capskip=\skip75
+\sf@nearskip=\skip76
+\c@subfigure=\count348
+\c@subfigure@save=\count349
+\c@lofdepth=\count350
+\c@subtable=\count351
+\c@subtable@save=\count352
+\c@lotdepth=\count353
+\sf@top=\skip77
+\sf@bottom=\skip78
 )
 (/usr/share/texlive/texmf-dist/tex/latex/marginnote/marginnote.sty
 Package: marginnote 2012/03/29 v1.1i non floating margin notes for LaTeX
-\c@mn@abspage=\count173
+\c@mn@abspage=\count354
 )
 (/usr/share/texlive/texmf-dist/tex/latex/endfloat/endfloat.sty
 Package: endfloat 2011/12/25 v2.5d LaTeX2e package puts figures and tables at e
 nd (jdm)
-\c@postfigure=\count174
-\efloat@postfff=\write3
-\@ef@fffopen=\count175
+\c@postfigure=\count355
+\efloat@postfff=\write4
+\@ef@fffopen=\count356
 )
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/pdflscape.sty
 Package: pdflscape 2008/08/11 v0.10 Display of landscape pages in PDF (HO)
@@ -883,9 +1087,6 @@ Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 Package: todonotes 2015/07/09 .dtx Todonotes source and documentation.
 Package: todonotes 2012/07/25
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
-)
 (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
 
@@ -942,12 +1143,12 @@ ex
 \pgf@yb=\dimen190
 \pgf@xc=\dimen191
 \pgf@yc=\dimen192
-\w@pgf@writea=\write4
-\r@pgf@reada=\read2
-\c@pgf@counta=\count176
-\c@pgf@countb=\count177
-\c@pgf@countc=\count178
-\c@pgf@countd=\count179
+\w@pgf@writea=\write5
+\r@pgf@reada=\read3
+\c@pgf@counta=\count357
+\c@pgf@countb=\count358
+\c@pgf@countc=\count359
+\c@pgf@countd=\count360
 \t@pgf@toka=\toks32
 \t@pgf@tokb=\toks33
 \t@pgf@tokc=\toks34
@@ -966,13 +1167,13 @@ File: pgfsys-dvipdfmx.def 2014/07/09  (rcs-revision 1.14)
 f
 File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
 )
-\pgfsys@objnum=\count180
+\pgfsys@objnum=\count361
 )))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
 tex
 File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
-\pgfsyssoftpath@smallbuffer@items=\count181
-\pgfsyssoftpath@bigbuffer@items=\count182
+\pgfsyssoftpath@smallbuffer@items=\count362
+\pgfsyssoftpath@bigbuffer@items=\count363
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
 tex
@@ -986,7 +1187,7 @@ Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen193
-\pgfmath@count=\count183
+\pgfmath@count=\count364
 \pgfmath@box=\box49
 \pgfmath@toks=\toks35
 \pgfmath@stack@operand=\toks36
@@ -1010,7 +1211,7 @@ tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
 thmetics.code.tex)))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count184
+\c@pgfmathroundto@lastzeros=\count365
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
 x
@@ -1048,7 +1249,7 @@ File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
 \pgfpic=\box50
 \pgf@hbox=\box51
 \pgf@layerbox@main=\box52
-\pgf@picture@serial@count=\count185
+\pgf@picture@serial@count=\count366
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
 ode.tex
@@ -1081,7 +1282,7 @@ File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
 \pgf@max=\dimen273
-\pgf@sys@shading@range@num=\count186
+\pgf@sys@shading@range@num=\count367
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
@@ -1138,7 +1339,7 @@ Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
 .code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
-\pgf@plot@mark@count=\count187
+\pgf@plot@mark@count=\count368
 \pgfplotmarksize=\dimen278
 )
 \tikz@lastx=\dimen279
@@ -1151,18 +1352,18 @@ File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
 \tikz@figbox@bg=\box56
 \tikz@tempbox=\box57
 \tikz@tempbox@bg=\box58
-\tikztreelevel=\count188
-\tikznumberofchildren=\count189
-\tikznumberofcurrentchild=\count190
-\tikz@fig@count=\count191
+\tikztreelevel=\count369
+\tikznumberofchildren=\count370
+\tikznumberofcurrentchild=\count371
+\tikz@fig@count=\count372
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count192
-\pgfmatrixcurrentcolumn=\count193
-\pgf@matrix@numberofcolumns=\count194
+\pgfmatrixcurrentrow=\count373
+\pgfmatrixcurrentcolumn=\count374
+\pgf@matrix@numberofcolumns=\count375
 )
-\tikz@expandcount=\count195
+\tikz@expandcount=\count376
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarytopaths.code.tex
@@ -1174,23 +1375,23 @@ File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
 )
 (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count196
-\calc@Bcount=\count197
+\calc@Acount=\count377
+\calc@Bcount=\count378
 \calc@Adimen=\dimen285
 \calc@Bdimen=\dimen286
-\calc@Askip=\skip65
-\calc@Bskip=\skip66
+\calc@Askip=\skip79
+\calc@Bskip=\skip80
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count198
-\calc@Cskip=\skip67
+\calc@Ccount=\count379
+\calc@Cskip=\skip81
 )
-\c@@todonotes@numberoftodonotes=\count199
+\c@@todonotes@numberoftodonotes=\count380
 )
 (/usr/share/texlive/texmf-dist/tex/latex/wrapfig/wrapfig.sty
 \wrapoverhang=\dimen287
 \WF@size=\dimen288
-\c@WF@wrappedlines=\count266
+\c@WF@wrappedlines=\count381
 \WF@box=\box59
 \WF@everypar=\toks40
 Package: wrapfig 2003/01/31  v 3.6
@@ -1198,53 +1399,68 @@ Package: wrapfig 2003/01/31  v 3.6
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/helvet.sty
 Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS) 
 )
-\openout3 = `Tesis.fff'.
+\openout4 = `Tesis.fff'.
 
  (Tesis.fff)
+
+Package biblatex Warning: Upgrade package 'polyglossia' to >v1.42.0 recommended
+.
+
+Package biblatex Info: Trying to load language 'spanish'...
+Package biblatex Info: ... file 'spanish.lbx' found.
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/spanish.lbx
+File: spanish.lbx 2016/03/03 v3.3 biblatex localization (PK/JW/AB)
+)
+
+Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
+(biblatex)                Loading 'csquotes' recommended.
+
+\@quotelevel=\count382
+\@quotereset=\count383
 (./Tesis.aux)
 \openout1 = `Tesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 115.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 115.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 124.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 124.
  (/usr/share/texmf/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 115.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 115.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 124.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 124.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 115.
-LaTeX Font Info:    ... okay on input line 115.
-LaTeX Font Info:    Try loading font information for EU1+phv on input line 115.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Try loading font information for EU1+phv on input line 124.
 
-LaTeX Font Info:    No file EU1phv.fd. on input line 115.
+LaTeX Font Info:    No file EU1phv.fd. on input line 124.
 
 
 LaTeX Font Warning: Font shape `EU1/phv/m/n' undefined
-(Font)              using `EU1/lmr/m/n' instead on input line 115.
+(Font)              using `EU1/lmr/m/n' instead on input line 124.
 
-LaTeX Info: Redefining \microtypecontext on input line 115.
+LaTeX Info: Redefining \microtypecontext on input line 124.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1289,49 +1505,134 @@ Package microtype Info: Loading generic settings for font family
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \AtBeginShipoutBox=\box60
-Package hyperref Info: Link coloring OFF on input line 115.
+Package hyperref Info: Link coloring OFF on input line 124.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count267
+\c@section@level=\count384
 )
-LaTeX Info: Redefining \ref on input line 115.
-LaTeX Info: Redefining \pageref on input line 115.
-LaTeX Info: Redefining \nameref on input line 115.
+LaTeX Info: Redefining \ref on input line 124.
+LaTeX Info: Redefining \pageref on input line 124.
+LaTeX Info: Redefining \nameref on input line 124.
 
 (./Tesis.out) (./Tesis.out)
-\@outlinefile=\write5
-\openout5 = `Tesis.out'.
+\@outlinefile=\write6
+\openout6 = `Tesis.out'.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
 File: mt-LatinModernRoman.cfg 2013/03/13 v1.0 microtype config. file: Latin Mod
 ern Roman (RS)
 )
+Package biblatex Info: XeTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+\openout3 = `Tesis.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'Tesis.bbl' not found.
+
+No file Tesis.bbl.
+Package biblatex Info: Reference section=0 on input line 124.
+Package biblatex Info: Reference segment=0 on input line 124.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package marginnote Info: \pdfoutput not 0 and \pdflastxpos available.
 (marginnote)             Extended position detection mode activated.
+ABD: EveryShipout initializing macros
 
-ABD: EveryShipout initializing macros [1
+! LaTeX Error: File `logoUBA' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.131 ...udegraphics[width=0.2\textwidth]{logoUBA}
+                                                    \hfill \includegraphics[...
+
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `logoDCAO' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.131 ...degraphics[width=0.2\textwidth]{logoDCAO}
+                                                   \par
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[1
 
 
 
 ]
 
 LaTeX Font Warning: Font shape `EU1/phv/bx/n' undefined
-(Font)              using `EU1/phv/m/n' instead on input line 141.
+(Font)              using `EU1/phv/m/n' instead on input line 151.
 
 [1
 
 ]
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 151.
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: xetex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(99.58464pt, 398.3386pt, 99.58464pt)
+* v-part:(T,H,B)=(101.40665pt, 591.5302pt, 152.11pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=398.3386pt
+* \textheight=591.5302pt
+* \oddsidemargin=27.31465pt
+* \evensidemargin=27.31465pt
+* \topmargin=-2.73714pt
+* \headheight=12.0pt
+* \headsep=19.8738pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=38.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+ [2
+
+
+]
+
+LaTeX Font Warning: Font shape `EU1/phv/m/sl' undefined
+(Font)              using `EU1/phv/m/n' instead on input line 196.
+
+[3] (./Tesis.toc
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 4.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -1339,31 +1640,28 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `lmr' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 151.
-
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 4.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 151
-.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 4.
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 151
-.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 4.
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 151.
+(Font)              <12> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 151.
+(Font)              <8> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 151.
-LaTeX Font Info:    Try loading font information for U+msa on input line 151.
+(Font)              <6> on input line 4.
+LaTeX Font Info:    Try loading font information for U+msa on input line 4.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1371,148 +1669,967 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 151.
+LaTeX Font Info:    Try loading font information for U+msb on input line 4.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) [2
+) [4
 
-] (./Tesis.toc [3
 
 ])
-\tf@toc=\write6
-\openout6 = `Tesis.toc'.
+\tf@toc=\write7
+\openout7 = `Tesis.toc'.
 
+ [5]
+(./Tesis.lof [6
 
-
-LaTeX Font Warning: Font shape `EU1/phv/m/sl' undefined
-(Font)              using `EU1/phv/m/n' instead on input line 156.
-
-[4] (./Tesis.lof [5
-
-] [6])
-\tf@lof=\write7
-\openout7 = `Tesis.lof'.
-
- [7] [8]
-Capítulo 1.
-[1
-
-
-] [2] [3]
-Capítulo 2.
-[4
-
-] [5]
-LaTeX Font Info:    Try loading font information for EU1+lmtt on input line 369
-.
- (/usr/share/texlive/texmf-dist/tex/latex/euenc/eu1lmtt.fd
-File: eu1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [6] [7]
-[8] [9]
-Capítulo 3.
-[10
-
-]
-
-LaTeX Warning: Reference `fig:sd-gh.ncep' on page 11 undefined on input line 54
-9.
-
-[11] [12]
-
-LaTeX Warning: Reference `fig:t-nceo-corte60' on page 13 undefined on input lin
-e 697.
-
-[13] [14] [15] [16]
-
-LaTeX Warning: Reference `fig:ks-ncep-corte' on page 17 undefined on input line
- 925.
-
-[17] [18]
-Capítulo 4.
-[19
-
-] [20] [21] [22] [23] [24] [25] [26]
-
-LaTeX Warning: Reference `qs3-qsseason-ncep' on page 27 undefined on input line
- 1449.
-
-
-LaTeX Warning: Reference `fig:qs3-season-ncep' on page 27 undefined on input li
-ne 1450.
-
-
-LaTeX Warning: Reference `qs3-season-ncep' on page 27 undefined on input line 1
-451.
-
-[27]
-
-LaTeX Warning: Reference `fig:qs3-season-ncep-corte' on page 28 undefined on in
-put line 1468.
-
-[28] [29] [30]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 1626.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 1626.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 1626.
- [31] [32] [33]
-Capítulo 5.
-[34
-
-]
-
-LaTeX Warning: Reference `sec:viento-meridional' on page 35 undefined on input 
-line 1789.
-
-[35]
-
-LaTeX Warning: Reference `fig:tz-nc-sp' on page 36 undefined on input line 1823
-.
-
-[36] [37]
-
-LaTeX Warning: Reference `ampl-sp-nc' on page 38 undefined on input line 1963.
-
-[38]
-
-LaTeX Warning: Reference `sec:viento-meridional' on page 39 undefined on input 
-line 2009.
-
-[39]
-
-LaTeX Warning: Reference `fig:tzdif-sp-runs' on page 40 undefined on input line
- 2061.
-
-[40]
-
-LaTeX Warning: Reference `fig:ampl-dif-sp-runs' on page 41 undefined on input l
-ine 2167.
-
-
-LaTeX Warning: Reference `fig: ampl-mean-sp-runs' on page 41 undefined on input
- line 2168.
-
-[41] [42]
-Capítulo 6.
-[43
-
-] [44
-
-] [45] [46] AED endfloat: Processing end Figures and Tables [47]
-(./Tesis.lof)
+] [7])
 \tf@lof=\write8
 \openout8 = `Tesis.lof'.
 
- [48
+ [8] [9]
+Capítulo 1.
+! Undefined control sequence.
+l.209 y extratropicales \autocite
+                                 [ej.][]{Vera2006}. Dado que éstas últimas
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 219.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219 SSA (ej. \textcite
+                        {Silvestri2009} en escalas interanuales y
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 220.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.220 \textcite
+               {Alvarez2014} en escalas intraestacionales).
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.233 \autocites
+                {Lorenz2001}{Simpson2013} las causas por las cuales estas
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[1
+
+
+]
+! Undefined control sequence.
+l.239 \autocites
+                {Loon1972}{Trenberth1980a}. Estas ondas zonales tienden a ser
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.241 su amplitud y fase \autocite
+                                  {Loon1972}. En particular, se ha documentado
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.243 ...ad en escalas diarias-semanales \autocite
+                                                  {Kidson1988},
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.244 estacionales \autocite
+                            {Mo1985} y más largas \autocite{Karoly1989}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.244 ...\autocite{Mo1985} y más largas \autocite
+                                                  {Karoly1989}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 245.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.245 \textcite
+               {Mo1985} mostraron que existen ubicaciones preferenciales para
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 251.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.251 \textcite
+               {Trenberth1985} mostraron una recurrencia importante en la
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.259 con la QS3 \autocite
+                          [ej.][]{Rao2004} o de su efecto en el hielo marítimo
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.260 \autocite
+               [ej.][]{Raphael2007} pero, como se mencionó anteriormente, muy
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 263.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.263 \textcite
+               {Quintanar1995} realizaron experimentos de sensibilidad
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 268.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.268 jugar un papel importante. \textcite
+                                          {Wang2013} encontraron que la
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 272.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.272 ...�meros de onda. Por otra parte, \textcite
+                                                  {Hobbs2010} pusieron
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 278.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.278 \textcite
+               {Cai1999} evaluaron la habilidad del modelo CSIRO para
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 280.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.280 adecuada de la misma. \textcite
+                                     {Raphael1998} examinó la QS3 en el modelo
+
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.287 \autocite
+               [ej.][]{Simpson2013}, existen evidencias de que las condiciones
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 289.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.289 \textcite
+               {Raphael2003} encontró importantes variaciones interanuales
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.292 asimetrías del SAM \autocite
+                                   {Fogt2012}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[2] [3]
+Capítulo 2.
+! Undefined control sequence.
+l.320 NCEP/NCAR \autocite
+                         {Kalnay1996} (de aquí en adelante datos NCEP) entre
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.329 \autocites
+                {Molteni2003}{Kucharski2006} es un modelo de complejidad
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[4
+
+]
+! Undefined control sequence.
+l.346 \autocite
+               {Barreiro2014} se decidió utilizarlo en este trabajo.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.371 en invierno \autocite
+                           {James}, y en gran medida son forzadas por
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.373 ...eracciones con los transcientes \autocite
+                                                  {Rao2004}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.385 \autocite
+               {Wilks2011}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[5]
+LaTeX Font Info:    Try loading font information for EU1+lmtt on input line 389
+.
+ (/usr/share/texlive/texmf-dist/tex/latex/euenc/eu1lmtt.fd
+File: eu1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+! Undefined control sequence.
+l.390 \autocite
+               {R-metR} para cada círculo de latitud de modo de obtener estos
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.412 \texttt{circular} \autocite
+                                 {R-circular}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[6]
+! Undefined control sequence.
+l.434 localizadas en el dominio \autocite
+                                         {Torrence1998}. En el contexto de las
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.439 de periodicidades temporales \autocites
+                                             [ej.][]{Raphael2004}{Kinnard2011}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.440 y de procesamiento de imágenes \autocite
+                                               [ej.][]{Desrochers1999}, pero
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.442 \autocite
+               [ej.][]{Pinault2016} aunque sí hay aplicaciones de este tipo en
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.443 ...tura, por ejmeplo, de ecología \autocite
+                                                  [ej,][]{Mi2005}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.447 \autocite
+               {R-WaveletComp} que utiliza un wavelet de Morlet.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.457 \autocite
+               [ej.][\textcite{Cai1999} y \textcite{Raphael2004}]{Mo1985}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 457.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.457 \autocite[ej.][\textcite
+                              {Cai1999} y \textcite{Raphael2004}]{Mo1985}.
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 457.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.457 ...ocite[ej.][\textcite{Cai1999} y \textcite
+                                                  {Raphael2004}]{Mo1985}.
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 459.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.459 ...atologías analizadas. Además, \textcite
+                                                  {Raphael2004} se
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 461.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.461 parte, \textcite
+                      {Yuan2008}, generó una serie temporal de actividad de la
+
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+[7]
+! Undefined control sequence.
+l.470 QS3 \autocite
+                   {Loon1972} ni permiten capturar casos de actividad de onda
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 472.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.472 \textcite
+               {Irving2015} construyeron un índice de actividad de onda
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.497 ...OF()} del paquete \texttt{metR} \autocite
+                                                  {R-metR}, la cual
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[8]
+! Undefined control sequence.
+l.515 \autocite
+               {James}. En particular, el número de onda meridional está dado
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.535 las mismas \autocite
+                          {James}. En este estudio, estos flujos se calcularon
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.547 ... zonal de la función corriente \autocite
+                                                  {Vera2004}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.552 paquete \texttt{metR} \autocite
+                                     {R-metR}, la cual descompone una matriz
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[9] [10]
+Capítulo 3.
+[11
+
+]
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 632.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.632 60°O. \textcite
+                      {Quintanar1995} concluyeron que la primer QS1 está
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.642 Sudamericano \autocite
+                            {Vera2006}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 648.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.648 \textcite
+               {Quintanar1995a}. \textcite{Karoly1985} describió una
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 648.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.648 \textcite{Quintanar1995a}. \textcite
+                                          {Karoly1985} describió una
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.657 perturbaciones \autocite
+                              {James}. En verano las anomalías zonales tienen
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[12]
+! Undefined control sequence.
+l.708 \autocite
+               [ \textcite{Zangl2001}]{Court1942} por lo que el uso de la
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 708.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.708 \autocite[ \textcite
+                          {Zangl2001}]{Court1942} por lo que el uso de la
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 709.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.709 ...usa térmica no es conveniente. \textcite
+                                                  {Zangl2001}, utilizando
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+[13]
+! Undefined control sequence.
+l.789 bloqueos \autocite
+                        [ej.][]{Trenberth1985}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[14]
+! Undefined control sequence.
+l.847 \autocite
+               {King1997}. Sin embargo, los datos allí pueden tener
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[15]
+! Undefined control sequence.
+l.892 ...te llamada la Baja del Nordeste \autocite
+                                                  {Vera2006}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[16]
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 955.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.955 resultado de \textcite
+                            {Berbery1992} (su Figura~3) que utilizaron 5 años
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+! Undefined control sequence.
+l.960 onda estacionario \autocite
+                                 {James}. En la \autoref{fig:ks-ncep} se
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[17] [18] [19]
+Capítulo 4.
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 1072.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1072 ya observado por \textcite
+                                 {Loon1972} y \textcite{Mo1985}) anticipando
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 1072.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1072 ...vado por \textcite{Loon1972} y \textcite
+                                                  {Mo1985}) anticipando
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+[20
+
+] [21]
+
+LaTeX Warning: Reference `estacionariedad' on page 22 undefined on input line 1
+179.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 1187.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1187 ... en contra de la sugerencia de \textcite
+                                                  {Hobbs2010} de que
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+[22] [23] [24]
+! Undefined control sequence.
+l.1329 \autocites
+                 {Loon1972}{Karoly1985}{Raphael2004}. Se nota que \(A_3\) no es
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[25]
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 1352.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1352 \textcite
+                {Raphael2004}, también utilizando wavelets en el período
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 1363.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1363 ...ción (como por ejemplo los de \textcite
+                                                  {Trenberth1985}) y
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+[26]
+! Undefined control sequence.
+l.1434 ejemplo, la Antártida \autocite
+                                       {King1997}).
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[27] [28]
+
+LaTeX Warning: Reference `qs3-qsseason-ncep' on page 29 undefined on input line
+ 1497.
+
+
+LaTeX Warning: Reference `fig:qs3-season-ncep' on page 29 undefined on input li
+ne 1499.
+
+
+LaTeX Warning: Reference `qs3-season-ncep' on page 29 undefined on input line 1
+499.
+
+
+LaTeX Warning: Reference `fig:qs3-season-ncep-corte' on page 29 undefined on in
+put line 1517.
+
+! Undefined control sequence.
+l.1523 ...gación vertical de las mismas \autocite
+                                                  {James}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[29]
+! Undefined control sequence.
+l.1572 de la MJO \autocite
+                          {Wheeler2004} por lo que sería posible su utiliza...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <17.28> on input line 1580.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 1580.
+[30] [31]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 1684.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 1684.
+ [32] [33] [34]
+Capítulo 5.
+! Undefined control sequence.
+l.1791 ...es de la base de datos HadISST \autocite
+                                                  {Rayner2003}. Se
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[35
+
+]
+
+LaTeX Warning: Reference `ghz-sp-nc-corte60' on page 36 undefined on input line
+ 1843.
+
+
+LaTeX Warning: Reference `sec:viento-meridional' on page 36 undefined on input 
+line 1877.
+
+[36] [37] [38] [39] [40]
+
+Package biblatex Warning: '\textcite' not defined by citation style.
+(biblatex)                Falling back to '\cite' on input line 2103.
+
+
+! Package biblatex Error: Command '\cite' undefined.
+
+See the biblatex package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2103 son consistentes con los de \textcite
+                                            {Quintanar1995} dado que la
+The citation command '\cite' has not been defined
+by the selected citation style.
+
+[41] [42]
+
+LaTeX Warning: Reference `fig:ampl-dif-sp-runs' on page 43 undefined on input l
+ine 2241.
+
+
+LaTeX Warning: Reference `fig: ampl-mean-sp-runs' on page 43 undefined on input
+ line 2242.
+
+[43]
+Capítulo 6.
+[44
+
+] [45]
+
+LaTeX Warning: Empty bibliography on input line 2347.
+
+AED endfloat: Processing end Figures and Tables [46] (./Tesis.lof)
+\tf@lof=\write9
+\openout9 = `Tesis.lof'.
+
+ [47
 
 
 
-] (./Tesis.fff
+]
+(./Tesis.fff
 
 ! LaTeX Error: File `fig/tesis/gh-ncep-1' not found.
 
@@ -1529,7 +2646,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[49]
+[48]
 
 ! LaTeX Error: File `fig/tesis/sd-gh-ncep-1' not found.
 
@@ -1547,7 +2664,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[50]
+[49]
 
 ! LaTeX Error: File `fig/tesis/ghz-ncep-1' not found.
 
@@ -1564,7 +2681,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[51]
+[50]
 
 ! LaTeX Error: File `fig/tesis/ghz-ncep-corte60-1' not found.
 
@@ -1573,7 +2690,7 @@ Type  H <return>  for immediate help.
  ...                                              
                                                   
 l.32 ...dth=155mm, ]{fig/tesis/ghz-ncep-corte60-1}
-                                                   \caption{Corte zonal de a...
+                                                   \caption{Corte zonal de Z...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1582,7 +2699,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[52]
+[51]
 
 ! LaTeX Error: File `fig/tesis/t-ncep-1' not found.
 
@@ -1599,7 +2716,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[53]
+[52]
 
 ! LaTeX Error: File `fig/tesis/t-ncep-corte-1' not found.
 
@@ -1617,7 +2734,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[54]
+[53]
 
 ! LaTeX Error: File `fig/tesis/tz-ncep-1' not found.
 
@@ -1634,7 +2751,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[55]
+[54]
 
 ! LaTeX Error: File `fig/tesis/t-ncep-corte60-1' not found.
 
@@ -1652,7 +2769,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[56]
+[55]
 
 ! LaTeX Error: File `fig/tesis/u-ncep-corte-1' not found.
 
@@ -1670,7 +2787,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[57]
+[56]
 
 ! LaTeX Error: File `fig/tesis/u-ncep-1' not found.
 
@@ -1687,7 +2804,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[58]
+[57]
 
 ! LaTeX Error: File `fig/tesis/uz-ncep-1' not found.
 
@@ -1704,7 +2821,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[59]
+[58]
 
 ! LaTeX Error: File `fig/tesis/v-ncep-corte-1' not found.
 
@@ -1722,7 +2839,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[60]
+[59]
 
 ! LaTeX Error: File `fig/tesis/v-ncep-1' not found.
 
@@ -1739,38 +2856,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[61] [62
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]
+[60]
 
 ! LaTeX Error: File `fig/tesis/psi-ncep-1' not found.
 
@@ -1778,7 +2864,41 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.117 ...phics[width=247mm,]{fig/tesis/psi-ncep-1}
+l.113 ...phics[width=247mm,]{fig/tesis/psi-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[61]
+
+! LaTeX Error: File `fig/tesis/etady-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.124 ...ics[width=247mm,]{fig/tesis/etady-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[62]
+
+! LaTeX Error: File `fig/tesis/ks-ncep-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.135 ...aphics[width=247mm,]{fig/tesis/ks-ncep-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1789,13 +2909,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [63]
 
-! LaTeX Error: File `fig/tesis/etady-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/r2-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.128 ...ics[width=247mm,]{fig/tesis/etady-ncep-1}
+l.146 ...aphics[width=247mm,]{fig/tesis/r2-ncep-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1806,13 +2926,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [64]
 
-! LaTeX Error: File `fig/tesis/ks-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/ampl-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.139 ...aphics[width=247mm,]{fig/tesis/ks-ncep-1}
+l.157 ...hics[width=247mm,]{fig/tesis/ampl-ncep-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1823,14 +2943,15 @@ If that doesn't work, type  X <return>  to quit.
 
 [65]
 
-! LaTeX Error: File `fig/tesis/r2-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/qs3-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.150 ...aphics[width=247mm,]{fig/tesis/r2-ncep-1}
-                                                  
+l.168 ...hics[width=155mm, ]{fig/tesis/qs3-ncep-1}
+                                                   \caption{Z* (mgp) media r...
+
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -1840,14 +2961,15 @@ If that doesn't work, type  X <return>  to quit.
 
 [66]
 
-! LaTeX Error: File `fig/tesis/ampl-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/qs3-ncep-corte-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.161 ...hics[width=247mm,]{fig/tesis/ampl-ncep-1}
-                                                  
+l.173 ...idth=155mm, ]{fig/tesis/qs3-ncep-corte-1}
+                                                   \caption{Corte zonal en 6...
+
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -1857,14 +2979,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [67]
 
-! LaTeX Error: File `fig/tesis/qs3-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/qs3sd-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.172 ...hics[width=155mm, ]{fig/tesis/qs3-ncep-1}
-                                                   \caption{Z* media reconst...
+l.178 ...cs[width=155mm, ]{fig/tesis/qs3sd-ncep-1}
+                                                   \caption{Desvío estánda...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1875,14 +2997,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [68]
 
-! LaTeX Error: File `fig/tesis/qs3-ncep-corte-1' not found.
+! LaTeX Error: File `fig/tesis/wavelet-fourier-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.177 ...idth=155mm, ]{fig/tesis/qs3-ncep-corte-1}
-                                                   \caption{Corte zonal en 6...
+l.183 ...55mm, ]{fig/tesis/wavelet-fourier-ncep-1}
+                                                   \caption{Amplitud (mgp) d...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1893,15 +3015,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [69]
 
-! LaTeX Error: File `fig/tesis/qs3sd-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/waveletz-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.182 ...cs[width=155mm, ]{fig/tesis/qs3sd-ncep-1}
-                                                   \caption{Desvío estánda...
-
+l.189 ...width=155mm, ]{fig/tesis/waveletz-ncep-1}
+                                                  
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -1911,14 +3032,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [70]
 
-! LaTeX Error: File `fig/tesis/wavelet-fourier-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/estacionariedad-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.187 ...55mm, ]{fig/tesis/wavelet-fourier-ncep-1}
-                                                   \caption{Amplitud de la Q...
+l.198 ...dth=155mm, ]{fig/tesis/estacionariedad-1}
+                                                   \caption{Estacionariedad ...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1929,14 +3050,15 @@ If that doesn't work, type  X <return>  to quit.
 
 [71]
 
-! LaTeX Error: File `fig/tesis/waveletz-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/ampl-max-mean-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.193 ...width=155mm, ]{fig/tesis/waveletz-ncep-1}
-                                                  
+l.203 ...width=155mm, ]{fig/tesis/ampl-max-mean-1}
+                                                   \caption{Amplitud de la Q...
+
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -1946,14 +3068,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [72]
 
-! LaTeX Error: File `fig/tesis/estacionaridad-1' not found.
+! LaTeX Error: File `fig/tesis/ampl-max-mean-corte-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.202 ...idth=155mm, ]{fig/tesis/estacionaridad-1}
-                                                   \caption{Estacionariedad ...
+l.208 ...155mm, ]{fig/tesis/ampl-max-mean-corte-1}
+                                                   \caption{Corte vertical d...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1964,14 +3086,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [73]
 
-! LaTeX Error: File `fig/tesis/ampl-max-mean-1' not found.
+! LaTeX Error: File `fig/tesis/ghz-ncep-select-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.207 ...width=155mm, ]{fig/tesis/ampl-max-mean-1}
-                                                   \caption{Amplitud de la Q...
+l.213 ...dth=155mm, ]{fig/tesis/ghz-ncep-select-1}
+                                                   \caption{Z* (mgp) en 300h...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -1982,14 +3104,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [74]
 
-! LaTeX Error: File `fig/tesis/ampl-max-mean-corte-1' not found.
+! LaTeX Error: File `fig/tesis/cor-mean-max-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.212 ...155mm, ]{fig/tesis/ampl-max-mean-corte-1}
-                                                   \caption{Corte vertical d...
+l.218 ...[width=155mm, ]{fig/tesis/cor-mean-max-1}
+                                                   \caption{Amplitud máxima...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2000,49 +3122,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [75]
 
-! LaTeX Error: File `fig/tesis/ghz-ncep-select-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.217 ...dth=155mm, ]{fig/tesis/ghz-ncep-select-1}
-                                                   \caption{Z* en 300hPa con...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[76]
-
-! LaTeX Error: File `fig/tesis/cor-mean-max-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.222 ...[width=155mm, ]{fig/tesis/cor-mean-max-1}
-                                                   \caption{Valores de corre...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[77]
-
 ! LaTeX Error: File `fig/tesis/ampl-ts-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.227 ...ics[width=155mm, ]{fig/tesis/ampl-ts-1} }
+l.223 ...ics[width=155mm, ]{fig/tesis/ampl-ts-1} }
                                                   \newline\subfloat[Serie te...
 
 I could not locate the file with any of these extensions:
@@ -2053,122 +3139,452 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Overfull \hbox (7.698pt too wide) in paragraph at lines 227--227
+Overfull \hbox (7.698pt too wide) in paragraph at lines 223--223
 []\EU1/phv/m/n/10 (a)
  []
 
 
-Overfull \hbox (14.828pt too wide) in paragraph at lines 227--227
+Overfull \hbox (14.828pt too wide) in paragraph at lines 223--223
 |\EU1/phv/m/n/10 Box-
  []
 
 
-Overfull \hbox (13.318pt too wide) in paragraph at lines 227--227
+Overfull \hbox (13.318pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 plot
  []
 
 
-Overfull \hbox (8.308pt too wide) in paragraph at lines 227--227
+Overfull \hbox (8.308pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 pa-
  []
 
 
-Overfull \hbox (5.008pt too wide) in paragraph at lines 227--227
+Overfull \hbox (5.008pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ra
  []
 
 
-Overfull \hbox (7.188pt too wide) in paragraph at lines 227--227
+Overfull \hbox (7.188pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ca-
  []
 
 
-Overfull \hbox (6.648pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.648pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 da
  []
 
 
-Overfull \hbox (13.628pt too wide) in paragraph at lines 227--227
+Overfull \hbox (13.628pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 mes.
  []
 
 
-Overfull \hbox (11.278pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 Los
+Overfull \hbox (7.338pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 La
  []
 
 
-Overfull \hbox (14.428pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 pun-
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 lí-
  []
 
 
-Overfull \hbox (8.918pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 tos
+Overfull \hbox (11.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 nea
  []
 
 
-Overfull \hbox (10.588pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 son
+Overfull \hbox (12.188pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 cen-
  []
 
 
-Overfull \hbox (7.808pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.678pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 tral
+ []
+
+
+Overfull \hbox (6.108pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 re-
+ []
+
+
+Overfull \hbox (11.668pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 pre-
+ []
+
+
+Overfull \hbox (11.688pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 sen-
+ []
+
+
+Overfull \hbox (4.978pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ta
+ []
+
+
+Overfull \hbox (3.868pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 la
+ []
+
+
+Overfull \hbox (10.518pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 me-
+ []
+
+
+Overfull \hbox (11.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 dia-
+ []
+
+
+Overfull \hbox (8.038pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 na,
+ []
+
+
+Overfull \hbox (3.868pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 la
+ []
+
+
+Overfull \hbox (7.188pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ca-
+ []
+
+
+Overfull \hbox (4.148pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ja
+ []
+
+
+Overfull \hbox (4.468pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 se
+ []
+
+
+Overfull \hbox (7.468pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ex-
+ []
+
+
+Overfull \hbox (14.418pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 tien-
+ []
+
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 de
+ []
+
+
+Overfull \hbox (11.688pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 des-
+ []
+
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 de
+ []
+
+
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 el
+ []
+
+
+Overfull \hbox (11.948pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 per-
+ []
+
+
+Overfull \hbox (12.188pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 cen-
+ []
+
+
+Overfull \hbox (5.538pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 til
+ []
+
+
+Overfull \hbox (13.998pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 25%
+ []
+
+
+Overfull \hbox (12.248pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 has-
+ []
+
+
+Overfull \hbox (4.978pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ta
+ []
+
+
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 el
+ []
+
+
+Overfull \hbox (11.948pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 per-
+ []
+
+
+Overfull \hbox (12.188pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 cen-
+ []
+
+
+Overfull \hbox (5.538pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 til
+ []
+
+
+Overfull \hbox (13.748pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 75%
+ []
+
+
+Overfull \hbox (1.108pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 y
+ []
+
+
+Overfull \hbox (7.808pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 las
+ []
+
+
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 lí-
+ []
+
+
+Overfull \hbox (15.028pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 neas
+ []
+
+
+Overfull \hbox (4.468pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 se
+ []
+
+
+Overfull \hbox (7.468pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ex-
+ []
+
+
+Overfull \hbox (14.418pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 tien-
+ []
+
+
+Overfull \hbox (11.648pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 den
+ []
+
+
+Overfull \hbox (11.688pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 des-
+ []
+
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 de
+ []
+
+
+Overfull \hbox (7.808pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 los
  []
 
 
-Overfull \hbox (7.20801pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 va-
+Overfull \hbox (7.468pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ex-
  []
 
 
-Overfull \hbox (5.528pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 lo-
+Overfull \hbox (9.998pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 tre-
  []
 
 
-Overfull \hbox (8.388pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 res
+Overfull \hbox (13.358pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 mos
  []
 
 
-Overfull \hbox (16.078pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 men-
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 de
  []
 
 
-Overfull \hbox (12.248pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 sua-
+Overfull \hbox (3.868pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 la
  []
 
 
-Overfull \hbox (7.248pt too wide) in paragraph at lines 227--227
-\EU1/phv/m/n/10 les
+Overfull \hbox (7.188pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ca-
  []
 
 
-Overfull \hbox (6.088pt too wide) in paragraph at lines 227--227
+Overfull \hbox (4.148pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ja
+ []
+
+
+Overfull \hbox (12.248pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 has-
+ []
+
+
+Overfull \hbox (4.978pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ta
+ []
+
+
+Overfull \hbox (8.618pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 1.5
+ []
+
+
+Overfull \hbox (6.92801pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ve-
+ []
+
+
+Overfull \hbox (8.908pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ces
+ []
+
+
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 el
+ []
+
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 in-
  []
 
 
-Overfull \hbox (6.088pt too wide) in paragraph at lines 227--227
+Overfull \hbox (9.998pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ter-
+ []
+
+
+Overfull \hbox (7.20801pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 va-
+ []
+
+
+Overfull \hbox (3.868pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 lo
+ []
+
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 in-
+ []
+
+
+Overfull \hbox (9.998pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 ter-
+ []
+
+
+Overfull \hbox (16.668pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 cuar-
+ []
+
+
+Overfull \hbox (6.368pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 til.
+ []
+
+
+Overfull \hbox (11.278pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 Los
+ []
+
+
+Overfull \hbox (14.428pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 pun-
+ []
+
+
+Overfull \hbox (8.918pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 tos
+ []
+
+
+Overfull \hbox (10.588pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 son
+ []
+
+
+Overfull \hbox (7.808pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 los
+ []
+
+
+Overfull \hbox (7.20801pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 va-
+ []
+
+
+Overfull \hbox (5.528pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 lo-
+ []
+
+
+Overfull \hbox (8.388pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 res
+ []
+
+
+Overfull \hbox (16.078pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 men-
+ []
+
+
+Overfull \hbox (12.248pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 sua-
+ []
+
+
+Overfull \hbox (7.248pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 les
+ []
+
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
+\EU1/phv/m/n/10 in-
+ []
+
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 di-
  []
 
 
-Overfull \hbox (5.548pt too wide) in paragraph at lines 227--227
+Overfull \hbox (5.548pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 vi-
  []
 
 
-Overfull \hbox (13.868pt too wide) in paragraph at lines 227--227
+Overfull \hbox (13.868pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 dua-
  []
 
 
-Overfull \hbox (10.028pt too wide) in paragraph at lines 227--227
+Overfull \hbox (10.028pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 les.[][]| 
  []
 
@@ -2179,8 +3595,8 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.227 ...ics[width=155mm, ]{fig/tesis/ampl-ts-2} }
-                                                  \caption{Índice $I_3$}\la...
+l.223 ...ics[width=155mm, ]{fig/tesis/ampl-ts-2} }
+                                                  \caption{Índice $A_3$ (mg...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2190,284 +3606,284 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Overfull \hbox (8.258pt too wide) in paragraph at lines 227--227
+Overfull \hbox (8.258pt too wide) in paragraph at lines 223--223
 []\EU1/phv/m/n/10 (b)
  []
 
 
-Overfull \hbox (7.748pt too wide) in paragraph at lines 227--227
+Overfull \hbox (7.748pt too wide) in paragraph at lines 223--223
 |\EU1/phv/m/n/10 Se-
  []
 
 
-Overfull \hbox (7.228pt too wide) in paragraph at lines 227--227
+Overfull \hbox (7.228pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 rie
  []
 
 
-Overfull \hbox (14.408pt too wide) in paragraph at lines 227--227
+Overfull \hbox (14.408pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 tem-
  []
 
 
-Overfull \hbox (8.588pt too wide) in paragraph at lines 227--227
+Overfull \hbox (8.588pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 po-
  []
 
 
-Overfull \hbox (8.618pt too wide) in paragraph at lines 227--227
+Overfull \hbox (8.618pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ral.
  []
 
 
-Overfull \hbox (11.278pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.278pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 Las
  []
 
 
-Overfull \hbox (3.308pt too wide) in paragraph at lines 227--227
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 lí-
  []
 
 
-Overfull \hbox (15.028pt too wide) in paragraph at lines 227--227
+Overfull \hbox (15.028pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 neas
  []
 
 
-Overfull \hbox (8.308pt too wide) in paragraph at lines 227--227
+Overfull \hbox (8.308pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ho-
  []
 
 
-Overfull \hbox (4.448pt too wide) in paragraph at lines 227--227
+Overfull \hbox (4.448pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ri-
  []
 
 
-Overfull \hbox (12.748pt too wide) in paragraph at lines 227--227
+Overfull \hbox (12.748pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 zon-
  []
 
 
-Overfull \hbox (6.638pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.638pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ta-
  []
 
 
-Overfull \hbox (7.248pt too wide) in paragraph at lines 227--227
+Overfull \hbox (7.248pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 les
  []
 
 
-Overfull \hbox (6.108pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.108pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 re-
  []
 
 
-Overfull \hbox (11.668pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.668pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 pre-
  []
 
 
-Overfull \hbox (11.688pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.688pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 sen-
  []
 
 
-Overfull \hbox (10.538pt too wide) in paragraph at lines 227--227
+Overfull \hbox (10.538pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 tan
  []
 
 
-Overfull \hbox (3.868pt too wide) in paragraph at lines 227--227
+Overfull \hbox (3.868pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 la
  []
 
 
-Overfull \hbox (10.518pt too wide) in paragraph at lines 227--227
+Overfull \hbox (10.518pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 me-
  []
 
 
-Overfull \hbox (9.428pt too wide) in paragraph at lines 227--227
+Overfull \hbox (9.428pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 dia
  []
 
 
-Overfull \hbox (21.09799pt too wide) in paragraph at lines 227--227
+Overfull \hbox (21.09799pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 anual,
  []
 
 
-Overfull \hbox (6.088pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 en
  []
 
 
-Overfull \hbox (6.668pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.668pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ro-
  []
 
 
-Overfull \hbox (4.148pt too wide) in paragraph at lines 227--227
+Overfull \hbox (4.148pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 jo
  []
 
 
-Overfull \hbox (20.478pt too wide) in paragraph at lines 227--227
+Overfull \hbox (20.478pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 (azul)
  []
 
 
-Overfull \hbox (18.308pt too wide) in paragraph at lines 227--227
+Overfull \hbox (18.308pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 cuan-
  []
 
 
-Overfull \hbox (6.648pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.648pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 do
  []
 
 
-Overfull \hbox (6.128pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.128pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 és-
  []
 
 
-Overfull \hbox (4.978pt too wide) in paragraph at lines 227--227
+Overfull \hbox (4.978pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ta
  []
 
 
-Overfull \hbox (4.468pt too wide) in paragraph at lines 227--227
+Overfull \hbox (4.468pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 es
  []
 
 
-Overfull \hbox (11.078pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.078pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ma-
  []
 
 
-Overfull \hbox (9.808pt too wide) in paragraph at lines 227--227
+Overfull \hbox (9.808pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 yor
  []
 
 
-Overfull \hbox (14.018pt too wide) in paragraph at lines 227--227
+Overfull \hbox (14.018pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 (me-
  []
 
 
-Overfull \hbox (13.678pt too wide) in paragraph at lines 227--227
+Overfull \hbox (13.678pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 nor)
  []
 
 
-Overfull \hbox (11.368pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.368pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 que
  []
 
 
-Overfull \hbox (3.868pt too wide) in paragraph at lines 227--227
+Overfull \hbox (3.868pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 la
  []
 
 
-Overfull \hbox (10.518pt too wide) in paragraph at lines 227--227
+Overfull \hbox (10.518pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 me-
  []
 
 
-Overfull \hbox (9.428pt too wide) in paragraph at lines 227--227
+Overfull \hbox (9.428pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 dia
  []
 
 
-Overfull \hbox (6.088pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.088pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 de
  []
 
 
-Overfull \hbox (6.638pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.638pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 to-
  []
 
 
-Overfull \hbox (6.648pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.648pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 do
  []
 
 
-Overfull \hbox (3.308pt too wide) in paragraph at lines 227--227
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 el
  []
 
 
-Overfull \hbox (8.028pt too wide) in paragraph at lines 227--227
+Overfull \hbox (8.028pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 pe-
  []
 
 
-Overfull \hbox (9.448pt too wide) in paragraph at lines 227--227
+Overfull \hbox (9.448pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 río-
  []
 
 
-Overfull \hbox (6.648pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.648pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 do
  []
 
 
-Overfull \hbox (14.998pt too wide) in paragraph at lines 227--227
+Overfull \hbox (14.998pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 mar-
  []
 
 
-Overfull \hbox (7.188pt too wide) in paragraph at lines 227--227
+Overfull \hbox (7.188pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 ca-
  []
 
 
-Overfull \hbox (6.648pt too wide) in paragraph at lines 227--227
+Overfull \hbox (6.648pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 da
  []
 
 
-Overfull \hbox (11.088pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.088pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 con
  []
 
 
-Overfull \hbox (3.308pt too wide) in paragraph at lines 227--227
+Overfull \hbox (3.308pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 lí-
  []
 
 
-Overfull \hbox (11.088pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.088pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 nea
  []
 
 
-Overfull \hbox (14.428pt too wide) in paragraph at lines 227--227
+Overfull \hbox (14.428pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 pun-
  []
 
 
-Overfull \hbox (11.078pt too wide) in paragraph at lines 227--227
+Overfull \hbox (11.078pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 tea-
  []
 
 
-Overfull \hbox (9.428pt too wide) in paragraph at lines 227--227
+Overfull \hbox (9.428pt too wide) in paragraph at lines 223--223
 \EU1/phv/m/n/10 da.[][]| 
  []
 
 
-LaTeX Warning: Float too large for page by 287.62703pt on input line 228.
+LaTeX Warning: Float too large for page by 1079.62703pt on input line 224.
 
-[78]
+[76]
 
 ! LaTeX Error: File `fig/tesis/fase-boxplot-1' not found.
 
@@ -2475,8 +3891,44 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.233 ...s[width=247mm,]{fig/tesis/fase-boxplot-1}
+l.229 ...s[width=247mm,]{fig/tesis/fase-boxplot-1}
                                                   
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[77]
+
+! LaTeX Error: File `fig/tesis/eof-field-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.239 ...ics[width=155mm, ]{fig/tesis/eof-field-1}
+                                                   \caption{Primeras dos com...
+
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[78]
+
+! LaTeX Error: File `fig/tesis/pc1-pc2-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.244 ...phics[width=155mm, ]{fig/tesis/pc1-pc2-1}
+                                                   \caption{Valor medio de l...
+
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -2486,14 +3938,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [79]
 
-! LaTeX Error: File `fig/tesis/eof-field-1' not found.
+! LaTeX Error: File `fig/tesis/qs3-qsseason-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.243 ...ics[width=155mm, ]{fig/tesis/eof-field-1}
-                                                   \caption{Primeras dos com...
+l.249 ...h=155mm, ]{fig/tesis/qs3-qsseason-ncep-1}
+                                                   \caption{Z* media reconst...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2504,14 +3956,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [80]
 
-! LaTeX Error: File `fig/tesis/pc1-pc2-1' not found.
+! LaTeX Error: File `fig/tesis/qs3-qsseason-ncep-corte-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.248 ...phics[width=155mm, ]{fig/tesis/pc1-pc2-1}
-                                                   \caption{Valor medio de l...
+l.254 ...m, ]{fig/tesis/qs3-qsseason-ncep-corte-1}
+                                                   \caption{Corte en 52.5°S...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2522,14 +3974,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [81]
 
-! LaTeX Error: File `fig/tesis/qs3-qsseason-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/lag-cor-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.253 ...h=155mm, ]{fig/tesis/qs3-qsseason-ncep-1}
-                                                   \caption{Z* media reconst...
+l.259 ...phics[width=155mm, ]{fig/tesis/lag-cor-1}
+                                                   \caption{Correlación lag...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2540,14 +3992,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [82]
 
-! LaTeX Error: File `fig/tesis/qs3-qsseason-ncep-corte-1' not found.
+! LaTeX Error: File `fig/tesis/cor-campo-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.258 ...m, ]{fig/tesis/qs3-qsseason-ncep-corte-1}
-                                                   \caption{Corte en 52.5°S...
+l.264 ...ics[width=155mm, ]{fig/tesis/cor-campo-1}
+                                                   \caption{$r^2$ entre Z* e...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2558,15 +4010,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [83]
 
-! LaTeX Error: File `fig/tesis/lag-cor-1' not found.
+! LaTeX Error: File `fig/tesis/regr-gh-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.263 ...phics[width=155mm, ]{fig/tesis/lag-cor-1}
-                                                   \caption{Correlación lag...
-
+l.270 ...s[width=247mm,]{fig/tesis/regr-gh-ncep-1}
+                                                  
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -2576,14 +4027,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [84]
 
-! LaTeX Error: File `fig/tesis/cor-campo-1' not found.
+! LaTeX Error: File `fig/tesis/regr-gh-polar-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.268 ...ics[width=155mm, ]{fig/tesis/cor-campo-1}
-                                                   \caption{Valores de Corre...
+l.280 ...width=155mm, ]{fig/tesis/regr-gh-polar-1}
+                                                   \caption{Idem \autoref{fi...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2594,13 +4045,29 @@ If that doesn't work, type  X <return>  to quit.
 
 [85]
 
-! LaTeX Error: File `fig/tesis/regr-gh-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/regr-psi-ncep-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.274 ...s[width=247mm,]{fig/tesis/regr-gh-ncep-1}
+l.286 ...[width=247mm,]{fig/tesis/regr-psi-ncep-1}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `fig/tesis/regr-psi-ncep-2' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.294 ...[width=247mm,]{fig/tesis/regr-psi-ncep-2}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2611,15 +4078,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [86]
 
-! LaTeX Error: File `fig/tesis/regr-gh-polar-1' not found.
+! LaTeX Error: File `fig/tesis/ghz-sp-nc-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.284 ...width=155mm, ]{fig/tesis/regr-gh-polar-1}
-                                                   \caption{Igual que \autor...
-
+l.306 ...hics[width=247mm,]{fig/tesis/ghz-sp-nc-1}
+                                                  
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -2629,14 +4095,15 @@ If that doesn't work, type  X <return>  to quit.
 
 [87]
 
-! LaTeX Error: File `fig/tesis/regr-psi-ncep-1' not found.
+! LaTeX Error: File `fig/tesis/ghz-sp-nc-corte60-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.290 ...[width=247mm,]{fig/tesis/regr-psi-ncep-1}
-                                                  
+l.316 ...h=155mm, ]{fig/tesis/ghz-sp-nc-corte60-1}
+                                                   \caption{Corte zonal de Z...
+
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -2646,13 +4113,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [88]
 
-! LaTeX Error: File `fig/tesis/ghz-sp-nc-1' not found.
+! LaTeX Error: File `fig/tesis/ghz-dif-sp-nc-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.302 ...hics[width=247mm,]{fig/tesis/ghz-sp-nc-1}
+l.322 ...[width=247mm,]{fig/tesis/ghz-dif-sp-nc-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2663,13 +4130,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [89]
 
-! LaTeX Error: File `fig/tesis/ghz-dif-sp-nc-1' not found.
+! LaTeX Error: File `fig/tesis/t-nc-sp-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.313 ...[width=247mm,]{fig/tesis/ghz-dif-sp-nc-1}
+l.333 ...aphics[width=247mm,]{fig/tesis/t-nc-sp-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2680,15 +4147,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [90]
 
-! LaTeX Error: File `fig/tesis/ghz-sp-nc-corte60-1' not found.
+! LaTeX Error: File `fig/tesis/tz-sp-nc-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.323 ...h=155mm, ]{fig/tesis/ghz-sp-nc-corte60-1}
-                                                   \caption{Corte zonal de Z...
-
+l.344 ...phics[width=247mm,]{fig/tesis/tz-sp-nc-1}
+                                                  
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -2698,14 +4164,15 @@ If that doesn't work, type  X <return>  to quit.
 
 [91]
 
-! LaTeX Error: File `fig/tesis/t-nc-sp-1' not found.
+! LaTeX Error: File `fig/tesis/u-sp-nc-corte-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.329 ...aphics[width=247mm,]{fig/tesis/t-nc-sp-1}
-                                                  
+l.354 ...width=155mm, ]{fig/tesis/u-sp-nc-corte-1}
+                                                   \caption{Media zonal del ...
+
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
 ,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
@@ -2715,13 +4182,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [92]
 
-! LaTeX Error: File `fig/tesis/tz-sp-nc-1' not found.
+! LaTeX Error: File `fig/tesis/etady-sp-nc-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.340 ...phics[width=247mm,]{fig/tesis/tz-sp-nc-1}
+l.360 ...cs[width=247mm,]{fig/tesis/etady-sp-nc-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2732,14 +4199,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [93]
 
-! LaTeX Error: File `fig/tesis/u-sp-nc-corte-1' not found.
+! LaTeX Error: File `fig/tesis/ks-sp-nc-corte-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.350 ...width=155mm, ]{fig/tesis/u-sp-nc-corte-1}
-                                                   \caption{Media zonal del ...
+l.370 ...idth=155mm, ]{fig/tesis/ks-sp-nc-corte-1}
+                                                   \caption{Número de onda ...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2750,13 +4217,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [94]
 
-! LaTeX Error: File `fig/tesis/etady-sp-nc-1' not found.
+! LaTeX Error: File `fig/tesis/psi-sp-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.356 ...cs[width=247mm,]{fig/tesis/etady-sp-nc-1}
+l.376 ...raphics[width=247mm,]{fig/tesis/psi-sp-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2767,14 +4234,14 @@ If that doesn't work, type  X <return>  to quit.
 
 [95]
 
-! LaTeX Error: File `fig/tesis/ks-sp-nc-corte-1' not found.
+! LaTeX Error: File `fig/tesis/ampl-sp-nc-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 ...idth=155mm, ]{fig/tesis/ks-sp-nc-corte-1}
-                                                   \caption{Número de onda ...
+l.386 ...cs[width=155mm, ]{fig/tesis/ampl-sp-nc-1}
+                                                   \caption{Amplitud de la Q...
 
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2785,48 +4252,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [96]
 
-! LaTeX Error: File `fig/tesis/psi-sp-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.372 ...raphics[width=247mm,]{fig/tesis/psi-sp-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[97]
-
-! LaTeX Error: File `fig/tesis/ampl-sp-nc-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.382 ...cs[width=155mm, ]{fig/tesis/ampl-sp-nc-1}
-                                                   \caption{Amplitud de la Q...
-
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[98]
-
 ! LaTeX Error: File `fig/tesis/qs3-sp-nc-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.387 ...ics[width=155mm, ]{fig/tesis/qs3-sp-nc-1}
+l.391 ...ics[width=155mm, ]{fig/tesis/qs3-sp-nc-1}
                                                    \caption{Z* reconstruida ...
 
 I could not locate the file with any of these extensions:
@@ -2836,7 +4268,7 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[99]
+[97]
 
 ! LaTeX Error: File `fig/tesis/ghz-sp-runs-1' not found.
 
@@ -2844,7 +4276,41 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.393 ...cs[width=247mm,]{fig/tesis/ghz-sp-runs-1}
+l.397 ...cs[width=247mm,]{fig/tesis/ghz-sp-runs-1}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[98]
+
+! LaTeX Error: File `fig/tesis/ghz-dif-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.408 ...idth=247mm,]{fig/tesis/ghz-dif-sp-runs-1}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
+,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
+.TIFF,
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[99]
+
+! LaTeX Error: File `fig/tesis/u-dif-sp-runs-1' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.419 ...[width=247mm,]{fig/tesis/u-dif-sp-runs-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2855,13 +4321,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [100]
 
-! LaTeX Error: File `fig/tesis/ghz-dif-sp-runs-1' not found.
+! LaTeX Error: File `fig/tesis/psi-sp-runs-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.404 ...idth=247mm,]{fig/tesis/ghz-dif-sp-runs-1}
+l.430 ...cs[width=247mm,]{fig/tesis/psi-sp-runs-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2872,13 +4338,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [101]
 
-! LaTeX Error: File `fig/tesis/u-dif-sp-runs-1' not found.
+! LaTeX Error: File `fig/tesis/ampl-sp-runs-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.415 ...[width=247mm,]{fig/tesis/u-dif-sp-runs-1}
+l.441 ...s[width=247mm,]{fig/tesis/ampl-sp-runs-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2889,13 +4355,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [102]
 
-! LaTeX Error: File `fig/tesis/psi-sp-runs-1' not found.
+! LaTeX Error: File `fig/tesis/ampl-mean-sp-runs-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.426 ...cs[width=247mm,]{fig/tesis/psi-sp-runs-1}
+l.452 ...th=247mm,]{fig/tesis/ampl-mean-sp-runs-1}
                                                   
 I could not locate the file with any of these extensions:
 .pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
@@ -2906,47 +4372,13 @@ If that doesn't work, type  X <return>  to quit.
 
 [103]
 
-! LaTeX Error: File `fig/tesis/ampl-sp-runs-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.437 ...s[width=247mm,]{fig/tesis/ampl-sp-runs-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[104]
-
-! LaTeX Error: File `fig/tesis/ampl-mean-sp-runs-1' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.448 ...th=247mm,]{fig/tesis/ampl-mean-sp-runs-1}
-                                                  
-I could not locate the file with any of these extensions:
-.pdf,.PDF,.eps,.EPS,.ps,.PS,.png,.PNG,.jpg,.JPG,.jpeg,.JPEG,.jp2,.JP2,.jpf,.JPF
-,.bmp,.BMP,.pict,.PICT,.psd,.PSD,.mac,.MAC,.TGA,.tga,.gif,.GIF,.tif,.TIF,.tiff,
-.TIFF,
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[105]
-
 ! LaTeX Error: File `fig/tesis/sd-fase-sp-runs-1' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.458 ...dth=155mm, ]{fig/tesis/sd-fase-sp-runs-1}
+l.462 ...dth=155mm, ]{fig/tesis/sd-fase-sp-runs-1}
                                                    \caption{Desvío estánda...
 
 I could not locate the file with any of these extensions:
@@ -2956,12 +4388,12 @@ I could not locate the file with any of these extensions:
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[106])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2375.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2375.
+[104])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2350.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2350.
  (./Tesis.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 2375.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 2375.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 2350.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 2350.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -2972,14 +4404,22 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                Tesis
+(biblatex)                and rerun LaTeX afterwards.
+
+Package logreq Info: Writing requests to 'Tesis.run.xml'.
+\openout1 = `Tesis.run.xml'.
+
  ) 
 Here is how much of TeX's memory you used:
- 36589 strings out of 493638
- 685675 string characters out of 6146796
- 727982 words of memory out of 5000000
- 39361 multiletter control sequences out of 15000+600000
- 28725 words of font info for 64 fonts, out of 8000000 for 9000
+ 41508 strings out of 493638
+ 776035 string characters out of 6146796
+ 1143336 words of memory out of 5000000
+ 44240 multiletter control sequences out of 15000+600000
+ 32757 words of font info for 69 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 62i,10n,96p,10403b,549s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,10n,96p,10403b,716s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Tesis.pdf (115 pages).
+Output written on Tesis.pdf (114 pages).

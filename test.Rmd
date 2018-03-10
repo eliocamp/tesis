@@ -1,8 +1,11 @@
 ---
+title: Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación
+  atmosférica del HS
 author: "Elio Campitelli"
 date: ''
 output:
   pdf_document:
+    citation_package: natbib
     fig_height: 8
     fig_width: 8
     includes:
@@ -10,21 +13,20 @@ output:
     keep_tex: yes
     latex_engine: xelatex
     number_sections: yes
-    # toc: yes
-    # toc_depth: 4
-bibliography:
-    - Papers/Biblio.bib
-    - Papers/packages.bib
+classoption: a4paper,12pt,oneside
 documentclass: book
 editor_options:
   chunk_output_type: console
 geometry: inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm
 lang: es-AR
 link-citations: yes
-classoption: a4paper,12pt,oneside
+csl: Papers/mi-meteorologica2.csl
+biblio-style: apalike
 params:
   draft: no
-csl: Papers/mi-meteorologica.csl
+bibliography:
+- Papers/Biblio.bib
+- Papers/packages.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -239,7 +241,12 @@ Este es el abstract balbalbalabla
 
 @James
 
+@Loon1972
+
+\cite{Loon1972}
+
 \cite{James}
+
 \citep{James, R-metR}
 
 * Antecedentes    
@@ -271,6 +278,8 @@ La QS1 es la principal, marcando altas presiones al sur del pacífico y bajas al
 
 
 * Wavelets 
+
+@Loon1972 
 
 
 Cosas para ver:    
