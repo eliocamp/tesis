@@ -369,7 +369,7 @@
 
 }
 
-\caption{Función corriente media en 200hPa (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios.}\label{fig:psi-sp}
+\caption{$\psi$ media en 200hPa (contornos cada $2\times10^{-7}m^2/s$), anomalía zonal de $\psi$ (sombreado,  $0,25\times10^{-7}m^2/s$) y flujos de actividad de onda medios.}\label{fig:psi-sp}
 \end{figure}
 \end{landscape}
 \efloatseparator
@@ -423,7 +423,7 @@
 
 }
 
-\caption{Función corriente media en 200hPa (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios para cada corrida.}\label{fig:psi-sp-runs}
+\caption{Anomalía zonal de $\psi$ (sombreado,  $1\times10^{-7}m^2/s$) y flujos de actividad de onda medios para cada corrida.}\label{fig:psi-sp-runs}
 \end{figure}
 \end{landscape}
 \efloatseparator
