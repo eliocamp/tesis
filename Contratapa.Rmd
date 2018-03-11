@@ -1,0 +1,23 @@
+---
+title: ''
+geometry: inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm
+output: pdf_document
+---
+\begin{titlepage}
+\centering
+{\scshape\Huge Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del~HS \par}
+\vspace{12.0cm}
+
+{\Large Elio \textsc{Campitelli} \\
+    Tesista \par}
+\vspace{3.0cm}
+\begin{tabular}{ccc}
+\Large	Dra. Carolina Susana \textsc{Vera} & \hspace{2.5cm}& \Large Dr. Leandro \textsc{Díaz} \\
+Directora & \hspace{2.5cm} & Asistente \\
+\end{tabular}
+
+\vfill
+
+% Bottom of the page
+{\large Buenos Aires, 12 de marzo de 2018.\par}
+\end{titlepage}
