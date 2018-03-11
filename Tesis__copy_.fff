@@ -1,0 +1,458 @@
+\stepcounter {chapter}
+\stepcounter {chapter}
+\stepcounter {chapter}
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/gh-ncep-1}
+
+}
+
+\caption{Z (mgp). Contornos cada 250 mgp (NCEP).}\label{fig:gh-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/sd-gh-ncep-1} \caption{Desvío estándar de Z (mgp) por círculo de latitud (NCEP).}\label{fig:sd-gh-ncep}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-ncep-1}
+
+}
+
+\caption{Z* (mgp) (NCEP).}\label{fig:ghz-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-ncep-corte60-1} \caption{Corte zonal de Z* (mgp) en 60°S (NCEP).}\label{fig:ghz-ncep-corte60}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/t-ncep-1}
+
+}
+
+\caption{Temperatura media (°C). Contornos cada 5°C (NCEP).}\label{fig:t-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/t-ncep-corte-1} \caption{Media zonal de la temperatura (°C) para cada nivel vertical y latitud (NCEP).}\label{fig:t-ncep-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/tz-ncep-1}
+
+}
+
+\caption{Anomalía zonal de temperatura (°C) (NCEP).}\label{fig:tz-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/t-ncep-corte60-1} \caption{Corte zonal de anomalía zonal de temperatura (°C) en 60°S (NCEP).}\label{fig:t-ncep-corte60}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/u-ncep-corte-1} \caption{Media zonal del viento (m/s) zonal para cada nivel vertical y latitud (NCEP).}\label{fig:u-ncep-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/u-ncep-1}
+
+}
+
+\caption{Viento zonal medio (m/s) (NCEP).}\label{fig:u-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/uz-ncep-1}
+
+}
+
+\caption{Anomalía zonal de viento zonal (m/s) (NCEP).}\label{fig:uz-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/v-ncep-corte-1} \caption{Media zonal del viento meridional (m/s) (NCEP).}\label{fig:v-ncep-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/v-ncep-1}
+
+}
+
+\caption{Viento meridional medio (m/s) (NCEP).}\label{fig:v-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-ncep-1}
+
+}
+
+\caption{Función corriente media en $\sigma = 0.2101$ (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios (NCEP).}\label{fig:psi-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/etady-ncep-1}
+
+}
+
+\caption{Gradiente meridional de vorticidad absoluta ($1\times10^11(ms)^{-1}$). La línea negra marca regiones con valores negativos.}\label{fig:etady-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ks-ncep-1}
+
+}
+
+\caption{Número de onda estacionario en 200hPa (NCEP).}\label{fig:ks-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/r2-ncep-1}
+
+}
+
+\caption{$R^2$ de Fourier para números de onda 1 a 4 (NCEP).}\label{fig:r2-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ampl-ncep-1}
+
+}
+
+\caption{Amplitud de Fourier (mgp) para números de onda 1 a 4 (NCEP).}\label{fig:ampl-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\stepcounter {chapter}
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-1} \caption{Z* (mgp) media reconstruida a partir de la QS3 en 300hPa (NCEP).}\label{fig:qs3-ncep}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte zonal en 60°S de Z* (mgp) reconstruida a partir de la QS3 (NCEP).}\label{fig:qs3-ncep-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar temporal de Z* reconstruida a partir de la QS3. Se incluyen en negro los contornos de $\pm$ 20mgp de la amplitud de Fourier para indicar la posición de los centros de las perturbaciones (NCEP).}\label{fig:qs3sd-ncep}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/wavelet-fourier-ncep-1} \caption{Amplitud (mgp) de la QS3 según wavelets (sombreados) y Fourier (contornos) (NCEP).}\label{fig:wavelet-fourier-ncep}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure}
+
+{\centering \includegraphics[width=155mm, ]{fig/tesis/waveletz-ncep-1}
+
+}
+
+\caption{Anomalía zonal de la amplitud de la QS3 según wavelets (mpg) en 300hPa para el método AM y MA (\autoref{metodologia}) (NCEP).}\label{fig:waveletz-ncep}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/estacionariedad-1} \caption{Estacionariedad de la QS3 (NCEP).}\label{fig:estacionariedad}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-max-mean-1} \caption{Amplitud de la QS3 máxima y media (mgp) para 9 casos seleccionados.}\label{fig:ampl-max-mean}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-max-mean-corte-1} \caption{Corte vertical de amplitud de la QS3 (mgp) para 9 casos seleccionados.}\label{fig:ampl-max-mean-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Z* (mgp) en 300hPa con QS1 y QS2 eliminadas para 9 casos seleccionados.}\label{fig:ghz-ncep-select}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/cor-mean-max-1} \caption{Amplitud máxima y media de la QS3 para cada mes del período 1985-2015 (mgp). La línea sólida representa la regresión lineal entre ambas variables ($r^2 = 0.94 $) y la línea punteada es la línea amplitud máxima = amplitud media.}\label{fig:cor-mean-max}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\subfloat[Boxplot para cada mes. La línea central representa la mediana, la caja se extiende desde el percentil 25\% hasta el percentil 75\% y las líneas se extienden desde los extremos de la caja hasta 1.5 veces el intervalo intercuartil. Los puntos son los valores mensuales individuales.\label{fig:ampl-ts1}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal. Las líneas horizontales representan la media anual, en rojo (azul) cuando ésta es mayor (menor) que la media de todo el período marcada con línea punteada.\label{fig:ampl-ts2}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-2} }\caption{Índice $A_3$ (mgp).}\label{fig:ampl-ts}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/fase-boxplot-1}
+
+}
+
+\caption{$F_3$ (grados) para cada mes del año a partir de los 20 años con mayor amplitud y el rango definido por $\pm$ 1 desvío estándar  (puntos negros y barras negras). En rojo y azul se identifica respectivamente la localización del máximo y el mínimo de perturbación de Z para cada año individual}\label{fig:fase-boxplot}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/eof-field-1} \caption{Primeras dos componentes principales del campo de Z* reconstruido a partir de la QS3.}\label{fig:eof-field}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/pc1-pc2-1} \caption{Valor medio de las dos primeras componentes principales del campo de Z* reconstruido a partir de la QS3 para cada mes. Las líneas unen cada mes siguiendo el orden anual y los colores separan a las 5 "estaciones" definidas en el texto.}\label{fig:pc1-pc2}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-1} \caption{Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.}\label{fig:qs3-qsseason-ncep}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1} \caption{Corte en 52.5°S de la Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.}\label{fig:qs3-qsseason-ncep-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 siguientes. Valores a la derecha de la línea indican correlación entre meses del mismo año y a la izquierda, entre un mes con el del año siguiente. Los colores indican el valor de la correlación. }\label{fig:lag-cor}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/cor-campo-1} \caption{$r^2$ entre Z* en 300hPa y QS3 (sombrados). Se incluyen en  los contornos de $\pm$ 20mgp de la amplitud de Fourier para indicar la posición de los centros de las perturbaciones, en rojo los centros anticiclónicos y en azul, los ciclónicos (NCEP).}\label{fig:cor-campo}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-gh-ncep-1}
+
+}
+
+\caption{Regresión de Z en 300hPa con $A_3$ estandarizado (mgp).}\label{fig:regr-gh-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/regr-gh-polar-1} \caption{Idem \autoref{fig:regr-gh-ncep}, pero en coordenadas estereográficas polares para julio y septiembre.}\label{fig:regr-gh-polar}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-psi-ncep-1}
+
+}
+
+\caption{Regresión de la anomalía zonal de $\psi$ en $\sigma = 0.2101$ con $A_3$ estandarizado ($1\times10^{-6}m^2/s$) y flujos de actividad de onda calculados a partir de la misma.}\label{fig:regr-psi-ncep}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\stepcounter {chapter}
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-sp-nc-1}
+
+}
+
+\caption{Z* (mgp) (SPEEDY sombreado, NCEP contornos).}\label{fig:ghz-sp-nc}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-sp-nc-corte60-1} \caption{Corte zonal de Z* (mgp) en 60°S (SPEEDY sombreado, NCEP contornos).}\label{fig:ghz-sp-nc-corte60}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-dif-sp-nc-1}
+
+}
+
+\caption{Diferencia de Z* (mgp) entre SPEEDY y NCEP.}\label{fig:ghz-dif-sp-nc}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/t-nc-sp-1}
+
+}
+
+\caption{Campo medio de temperatura (°C) (SPEEDY sombreado, NCEP contornos).}\label{fig:t-nc-sp}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/tz-sp-nc-1}
+
+}
+
+\caption{Anomalía zonal de temperatura (°C) (SPEEDY sombreado, NCEP contornos)}\label{fig:tz-sp-nc}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/u-sp-nc-corte-1} \caption{Media zonal del viento zonal (m/s) (SPEEDY sombreado, NCEP contornos).}\label{fig:u-sp-nc-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/etady-sp-nc-1}
+
+}
+
+\caption{Gradiente meridional de vorticidad absoluta ($1\times10^{11}(ms)^{-1}$) (SPEEDY).}\label{fig:etady-sp-nc}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ks-sp-nc-corte-1} \caption{Número de onda estacionario en 200hPa en 180°O.}\label{fig:ks-sp-nc-corte}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-sp-1}
+
+}
+
+\caption{Función corriente media en 200hPa (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios.}\label{fig:psi-sp}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de la QS3 a partir de Fourier (mgp) (SPEEDY sombreado, NCEP contornos).}\label{fig:ampl-sp-nc}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-sp-nc-1} \caption{Z* reconstruida a partir de la QS3 (mgp) (SPEEDY sombreado, NCEP contornos).}\label{fig:qs3-sp-nc}
+\end{figure*}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-sp-runs-1}
+
+}
+
+\caption{Z* en 200hPa para cada corrida de SPEEDY (mgp).}\label{fig:ghz-sp-runs}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-dif-sp-runs-1}
+
+}
+
+\caption{Diferencia de Z* (mgp) en 200hPa entre las simulaciones NOLAND y SSTZONAL y la corrida Control.}\label{fig:ghz-dif-sp-runs}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/u-dif-sp-runs-1}
+
+}
+
+\caption{Diferencia de viento zonal en 200hPa (m/s) entre las simulaciones NOLAND y SSTZONAL y la corrida Control.}\label{fig:u-dif-sp-runs}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-sp-runs-1}
+
+}
+
+\caption{Función corriente media en 200hPa (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios para cada corrida.}\label{fig:psi-sp-runs}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ampl-sp-runs-1}
+
+}
+
+\caption{Amplitud de la QS3 (mgp) para cada corrida según Fourier y método AM.}\label{fig:ampl-sp-runs}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ampl-mean-sp-runs-1}
+
+}
+
+\caption{Amplitud de la QS3 (mgp) para cada corrida según Fourier y método MA.}\label{fig:ampl-mean-sp-runs}
+\end{figure}
+\end{landscape}
+\efloatseparator
+ 
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/sd-fase-sp-runs-1} \caption{Desvío estándar (en grados) de la fase media mensual para cada estación y cada corrida.}\label{fig:sd-fase-sp-runs}
+\end{figure*}
+\efloatseparator
+ 
+\stepcounter {chapter}

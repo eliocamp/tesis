@@ -66,7 +66,7 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=155mm, ]{fig/tesis/u-ncep-corte-1} \caption{Media zonal del viento (m/s) zonal para cada nivel vertical y latitud (NCEP).}\label{fig:u-ncep-corte}
+\includegraphics[width=155mm, ]{fig/tesis/u-ncep-corte-1} \caption{Media zonal del viento zonal (m/s) para cada nivel vertical y latitud (NCEP).}\label{fig:u-ncep-corte}
 \end{figure*}
 \efloatseparator
  
@@ -114,7 +114,7 @@
 
 }
 
-\caption{Función corriente media en $\sigma = 0.2101$ (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios (NCEP).}\label{fig:psi-ncep}
+\caption{Función corriente media en $\sigma = 0,2101$ (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios (NCEP).}\label{fig:psi-ncep}
 \end{figure}
 \end{landscape}
 \efloatseparator
@@ -125,7 +125,7 @@
 
 }
 
-\caption{Gradiente meridional de vorticidad absoluta ($1\times10^11(ms)^{-1}$). La línea negra marca regiones con valores negativos.}\label{fig:etady-ncep}
+\caption{Gradiente meridional de vorticidad absoluta ($1\times10^{11}(ms)^{-1}$). La línea negra marca regiones con valores negativos.}\label{fig:etady-ncep}
 \end{figure}
 \end{landscape}
 \efloatseparator
@@ -147,7 +147,7 @@
 
 }
 
-\caption{$R^2$ de Fourier para números de onda 1 a 4 (NCEP).}\label{fig:r2-ncep}
+\caption{$r^2$ de Fourier para números de onda 1 a 4 (NCEP).}\label{fig:r2-ncep}
 \end{figure}
 \end{landscape}
 \efloatseparator
@@ -165,7 +165,7 @@
  
 \stepcounter {chapter}
 \begin{figure*}
-\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-1} \caption{Z* (mgp) media reconstruida a partir de la QS3 en 300hPa (NCEP).}\label{fig:qs3-ncep}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-1} \caption{Z* media (mgp) reconstruida a partir de la QS3 en 300hPa (NCEP).}\label{fig:qs3-ncep}
 \end{figure*}
 \efloatseparator
  
@@ -175,7 +175,7 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=155mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar temporal de Z* reconstruida a patrir de la QS3. Se incluyen en negro los contornos de $\pm$ 20mgp de la amplitud de Fourier para indicar la posición de los centros de las perturbaciones (NCEP).}\label{fig:qs3sd-ncep}
+\includegraphics[width=155mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar temporal de Z* (mgp) reconstruida a partir de la QS3. Se incluyen en negro los contornos de $\pm$ 20mgp de la amplitud de Fourier para indicar la posición de los centros de las perturbaciones (NCEP).}\label{fig:qs3sd-ncep}
 \end{figure*}
 \efloatseparator
  
@@ -215,12 +215,12 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=155mm, ]{fig/tesis/cor-mean-max-1} \caption{Amplitud máxima y media de la QS3 para cada mes del período 1985-2015 (mgp). La línea sólida representa la regresión lineal entre ambas variables ($r^2 = 0.94 $) y la línea punteada es la lína amplitud máxima = amplitud media.}\label{fig:cor-mean-max}
+\includegraphics[width=155mm, ]{fig/tesis/cor-mean-max-1} \caption{Amplitud máxima y media de la QS3 para cada mes del período 1985-2015 (mgp). La línea sólida representa la regresión lineal entre ambas variables ($r^2 = 0.94 $) y la línea punteada es la línea amplitud máxima = amplitud media.}\label{fig:cor-mean-max}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\subfloat[Boxplot para cada mes. La línea central representa la mediana, la caja se extiende desde el percentil 25\% hasta el percentil 75\% y las líneas se extienden desde los extremos de la caja hasta 1.5 veces el intervalo intercuartil. Los puntos son los valores mensuales individuales.\label{fig:ampl-ts1}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal. Las líneas horizontales representan la media anual, en rojo (azul) cuando ésta es mayor (menor) que la media de todo el período marcada con línea punteada.\label{fig:ampl-ts2}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-2} }\caption{Índice $A_3$ (mgp)}\label{fig:ampl-ts}
+\subfloat[Boxplot para cada mes. La línea central representa la mediana, la caja se extiende desde el percentil 25\% hasta el percentil 75\% y las líneas se extienden desde los extremos de la caja hasta 1,5 veces el intervalo intercuartil. Los puntos son los valores mensuales individuales.\label{fig:ampl-ts1}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal. Las líneas horizontales representan la media anual, en rojo (azul) cuando ésta es mayor (menor) que la media de todo el período marcada con línea punteada.\label{fig:ampl-ts2}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-2} }\caption{Índice $A_3$ (mgp).}\label{fig:ampl-ts}
 \end{figure*}
 \efloatseparator
  
@@ -230,7 +230,7 @@
 
 }
 
-\caption{$F_3$ (grados) para cada mes del año a partir de los 20 años con mayor amplitud y el rango definido por $\pm$ 1 desvío estándar  (puntos negros y barras negras). En rojo y azul se identifica respectivamente la localización del máximo y el mínimo de perturbación de Z para cada año individual}\label{fig:fase-boxplot}
+\caption{$F_3$ (grados) para cada mes del año a partir de los 20 años con un valor de $A_3$ más extremo y el rango definido por $\pm$ 1 desvío estándar  (puntos negros y barras negras). En rojo y azul se identifica respectivamente la localización del máximo y el mínimo de perturbación de Z para cada año individual}\label{fig:fase-boxplot}
 \end{figure}
 \end{landscape}
 \efloatseparator
@@ -251,12 +251,12 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1} \caption{Corte en 52.5°S de la Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.}\label{fig:qs3-qsseason-ncep-corte}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1} \caption{Corte en 52,5°S de Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.}\label{fig:qs3-qsseason-ncep-corte}
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=155mm, ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 sigientes. Valores a la derecha de la línea indican correlación entre meses del mismo año y a la izquierda, entre un mes con el del año siguente. Los colores indican el valor de la correlación. }\label{fig:lag-cor}
+\includegraphics[width=155mm, ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 siguientes. Valores a la derecha de la línea indican correlación entre meses del mismo año y a la izquierda, entre un mes con el del año siguiente. Los colores indican el valor de la correlación. }\label{fig:lag-cor}
 \end{figure*}
 \efloatseparator
  
@@ -277,7 +277,7 @@
 \efloatseparator
  
 \begin{figure*}
-\includegraphics[width=155mm, ]{fig/tesis/regr-gh-polar-1} \caption{Idem \autoref{fig:regr-gh-ncep}, pero en coordenadas estereográficas polares para julio y septiembre.}\label{fig:regr-gh-polar}
+\includegraphics[width=155mm, ]{fig/tesis/regr-gh-polar-1} \caption{Idem \autoref{fig:regr-gh-ncep}, pero en coordenadas estereográficas polares para julio y diciembre.}\label{fig:regr-gh-polar}
 \end{figure*}
 \efloatseparator
  
@@ -287,15 +287,7 @@
 
 }
 
-\caption{Regresión de la anomalía zonal de $\psi$ en $\sigma = 0.2101$ con $A_3$ estandarizado ($1\times10^{-6}m^2/s$) y flujos de actividad de onda calculados a partir de la misma.}\label{fig:regr-psi-ncep1}
-\end{figure}
-\begin{figure}
-
-{\centering \includegraphics[width=247mm,]{fig/tesis/regr-psi-ncep-2}
-
-}
-
-\caption{Regresión de la anomalía zonal de $\psi$ en $\sigma = 0.2101$ con $A_3$ estandarizado ($1\times10^{-6}m^2/s$) y flujos de actividad de onda calculados a partir de la misma.}\label{fig:regr-psi-ncep2}
+\caption{Regresión de la anomalía zonal de $\psi$ en $\sigma = 0,2101$ con $A_3$ estandarizado ($1\times10^{-6}m^2/s$) y flujos de actividad de onda calculados a partir de la misma.}\label{fig:regr-psi-ncep}
 \end{figure}
 \end{landscape}
 \efloatseparator

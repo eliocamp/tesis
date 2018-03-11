@@ -21,7 +21,7 @@ geometry: inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm
 lang: es-AR
 link-citations: yes
 csl: Papers/mi-meteorologica2.csl
-biblio-style: apalike
+biblio-style: apalike-es
 params:
   draft: no
 bibliography:

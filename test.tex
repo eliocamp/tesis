@@ -36,7 +36,7 @@
   \setmainlanguage[]{spanish}
 \fi
 \usepackage{natbib}
-\bibliographystyle{apalike}
+\bibliographystyle{apalike-es}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -96,7 +96,7 @@ la circulación atmosférica del HS}
 \usepackage{subfig}
 \usepackage{hyperref}
 \usepackage{marginnote}
-\usepackage[nomarkers,figuresonly]{endfloat}
+\usepackage[nomarkers,figuresonly,nofighead,nolists]{endfloat}
 \usepackage{pdflscape}
 \DeclareDelayedFloatFlavor{landscape}{figure}
 \usepackage[spanish]{todonotes}
@@ -117,6 +117,7 @@ la circulación atmosférica del HS}
 
 \renewcommand{\figuresection}{Figuras}
 \AtBeginDocument{\let\maketitle\relax}
+\usepackage[nottoc,notlot,notlof]{tocbibind}
 
 \begin{document}
 \maketitle
