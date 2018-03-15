@@ -817,12 +817,16 @@ ggplot(ncep.mean.season[lev == 200], aes(lon, lat)) +
 
 
 ```{r ks-ncep-cortelev, fig.publish = FALSE, fig.cap = "Número de onda estacionario en 180°"}
-ggplot(ncep.mean.season[lon %~% 180], aes(lat, lev))+
-    geom_contour_fine(aes(z = k), breaks = 0:9, color = "black") +
-    geom_label_contour2(aes(z = k, label = ..level..),
-                        breaks = 0:9, skip = 0) +
-    geom_contour_fill(aes(z = k.full), breaks = c(0, -0.5), 
-                      complete = F, fill = "gray80") +
+ggplot(ncep.mean.season[lon %~% 180], aes(lat, lev)) +
+    geom_contour_fill(aes(z = gh.minus)) +
+    geom_contour(aes(z = k.full), breaks = 3, color = "gray50") +
+    stat_filter(aes(filter = k.full < 3 | !is.finite(k)), color = NA,
+                fill = "gray50", alpha = 0.1, geom = "tile") 
+    # geom_contour_fine(aes(z = k), breaks = 0:9, color = "black") +
+    # geom_label_contour2(aes(z = k, label = ..level..),
+    #                     breaks = 0:9, skip = 0) +
+    # geom_contour_fill(aes(z = k.full), breaks = c(0, -0.5), 
+    #                   complete = F, fill = "gray80") +
     surface +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(trans = "reverse") +
