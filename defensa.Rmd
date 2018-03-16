@@ -132,8 +132,20 @@ ncep.mean.season <- ncep.mean.season[, k.full := ifelse(is.na(k) | k > 10, -1, k
 ncep.mean.season <- ncep.mean.season
 ```
 
+```{r}
+ncep.qs.all <- ncep[, FitQsWave(gh, k = 1:4), by = .(lat, lev, date)]
+
+lons <- unique(ncep$lon)
+qs.wave <- ncep.qs.all[k == 3, .(lon = lons, 
+                                 QS3 = amplitude*cos(3*(lons*pi/180 - phase))),
+                       by = .(lat, lev, date)]
+qs.wave.season <- qs.wave[, .(mean = mean(QS3),
+                              sd = sd(QS3)), 
+                          by = .(lon, lat, lev, season(date))]
+```
 
 # Introducción 
+
 
 ```{r}
 copy(ncep[lev == 700 & lat <= -20]) %>% 
@@ -159,19 +171,20 @@ Ni idea. Tengo que hablar sobre los trabajos anteriores. ¿Gráficos de los pape
 
 Más que nada el tema de onda 3. 
 ```{r}
-plot.levs <- c(500, 300, 200, 100, 50)
+plot.levs <- c(500, 200, 50)
 ```
 
 
 ```{r, fig.class = "fullpage", fig.cap = "Z (mgp). Contornos cada 250 mgp (NCEP)."}
 binwidth <- 250
+ncep.mean.season[, lev2 := factor(lev, levels = c(500, 200, 50), ordered = TRUE)]
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     geom_contour_fine(aes(z = gh), binwidth = binwidth, color = "black") +
     map.SH +
     geom_label_contour2(aes(z = gh, label = ..level..), binwidth = binwidth,
                         size = 1.6) +
     scale_s_map() +
-    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
+    facet_grid(season ~ lev2, labeller = labeller(lev2 = lev.lab)) +
     coord_quickmap()
 ```
 
@@ -179,6 +192,7 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
 ```{r, fig.class = "fullpage", fig.cap = "Z* (mgp) (NCEP)."}
 binwidth <- 20
 cutlat <- -60
+
 ncep.mean.season[lev %in% plot.levs] %>% 
     # copy() %>%
     # .[lev == 50, gh.z := gh.z/2] %>%
@@ -191,7 +205,7 @@ ggplot(aes(lon, lat)) +
     scale_fill_divergent(binwidth = binwidth, name = "Z*", limits = c(-200, 200),
                          oob = squish,
                          guide = guide_colorstrip_bottom()) +
-    facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
+    facet_grid(season ~ lev2, labeller = labeller(lev2 = lev.lab)) +
     coord_quickmap()
 ```
 
@@ -214,10 +228,12 @@ g <- ncep.mean.season %>%
     scale_s_map() +
     coord_quickmap() + 
     facet_wrap(~season, ncol = 2)
+
 g
 ```
 
 ```{r}
+
 g + 
     geom_contour(aes(z = k.full), breaks = 3, color = "gray50") +
     stat_filter(aes(filter = k.full < 3 | !is.finite(k)), color = NA,
@@ -314,7 +330,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
     scale_x_latitude(name = "latitud", trans = "reverse", 
                      ticks = 15) +
     coord_latlev() +
-    facet_grid(k ~ season, labeller = labeller(k = qs.lab))
+    facet_grid(season ~ k, labeller = labeller(k = qs.lab))
 ```
 
 
@@ -322,7 +338,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
 breaks <- 2^seq(0, log2(650), by = 1)
 ggplot(ncep.qs, aes(lat, lev)) +
     stat_contour_fill(aes(z = amplitude), 
-                      breaks = breaks) +
+                      breaks = breaks, na.rm = T) +
     surface +
     geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = "Amplitud (escala logarítmica)", 
@@ -335,7 +351,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
     scale_x_latitude(name = "latitud", trans = "reverse", 
                      ticks = 15) +
     coord_latlev() +
-    facet_grid(k ~ season, labeller = labeller(k = qs.lab))
+    facet_grid(season ~ k, labeller = labeller(k = qs.lab))
 ```
 
 # Onda 3
@@ -343,20 +359,10 @@ ggplot(ncep.qs, aes(lat, lev)) +
 
 * Forma de la QS3 reconstruida (ponerle nombre, por ejemplo $Z_3$)
 
-```{r}
-ncep.qs.all <- ncep[, FitQsWave(gh, k = 1:4), by = .(lat, lev, date)]
 
-lons <- unique(ncep$lon)
-qs.wave <- ncep.qs.all[k == 3, .(lon = lons, 
-                                 QS3 = amplitude*cos(3*(lons*pi/180 - phase))),
-                       by = .(lat, lev, date)]
-qs.wave.season <- qs.wave[, .(mean = mean(QS3),
-                              sd = sd(QS3)), 
-                          by = .(lon, lat, lev, season(date))]
-```
 
 ```{r, fig.class = "pagewidth", fig.cap = "Z* media (mgp) reconstruida a partir de la QS3 en 300hPa (NCEP).", fig.height = 6}
-binwidth <- 10
+binwidth <- 10 
 cutlat <- data.frame(lat = c(-52.5, rep(NA, 3)),
                      season = c("Verano", "Invierno", "Otoño", "Primavera"))
 ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
@@ -763,18 +769,24 @@ regression <- cache.file(file, {
 
 ```{r, fig.cap = "Regresión de Z en 300hPa con $A_3$ estandarizado (mgp).", fig.class = "fullpage"}
 binwidth <- 10
+months <- data.frame(month = 1:12, l = month.abb_sp, lon = 180, lat = -10)
 regression[regressor == "amplitude"] %>% 
     # .[lat > -85] %>% 
     # .[, estimate.z := Anomaly(estimate), by = .(lat, month, regressor)] %>%
     ggplot(aes(lon, lat)) +
     geom_contour_fill(aes(z = estimate), binwidth = binwidth, exclude = 0) +
+    geom_label(data = months, aes(label = l), label.r = unit(0, "lines"),
+               color = "white") +
+    geom_text(data = months, aes(label = l)) +
+    
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(binwidth),
                          guide = guide_colorstrip_bottom()) +
     coord_quickmap() +
     facet_wrap(~month, ncol = 3, nrow = 4, dir = "h",
-               labeller = labeller(month = month.abb_sp))
+               labeller = labeller(month = month.abb_sp)) +
+    theme(strip.text = element_blank())
 ```
 
 # Experimentos
