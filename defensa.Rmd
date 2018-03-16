@@ -8,7 +8,7 @@ output:
     fig_width: 9
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(tidy = FALSE,
                       echo = FALSE, 
                       cache = TRUE, 
@@ -16,6 +16,8 @@ knitr::opts_chunk$set(tidy = FALSE,
                       fig.class = "pagewidth",
                       fig.ncol = 1,
                       fig.publish = TRUE,
+                      dev = "png",
+                      dpi = 150,
                       cache.lazy = TRUE,
                       cache.path = "cache/defensa/",
                       fig.path = "fig/defensa/",
@@ -39,7 +41,11 @@ knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR", "circ
 source("scripts/helperfun.R")
 lev.lab <- AddSuffix("hPa")
 # Plot thingys
-
+guide_colorstrip_bottom <- function(width = 35, height = 0.5, ...) {
+    guide_colorstrip(title.position = "top", title.hjust = 0.5,
+                     barheight = height,
+                     barwidth = width, ...)
+}
 
 data.world <- BuildMap(res = 1, smooth = 1)
 map.world <- geom_map2(data.world)
@@ -78,7 +84,7 @@ coord_lonlev <- function(ratio = 20*4, ...) coord_fixed(ratio = ratio, ...)
 setDTthreads(3)
 ```
 
-```{r read-ncep, cache = FALSE}
+```{r, cache = FALSE}
 file.ncep <- "DATA/NCEP/ncep.vars.Rds"
 ncep <- cache.file(file.ncep, {
     ncep <- ReadNetCDF("DATA/NCEP/hgt.mon.mean_sub.nc", vars = c(gh = "hgt"))
@@ -107,7 +113,7 @@ ncep.mean.season <- ncep.mean[, lapply(.SD, mean),
 
 ```
 
-```{r calc-eta-ncep}
+```{r}
 ncep.mean.season[, zeta := Vorticity(u + v ~ lon + lat, cyclical = TRUE,
                                      sphere = TRUE), 
                  by = .(lev, season)]
@@ -126,7 +132,24 @@ ncep.mean.season <- ncep.mean.season[, k.full := ifelse(is.na(k) | k > 10, -1, k
 ncep.mean.season <- ncep.mean.season
 ```
 
+
 # Introducción 
+
+```{r}
+copy(ncep[lev == 700 & lat <= -20]) %>% 
+    .[, gh.t := Anomaly(gh), by = .(lon, lat, month(date))] %>% 
+    .[, gh.w := gh.t*sqrt(cos(lat*pi/180))] %>% 
+    EOF(lon + lat ~ date, value.var = "gh.w", n = 1) -> aao
+
+ggplot(RepeatLon(aao$left), aes(lon, lat)) +
+    geom_contour_fill(aes(z = value*aao$sdev$sd[1]/10), binwidth = 10,
+                      exclude = 0, complete = F) + 
+    map.SH +
+    scale_fill_divergent(guide = "none") +
+    scale_s_map() +
+    coord_polar()
+```
+
 
 ???
 Ni idea. Tengo que hablar sobre los trabajos anteriores. ¿Gráficos de los papers o simplemente decir los resultados?
@@ -140,8 +163,7 @@ plot.levs <- c(500, 300, 200, 100, 50)
 ```
 
 
-```{r gh-ncep, fig.class = "fullpage", fig.cap = "Z (mgp). Contornos cada 250 mgp (NCEP)."}
-
+```{r, fig.class = "fullpage", fig.cap = "Z (mgp). Contornos cada 250 mgp (NCEP)."}
 binwidth <- 250
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     geom_contour_fine(aes(z = gh), binwidth = binwidth, color = "black") +
@@ -150,11 +172,11 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
                         size = 1.6) +
     scale_s_map() +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
-    coord_quickmap() 
+    coord_quickmap()
 ```
 
 
-```{r ghz-ncep, fig.class = "fullpage", fig.cap = "Z* (mgp) (NCEP)."}
+```{r, fig.class = "fullpage", fig.cap = "Z* (mgp) (NCEP)."}
 binwidth <- 20
 cutlat <- -60
 ncep.mean.season[lev %in% plot.levs] %>% 
@@ -168,13 +190,13 @@ ggplot(aes(lon, lat)) +
     scale_x_longitude() +
     scale_fill_divergent(binwidth = binwidth, name = "Z*", limits = c(-200, 200),
                          oob = squish,
-                         guide = guide_colorstrip_bottom(45)) +
+                         guide = guide_colorstrip_bottom()) +
     facet_grid(lev ~ season, labeller = labeller(lev = lev.lab)) +
     coord_quickmap()
 ```
 
 
-```{r ghminus1-ncep, fig.publish = FALSE, fig.cap = "Z* menos QS1."}
+```{r, fig.publish = FALSE, fig.cap = "Z* menos QS1."}
 
 ## Figura para el doctorado.
 g <- ncep.mean.season %>% 
@@ -203,7 +225,7 @@ g +
 ```
 
 
-```{r read-psi}
+```{r}
 stream <- ReadNetCDF("DATA/NCEP/stream.mon.mean.nc") %>% 
     setnames(c("level", "time"), c("lev", "date")) %>% 
     .[lat <= 40]
@@ -216,7 +238,7 @@ stream.mean.season <- stream[, .(psi = mean(psi),
 stream.mean.season[, c("f.lon", "f.lat") := WaveFlux(.SD), by = season]
 ```
 
-```{r psi-ncep,  fig.class = "fullpage", fig.cap = "Función corriente media en $\\sigma = 0,2101$ (contornos cada $2\\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\\times10^{-9}m^2/s$) y flujos de actividad de onda medios (NCEP)."}
+```{r,  fig.class = "fullpage", fig.cap = "Función corriente media en $\\sigma = 0,2101$ (contornos cada $2\\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\\times10^{-9}m^2/s$) y flujos de actividad de onda medios (NCEP)."}
 library(scales)
 
 ggplot(stream.mean.season, aes(lon, lat)) +
@@ -230,7 +252,7 @@ ggplot(stream.mean.season, aes(lon, lat)) +
     scale_y_latitude() +
     scale_fill_divergent(breaks = MakeBreaks(0.002, 0), limits = c(-0.015, 0.01),
                          oob = squish,
-                         guide = guide_colorstrip_bottom(45)) +
+                         guide = guide_colorstrip_bottom()) +
     facet_wrap(~season, ncol = 2) +
     theme(axis.title = element_blank()) + 
     coord_quickmap(ylim = c(-90, 30))
@@ -255,7 +277,7 @@ copy(stream.mean.season) %>%
     scale_y_latitude() +
     scale_fill_divergent(breaks = MakeBreaks(0.001, 0), limits = c(-0.005, 0.005),
                          oob = squish,
-                         guide = guide_colorstrip_bottom(45)) +
+                         guide = guide_colorstrip_bottom()) +
     facet_wrap(~season, ncol = 2) +
     theme(axis.title = element_blank()) + 
     coord_quickmap(ylim = c(-90, 30))
@@ -278,7 +300,7 @@ ncep.qs <- ncep.mean.season[, FitQsWave(gh, k = 1:4),
 ```
 
 
-```{r r2-ncep, fig.class = "fullpage", fig.cap = "$r^2$ de Fourier para números de onda 1 a 4 (NCEP)."}
+```{r, fig.class = "fullpage", fig.cap = "$r^2$ de Fourier para números de onda 1 a 4 (NCEP)."}
 binwidth <- 0.1
 ggplot(ncep.qs, aes(lat, lev)) +
     stat_contour_fill(aes(z = r2), binwidth = binwidth, na.rm = T) +
@@ -286,7 +308,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
     geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = expression(r^2), limits = c(0, 1),
                          breaks = MakeBreaks(binwidth), 
-                         guide = guide_colorstrip_bottom(45),
+                         guide = guide_colorstrip_bottom(),
                          option = "D") +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse", 
@@ -296,7 +318,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
 ```
 
 
-```{r ampl-ncep, fig.class = "fullpage", fig.cap = "Amplitud de Fourier (mgp) para números de onda 1 a 4 (NCEP)."}
+```{r, fig.class = "fullpage", fig.cap = "Amplitud de Fourier (mgp) para números de onda 1 a 4 (NCEP)."}
 breaks <- 2^seq(0, log2(650), by = 1)
 ggplot(ncep.qs, aes(lat, lev)) +
     stat_contour_fill(aes(z = amplitude), 
@@ -307,7 +329,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
                          trans = "log2",
                          breaks = breaks,
                          labels = round(breaks, 1),
-                         guide = guide_colorstrip_bottom(45),
+                         guide = guide_colorstrip_bottom(),
                          option = "D") +
     scale_y_level(breaks = plot.levs) +
     scale_x_latitude(name = "latitud", trans = "reverse", 
@@ -321,7 +343,7 @@ ggplot(ncep.qs, aes(lat, lev)) +
 
 * Forma de la QS3 reconstruida (ponerle nombre, por ejemplo $Z_3$)
 
-```{r calc-qs3-ncep}
+```{r}
 ncep.qs.all <- ncep[, FitQsWave(gh, k = 1:4), by = .(lat, lev, date)]
 
 lons <- unique(ncep$lon)
@@ -333,7 +355,7 @@ qs.wave.season <- qs.wave[, .(mean = mean(QS3),
                           by = .(lon, lat, lev, season(date))]
 ```
 
-```{r qs3-ncep, fig.class = "pagewidth", fig.cap = "Z* media (mgp) reconstruida a partir de la QS3 en 300hPa (NCEP).", fig.height = 6}
+```{r, fig.class = "pagewidth", fig.cap = "Z* media (mgp) reconstruida a partir de la QS3 en 300hPa (NCEP).", fig.height = 6}
 binwidth <- 10
 cutlat <- data.frame(lat = c(-52.5, rep(NA, 3)),
                      season = c("Verano", "Invierno", "Otoño", "Primavera"))
@@ -350,7 +372,7 @@ ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
     coord_quickmap()
 ```
 
-```{r qs3-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte zonal en 60°S de Z* (mgp) reconstruida a partir de la QS3 (NCEP).", fig.height = 4}
+```{r, fig.class = "pagewidth", fig.cap = "Corte zonal en 60°S de Z* (mgp) reconstruida a partir de la QS3 (NCEP).", fig.height = 4}
 ggplot(qs.wave.season[lat %~% cutlat$lat[1]], aes(lon, lev)) +
     # stat_contour_fill(aes(z = sd), binwidth = 10) +
     geom_contour_fill(aes(z = mean), binwidth = binwidth, exclude = 0) +
@@ -366,7 +388,7 @@ ggplot(qs.wave.season[lat %~% cutlat$lat[1]], aes(lon, lev)) +
 
 * Wavelets, estacionariedad 
 
-```{r calc-wavelet}
+```{r}
 wv.mean.season <- ncep.mean.season[,  
                                    .(lon = lon,
                                      amplitude = unlist(PeriodicWavelet(gh, 3))),
@@ -384,7 +406,7 @@ wv.mean.season2 <- wv.all[, .(amplitude = mean(amplitude)),
 wv.mean.season <- wv.mean.season[wv.mean.season2, on = c("lat", "lon", "season", "lev")]
 ```
 
-```{r waveletz-ncep, fig.cap = "Anomalía zonal de la amplitud de la QS3 según wavelets (mpg) en 300hPa para el método AM y MA (\\autoref{metodologia}) (NCEP).", fig.class = "vfullpage"}
+```{r, fig.cap = "Anomalía zonal de la amplitud de la QS3 según wavelets (mpg) en 300hPa para el método AM y MA (\\autoref{metodologia}) (NCEP).", fig.class = "vfullpage"}
 copy(wv.mean.season) %>% 
     setnames(c("amplitude", "i.amplitude"), c("AM", "MA")) %>% 
     # melt(id.vars = c("lon", "lat", "lev", "season"), variable.name = "method") %>% 
@@ -428,13 +450,13 @@ copy(wv.mean.season) %>%
 ```
 
 
-```{r cleanup1}
+```{r}
 remove(wv.mean.season, wv.all, wv.comp, wv.mean.season2)
 ```
 
 * Contrucción del índice. Discutir un par de casos. Climatología del índice. 
 
-```{r calc-indice-ncep}
+```{r}
 lats.index <- c(-65, -40)
 levs.index <- c(100, 700)
 ncep.qs.all <- ncep.qs.all[, index.region := (lev %b% levs.index) & (lat %b% lats.index)]
@@ -457,7 +479,7 @@ index <- index[cor.index, on = "date"]
 
 Acá seleccionar sólo uno o dos pares. 
 
-```{r ampl-max-mean, fig.cap = "Amplitud de la QS3 máxima y media (mgp) para 9 casos seleccionados.", fig.height = 4, fig.class = "pagewidth"}
+```{r, fig.cap = "Amplitud de la QS3 máxima y media (mgp) para 9 casos seleccionados.", fig.height = 4, fig.class = "pagewidth"}
 select.dates <- as.Date(
     c("1997-05-01",  
       "2012-04-01",  
@@ -504,7 +526,7 @@ melt(gdata.index[, .(date.f, amplitude, m.amplitude)],
           panel.grid.minor.y = element_blank())
 ```
 
-```{r ampl-max-mean-corte, fig.cap = "Corte vertical de amplitud de la QS3 (mgp) para 9 casos seleccionados.", fig.class = "pagewidth", fig.height = 4}
+```{r, fig.cap = "Corte vertical de amplitud de la QS3 (mgp) para 9 casos seleccionados.", fig.class = "pagewidth", fig.height = 4}
 M <- max(gdata.index[date %in% select.dates, m.amplitude])
 binwidth <- 15
 ggplot(gdata, aes(lat, lev)) +
@@ -528,7 +550,7 @@ ggplot(gdata, aes(lat, lev)) +
     facet_wrap(~date.f, labeller = labeller(date.f = labeller.date()))
 ```
 
-```{r ghz-ncep-select, fig.cap = "Z* (mgp) en 300hPa con QS1 y QS2 eliminadas para 9 casos seleccionados.", fig.class = "pagewidth", fig.height = 6}
+```{r, fig.cap = "Z* (mgp) en 300hPa con QS1 y QS2 eliminadas para 9 casos seleccionados.", fig.class = "pagewidth", fig.height = 6}
 lons <- unique(ncep$lon)
 ncep[lev == 300 & date %in% select.dates, 
      FitQsWave(gh, 1:2), by = .(lat, date)] %>% 
@@ -552,12 +574,12 @@ ncep[lev == 300 & date %in% select.dates,
 ```
 
 
-```{r cleanup2}
+```{r}
 index <- index[, m.amplitude := NULL]
 ```
 
 
-```{r ampl-ts, fig.class = "pagewidth", fig.cap = "Índice $A_3$ (mgp).", fig.subcap = c("Boxplot para cada mes. La línea central representa la mediana, la caja se extiende desde el percentil 25\\% hasta el percentil 75\\% y las líneas se extienden desde los extremos de la caja hasta 1,5 veces el intervalo intercuartil. Los puntos son los valores mensuales individuales.", "Serie temporal. Las líneas horizontales representan la media anual, en rojo (azul) cuando ésta es mayor (menor) que la media de todo el período marcada con línea punteada."), fig.height = 4, fig.show = "hold", fig.ncol = 1}
+```{r, fig.class = "pagewidth", fig.cap = "Índice $A_3$ (mgp).", fig.subcap = c("Boxplot para cada mes. La línea central representa la mediana, la caja se extiende desde el percentil 25\\% hasta el percentil 75\\% y las líneas se extienden desde los extremos de la caja hasta 1,5 veces el intervalo intercuartil. Los puntos son los valores mensuales individuales.", "Serie temporal. Las líneas horizontales representan la media anual, en rojo (azul) cuando ésta es mayor (menor) que la media de todo el período marcada con línea punteada."), fig.height = 4, fig.show = "hold", fig.ncol = 1}
 ggplot(index, aes(factor(month(date)), amplitude)) +
     # geom_violin() +
     geom_boxplot(outlier.alpha = 0, fill = "gray95") +
@@ -589,7 +611,7 @@ DivideTimeseries({
 * Fase
 
 
-```{r fase-boxplot, fig.cap = "$F_3$ (grados) para cada mes del año a partir de los 20 años con un valor de $A_3$ más extremo y el rango definido por $\\pm$ 1 desvío estándar  (puntos negros y barras negras). En rojo y azul se identifica respectivamente la localización del máximo y el mínimo de perturbación de Z para cada año individual", fig.class = "fullpage"}
+```{r, fig.cap = "$F_3$ (grados) para cada mes del año a partir de los 20 años con un valor de $A_3$ más extremo y el rango definido por $\\pm$ 1 desvío estándar  (puntos negros y barras negras). En rojo y azul se identifica respectivamente la localización del máximo y el mínimo de perturbación de Z para cada año individual", fig.class = "fullpage"}
 lat.lims <- c(-70, -22)
 lon.lims <- c(240, 360)
 map.arg <- geom_map2(BuildMap(countries = T)[lat %b% lat.lims & 
@@ -653,7 +675,7 @@ index %>%
 
 Agregar el % de varianza explicada
 
-```{r eof-field, fig.cap = "Primeras dos componentes principales del campo de Z* reconstruido a partir de la QS3."}
+```{r, fig.cap = "Primeras dos componentes principales del campo de Z* reconstruido a partir de la QS3."}
 
 AddPreSuf <- function(pre = "", suf = "") {
     AddPreffix(pre)
@@ -672,7 +694,7 @@ ggplot(qs.eof$left, aes(lon, lat)) +
 ```
 
 
-```{r pc1-pc2, fig.cap = 'Valor medio de las dos primeras componentes principales del campo de Z* reconstruido a partir de la QS3 para cada mes. Las líneas unen cada mes siguiendo el orden anual y los colores separan a las 5 "estaciones" definidas en el texto.', fig.height = 5}
+```{r, fig.cap = 'Valor medio de las dos primeras componentes principales del campo de Z* reconstruido a partir de la QS3 para cada mes. Las líneas unen cada mes siguiendo el orden anual y los colores separan a las 5 "estaciones" definidas en el texto.', fig.height = 5}
 qs.eof$right[, .(value = -mean(value)), by = .(PC, month(date))] %>% 
     dcast(... ~ paste0("PC", PC)) %>% 
     # .[, .(dif = mean(PC2 - PC1), mag = mean(sqrt(PC2^2 + PC2^2))),
@@ -692,7 +714,7 @@ qs.eof$right[, .(value = -mean(value)), by = .(PC, month(date))] %>%
 
 
 
-```{r qs3-qsseason-ncep, fig.class = "pagewidth", fig.cap = "Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.", fig.height = 6}
+```{r, fig.class = "pagewidth", fig.cap = "Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.", fig.height = 6}
 qs.qs.season <- qs.wave[, 
                         .(QS3 = mean(QS3)),
                         by = .(lon, lat, lev, qs.season(date))] 
@@ -709,7 +731,7 @@ ggplot(qs.qs.season[lev == 300], aes(lon, lat)) +
     coord_quickmap()
 ```
 
-```{r qs3-qsseason-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte en 52,5°S de Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.", fig.height = 4}
+```{r, fig.class = "pagewidth", fig.cap = "Corte en 52,5°S de Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto."}
 ggplot(qs.qs.season[lat %~% -52.5], aes(lon, lev)) +
     # stat_contour_fill(aes(z = sd), binwidth = 10) +
     geom_contour_fill(aes(z = QS3), binwidth = binwidth, exclude = 0) +
@@ -717,12 +739,13 @@ ggplot(qs.qs.season[lat %~% -52.5], aes(lon, lev)) +
     scale_x_longitude(name = "longitud") +
     scale_fill_divergent(binwidth = binwidth, name = "QS3",
                          guide = guide_colorstrip_bottom()) +
+    coord_lonlev() +
     facet_wrap(~qs.season, ncol = 2) 
 ```
 
 * Regresiones con Z. Asocaición con SAM?
 
-```{r calc-regr-gh-ncep}
+```{r}
 file <- "DATA/regr-gh-ncep.Rds"
 regression <- cache.file(file, {
     ncep[lev == 300, .(lon, lat, date, gh)] %>% 
@@ -738,7 +761,7 @@ regression <- cache.file(file, {
 })
 ```
 
-```{r regr-gh-ncep, fig.cap = "Regresión de Z en 300hPa con $A_3$ estandarizado (mgp).", fig.class = "fullpage"}
+```{r, fig.cap = "Regresión de Z en 300hPa con $A_3$ estandarizado (mgp).", fig.class = "fullpage"}
 binwidth <- 10
 regression[regressor == "amplitude"] %>% 
     # .[lat > -85] %>% 
@@ -748,7 +771,7 @@ regression[regressor == "amplitude"] %>%
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = MakeBreaks(binwidth),
-                         guide = guide_colorstrip_bottom(45)) +
+                         guide = guide_colorstrip_bottom()) +
     coord_quickmap() +
     facet_wrap(~month, ncol = 3, nrow = 4, dir = "h",
                labeller = labeller(month = month.abb_sp))
@@ -758,7 +781,7 @@ regression[regressor == "amplitude"] %>%
 
 * validación. Z, U y QS3
 
-```{r read-speedy, cache = FALSE}
+```{r, cache = FALSE}
 vars <- c(gh = "gh", u = "u", t = "temp", v = "v")
 vars.z <- paste0(names(vars), ".z")
 
@@ -791,7 +814,7 @@ psi.sp <- rbindlist(lapply(seq_along(runs), function(x){
 }))
 ```
 
-```{r calc-sp}
+```{r}
 
 pres.sp <- ReadNetCDF(paste0("DATA/SPEEDY/attm-", runs[1], "_HS.nc"), 
                       vars = "sp") %>% 
@@ -825,7 +848,7 @@ sp.ks <- speedy.mean.season[run == "Control" & lev == 200,
                             .(lon, lat, lev, season, k, k.full)]
 ```
 
-```{r calc-sp-nc}
+```{r}
 lons <- unique(speedy.mean.season$lon)
 lats <- unique(speedy.mean.season$lat)
 ncep.interp <- 
@@ -843,7 +866,7 @@ sp.nc <-  melt(speedy.mean.season[run == "Control"][, run := NULL],
 sp.nc <- sp.nc[, dif := i.value - value]
 ```
 
-```{r ghz-sp-nc, fig.class = "fullpage", fig.cap = "Z* (mgp) (SPEEDY sombreado, NCEP contornos)."}
+```{r, fig.class = "fullpage", fig.cap = "Z* (mgp) (SPEEDY sombreado, NCEP contornos)."}
 plot.levs.sp <- c(500, 200)
 binwidth <- 20
 cutlat <- -60
@@ -862,7 +885,7 @@ ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp], aes(lon, la
     # geom_hline(yintercept = cutlat, 
     # linetype = 2, size = 0.5) +
     scale_fill_divergent(binwidth = binwidth, name = "Z*", 
-                         guide = guide_colorstrip_bottom(45)) +
+                         guide = guide_colorstrip_bottom()) +
     scale_linetype(guide = "none") +
     facet_grid(season ~ lev, labeller = labeller(lev = lev.lab)) +
     map.SH +
@@ -872,7 +895,7 @@ ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp], aes(lon, la
 ```
 
 
-```{r ghz-sp-nc-corte60, fig.class = "pagewidth", fig.cap = "Corte zonal de Z* (mgp) en 60°S (SPEEDY sombreado, NCEP contornos)."}
+```{r, fig.class = "pagewidth", fig.cap = "Corte zonal de Z* (mgp) en 60°S (SPEEDY sombreado, NCEP contornos)."}
 binwidth <- 20
 ggplot(speedy.mean.season[run == "Control" & lat %~% cutlat], aes(lon, lev)) +
     geom_contour_fill(aes(z = gh.z), binwidth = binwidth, exclude = 0) +
@@ -892,7 +915,7 @@ ggplot(speedy.mean.season[run == "Control" & lat %~% cutlat], aes(lon, lev)) +
 ```
 
 
-```{r u-sp-nc-corte, fig.class = "pagewidth", fig.cap = "Media zonal del viento zonal (m/s) (SPEEDY sombreado, NCEP contornos)."}
+```{r, fig.class = "pagewidth", fig.cap = "Media zonal del viento zonal (m/s) (SPEEDY sombreado, NCEP contornos)."}
 speedy.mean.season[run == "Control", 
                    .(u = mean(u)), 
                    by = .(lat, lev, season)] %>% 
@@ -943,7 +966,7 @@ speedy.mean.season %>%
 ```
 
 
-```{r ampl-sp-nc, fig.class = "pagewidth", fig.cap = "Amplitud de la QS3 a partir de Fourier (mgp) (SPEEDY sombreado, NCEP contornos)."}
+```{r, fig.class = "pagewidth", fig.cap = "Amplitud de la QS3 a partir de Fourier (mgp) (SPEEDY sombreado, NCEP contornos)."}
 
 # qs.sp.season <- speedy[, lapply(.SD, mean),
 #                       by = .(lat, lev, season(date), run), 
@@ -973,14 +996,14 @@ ggplot(qs.sp.season[run == "Control"], aes(lat, lev)) +
 ```
 
 
-```{r calc-qs3-sp}
+```{r}
 lons <- unique(speedy$lon)
 qs.wave.sp.season <- speedy[lev == 300, .(mean = mean(QS3)), 
                             by = .(lon, lat, season(date), run)]
 ```
 
 
-```{r qs3-sp-nc, fig.class = "pagewidth", fig.cap = "Z* reconstruida a partir de la QS3 (mgp) (SPEEDY sombreado, NCEP contornos).", fig.height = 6}
+```{r, fig.class = "pagewidth", fig.cap = "Z* reconstruida a partir de la QS3 (mgp) (SPEEDY sombreado, NCEP contornos).", fig.height = 6}
 binwidth <- 10
 cutlat <- data.frame(lat = c(-52.5), 
                      season = c("Verano"))
@@ -1008,7 +1031,7 @@ ggplot(qs.wave.sp.season[run == "Control"], aes(lon, lat)) +
 Descripción de las corridas. 
 
 
-```{r ghz-sp-runs, fig.class = "fullpage", fig.cap = "Z* en 200hPa para cada corrida de SPEEDY (mgp)."}
+```{r, fig.class = "fullpage", fig.cap = "Z* en 200hPa para cada corrida de SPEEDY (mgp)."}
 plot.levs.sp <- 200
 binwidth <- 20
 
@@ -1016,7 +1039,7 @@ ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
     geom_contour_fill(aes(z = gh.z), 
                       binwidth = binwidth, exclude = 0) +
     scale_fill_divergent(breaks = MakeBreaks(binwidth), name = "Z*", 
-                         guide = guide_colorstrip_bottom(45)) +
+                         guide = guide_colorstrip_bottom()) +
     scale_linetype(guide = "none") +
     map.SH +
     scale_s_map() +
@@ -1047,14 +1070,14 @@ speedy.mean.season %>%
 
 
 
-```{r ampl-sp-runs, fig.cap = "Amplitud de la QS3 (mgp) para cada corrida según Fourier y método AM.", fig.class = "fullpage"}
+```{r, fig.cap = "Amplitud de la QS3 (mgp) para cada corrida según Fourier y método AM.", fig.class = "fullpage"}
 sp.levs <- unique(speedy$lev)
 binwidth <- 5
 ggplot(qs.sp.season, aes(lat, lev)) +
     geom_contour_fill(aes(z = amplitude), binwidth = binwidth) +
     scale_x_latitude(trans = "reverse") +
     scale_y_level(breaks = sp.levs)+
-    scale_fill_viridis_c(guide = guide_colorstrip_bottom(45),
+    scale_fill_viridis_c(guide = guide_colorstrip_bottom(),
                          breaks = MakeBreaks(binwidth)) +
     ylab("Nivel") + xlab("Latitud") +
     surface +
@@ -1064,7 +1087,7 @@ ggplot(qs.sp.season, aes(lat, lev)) +
 
 
 
-```{r ampl-mean-sp-runs, fig.cap = "Amplitud de la QS3 (mgp) para cada corrida según Fourier y método MA.", fig.class = "fullpage"}
+```{r, fig.cap = "Amplitud de la QS3 (mgp) para cada corrida según Fourier y método MA.", fig.class = "fullpage"}
 mean.qs.sp <- speedy[lon == 0, .(amplitude = mean(amplitude)), 
                      by = .(lat, lev, run, season(date))] 
 
@@ -1074,7 +1097,7 @@ ggplot(mean.qs.sp, aes(lat, lev)) +
     geom_contour_fill(aes(z = amplitude), binwidth = binwidth) +
     scale_x_latitude(trans = "reverse") +
     scale_y_level(breaks = sp.levs)+
-    scale_fill_viridis_c(guide = guide_colorstrip_bottom(45),
+    scale_fill_viridis_c(guide = guide_colorstrip_bottom(),
                          breaks = MakeBreaks(binwidth)) +
     ylab("Nivel") + xlab("Latitud") +
     surface +
