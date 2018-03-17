@@ -4,8 +4,8 @@ author: "Elio Campitelli"
 date: "March 13, 2018"
 output: 
   pdf_document: 
-    fig_height: 7
-    fig_width: 9
+    fig_height: 5.5
+    fig_width: 9.5
 ---
 
 ```{r, include=FALSE}
@@ -39,7 +39,17 @@ knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR", "circ
                  file = "Papers/packages.bib")
 
 source("scripts/helperfun.R")
-lev.lab <- AddSuffix("hPa")
+
+AddPreSuf <- function(prefix = "", suffix = "") {
+    function(string) {
+        paste0(prefix, string, suffix)
+    }
+}
+
+
+lev.lab <- AddPreSuf("hPa")
+
+
 # Plot thingys
 guide_colorstrip_bottom <- function(width = 35, height = 0.5, ...) {
     guide_colorstrip(title.position = "top", title.hjust = 0.5,
@@ -147,7 +157,7 @@ qs.wave.season <- qs.wave[, .(mean = mean(QS3),
 # Introducción 
 
 
-```{r}
+```{r, fig.height = 8, fig.width = 8}
 copy(ncep[lev == 700 & lat <= -20]) %>% 
     .[, gh.t := Anomaly(gh), by = .(lon, lat, month(date))] %>% 
     .[, gh.w := gh.t*sqrt(cos(lat*pi/180))] %>% 
@@ -177,14 +187,18 @@ plot.levs <- c(500, 200, 50)
 
 ```{r, fig.class = "fullpage", fig.cap = "Z (mgp). Contornos cada 250 mgp (NCEP)."}
 binwidth <- 250
-ncep.mean.season[, lev2 := factor(lev, levels = c(500, 200, 50), ordered = TRUE)]
+ncep.mean.season[, lev2 := factor(lev, levels = c(500, 200, 50), 
+                                  labels = c("Tropósfera media \n 500hPa",
+                                             "Tropósfera alta \n 200hPa",
+                                             "Estratósfera \n 50hPa"),
+                                  ordered = TRUE)]
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
     geom_contour_fine(aes(z = gh), binwidth = binwidth, color = "black") +
     map.SH +
     geom_label_contour2(aes(z = gh, label = ..level..), binwidth = binwidth,
                         size = 1.6) +
     scale_s_map() +
-    facet_grid(season ~ lev2, labeller = labeller(lev2 = lev.lab)) +
+    facet_grid(season ~ lev2) +
     coord_quickmap()
 ```
 
@@ -205,10 +219,24 @@ ggplot(aes(lon, lat)) +
     scale_fill_divergent(binwidth = binwidth, name = "Z*", limits = c(-200, 200),
                          oob = squish,
                          guide = guide_colorstrip_bottom()) +
-    facet_grid(season ~ lev2, labeller = labeller(lev2 = lev.lab)) +
+    facet_grid(season ~ lev2) +
     coord_quickmap()
+ncep.mean.season[, lev2 := NULL]
 ```
 
+
+```{r ghz-ncep-corte60, fig.class = "pagewidth", fig.cap = "Corte zonal de Z* (mgp) en 60°S (NCEP)."}
+binwidth <- 60
+ggplot(ncep.mean.season[lat %~% -55], aes(lon, lev)) +
+    geom_contour_fill(aes(z = gh.z), binwidth = binwidth, exclude = 0) +
+    scale_fill_divergent(binwidth = binwidth, exclude = 0, name = "Z*",
+                         guide = guide_colorstrip_bottom(width = 25)) +
+    scale_y_level(breaks = plot.levs, minor_breaks = NULL) +
+    # scale_y_reverse() +
+    scale_x_longitude(name = "longitud") +
+    coord_lonlev() +
+    facet_wrap(~season)
+```
 
 ```{r, fig.publish = FALSE, fig.cap = "Z* menos QS1."}
 
@@ -863,25 +891,34 @@ sp.ks <- speedy.mean.season[run == "Control" & lev == 200,
 ```{r}
 lons <- unique(speedy.mean.season$lon)
 lats <- unique(speedy.mean.season$lat)
-ncep.interp <- 
-    ncep.mean.season %>% 
-    melt(id.vars = c("season", "lon", "lat", "lev")) %>% 
-    .[variable %in% c(names(vars), vars.z, "eta.dy")] %>% 
-    .[, Interpolate.DT(value, lon, lat, lats, lons), 
-      by = .(lev, season, variable)]
+# ncep.interp <- 
+#     ncep.mean.season %>% 
+#     melt(id.vars = c("season", "lon", "lat", "lev")) %>% 
+#     .[variable %in% c(names(vars), vars.z, "eta.dy")] %>% 
+#     .[, Interpolate.DT(value, lon, lat, lats, lons), 
+#       by = .(lev, season, variable)]
 
-sp.nc <-  melt(speedy.mean.season[run == "Control"][, run := NULL], 
-               id.vars = c("season", "lon", "lat", "lev")) %>% 
-    .[ncep.interp, on = c("variable", "season", "lon", "lat", "lev")] %>% 
-    .[!is.na(value) & !is.na(i.value)]
-
-sp.nc <- sp.nc[, dif := i.value - value]
+# sp.nc <-  melt(speedy.mean.season[run == "Control"][, run := NULL], 
+#                id.vars = c("season", "lon", "lat", "lev")) %>% 
+#     .[ncep.interp, on = c("variable", "season", "lon", "lat", "lev")] %>% 
+#     .[!is.na(value) & !is.na(i.value)]
+# 
+# sp.nc <- sp.nc[, dif := i.value - value]
 ```
 
 ```{r, fig.class = "fullpage", fig.cap = "Z* (mgp) (SPEEDY sombreado, NCEP contornos)."}
 plot.levs.sp <- c(500, 200)
 binwidth <- 20
 cutlat <- -60
+
+speedy.mean.season[, lev2 := factor(lev, levels = c(500, 200), 
+                                  labels = c("Tropósfera media \n 500hPa",
+                                             "Tropósfera alta \n 200hPa"),
+                                  ordered = TRUE)]
+ncep.mean.season[, lev2 := factor(lev, levels = c(500, 200), 
+                                  labels = c("Tropósfera media \n 500hPa",
+                                             "Tropósfera alta \n 200hPa"),
+                                  ordered = TRUE)]
 
 ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp], aes(lon, lat)) +
     geom_contour_fill(aes(z = gh.z), 
@@ -899,7 +936,7 @@ ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp], aes(lon, la
     scale_fill_divergent(binwidth = binwidth, name = "Z*", 
                          guide = guide_colorstrip_bottom()) +
     scale_linetype(guide = "none") +
-    facet_grid(season ~ lev, labeller = labeller(lev = lev.lab)) +
+    facet_grid(season ~ lev2) +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
@@ -1056,7 +1093,7 @@ ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
     map.SH +
     scale_s_map() +
     coord_quickmap() +
-    facet_grid(run ~ season, labeller = labeller(lev = lev.lab)) 
+    facet_grid(season ~ run, labeller = labeller(lev = lev.lab)) 
 ```
 
 
@@ -1074,7 +1111,7 @@ speedy.mean.season %>%
     scale_linetype(guide = "none") +
     scale_s_map() +
     coord_quickmap() + 
-    facet_grid(run~season)
+    facet_grid(season ~ run)
 #     geom_contour(aes(z = k.full), breaks = 3, color = "gray50") +
 #     stat_filter(aes(filter = k.full < 3 | !is.finite(k)), color = NA,
 #                 fill = "gray50", alpha = 0.2, geom = "tile") 
@@ -1094,7 +1131,7 @@ ggplot(qs.sp.season, aes(lat, lev)) +
     ylab("Nivel") + xlab("Latitud") +
     surface +
     coord_latlev() +
-    facet_grid(run ~ season)
+    facet_grid(season ~ run)
 ```
 
 
@@ -1114,5 +1151,5 @@ ggplot(mean.qs.sp, aes(lat, lev)) +
     ylab("Nivel") + xlab("Latitud") +
     surface +
     coord_latlev() +
-    facet_grid(run ~ season)
+    facet_grid(season ~ run)
 ```
