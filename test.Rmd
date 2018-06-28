@@ -1,299 +1,33 @@
 ---
-title: Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación
-  atmosférica del HS
-author: "Elio Campitelli"
-date: ''
-output:
-  pdf_document:
-    citation_package: natbib
-    fig_height: 8
-    fig_width: 8
-    includes:
-      in_header: header.tex
-    keep_tex: yes
-    latex_engine: xelatex
-    number_sections: yes
-classoption: a4paper,12pt,oneside
-documentclass: book
-editor_options:
-  chunk_output_type: console
-geometry: inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm
-lang: es-AR
-link-citations: yes
-csl: Papers/mi-meteorologica2.csl
-biblio-style: apalike-es
-params:
-  draft: no
-bibliography:
-- Papers/Biblio.bib
-- Papers/packages.bib
+title: "test"
+output: powerpoint_presentation
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(tidy = FALSE,
-                      echo = FALSE, 
-                      cache = TRUE, 
-                      force.cap = TRUE,
-                      fig.class = "pagewidth",
-                      fig.ncol = 1,
-                      fig.publish = TRUE,
-                      cache.lazy = TRUE,
-                      cache.path = "cache/tesis/",
-                      fig.path = "fig/tesis/",
-                      out.extra = " ",
-                      warning = FALSE,
-                      message = FALSE)
-
-library(tufte)
-library(data.table)
-library(ggplot2)
-library(dplyr)
-library(metR) 
-library(WaveletComp)
-library(patchwork)
-library(circular)
-
-knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR"),
-                 file = "Papers/packages.bib")
-
-source("scripts/helperfun.R")
-
-# Plot thingys
-
-data.world <- BuildMap(res = 1, smooth = 1)
-map.world <- geom_map2(data.world)
-map.SH <- geom_map2(data.world[lat %b% c(-90, 0)])
-
-
-pres <- ReadNetCDF("DATA/NCEP/srfp.mon.mean.nc")
-pres.mean <- pres[, .(pres = median(pres)), by = lat]
-pres.mean <- rbind(data.table(lat = 0.0, pres = Inf), 
-                   pres.mean, 
-                   data.table(lat = -90.0, pres = Inf))
-surface <- geom_polygon(data = pres.mean, aes(y = pres), fill = "white", 
-                        alpha = 0.5, color = "gray30", size = 0.5)
-pres <- pres[, .(pres = mean(pres)), by = .(lon, lat)]
-
-theme_elio <- theme_minimal(base_size = 11) +
-    theme(legend.position = "bottom", legend.box = "vertical",
-          panel.spacing.y = unit(5, "mm"),
-          panel.spacing.x = unit(5, "mm"),
-          legend.spacing = unit(2, "mm"),
-          plot.margin = grid::unit(rep(3, 4), "mm"),
-          legend.title = element_blank(),
-          panel.grid = element_line(color = "black", size = 0.2, linetype = 3),
-          panel.ontop = TRUE)
-theme_set(theme_elio)
-
-# For vertical cross-sections
-coord_section <- function(ratio = 20, ...) coord_fixed(ratio = 20, ...)
-
-## Hooks.
-
-## Force captions
-plot_hook <- knitr::knit_hooks$get("plot")
-knitr::knit_hooks$set(
-    plot = function(x, options) {
-        if (options$force.cap == TRUE & is.null(options$fig.cap)) {
-            stop("All figures must have captions.")
-        }
-        if (params$draft == TRUE) {
-            options$fig.cap <- paste0(options$fig.cap, " - fig:", 
-                                      knitr::opts_current$get("label"))
-        }
-        if (options$fig.publish == FALSE) {
-            options$fig.cap <- paste0(options$fig.cap, " - SÓLO BORRADOR")
-        }
-        if (options$fig.publish == TRUE | params$draft == TRUE) {
-            plot_hook(x, options)
-        }
-    })
-
-knitr::knit_hooks$set(
-    rotate = function(before, options, envir) {
-        if (before) {
-            return("\\begin{landscape}")
-        } else{
-            return("\\end{landscape}")
-        }
-    }
-)
-
-## Figure classes
-DefineClass <- function(class.opts) {
-    class.name <- deparse(substitute(class.opts))
-    class.fun <- function(options) {
-        class <- options[[class.name]]
-        class <- class.opts[[class]]
-        options[names(class)] <- class
-        options
-    }
-    invisible(knitr::opts_hooks$set(
-        setNames(list(class.fun), class.name)
-    ))
-}
-
-page.width <- 210 - 30 - 30
-text.width <- page.width - 20
-text.height <- page.height <- 297 - 25 - 25
-
-fig.class <- list(
-    pagewidth = list(
-        fig.width = page.width/25.4,
-        out.width = paste0(page.width, "mm"),
-        # fig.align = "center",
-        fig.env = "figure*",
-        out.extra = " "
-    ),
-    textwidth = list(
-        fig.width = text.width/25.4,
-        out.width = paste0(text.width, "mm"),
-        fig.env = "figure",
-        fig.align = "center",
-        out.extra = " "
-    ),
-    fullpage = list(
-        fig.width = (page.height - 20)/25.4,
-        fig.height = page.width/25.4,
-        out.width = paste0(page.height - 20, "mm"),
-        fig.align = "center",
-        rotate = TRUE,
-        out.extra = ""
-        # out.extra = "angle=90"
-    ),
-    vfullpage = list(
-        fig.width = page.width/25.4,
-        fig.height = (page.height - 20)/25.4,
-        out.width = paste0(page.width, "mm"),
-        fig.align = "center"
-    ),
-    halfpage = list(
-        # out.width = "7.3cm",
-        fig.width = (page.width/2)/25.4,
-        out.width = paste0(page.width/2, "mm")
-    ),
-    
-    medium = list(
-        fig.width = 8,
-        fig.height = 4,
-        # out.width = "\\textwidth",
-        # out.height = "0.25\\textheight",
-        fig.align = "center")
-)
-
-DefineClass(fig.class)
-
-setDTthreads(3)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-\frontmatter
+## R Markdown
 
-\begin{titlepage}
-	\centering
-	\includegraphics[width=0.2\textwidth]{logoUBA}  \hfill \includegraphics[width=0.2\textwidth]{logoDCAO} \par
-	\vspace{0.5cm}
-	{\scshape\LARGE Universidad de Buenos Aires  \\
-	\large Facultad de Ciencias Exactas y Naturales \\
-Departamento de Ciencias de la Atmósfera y los Océanos	\par}
-	\vspace{0.5cm}
-	{\scshape\Large Tesis de Licenciatura en Ciencias de la Atmósfera\par}
-	\vspace{1cm}
-	{\huge\bfseries Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del Hemisferio Sur\par}
-	\vspace{1.5cm}
-	{\Large Tesista: Elio \textsc{Campitelli} \\
-		Directora:	Dra. Carolina Susana \textsc{Vera} \\
-		Asistente: Lic. Leandro \textsc{Díaz}
-	\par}
-	\vfill
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-% Bottom of the page
-	{\large --2018--\par}
-\end{titlepage}
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
+```{r cars}
+summary(cars)
+```
 
+## Including Plots
 
-\chapter*{Agradecimientos}
+You can also embed plots, for example:
 
-A las médicas y enfermeras del Sanatorio Güemes que me cuidaron durante mi internación.
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
 
-\newpage
+```{r, echo = FALSE}
+library(ggplot2)
+ggplot(pressure, aes(temperature, pressure) ) +geom_point()
+```
 
-\begin{center}\begin{minipage}{\dimexpr\paperwidth-7cm}
-\chapter*{Resumen}
-Este es el abstract balbalbalabla
-\end{minipage}
-\end{center}
-
-\setcounter{tocdepth}{3}
-\tableofcontents
-
-\listoffigures
-\newpage
-
-\mainmatter
-
-
-
-
-# Introducción
-
-@Wheeler2004 
-
-@James
-
-@Loon1972
-
-\cite{Loon1972}
-
-\cite{James}
-
-\citep{James, R-metR}
-
-* Antecedentes    
-Además de lo que hay en lo de las becas + lo que fui encontrando, Se utizó la función `FitQsWave()` del paquete `metR` [@R-metR]  agregar sobre las climatologías disponibles y sus limitaciones. 
-* Objetivo General
-* Objetivo particular 
-
-Esto es para probar una referencia bibliográfica: @Vera2004 y [@Vera2004]
-
-# Métodos y Materiales
-
-\todo[inline]{Agregar en algún lugar algo sobre las estadísticas circulares}
-
-## Conceptos básicos
-
-* Ondas cuasiestacionarias
-* fourier
-* wavelets
-* Flujo de actividad de onda.
-
-\todo[inline]{chequear este paper: https://link.springer.com/article/10.1007/s00024-012-0635-9}
-
-Ejemplo:
-
-Cosas para ver de \autoref{fig:fourier-ejemplo}:   
-la \@ref(fig:fourier-ejemplo)
-Descripción del "rol" de cada número de onda en generar el campo final. 
-La QS1 es la principal, marcando altas presiones al sur del pacífico y bajas al sur de África. La onda 3 modifica ese patrón simple haciendo que los máximos y mínimos no sean continuos.
-
-
-* Wavelets 
-
-@Loon1972 
-
-
-Cosas para ver:    
-Cambio en el máximo. Localización en vez de un número para cada latitud. 
-
-
-## Fuentes de datos
-
-## Descripción de SPEEDY
-
-# Climatología observada
-
-En esta sección se presentan campos medios y anomalías zonales de altura geopotencial, temperatura, viento zonal, viento meridinal, gradiente meridional de vorticidad absoluta y el número de onda estacionario, y función corriente como introducción general al estado medio de la atmósfera sobre el cual se desarrollan las ondas estacionarias. Luego se analizan los campos de amplitud y varianza explicada por las ondas cuasiestacionarias (QS) en sí mismas. 
-
-## Altura geopotencial
-
-Campo medio:
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

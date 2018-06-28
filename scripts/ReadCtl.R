@@ -59,3 +59,23 @@ ReadCtl <- function(descriptor, hd.rm = T) {
     }
 
 }
+
+
+WriteCtl <- function(data, name, ctl.template) {
+    ctl.name <- paste0(name, ".ctl")
+    grd.name <- paste0(name, ".grd")
+
+    # Write ctl file
+    lines <- readLines(ctl.template)
+    lines[1] <- paste0("DSET ^", basename(grd.name))
+    f <- file(ctl.name, "wt")
+    writeLines(lines, f)
+    close(f)
+
+    # Write grib
+    template <- ReadCtl(ctl.template, hd.rm = FALSE)
+    template[template != template[1]] <- data
+    f <- file(grd.name, "wb")
+    writeBin(template, f, size = 4, endian = "big")
+    close(f)
+}

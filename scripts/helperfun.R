@@ -39,8 +39,10 @@ BuildMap <- function(res = 1, smooth = 1, pm = 180,
     }
 
     m <- as.data.table(fortify(m))
-    m[, group := as.numeric(group)]
-    m[, id := as.numeric(id)]
+    m[, group1 := .GRP, by = group]
+    m[, id1 := .GRP, by = id]
+    m[, c("group", "id") := NULL]
+    setnames(m, c("group1", "id1"), c("group", "id"))
 
     # Cambio el prime meridian.
     m2 <- copy(m)
@@ -76,242 +78,10 @@ geom_map2 <- function(map, size = 0.2, color = "gray50") {
     return(g)
 }
 
-#
-# geom_arrow <- function(mapping, scale, step = 1, min = 0, arrow.size = 0.2, arrow.angle = 14, ...) {
-#     # Geom para graficar flechas.
-#     # Entra:
-#     #   aes requeridos: vx y vy, la velocidad en x e y respectivamente
-#     #   scale: escala
-#     #   step: para no mostra todas
-#     #   min: mínima magnitud a mostrar
-#     #   arrow.size: tamaño de la flecha
-#     #   arrow.angle: ángulo de la flecha
-#     # Sale:
-#     #   un geom_spoke
-#     v <- deparse(mapping$vy)
-#     u <- deparse(mapping$vx)
-#     angle.string <- paste0("atan2(", v, ", ", u, ")")
-#     # step
-#     angle.string <- paste0("JumpBy(", angle.string, ", ", step, ", NA)")
-#     # min
-#     angle.string <- paste0("ifelse(sqrt(", v, "^2 + ", u, "^2) >", min, ", ", angle.string,
-#                            ", NA)")
-#
-#     radius.string <- paste0("sqrt(", v, "^2 + ", u, "^2)*", scale)
-#
-#     aes.temp <- aes_string(angle = angle.string, radius = radius.string)
-#
-#     mapping$radius <- aes.temp$radius
-#     mapping$angle <- aes.temp$angle
-#     mapping$vy <- NULL
-#     mapping$vx <- NULL
-#
-#     geom_spoke(mapping = mapping,
-#                arrow = arrow(angle = arrow.angle, length = unit(arrow.size, "lines")),
-#                ...)
-# }
-#
-# scale_x_longitude <- function(ticks = 60, name = "", ...) {
-#     scale_x_continuous(name = name, expand = c(0, 0),
-#                        breaks = seq(0, 360 - ticks, by = ticks),
-#                        labels = c(seq(0, 180, by = ticks),
-#                                   seq(-180 + ticks, 0 - ticks, by = ticks)),
-#                        ...)
-# }
-#
-#
-# scale_y_longitude <- function(ticks = 60, name = "", ...) {
-#     scale_y_continuous(name = name, expand = c(0, 0),
-#                        breaks = seq(0, 360 - ticks, by = ticks),
-#                        labels = c(seq(0, 180, by = ticks),
-#                                   seq(-180 + ticks, 0 - ticks, by = ticks)),
-#                        ...)
-# }
-#
-#
-#
-# scale_color_divergent <- function(low = muted("blue"), high = muted("red"), binwidth = NA, ...) {
-#     # Escala divergente con defaults más razonables.
-#     if (!is.na(binwidth)) {
-#         breaks <- function(x){
-#             c(seq(x[1], 0 - binwidth, by = binwidth), seq(0, x[2], by = binwidth))
-#         }
-#         return(scale_color_gradient2(low = low, high = high, breaks = breaks, ...))
-#     } else {
-#         return(scale_color_gradient2(low = low, high = high, ...))
-#     }
-# }
-#
-# scale_fill_divergent <- function(low = muted("blue"), high = muted("red"), binwidth = NA, ...) {
-#     # Escala divergente con defaults más razonables.
-#     if (!is.na(binwidth)) {
-#         breaks <- function(x){
-#             c(seq(x[1], 0 - binwidth, by = binwidth), seq(0, x[2], by = binwidth))
-#         }
-#         return(scale_fill_gradient2(low = low, high = high, breaks = breaks, ...))
-#     } else {
-#         return(scale_fill_gradient2(low = low, high = high, ...))
-#     }
-# }
-#
-#
-# coord_map_polar <- coord_map("stereographic", orientation = c(-90,0, 60),
-#                              ylim = c(-90, -20))
-#
-# RepeatLon <- function(x) {
-#     # Repite la longitud, para cerrar los contornos en un plot polar
-#     # Entra:
-#     #   x: un data.table con datos espaciales. La longitud tiene que
-#     #      estar en convención 0:360 y llamarse 'lon'.
-#     # Sale:
-#     #   un data.table igual que x
-#     border <- x[lon == min(lon), ]
-#     border$lon <- 360 + min(x$lon)
-#     rbind(x, border)
-# }
-#
-#
-# FitQsWave <- function(x, n = 1) {
-#     # Calcula los parámetros de números de onda. Se lleva bien con n vector
-#     # y data.table.
-#     # Entra:
-#     #   x: vector de entrada
-#     #   n: vector con los números de onda a calcular
-#     # Sale:
-#     #   una lista con la amplitud, la fase, la varianza explicada y el número
-#     #   de onda.
-#     f <- fft(x)
-#     f <- f/length(f)
-#     amp <- Mod(f)*2
-#     fase <- -Arg(f)
-#
-#     # Hago que la fase esté entre 0 y 2/n*pi
-#     fase[fase < 0] <- fase[fase < 0] + 2*pi
-#     fase <- fase/(seq_along(fase) - 1)
-#
-#     r <- amp^2/(2*sd(x)^2)
-#     n <- n + 1
-#
-#     cols <- c("amplitude", "phase", "r2", "k")
-#     ret <- list(amp[n], fase[n], r[n], n - 1)
-#     names(ret) <- cols
-#     return(ret)
-# }
-#
-# BuildQsField <- function(x, amplitude, phase, k) {
-#     amplitude*cos((x - phase)*k)
-# }
-#
-#
-# ReadNetCDF <- function(file, vars = NULL, list.vars = F) {
-#     # Usa la librería netcdf para leer archivos y organiza todo en un data.table
-#     # Entra:
-#     #   file: la ruta del archivo
-#     #   vars: las variables a leer. Si es NULL, lee todas.
-#     #   list.vars: leer los datos o sólo listar las variables y dimensiones
-#     # Sale:
-#     #   si list.vars == F, un elemento de clase data.table con las variables
-#     #   en cada columna.
-#     #   si list.vars == T, una lista con el nombre de las variables y las
-#     #   dimensiones.
-#
-#     library(ncdf4)
-#     library(data.table)
-#     ncfile <- nc_open(file)
-#
-#     if (is.null(vars)) {
-#         vars <- names(ncfile$var)
-#     }
-#     # Leo las dimensiones
-#     dims <- names(ncfile$dim)
-#     dims <- dims[dims != "nbnds"]
-#     ids <- vector()
-#     dimensions <- list()
-#     for (i in seq_along(dims)) {
-#         dimensions[[dims[i]]] <- ncvar_get(ncfile, dims[i])
-#         ids[i] <- ncfile$dim[[i]]$id
-#     }
-#     names(dims) <- ids
-#
-#
-#     if ("time" %in% names(dimensions)) {
-#         date.unit <- ncfile$dim$time$units
-#         date.unit <- strsplit(date.unit, " since ", fixed = TRUE)[[1]]
-#         library(lubridate)
-#         date.fun <- match.fun(date.unit[1])
-#         dimensions[["time"]] <- as.character(ymd_hms(date.unit[2]) + date.fun(dimensions[["time"]]))
-#     }
-#
-#     if (list.vars == T) {
-#         r <- list(vars = vars, dimensions = dimensions)
-#         return(r)
-#     }
-#
-#     # Leo la primera variable para luego hacer melt y obtener el data.table
-#     # al que luego le agrego las otras variables
-#     var1 <- ncvar_get(ncfile, vars[1], collapse_degen = FALSE)
-#     order <- ncfile$var[[vars[1]]]$dimids
-#     dimensions <- dimensions[dims[as.character(order)]]
-#     dimnames(var1) <- dimensions
-#     nc <- melt(var1, varnames = names(dimensions), value.name = vars[1])
-#     setDT(nc)
-#     if ("time" %in% names(dimensions)) {
-#         nc[, date := as.Date(time[1]), by = time]
-#         nc[, time := NULL]
-#     }
-#     if (length(vars) > 1) {
-#         nc[, c(vars[-1]) := lapply(vars[-1], ncvar_get, nc = ncfile)]    # otras variables
-#     }
-#     # Dejemos todo prolijo antes de cerrar.
-#     nc_close(ncfile)
-#     return(nc)
-# }
-#
-#
-#
-# # "Similar"
-# `%~%` <- function(x, target) {
-#     x <- abs(x - target)
-#     return(x == min(x))
-# }
-#
-# `%b%` <- function(x, limits) {
-#     # Operador "between"
-#     return(x >= min(limits) & x <= max(limits))
-# }
-#
-#
-#
-# # Salteado
-# JumpBy <- function(x, by, fill = c("skip", NA)) {
-#     if (is.na(fill[1])) {
-#         x[-seq(1, length(x), by = by)] <- NA
-#     } else {
-#         x <- x[seq(1, length(x), by = by)]
-#     }
-#     return(x)
-# }
-#
-# # Para compatibilidad de código viejo.
-# jumpby <- function(...) {
-#     JumpBy(...)
-# }
-
 # Repetir vector en negativo
 fill_neg <- function(vector) {
     c(-vector[order(-vector)], vector)
 }
-
-#
-# library("scales")
-# reverselog_trans <- function(base = 10) {
-#     trans <- function(x) -log(x, base)
-#     inv <- function(x) base^(-x)
-#
-#     trans_new(paste0("reverselog-", format(base)), trans, inv,
-#               log_breaks(base = base),
-#               domain = c(1e-100, Inf))
-# }
 
 
 # Nombres de los meses en español
@@ -320,17 +90,6 @@ month.abb_sp <- c("Ene", "Feb", "Mar", "Abr", "May", "Jun",
 names(month.abb_sp) <- as.character(1:12)
 
 
-
-# # Asigna estaciones del año
-# asign_season <- function(month) {
-#     seasons <- c("Verano", "Verano", rep(c("Otoño", "Invierno", "Primavera"), each = 3), "Verano")
-#     return(factor(seasons[month], levels = c("Verano", "Otoño", "Invierno", "Primavera")))
-# }
-
-# # Para hacer anomalías.
-# Anomaly <- function(x) {
-#     as.numeric(scale(x, scale = F))
-# }
 
 # Para interpolación en data table
 Interpolate.DT <- function(z, x, y, yo = unique(y), xo = unique(x), ...){
@@ -420,10 +179,6 @@ as.dt <- function(...) {
     as.data.table(...)
 }
 
-
-source("scripts/geom_contourlabel.R")
-# source("scripts/stat_fill_contour.R")
-
 factor2cols <- function(x, column, factors) {
     column <- deparse(substitute(column))
     for(h in factors){
@@ -456,260 +211,6 @@ ExtractLm <- function(model) {
 }
 
 
-# DivideTimeseries <- function(g, x, n = 2, xlab = "x", ylab = "y") {
-#     # Función que agarra un plot de timeseries de ggplot  y lo divide en paneles
-#     # respetando que todos tengan la misma escala y comportándose bien con los
-#     # estadísticos generados.
-#     # Entra:
-#     #   g: un ggplot
-#     #   x: el rango del eje x  (este es un hack medio feo, estaría bueno sacarlo
-#     #      automáticamente del plot)
-#     #   n: el número de paneles
-#     #   xlab: el nombre del eje x
-#     #   ylab: el nombre del eje y (de nuevo, estaría bueno sacarlo del plot)
-#     # Sale:
-#     #   un plot.
-#     # Por ahora (y posiblemente no cambie en el futuro cercano) no es muy
-#     # versatil y seguramente no funcione con plots medianamente complejos.
-#     M <- max(x)
-#     m <- min(x)
-#     step <- (M - m)/n
-#     g <- g + labs(x="", y="") + theme(axis.title = element_blank())
-#     library(grid)
-#     library(gridExtra)
-#     plots <- list()
-#
-#     for (i in 1:n) {
-#         if (i == 1) {
-#             pl <- ggplot_gtable(ggplot_build(g))
-#             leg <- which(sapply(pl$grobs, function(x) x$name) == "guide-box")
-#             try(legend.new <- pl$grobs[[leg]])
-#         }
-#         pl <- g + coord_cartesian(xlim = as.Date(c(m + step*(i-1), m + i*step))) +
-#             theme(axis.title = element_blank()) + guides(color = FALSE)
-#         pl <- ggplot_gtable(ggplot_build(pl))
-#         plots[[i]] <- pl
-#     }
-#     if (exists("legend.new")) {
-#         plots[[n + 1]] <- legend.new
-#     }
-#     grid.arrange(grobs = plots, ncol = 1, heights = c(rep(10, n), 2), bottom = xlab, left = ylab)
-# }
-#
-#
-# theme_elio <- theme_minimal() +
-#     theme(legend.position = "bottom")
-
-
-ReadNCEP <- function(file, var, levs = T, date.fun = "hours", since = "1800-01-01 00:00:00") {
-    # Lee archivos nc de NCEP y guarda todo en un array con las dimensiones
-    # bien puestas.
-    # Entra:
-    #   file: ruta del archivo
-    #   var: nombre de la variable a leer (al pedo, en realidad, porque estos
-    #        archivos sólo tienen una variable)
-    #   levs: ¿la variable tiene varios niveles?
-    #   date.fun: la función para modificar el date.
-    # Sale:
-    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas y en período
-    #   de tiempo necesario.
-    library(ncdf4)
-    ncfile   <- nc_open(file)
-    temp     <- ncvar_get(ncfile, var)
-    lat      <- ncvar_get(ncfile, "lat")
-    lon      <- ncvar_get(ncfile, "lon")
-    date     <- ncvar_get(ncfile, "time")
-    date.fun <- match.fun(date.fun)
-    date     <- ymd_hms(since) + date.fun(date)
-
-    if (levs) {
-        lev <- ncvar_get(ncfile, "level")
-        dimnames(temp) <- list(lon = lon, lat = lat, lev = lev, date = as.character(date))
-        temp <- temp[, , , year(date) > 1984 & year(date) < 2016]
-    } else {
-        dimnames(temp) <- list(lon = lon, lat = lat, date = as.character(date))
-        temp <- temp[, , year(date) > 1984 & year(date) < 2016]
-    }
-    nc_close(ncfile)
-    return(temp)
-}
-
-InterpolateNCEP <- function(field, lon, lat, cores = 3) {
-    # Interpolación bilineal.
-    # Entra:
-    #   fiel: un campo como sale de ReadNCEP
-    #   lon: grilla de longitud
-    #   lat: grilla de latitud
-    #   cores: cantidad de núcleos para usar la paralelización
-    # Sale:
-    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas
-    lon.original <- as.numeric(dimnames(field)$lon)
-    lat.original <- as.numeric(dimnames(field)$lat)
-    grid         <- list(x = lon, y = lat)
-    lev          <- dimnames(field)$lev
-    date         <- dimnames(field)$date
-
-    # Hago la interpolación para cada fecha y cada nivel.
-    # Nota: perdí más tiempo para averiguar cómo paralelizarlo que el que
-    # ahorré con el aumento de velocidad.
-    library(doParallel)
-    library(abind)
-    registerDoParallel(cores)
-    datebind <- function(...) {
-        abind(..., along = 4)
-    }
-
-    levbind <- function(...) {
-        abind(..., along = 3)
-    }
-
-    field.small <- foreach(t = seq_along(date), .combine = "datebind") %:%
-        foreach(l = seq_along(lev), .combine = "levbind") %dopar% {
-            int <- fields::interp.surface.grid(list(x = lon.original, y = lat.original,
-                                                    z = field[, , l, t]), grid)$z
-
-        }
-    stopImplicitCluster()
-    dimnames(field.small) <- list(lon = lon, lat = lat, lev = lev,
-                                  date = as.character(date))
-    return(field.small)
-}
-
-ReadERA <- function(file, var, levs = T, date.fun = "hours", since = "1800-01-01 00:00:00") {
-    # Lee archivos nc de NCEP y guarda todo en un array con las dimensiones
-    # bien puestas.
-    # Entra:
-    #   file: ruta del archivo
-    #   var: nombre de la variable a leer (al pedo, en realidad, porque estos
-    #        archivos sólo tienen una variable)
-    #   levs: ¿la variable tiene varios niveles?
-    #   date.fun: la función para modificar el date.
-    # Sale:
-    #   un array de 4 dimensiones (lon, lat, lev, date) nombradas y en período
-    #   de tiempo necesario.
-    library(ncdf4)
-    ncfile   <- nc_open(file)
-    temp     <- ncvar_get(ncfile, var)
-    lat      <- ncvar_get(ncfile, "latitude")
-    lon      <- ncvar_get(ncfile, "longitude")
-    date     <- ncvar_get(ncfile, "time")
-    date.fun <- match.fun(date.fun)
-    date     <- ymd_hms(since) + date.fun(date)
-    years    <- year(date)
-
-    if (levs) {
-        lev <- ncvar_get(ncfile, "level")
-        dimnames(temp) <- list(lon = lon, lat = lat, lev = lev, date = as.character(date))
-        temp <- temp[, , , years > 1984 & years < 2016]
-    } else {
-        dimnames(temp) <- list(lon = lon, lat = lat, date = as.character(date))
-        temp <- temp[, , years > 1984 & years < 2016]
-    }
-    nc_close(ncfile)
-    return(temp)
-}
-#
-# ConvertLongitude <- function(lon, from = 360) {
-#     # Pasa la longitud entre convenciones.
-#     # Entra:
-#     #   lon: un vector de longitudes
-#     #   from: la convención desde la cual se convierte
-#     #   (360 = 0:360, 180 = -180:180)
-#     # Sale:
-#     #   un vector con la longitud convertida a la otra convención.
-#     # Ojo que no hay ningún chequeo de los argumentos. Si se pasa un vector
-#     # en convención 0:360 y se le dice que está en -180:180, lo "convierte"
-#     # igual y tira cualquier batata.
-#     if (from == 360) {
-#         lon <- ifelse(lon <= 180, lon, lon - 360)
-#     } else if (from == 180) {
-#         lon <- ifelse(lon <= 180 & lon >= 0, lon, lon + 360)
-#     }
-# }
-
-
-# Derivate <- function(x, y, order = 1, bc = "cyclic") {
-#     # Calcula derivada centrada 1da o 2da
-#     # Entra:
-#     #  x: la variable a derivar
-#     #  y: la variable que deriva
-#     #  order: orden de la derivada (1 o 2)
-#     #  bc: condiciones de borde (por ahora, sólo impliementadas cíclicas o nada)
-#     # Sale:
-#     #  un vector de la misma longitud que x e y con la derivada
-#     # ¡Asume que la grilla es uniforme!
-#     library(data.table)
-#     N <- length(x)
-#
-#     d <- y[2] - y[1]
-#
-#     if (order == 1) {
-#         dxdy <- (x[c(2:N, 1)] - x[c(N, 1:(N-1))])/(2*d)
-#
-#     } else if (order == 2) {
-#         dxdy <- (x[c(2:N, 1)] + x[c(N, 1:(N-1))] - 2*x)/d^2
-#     }
-#     if (bc != "cyclic") {
-#         dxdy[c(1, N)] <- NA
-#     }
-#
-#     return(dxdy)
-# }
-
-
-# WaveFlux <- function(gh, u, v, lon, lat, lev) {
-#     # Flujos de actividad de onda. Adaptado de
-#     # https://github.com/marisolosman/Reunion_Clima/blob/master/WAF/Calculo_WAF.ipynb y
-#     # Takata y Nakamura 2001
-#     # Entra:
-#     #   gh: campo de altura geopotencial (anomalía zonal)
-#     #   u: velocidad zonal
-#     #   v: velocidad meridional
-#     #   lon: longitudes
-#     #   lat: latitudes
-#     #   lev: nivel
-#     # Sale:
-#     #   una lista con longitud, latitud, y las componentes zonales y
-#     #   meridionales del flujo de actividad de onda.
-#     g  <- 9.81
-#     a <- 6371000
-#     p0 <- 100000    # normalizo a 100hPa
-#
-#     # Todo en una data.table para que sea más cómodo.
-#     dt <- data.table(lon = lon, lat = lat,
-#                      lonrad = lon*pi/180, latrad = lat*pi/180,
-#                      gh = gh, u.mean = u, v.mean = v)
-#     setkey(dt, lat, lon)
-#     dt[, f := 2*pi/(3600*24)*sin(latrad)]
-#     dt[, psi := g/f*gh]
-#
-#     # Derivadas
-#     dt[, `:=`(psi.dx  = Derivate(psi, lonrad),
-#               psi.dxx = Derivate(psi, lonrad, 2)), by = lat]
-#     dt[, `:=`(psi.dy  = Derivate(psi, latrad, bc = "none"),
-#               psi.dyy = Derivate(psi, latrad, 2, bc = "none"),
-#               psi.dxy = Derivate(psi.dx, latrad, bc = "none")), by = lon]
-#
-#     # Cálculo del flujo (al fin!)
-#     flux <- dt[, {
-#         wind <- sqrt(u.mean^2 + v.mean^2)
-#
-#         xu <- psi.dx^2      - psi*psi.dxx
-#         xv <- psi.dx*psi.dy - psi*psi.dxy
-#         yv <- psi.dy^2      - psi*psi.dyy
-#
-#         coslat <- cos(latrad)
-#         coeff <- lev*100/p0/(2*wind*a^2)
-#
-#         w.x <- coeff*(u.mean/coslat*xu + v.mean*xv)
-#         w.y <- coeff*(u.mean*xv + v.mean*coslat*yv)
-#
-#         list(lon = lon, lat = lat,
-#              w.x = w.x, w.y = w.y)}
-#         ]
-#     return(flux)
-# }
-
 WaveFlux <- function(psi, p = 250, a = 6371000) {
     k <- p*100/(a^2*2000)
     psi <- copy(psi)
@@ -723,45 +224,6 @@ WaveFlux <- function(psi, p = 250, a = 6371000) {
                  f.lat = k*(psi.dlon*psi.dlat - psi.z*psi.dlondlat))]
     list(f.lon = psi$f.lon, f.lat = psi$f.lat)
 }
-#
-# Percentile <- function(x) {
-#     ecdf(x)(x)
-# }
-#
-# Mag <- function(x, y) {
-#     sqrt(x^2 + y^2)
-# }
-#
-#
-#
-# EOF <- function(z, lon, lat, date, n = 1, return = c("index", "field")) {
-#     # Calcula EOF del campo z.
-#     # Entra:
-#     #   z: campo (en vector)
-#     #   lon: vector de longitudes
-#     #   lat: vector de latitudes
-#     #   date: vector de fechas
-#     #   n: número de valores principales a calcular
-#     #   return: devolver el índice o el campo
-#     # Sale:
-#     #   un data.table con el campo o el índice.
-#
-#     field <- data.table(lon, lat, date, z)
-#     field[, z.w := z*sqrt(cos(lat*pi/180))]    # peso.
-#
-#     g <- dcast(field, lon + lat ~ date, value.var = "z.w")
-#     eof <- svd::propack.svd(as.matrix(g[,-(1:2)]), neig = n)
-#
-#     if (return[1] == "index") {
-#         eof <- as.data.table(eof$v)
-#         eof <- cbind(eof, data.table(date = colnames(g[, -c(1, 2)])))
-#     } else {
-#         eof <- as.data.table(eof$u)
-#         eof <- cbind(eof, g[, c(1, 2)])
-#     }
-#
-#     return(eof)
-# }
 
 polar.SH <- list(coord_polar(),
                  scale_y_latitude(limits = c(-90, 0)),
@@ -793,31 +255,6 @@ AddPreffix <- function(preffix = "") {
 
 lev.lab <- AddSuffix(" hPa")
 qs.lab <- AddPreffix("QS ")
-
-# MakeBreaks <- function(binwidth = NULL, bins = 10, exclude = NULL) {
-#     # If no parameters set, use pretty bins
-#     if (is.null(binwidth)) {
-#         breaks <- function(range) {
-#             b <- pretty(range, bins)
-#             b[!(b %in% exclude)]
-#         }
-#     } else {
-#         breaks <- function(range) {
-#             b <- scales::fullseq(range, binwidth)
-#             b[!(b %in% exclude)]
-#         }
-#     }
-# }
-
-
-coriolis <- function(lat) {
-    2*2*pi/(3600*24)*sin(lat*pi/180)
-}
-
-beta <- function(lat, a = 6731) {
-    a <- a*1000
-    2*2*pi/(3600*24)*cos(lat*pi/180)/a
-}
 
 
 
@@ -899,7 +336,6 @@ geom_label_contour2 <- function(...) {
 
 
 cache.file <- function(file, expression) {
-
     if (file.exists(file)) {
         message("Reading data from file.")
         return(readRDS(file))
@@ -925,20 +361,6 @@ mode.circular <- function(x, limits = c(0, 2/3*pi)) {
     }
 }
 
-# "Estaciones" en base a la amplitud y fase de la onda 3.
-qs.season2 <- function(month) {
-    if (metR:::.is.somedate(month)) month <- lubridate::month(month)
-
-    qs.seasons <- factor(c(rep("Verano", 3),
-                           rep("Oto\u00f1o", 2),
-                           rep("Invierno", 2),
-                           rep("Primavera", 4),
-                           "Verano"))
-
-    return(factor(qs.seasons[month], levels = c("Verano", "Oto\u00f1o",
-                                                "Invierno", "Primavera")))
-}
-
 qs.season <- function(month) {
     if (metR:::.is.somedate(month)) month <- lubridate::month(month)
 
@@ -954,10 +376,11 @@ qs.season <- function(month) {
 
 
 geom_contour_back <- function(..., color = "black", size = 0.2, alpha = 0.5) {
-    geom_contour(..., color = color, size = size, alpha = alpha)
+    geom_contour2(..., color = color, size = size, alpha = alpha)
 }
 geom_label_contour_back <- function(...) {
-    geom_label_contour2(..., alpha = 0.5, size = 3)
+    geom_text_contour(..., alpha = 0.5, size = 3, rotate = FALSE,
+                      stroke = 0.2)
 }
 
 geom_contour_fine <- function(...) geom_contour(..., size = 0.4)
@@ -990,3 +413,14 @@ no.zero_ <- function(x) {
 no.zero <- function(x) {
     sapply(seq_along(x), function(i) no.zero_(x[i]))
 }
+
+as.numeric <- function(x, ...) {
+    if (is.factor(x)) x <- as.character(x)
+    if (is.character(x)) {
+        dec <- options("OutDec")$OutDec
+        x <- stringi::stri_replace(x, ".", fixed = dec)
+    }
+    base::as.numeric(x, ...)
+}
+
+
