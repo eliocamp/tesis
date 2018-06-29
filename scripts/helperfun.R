@@ -235,7 +235,10 @@ guide_colorstrip_bottom <- function(width = 25, height = 0.5, ...) {
                      barwidth = width, ...)
 }
 
-scale_x_longitude <- function(ticks = 60, ...) metR::scale_x_longitude(ticks = ticks, ...)
+scale_x_longitude <- function(ticks = 60, breaks = seq(0, 360, by = ticks), ...) {
+    metR::scale_x_longitude(ticks = ticks, breaks = breaks, ...)
+}
+
 scale_s_map <- function(limits.lat = c(-90, 0),
                         limits.lon = c(0, 360)) list(scale_y_latitude(limits = limits.lat),
                                scale_x_longitude(limits = limits.lon))

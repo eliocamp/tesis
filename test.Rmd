@@ -1,33 +1,32 @@
 ---
-title: "test"
-output: powerpoint_presentation
+title: Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del HS
+author: "Elio Campitelli"
+date: ''
+output:
+  pdf_document:
+    citation_package: natbib
+    fig_height: 8
+    fig_width: 8
+    includes:
+      in_header: header.tex
+    keep_tex: yes
+    latex_engine: xelatex
+    number_sections: yes
+csl: Papers/mi-meteorologica2.csl
+bibliography:
+- Papers/Biblio.bib
+- Papers/packages.bib
+documentclass: book
+editor_options:
+  chunk_output_type: console
+geometry: inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm
+lang: es-AR
+link-citations: yes
+classoption: a4paper,12pt,oneside
+params:
+  draft: no
+#biblio-style: apalike-es
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+balblaball [@R-metR] wawawaaw @R-metR, wewewe [@R-metR; @Loon1972]
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-```{r, echo = FALSE}
-library(ggplot2)
-ggplot(pressure, aes(temperature, pressure) ) +geom_point()
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
