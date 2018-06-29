@@ -335,18 +335,46 @@ geom_label_contour2 <- function(...) {
 }
 
 
-cache.file <- function(file, expression) {
-    if (file.exists(file)) {
-        message("Reading data from file.")
-        return(readRDS(file))
-    } else {
-        message("Evaluating expression.")
-        r <- eval(expression)
-        message("Saving data to file.")
-        saveRDS(r, file = file)
-        return(r)
-    }
+# cache.file <- function(file, expression) {
+#     if (file.exists(file)) {
+#         message("Reading data from file.")
+#         return(readRDS(file))
+#     } else {
+#         message("Evaluating expression.")
+#         r <- eval(expression)
+#         message("Saving data to file.")
+#         saveRDS(r, file = file, compress = FALSE)
+#         return(r)
+#     }
+# }
+
+memoise <- function(..., cache = cache.file("/Rcache")) {
+    memoise::memoise(..., cache = cache)
 }
+
+cache.file <- function (path, algo = "xxhash64")
+{
+    if (!dir.exists(path)) {
+        dir.create(path, showWarnings = FALSE)
+    }
+    cache_reset <- function() {
+        cache_files <- list.files(path, full.names = TRUE)
+        file.remove(cache_files)
+    }
+    cache_set <- function(key, value) {
+        saveRDS(value, file = file.path(path, key), compress = FALSE)
+    }
+    cache_get <- function(key) {
+        readRDS(file = file.path(path, key))
+    }
+    cache_has_key <- function(key) {
+        file.exists(file.path(path, key))
+    }
+    list(digest = function(...) digest::digest(..., algo = algo),
+         reset = cache_reset, set = cache_set, get = cache_get,
+         has_key = cache_has_key, keys = function() list.files(path))
+}
+
 
 mode.circular <- function(x, limits = c(0, 2/3*pi)) {
     if (length(x) > 1) {
@@ -424,3 +452,7 @@ as.numeric <- function(x, ...) {
 }
 
 
+notify <- function(title = "title", text = NULL, time = 2) {
+    time <- time*1000
+    system(paste0('notify-send "', title, '" "', text, '" -t ', time, ' -a rstudio'))
+}
