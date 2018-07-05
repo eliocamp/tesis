@@ -1,0 +1,255 @@
+---
+title: "Título de congremet"
+author: "Elio"
+date: ""
+editor_options:
+  chunk_output_type: console
+output: 
+  word_document:
+    fig_caption: yes
+    reference_docx: template_congremetXIII_2.docx
+bibliography:
+- Papers/Biblio.bib
+- Papers/packages.bib
+csl: Papers/mi-meteorologica2.csl
+---
+
+```{r setup, include=FALSE}
+# Notification
+start.time <- unclass(Sys.time())
+min.time <- 10
+knit_doc <- knitr::knit_hooks$get("document")
+knitr::knit_hooks$set(document = function(x) {
+    took <- unclass(Sys.time()) - start.time
+    if (unclass(Sys.time()) - start.time >= min.time) {
+        notify("Done knitting!", 
+               paste0("Took ", round(took), " seconds"),
+               time = 5)
+    }  
+    knit_doc(x)
+})
+
+knitr::opts_chunk$set(tidy = FALSE,
+                      echo = FALSE, 
+                      cache = TRUE, 
+                      force.cap = TRUE,
+                      fig.class = "pagewidth",
+                      fig.ncol = 1,
+                      fig.publish = TRUE,
+                      cache.lazy = TRUE,
+                      cache.path = "cache/congremet/",
+                      fig.path = "fig/congremet/",
+                      out.extra = " ",
+                      warning = FALSE,
+                      message = FALSE)
+
+library(tufte)
+library(data.table)
+library(ggplot2)
+library(dplyr)
+library(metR) 
+library(WaveletComp)
+library(patchwork)
+library(circular)
+
+knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR", "circular"), 
+                 file = "Papers/packages.bib")
+
+source("scripts/helperfun.R")
+
+# Plot thingys
+
+data.world <- BuildMap(res = 1, smooth = 1)
+map.world <- geom_map2(data.world)
+map.SH <- geom_map2(data.world[lat %between% c(-90, 0)])
+
+options(OutDec = ",")
+
+subset <- list(lat = c(-90, 0), time = lubridate::as_datetime(c("1985-01-01",
+                                                                "2014-12-01")))
+pres <- ReadNetCDF("DATA/NCEP Reanalysis/pres.mon.mean.nc", subset = subset)
+pres.mean <- pres[, .(pres = median(pres)), by = lat]
+pres.mean <- rbind(data.table(lat = 0.0, pres = Inf), 
+                   pres.mean, 
+                   data.table(lat = -90.0, pres = Inf))
+surface <- geom_polygon(data = pres.mean, aes(y = pres), fill = "white", 
+                        alpha = 0.5, color = "gray30", size = 0.5)
+pres <- pres[, .(pres = mean(pres)), by = .(lon, lat)]
+
+theme_elio <- theme_minimal(base_size = 11) +
+    theme(legend.position = "bottom", legend.box = "vertical",
+          panel.spacing.y = unit(5, "mm"),
+          panel.spacing.x = unit(5, "mm"),
+          legend.spacing = unit(2, "mm"),
+          plot.margin = grid::unit(rep(3, 4), "mm"),
+          legend.title = element_blank(),
+          legend.box.spacing = unit(3, "mm"),
+          legend.margin = margin(t = -5),
+          panel.grid = element_line(color = "gray50", size = 0.2, linetype = 3),
+          panel.ontop = TRUE)
+theme_set(theme_elio)
+
+# For vertical cross-sections
+coord_latlev <- function(ratio = 20, ...) coord_fixed(ratio = ratio, ...)
+coord_lonlev <- function(ratio = 20*4, ...) coord_fixed(ratio = ratio, ...)
+
+## Hooks.
+
+knitr::knit_hooks$set(
+    rotate = function(before, options, envir) {
+        if (before) {
+            return("\\begin{landscape}")
+        } else{
+            return("\\end{landscape}")
+        }
+    }
+)
+
+## Figure classes
+DefineClass <- function(class.opts) {
+    class.name <- deparse(substitute(class.opts))
+    class.fun <- function(options) {
+        class <- options[[class.name]]
+        class <- class.opts[[class]]
+        options[names(class)] <- class
+        options
+    }
+    invisible(knitr::opts_hooks$set(
+        setNames(list(class.fun), class.name)))
+}
+
+page.width <- 8.5
+text.width <- page.width - 0.75*2
+text.height <- page.height <- 297 - 25 - 25
+
+fig.class <- list(
+    pagewidth = list(
+        fig.width = 5.83,
+        out.width = paste0(5.83, "inches"),
+        # fig.align = "center",
+        fig.env = "figure*",
+        out.extra = " "
+    )
+)
+
+DefineClass(fig.class)
+
+setDTthreads(3)
+```
+
+
+## Resumen
+
+Regresiones obtenidas a partir de un índice de actividad de la onda cuasiestacionaria 3 (QS3) muestran que, según el mes, la QS3 está asociada tanto con estructuras de ondas planetarias de escala hemisférica como con trenes de onda más localizados. Esto sugiere heterogeneidad en los procesos vinculados a su generación e indica la posibilidad de que la descripción de la onda 3 a partir de la descomposición de Fourier esté capturando un número de fenómenos independientes. 
+
+## Abstract
+
+Regresiones obtenidas a partir de un índice de actividad de la onda cuasiestacionaria 3 (QS3) muestran que, según el mes, la QS3 está asociada tanto con estructuras de ondas planetarias de escala hemisférica como con trenes de onda más localizados. Esto sugiere heterogeneidad en los procesos vinculados a su generación e indica la posibilidad de que la descripción de la onda 3 a partir de la descomposición de Fourier esté capturando un número de fenómenos independientes. 
+
+# Introducción
+
+Las ondas planetarias de número de onda 1 y 3 (QS1 y QS3) son las principales asimetrías zonales presentes en el flujo medio del HS [@Loon1972; @Trenberth1980a]. Estas ondas zonales tienden a ser cuasi-estacionarias y exhiben importantes variabilidades temporales en su amplitud y fase [@Loon1972]. Se ha documentado que la QS3 presenta una estructura barotrópica equivalente con variabilidad en escalas diarias-semanales [@Kidson1988], estacionales [@Mo1985] y más largas [@Karoly1989] y favorece el establecimiento de bloqueos [@Trenberth1985].
+
+# Datos y Metodologías 
+
+Se elaboró un índice de actividad de la QS3 (A3) a partir de la amplitud promedio de la QS3 entre 65°S y 40°S y entre 700hPa y 100hPa. Se calcularon regresiones lineales entre éste y la altura geopotential en 200hPa y la función corriente en sigma = 0,2101. Se calcularon los flujos de actividad de onda asociados con ésta última regresión utilizando la metodología en [@Vera2004]. Todos los datos utilizados provienen del Reanálisis NCEP/NCAR [@Kalnay1996] entre enero de 1979 y diciembre de 2017 con resolución mensual. 
+
+# Resultados
+
+```{r read-ncep, cache = TRUE}
+lats.index <- c(-65, -40)
+levs.index <- c(100, 700)
+subset <- list(lat = c(-90, 0), 
+               level = levs.index,
+               time = lubridate::as_datetime(c("1979-01-01",
+                                               "2017-12-01")))
+ncep <- ReadNetCDF("DATA/NCEP Reanalysis/hgt.mon.mean.nc",
+                   subset = subset, vars = c(gh = "hgt"))
+setnames(ncep, c("level"), c("lev")) 
+```
+
+```{r calc-indice-ncep}
+index <- ncep[lat %between% lats.index, FitWave(gh, k = 3), by = .(lat, lev, time)] %>% 
+    .[, phase.c := circular(phase*k, modulo = "2pi")] %>% 
+    .[, .(amplitude = mean(amplitude),
+          phase = mean.circular(phase.c)/3), 
+      by = time]
+```
+
+```{r read-psi}
+levs <-  ReadNetCDF("DATA/NCEP Reanalysis/psi.mon.mean.nc", out = "vars")$dimensions$level
+levs <- levs[levs %~% 0.21]
+subset$lat <- c(-90, 40)
+subset$level = levs
+stream <- ReadNetCDF("DATA/NCEP Reanalysis/psi.mon.mean.nc", 
+                     subset = subset) %>% 
+    # setnames(c("level", "time"), c("lev", "date")) %>% 
+    .[, psi.z := Anomaly(psi), by = .(lat, time)]
+```
+
+```{r calc-regrs}
+lats <- stream[time == time[1], unique(round(lat, 3))]
+lons <- stream[time == time[1], unique(round(lon, 3))]
+
+stream.reg <- stream[, .(lon, lat, time, psi.z)] %>% 
+    .[index[, .(time, amplitude, phase)], on = "time"] %>% 
+    .[, FitLm(psi.z, amplitude = amplitude/sd(amplitude), phase = phase, 
+              se = TRUE), 
+      by = .(lat, lon, month(time))] %>% 
+    .[term == "amplitude"] %>% 
+    .[, Interpolate(estimate ~ lon + lat, x.out = lons, y.out = lats),
+                         by = month] %>%
+    .[, psi.z := estimate] %>% 
+    .[, c("f.x", "f.y") := WaveFlux(.SD), by = .(month)] %>% 
+    .[complete.cases(.)]
+
+
+gh.reg <- ncep[lev == 200][index, on = "time"] %>% 
+    .[, FitLm(gh, amplitude = amplitude/sd(amplitude), phase), 
+      by = .(lat, lon, month(time))] %>% 
+    .[term == "amplitude"]
+```
+
+```{r regr-psi-ncep, fig.cap = "Regresión de altura geopotential en 200hPa con A3 estandarizado y flujos de actividad de onda calculados a partir de la regresión de psi con A3 estandarizado en sigma = 0.2101.", fig.width=5.8}
+months <- c(1, 3, 4, 7, 8, 12)
+# months <- 1:12
+binwidth <- 10
+stream.g <- stream.reg[lat <= 0 & month %in% months] 
+gh.g <- gh.reg[month %in% months]
+
+ggplot(gh.g, aes(lon, lat)) +
+    geom_contour_fill(aes(z = estimate), 
+                      breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour2(aes(z = estimate, linetype = factor(-sign(stat(level)))), 
+                  breaks = AnchorBreaks(0, binwidth, 0),
+                  size = 0.1) +
+    # geom_vector(aes(dx = f.x, dy = f.y), skip = 4, min.mag = 0.005,
+                # arrow.length = 0.2, size = 0.2, data = stream.g) +
+    geom_streamline(aes(dx = f.x, dy = f.y), skip = 4, min.dist = 3,
+                    res = 4, L = 3, arrow.length = 0.2, size = 0.2,
+                data = stream.g) +
+    map.world +
+    scale_s_map() +
+    scale_linetype(guide = "none") +
+    scale_mag(guide = "none", max_size = 0.5) +
+    scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0), 
+                         guide = guide_colorstrip_bottom(25)) +
+    coord_quickmap(ylim = c(-90, -15)) +
+    facet_wrap(~month, ncol = 2, nrow = 3, dir = "h",
+               labeller = labeller(month = month.abb_sp)) +
+    theme(panel.spacing.y = unit(0, "lines"))
+```
+
+```{r sam-cor}
+sam <- fread("DATA/sam.monthly.txt") %>% 
+    setnames(c("year", "month", "sam")) %>% 
+    # .[year > 1984 & year < 2016] %>% 
+    .[, time := as_datetime(ymd(paste0(year, " ", month, " ", 01)))] %>% 
+    .[, `:=`(year = NULL, month = NULL)]
+
+sam.cor <- index[sam, on = "time"] %>% 
+    .[, broom::tidy(cor.test(sam, amplitude)), by = month(time)]
+```
+
+En la Figura1 se muestra la regresión del campo de Z en 200hPa con A3 para seis meses del año representativos. Enero y diciembre muestran un patrón hemisférico de onda 3, con un centro anómalamente negativo importante en el Pacífico sudeste, embebido además en un tren de ondas extendido entre el este de Nueva Zelanda, y Sudamérica (febrero y septiembre tienen patrones similares). Marzo y julio, en cambio, presentan una propagación más zonal más extendida zonalmente. Otros meses, como junio y agosto carecen de un tren de ondas coherente (campos similares se observan en abril, mayo y octubre). Se destacan las intensan anomalías en regiones polares en julio y diciembre que sugieren una relación entre la QS3 y el Modo Anular del Sur en esos meses; el índice SAM y A3 tienen correlaciones significativas.
+

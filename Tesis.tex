@@ -1,0 +1,2354 @@
+\documentclass[spanish,a4paper,12pt,oneside]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[inner = 3cm, outer = 2.5cm, top = 2.5cm, bottom = 2.5cm]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del HS},
+            pdfauthor={Elio Campitelli},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[shorthands=off,main=spanish]{babel}
+\else
+  \usepackage{polyglossia}
+  \setmainlanguage[]{spanish}
+\fi
+\usepackage{natbib}
+\bibliographystyle{apalike-es}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Estudio de los mecanismos físicos asociados con el patrón de onda 3 de
+la circulación atmosférica del HS}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Elio Campitelli}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+    \date{}
+    \predate{}\postdate{}
+  
+\usepackage{setspace}
+\setstretch{1.5}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{marginnote}
+\usepackage[nomarkers,figuresonly,nofighead,nolists]{endfloat}
+\usepackage{pdflscape}
+\DeclareDelayedFloatFlavor{landscape}{figure}
+\usepackage[spanish]{todonotes}
+\usepackage{wrapfig}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+    
+\makeatletter
+\@ifpackageloaded{endfloat}
+{
+ \efloat@condopen{fff}
+ \pretocmd\@chapter{\immediate\write\efloat@postfff{\noexpand\stepcounter{chapter}}}{}{\fail}
+ \AtBeginFigures{\setcounter{chapter}{0}}
+}{}
+\makeatother
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\renewcommand{\figuresection}{Figuras}
+\AtBeginDocument{\let\maketitle\relax}
+\usepackage[nottoc,notlot,notlof]{tocbibind}
+\AtBeginDocument{
+\renewcommand{\tablename}{Tabla}
+}
+
+\begin{document}
+\maketitle
+
+\frontmatter
+
+\begin{titlepage}
+\centering
+\includegraphics[width=0.2\textwidth]{logoUBA}  \hfill \includegraphics[width=0.2\textwidth]{logoDCAO} \par
+\vspace{0.5cm}
+{\scshape\LARGE Universidad de Buenos Aires  \\
+\large Facultad de Ciencias Exactas y Naturales \\
+Departamento de Ciencias de la Atmósfera y los Océanos  \par}
+\vspace{0.5cm}
+{\scshape\Large Tesis de Licenciatura en Ciencias de la Atmósfera\par}
+\vspace{1cm}
+{\huge\bfseries Estudio de los mecanismos físicos asociados con el patrón de onda 3 de la circulación atmosférica del HS\par}
+\vspace{1.5cm}
+{\Large Tesista: Elio \textsc{Campitelli} \\
+Directora:  Dra. Carolina Susana \textsc{Vera} \\
+Asistente: Dr. Leandro \textsc{Díaz}
+\par}
+\vfill
+
+% Bottom of the page
+{\large --2018--\par}
+\end{titlepage}
+
+\chapter*{Agradecimientos}
+
+A mis directores, Carolina y Leandro, que me guiaron en este
+interminable proceso de aprender a investigar que recién comienza.
+Espero haber logrado que estén orgullosos de mí y poder seguir
+haciéndolo en el futuro.
+
+A los docentes del DCAO, DF y DM que me dieron los conocimientos
+necesarios para poder a empezar a aprender a investigar. Ningún libro de
+texto tiene el factor humano de esta facultad.
+
+A todas las personas detrás de los paquetes que hicieron posible esta
+tesis. Hadley Wickham y los colaboradores de \texttt{ggplot2}, el motor
+detrás de todos los gráficos de la tesis y que me permitió
+interiorizarme con la gramática de los gráficos. Matt Dowle cuyo
+paquete, \texttt{data.table} me permitió analizar millones de datos con
+una pequeña y anciana laptop. Y al autor de \texttt{knitr}, Yihui Xie,
+quien diseñó una forma elegante de unificar código y texto para una
+ciencia reproducible.
+
+A Alexandra Elbakyan. Gracias a ella pude acceder a gran parte del
+conocimiento previo que alimentó esta tesis.
+
+A ese elemento emergente que es la comunidad de StackOverflow. Mi
+capacidad de resolver los problemas de mi código se reduce
+considerablemente cuando no tengo acceso a esa extensión de mi cerebro.
+
+A mi familia. Mi mamá, que me enseñó lo que es el condicionamiento
+clásico, mi papá, que un día me sentó en una plaza de San Juan para
+hablarme de la gravitación, a Enrique, que me mostró la maleabilidad del
+plomo, y a Goyo, que me ayudó a aprender a leer con la ``J'' de
+``joder''.
+
+A mis amigos que están ahí hace más de 15 años, acompañando en los
+momentos difíciles de la vida y en los momentos fáciles. Son un grupo de
+personas increíble que es más que la suma de sus partes.
+
+A Pao, quien hace mi vida infinitamente más rica. No hay nada más
+hermoso que aprender y entender (parte) el cosmos con ella. Gracias a
+ella soy una mejor persona y un mejor científico.
+
+\newpage
+\newgeometry{inner=3.5cm, outer=3.5cm}
+\chapter*{Resumen}
+
+Este trabajo estudia las características observadas de la onda
+cuasiestacionaria 3 (QS3) en el HS a partir del reanálisis del NCEP/NCAR
+y analiza preliminarmente experimentos de sensibilidad realizados
+utilizando el modelo SPEEDY del ICTP. Los resultados obtenidos muestran
+que la QS3 explica una parte importante de la circulación del HS entre
+40°S y 60°S y presenta ciclos anuales tanto en su amplitud como en su
+fase. Se encontró que la variabilidad estacional de la QS3 se describe
+mejor a partir de una clasificación alternativa (EFM, AM, JJ, ASO, ND).
+El análisis de sus condiciones de estacionariedad sugiere que la QS3 es
+más estacionaria al sur del Índico que al sur del Pacífico. Regresiones
+obtenidas a partir de un índice de actividad de la QS3 con diferentes
+variables meteorológicas muestran que, según el mes, la QS3 está
+asociada tanto con estructuras de ondas planetarias de escala
+hemisférica como con trenes de onda más localizados. Esto sugiere un
+grado importante de heterogeneidad en los procesos vinculados a su
+generación, indicando la posibilidad de que la descripción de la onda 3
+a partir de la descomposición de Fourier esté capturando un número de
+fenómenos independientes.
+
+Una validación del modelo SPEEDY muestra que éste desarrolla la QS3,
+aunque su desempeño fue muy variable según la estación y su inclinación
+con la latitud es contraria a la observada en NCEP. El análisis
+preliminar de los experimentos de sensibilidad sugiere que las anomalías
+zonales de geopotencial en latitudes medias y altas del HS son sensibles
+a las condiciones de contorno inferior. En particular la amplitud de la
+QS1 disminuye significativamente cuando se eliminan las asimetrías
+zonales de la temperatura de la superficie del mar, consistente con
+estudios previos que resaltaban el rol de los trópicos en la generación
+de este patrón. Asimismo, cuando se elimina la interacción
+suelo-atmósfera sobre las zonas continentales, la amplitud de la QS3
+aumenta en invierno y disminuye en primavera debido, principalmente, a
+cambios en la estacionariedad de la onda. Este resultado permite
+concluir que la interacción con el suelo es importante para definir la
+localización de la QS3 y no tanto su amplitud, y que las variaciones
+estacionales son importantes
+
+\restoregeometry
+\setcounter{tocdepth}{3}
+\tableofcontents
+
+\listoffigures
+\newpage
+
+\mainmatter
+
+\hypertarget{introduccion}{%
+\chapter{Introducción}\label{introduccion}}
+
+La variabilidad del clima en el sur de Sudamérica (SSA) es afectada
+tanto por la variabilidad en regiones de latitudes medias y polares
+como, remotamente, por las condiciones del clima en regiones tropicales
+y extratropicales \citep[ej.][]{Vera2006}. La influencia de éstas
+últimas ha sido y es estudiada más extensamente debido a que exhiben
+altos niveles de predictibilidad asociados, en escalas estacionales con
+el fenómeno del Niño-Oscilación del Sur (ENSO, por sus siglas en inglés)
+y en escalas intraestacionales, con la oscilación de Madden-Julian (MJO,
+por sus siglas en inglés). Sin embargo, estudios recientes de la
+variabilidad climática en las regiones subpolares y polares del
+Hemisferio Sur (HS) destacan la actividad del Modo Anular del Sur (SAM,
+por sus siglas en inglés) como una fuente de variabilidad climática de
+significativa influencia sobre los continentes del HS y en particular en
+SSA (ej. \citet{Silvestri2009} en escalas interanuales y
+\citet{Alvarez2014} en escalas intraestacionales).
+
+La distribución espacial del SAM en su fase positiva se caracteriza por
+una anomalía negativa de presión o altura geopotencial sobre el
+continente antártico y anomalías de signo opuesto en latitudes medias.
+Esta estructura zonalmente simétrica generalmente está asociada con un
+patrón de onda planetario de números de onda zonal entre 3 y 4. La
+alternancia del signo entre las anomalías polares y extratropicales del
+SAM se asocia con intensificaciones y debilitamiento de los vientos
+Oestes que caracterizan las latitudes medias del HS. Si bien hay
+evidencia de que los flujos de cantidad de movimiento por las ondas
+planetarias de baja frecuencia son importantes en los procesos de
+intensificación y debilitamiento de los Oestes
+\citep{Lorenz2001, Simpson2013} las causas por las cuales estas
+variaciones se asocian con el desarrollo de la QS3 aún no se conocen con
+certeza.
+
+Las ondas planetarias de número de onda 1 y 3 (QS1 y QS3) son las
+principales asimetrías zonales presentes en el flujo medio del HS
+\citep{Loon1972, Trenberth1980a}. Estas ondas zonales tienden a ser
+cuasi-estacionarias y exhiben importantes variabilidades temporales en
+su amplitud y fase \citep{Loon1972}. En particular, se ha documentado
+que la QS3 presenta una estructura barotrópica equivalente con
+variabilidad en escalas diarias-semanales \citep{Kidson1988},
+estacionales \citep{Mo1985} y más largas \citep{Karoly1989}.
+\citet{Mo1985} mostraron que existen ubicaciones preferenciales para los
+centros de acción de la QS3. Sin embargo, por la antigüedad de muchos de
+estos trabajos, sus climatologías tienen limitaciones inherentes a la
+poca cantidad de datos disponible en el HS previo a la era satelital.
+
+\citet{Trenberth1985} mostraron una recurrencia importante en la
+ocurrencia de anticiclones de bloqueo simultáneos en diferentes regiones
+del HS (sur de Sudamérica, sur de Nueva Zelanda y porción central del
+Océano Indico) favorecida por el establecimiento de un patrón de QS3,
+aunque dejaron abierta la posibilidad de que éste se trate de un tren de
+ondas localizado en vez de una verdadera onda zonal. Desde ese momento
+hasta la actualidad, diferentes estudios se concentraron en entender la
+influencia de los bloqueos sobre el clima de Sudamérica y su relación
+con la QS3 \citep[ej.][]{Rao2004} o de su efecto en el hielo marítimo
+\citep[ej.][]{Raphael2007} pero, como se mencionó anteriormente, muy
+poca atención ha recibido el estudio de las causas que dan lugar al
+establecimiento de este patrón en un primer lugar. \citet{Quintanar1995}
+realizaron experimentos de sensibilidad tratando de identificar los
+factores importantes en el mantenimiento de la QS1. Encontraron que las
+condiciones térmico-orográficas sobre la Antártida no eran suficientes
+para explicar la QS1 de latitudes subpolares, por lo que concluyeron que
+los forzantes remotos debían jugar un papel importante. \citet{Wang2013}
+encontraron que la destrucción y recuperación de la capa de ozono está
+asociada a un aumento y disminución de la actividad de onda planetaria
+respectivamente, pero su análisis no distingue en la actividad de
+distintos números de onda. Por otra parte, \citet{Hobbs2010} pusieron en
+duda la utilidad de analizar la circulación del HS en ondas planetarias
+zonalmente simétricas y propusieron que las anomalías zonales de
+geopotencial están mejor caracterizadas por un par de anticiclones al
+sur de Nueva Zelanda y al sur de Sudamérica.
+
+\citet{Cai1999} evaluaron la habilidad del modelo CSIRO para representar
+la QS3 y encontraron que proporcionaba una representación adecuada de la
+misma. \citet{Raphael1998} examinó la QS3 en el modelo CCM del NCAR
+(versiones 1 y 3) y encontró diferencias en cómo cada versión simulaba
+la QS3, siendo los resultados sensibles al grado de representación del
+modelo tanto de la interacción mar-atmósfera como de las condiciones de
+hielo marino en las zonas polares. Este es un resultado importante ya
+que a pesar de que la QS3 puede desarrollarse solamente por la dinámica
+interna de la atmósfera \citep[ej.][]{Simpson2013}, existen evidencias
+de que las condiciones superficiales pueden influenciar su actividad.
+Asimismo, \citet{Raphael2003} encontró importantes variaciones
+interanuales experimentadas por la QS3 entre 1958 y 1996, aparentemente
+relacionadas con variaciones en la frecuencia del ENSO, que también
+influenciaron las asimetrías del SAM \citep{Fogt2012}.
+
+En consecuencia el objetivo, general de esta tesis es entender los
+mecanismos que explican el desarrollo de la QS3 en la circulación del
+HS. Los objetivos particulares son
+
+\begin{itemize}
+\tightlist
+\item
+  caracterizar la climatología de la QS3;
+\item
+  explorar la influencia de las condiciones oceánicas superficiales
+  tanto en los trópicos como en los extratrópicos sobre la actividad de
+  la QS3;
+\item
+  explorar la sensibilidad de la QS3 en general a las condiciones
+  superficie.
+\end{itemize}
+
+\hypertarget{datos-y-metodologias}{%
+\chapter{Datos y Metodologías}\label{datos-y-metodologias}}
+
+En este capítulo se describen los datos utilizados y las metodologías
+aplicadas en la presente investigación.
+
+\hypertarget{datos-y-modelo}{%
+\section{Datos y modelo}\label{datos-y-modelo}}
+
+Se analizaron datos mensuales de altura geopotencial, temperatura,
+viento zonal, viento meridional y función corriente provenientes del
+Reanálisis NCEP/NCAR \citep{Kalnay1996} (de aquí en adelante datos NCEP)
+entre enero de 1985 y diciembre de 2015. Los mismos poseen originalmente
+una resolución espectral de T62, 28 niveles sigma y registros cada 6hs
+que son luego interpolados a una grilla regular de 2,5° en longitud y
+latitud y 17 niveles verticales entre 1000hPa y 10hPa y promediados
+mensualmente. A partir de los datos mensuales se calcularon las medias
+estacionales definidas a partir de las estaciones climatológicas del HS.
+
+Se utilizó el modelo global de circulación general atmosférica del
+Centro Internacional de Física Teórica (ICTP)
+\citep{Molteni2003, Kucharski2006} para realizar corridas de
+sensibilidad de la QS3 a diferentes condiciones (descriptas en la
+\autoref{experimentos-de-sensibilidad}). El modelo -- denominado
+SPEEDY-- es un modelo de complejidad intermedia basado en ecuaciones
+primitivas espectrales y parametrizaciones simplificadas. En su versión
+41, posee una resolución horizontal espectral de T30 (3,75° en longitud
+y latitud) y 8 niveles verticales entre 925hPa y 30hPa. El modelo
+incluye parametrizaciones de las diferentes formas de convección,
+radiación, flujos y difusión vertical. La componente atmosférica
+opcionalmente puede acoplarse a las variables de supericie. En el
+océano, mediante un modelo de una sola capa (slab) de 50m se espesor, y
+tanto en el suelo como en el hielo marino, estimando la temperatura
+superficial a partir de flujos de calor desde la atmósfera y un ajuste
+newtoneano hacia la temperatura climatológica.
+
+Una primera gran limitación de SPEEDY es su pobre representación de la
+estratósfera. El más alto de sus 8 niveles está en 30hPa y al ser la
+tapa del modelo, que tiene una ``esponja'' para evitar la propagación de
+ondas de gravedad, no es un nivel con información confiable. Esto limita
+seriamente la posibilidad de describir numéricamente lo que ocurre en la
+estratosfera como, por ejemplo, la dinámica del vórtice polar.
+
+Sin embargo por su bajo costo computacional y su buen desempeño para
+simular ciertas características globales de interés para Sudamérica
+\citep{Barreiro2014} se decidió utilizarlo en este trabajo.
+
+\hypertarget{metodologia}{%
+\section{Metodología}\label{metodologia}}
+
+\section*{Perturbaciones}
+
+Muchas variables atmosféricas varían con la longitud en menor medida que
+con la latitud o la altura. Resulta entonces natural descomponer
+cualquier variable \(\phi_{(x, y, z, t)}\) en un promedio zonal y las
+desviaciones con respecto al mismo según:
+
+\[
+\phi_{(x, y, z, t)} = [\phi]_{(y, z, t)} + \phi_{(x, y, z, t)}^*
+\]
+
+donde los corchetes indican el promedio zonal y el asterisco indica el
+desvío con respecto al mismo. \([\phi]\) representa la condición
+simétrica zonal de la variable en cuestión y es independiente de la
+longitud mientras que \(\phi^*\) representa su componente asimétrica
+(que será estacionaria en el caso de considerar el valor medio
+climatológico).
+
+Se denomina ondas cuasiestacionarias (QS) a la componente asimétrica de
+la circulación media climatológica. Las mismas generan flujos
+meridionales de calor y cantidad de movimiento, principalmente en el HN
+en invierno \citep{James}, y en gran medida son forzadas por forzantes
+superficiales como orografía y contrastes de temperatura así como por
+interacciones con los transcientes \citep{Rao2004}.
+
+En este trabajo las anomalías zonales se calcularon para cada círculo de
+latitud como la diferencia entre el valor de la variable en una
+determinada longitud y su promedio zonal. También se calcularon campos
+de anomalía zonal de geopotencial eliminando la influencia de las ondas
+planetarias 1 y 2. Para esto se reconstruyeron los campos de anomalía
+zonal de geopotencial de las ondas planetarias 1 y 2 mediante Fourier
+(\autoref{fourier}) y luego se restaron al campo de anomalía zonal
+total.
+
+\section*{Fourier}
+
+La descomposición de Fourier permite representar una serie de datos como
+una sumatoria de ondas sinusoidales de distinto número de onda, amplitud
+y fase. Adicionalmente, es posible calcular la proporción de varianza
+total explicada por cada onda individual~(\(r^2\)) \citep{Wilks2011}.
+Para describir las ondas planetarias se aplicó esta metodología a cada
+círculo de latitud del campo de geopotencial usando la función
+\texttt{FitWave()} del paquete \texttt{metR} \citep{R-metR} de manera de
+obtener un valor de la amplitud, la fase y el \(r^2\) para los números
+de onda 1 a 4. Dado que la fase es una variable circular, su estudio
+requiere un tratamiento especial. Para el cálculo de estadísticas
+circulares se se utilizó el paquete \texttt{circular}
+\citep{R-circular}.
+
+La descripción de las QS a partir de Fourier puede realizarse ya sea
+descomponiendo los campos medios climatológicos (de aquí en adelante
+\emph{método AM}, por Amplitud de la Media) o calculando el promedio de
+la descomposición de los campos instantáneos --mensuales, en este caso--
+(de aquí en adelante \emph{método MA}, por Media de la Amplitud
+instantánea). Resulta evidente que a partir del método AM se obtiene una
+descripción de las ondas presentes en los campos medios y que sobreviven
+a la interferencia destructiva del promedio temporal, brindando
+información sobre las ondas estacionarias. El método MA, en cambio,
+indica las propiedades medias de las ondas planetarias
+independientemente de su fase, mezclando información de las anomalías
+zonales instantáneas que no necesariamente son estacionarias.
+
+Utilizando los datos NCEP, no se encontraron diferencias importantes
+entre ambas metodologías, por lo que se muestran en general los
+resultados sólo del método AM (excepto que se indique lo contrario).
+
+\section*{Wavelets}
+
+El análisis de wavelets permite también describir oscilaciones
+localizadas en el dominio \citep{Torrence1998}. En el contexto de las
+QS, en vez de obtener una amplitud y fase por cada círculo de latitud
+como se obtiene con el método de Fourier, con el método de wavelets se
+obtiene una amplitud local que depende de la longitud. En las ciencias
+atmosféricas el método de wavelets se usa extensivamente en el análisis
+de periodicidades temporales \citep[ej.][]{Raphael2004, Kinnard2011} y
+de procesamiento de imágenes \citep[ej.][]{Desrochers1999}, pero existen
+pocos estudios que lo apliquen a dominios espaciales
+\citep[ej.][]{Pinault2016} aunque sí hay aplicaciones de este tipo en la
+literatura, por ejemplo, de ecología \citep[ej,][]{Mi2005}.
+
+Para el cálculo de wavelets se utilizó la función
+\texttt{WaveletTransform()} del paquete \texttt{WaveletComp}
+\citep{R-WaveletComp} que utiliza un wavelet de Morlet.
+
+\section*{Índice de QS3}
+
+En esta tesis se elaboró un índice de actividad de la QS3 a partir de la
+amplitud de Fourier promediada entre 65°S y 40°S de latitud y entre
+700hPa y 100hPa. Existen múltiples índices para describir la QS3 en la
+literatura. Algunos son definidos a partir de las anomalías zonales de
+geopotencial en puntos fijos cercanos a donde climatológicamente se dan
+los máximos de geopotencial asociados a la QS3
+\citep[ej.][\citet{Cai1999} y \citet{Raphael2004}]{Mo1985}. Aunque cada
+trabajo utilizó puntos ligeramente distintos a causa de las distintas
+climatologías analizadas. Además, \citet{Raphael2004} se basó en
+promedios trimestrales en vez de medias mensuales. Por otra parte,
+\citet{Yuan2008}, generó una serie temporal de actividad de la QS3 a
+partir de la primer componente principal del campo de viento meridional
+superficial, el cual resulta en un patrón de onda 3 consistente con
+climatologías previas.
+
+La principal limitación de las metodologías basadas en patrones
+estacionarios, como puntos fijos o componentes principales, es que no
+permiten cambios de fase en la onda planetaria. En particular, no
+capturan correctamente el corrimiento estacional en la posición de la
+QS3 \citep{Loon1972} ni permiten capturar casos de actividad de onda
+intensa pero alejada de las zonas climatológicamente activas.
+\citet{Irving2015} construyeron un índice de actividad de onda
+planetaria a partir de la transformada de Hilbert que no tiene estas
+limitaciones pero no distingue entre la actividad de distintos números
+de onda.
+
+\section*{Interferencia constructiva y destructiva}
+
+En la \autoref{fase} se estimó, para cada mes, la proporción de casos de
+interferencia destructiva a partir del cómputo de la frecuencia de casos
+donde la diferencia de fase con respecto a la fase media es de entre 40°
+y 80°. Dicho criterio teórico surge de considerar la suma de dos ondas
+sinusoidales de igual amplitud
+
+\[
+\cos\left (k\phi \right) + \cos(k(\phi - \alpha)) = 2\cos\left( \frac{k\alpha}{2} \right)\cos\left( k\phi - \frac{\alpha}{2}\right) 
+\] donde \(k\) es el número de onda, \(\phi\) la latitud, y \(\alpha\)
+es la diferencia de fase entre las ondas. El primer término
+multiplicativo del lado derecho es la amplitud de la nueva onda, la cual
+depende de la diferencia de fase. Si la misma es menor a 1/3 o mayor a
+2/3 de longitud de onda (40° y 80° respectivamente en el caso de la onda
+3), el valor absoluto de la amplitud es mayor que 1 y la sumatoria de
+ondas es constructiva. De lo contrario, la onda obtenida tiene una
+amplitud menor que las originales y la interferencia es destructiva.
+
+En la \autoref{estaciones} se utilizó análisis de componentes
+principales para categorizar cada mes del año según las características
+típicas de la QS3. Se realizó mediante la función \texttt{EOF()} del
+paquete \texttt{metR} \citep{R-metR}, la cual descompone una matriz de
+datos en valores singulares. Este método es preferible al cálculo de
+autovalores y autovectores sobre la matriz de correlación o covarianza
+ya que es numéricamente más estable \citep{Venegas2001}. Los datos de
+geopotencial fueron pesados por la raíz cuadrada del coseno de la
+latitud.
+
+\section*{Herramientas dinámicas}
+
+La influencia tropical en la variabilidad del clima extratropical se
+exploró a través del análisis de las condiciones de propagación
+meridional de ondas de Rossby barotrópicas. La teoría lineal establece
+que esta propagación depende de las condiciones del entorno
+\citep{James}. En particular, el número de onda meridional está dado por
+
+\[
+l = \pm \sqrt{\frac{\eta_{y}}{U} - k^2}
+\]
+
+donde \(\eta_{y}\) es el gradiente meridional de vorticidad absoluta,
+\(U\) es la velocidad zonal, ambos del estado básico y \(k\) es el
+número de onda zonal. La propagación meridional sólo es posible si \(l\)
+es real, lo que requiere que
+
+\[
+\frac{\eta_{y}}{U} = K_s \ge k 
+\] donde \(K_s\) es el número de onda estacionario, que debe ser mayor
+que el número de onda zonal para permitir la propagación meridional.
+
+El flujo de actividad de onda es un vector que, bajo ciertas
+suposiciones, es paralelo a la velocidad de grupo de las ondas de
+Rossby, lo cual permite cuantificar la dispersión meridional y zonal de
+las mismas \citep{James}. En este estudio, estos flujos se calcularon a
+partir de las anomalías zonales de función corriente como
+
+\[
+\begin{aligned}
+F_\lambda &= \frac{p}{2000a^2\cos\phi}\left[ \left( \frac{\partial \psi^*}{\partial \lambda} \right)^2 - \psi^*\frac{\partial^2 \psi^*}{\partial \lambda^2}  \right] \\
+F_\phi &= \frac{p}{2000a^2} \left( \frac{\partial \psi^*}{\partial \lambda}\frac{\partial \psi^*}{\partial \phi}  - \psi^* \frac{\partial^2 \psi^*}{\partial \lambda \partial \phi} \right) 
+\end{aligned}
+\]
+
+donde \(p\) es la presión, \(\phi\) la latitud, \(\lambda\) la longitud,
+\(a\) es el radio de la Tierra (tomado como 6371km) y \(\psi^*\) es la
+anomalía zonal de la función corriente \citep{Vera2004}.
+
+\hypertarget{climatologia-observada}{%
+\chapter{Climatología observada}\label{climatologia-observada}}
+
+En este capítulo se presentan campos medios y anomalías zonales de
+altura geopotencial, temperatura, viento zonal, viento meridional,
+función corriente, número de onda estacionario y gradiente meridional de
+vorticidad absoluta, como introducción general al estado medio de la
+atmósfera sobre el cual se desarrollan las ondas estacionarias. Luego se
+analizan los campos de amplitud y varianza explicada por las distintas
+QS.
+
+\hypertarget{altura-geopotencial}{%
+\section{Altura geopotencial}\label{altura-geopotencial}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/gh-ncep-1} 
+
+}
+
+\caption{Z (mgp). Contornos cada 250 mgp (NCEP).}\label{fig:gh-ncep}
+\end{figure}
+\end{landscape}
+
+El campo de altura geopotencial media (Z, \autoref{fig:gh-ncep}) muesa
+una estructura marcadamente zonal en todos los niveles y estaciones. En
+verano el gradiente meridional de Z es máximo en 200hPa, reduciéndose en
+500hPa y por encima de 100hPa. En 50hPa el gradiente es prácticamente
+nulo y en niveles superiores, éste se invierte en comparación a los
+inferiores (no se muestra). En otoño el máximo de gradiente todavía se
+da en 200hPa, pero continúa siendo intenso en niveles superiores. En
+invierno y primavera, el mayor gradiente se da en 50hPa y es mucho más
+intenso que los observados en los demás niveles o estaciones. En
+contraste con el resto de los niveles, 50hPa y 100hPa tienen mucha más
+variabilidad estacional.
+
+El aumento del gradiente meridional de geopotencial en invierno y
+primavera en niveles altos está relacionado con la generación del
+vórtice polar que aísla las latitudes polares de las latitudes medias.
+En 200hPa, en cambio, es evidente el gradiente asociado con el jet
+subtropical, que es más intenso en invierno y más débil en verano.
+
+En la \autoref{fig:sd-gh-ncep} se muestra, para cada latitud y mes, el
+desvío estándar de Z con respecto a la media zonal (\(\sigma_z\)). Todos
+los niveles presentan una variación meridional similar, con un máximo
+principal al rededor de 60°S durante todo el año y un máximo secundario
+en 30°S que aparece sólo entre junio y septiembre. El ciclo anual de
+\(\sigma_z\) también es similar entre niveles, aunque con ligeros
+corrimientos de fase. En 100hPa el máximo absoluto se da en octubre,
+mientras que en los niveles más bajos, éste se da en agosto.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/sd-gh-ncep-1} \caption{Desvío estándar de Z (mgp) por círculo de latitud (NCEP).}\label{fig:sd-gh-ncep}
+\end{figure*}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-ncep-1} 
+
+}
+
+\caption{Z* (mgp) (NCEP).}\label{fig:ghz-ncep}
+\end{figure}
+\end{landscape}
+
+Las anomalías zonales de geopotencial (Z*, \autoref{fig:ghz-ncep})
+muestran una preponderancia de la onda 1 (QS1) con una amplitud máxima
+en la estratósfera de primavera. Pueden diferenciarse dos QS1 distintas;
+una centrada en \textasciitilde{}60°S y con el centro anticiclónico
+alrededor de la línea de fecha, y la otra centrada en 75°S sobre la
+costa del continente antártico y el centro anticiclónico entre 120 y
+60°O. \citet{Quintanar1995} concluyeron que la primera está asociada
+principalmente a forzantes de latitudes bajas mientras que la segunda
+responde a la orografía del continente antártico.
+
+En latitudes tropicales, en verano hay una anomalía negativa sobre el
+Pacífico este con máxima amplitud en 200hPa que está presente --aunque
+con menor intensidad-- en las otras estaciones del año. Sobre
+Sudamérica, en verano y primavera en ese mismo nivel aparece un centro
+anticiclónico (alta de Bolivia) con un centro ciclónico al noroeste y
+otro al noreste (Baja del Nordeste). Estas anomalías son características
+del Sistema Monzónico Sudamericano \citep{Vera2006}.
+
+En la \autoref{fig:ghz-ncep-corte60} se muestra un corte zonal en 60°S
+de Z*. Se aprecia la coherencia vertical de la QS1 y es evidente la
+inclinación hacia el oeste con la altura en todas las estaciones del
+año, excepto en verano, en coincidencia con lo encontrado por
+\citet{Quintanar1995a}. \citet{Karoly1985} describió una estructura
+barotrópica equivalente tanto en verano como en invierno en 55°S, pero
+dicho resultado es producto de la falta de niveles verticales por encima
+de los 100hPa disponibles en ese momento, que es donde la inclinación es
+más importante.
+
+La inclinación hacia el oeste de las perturbaciones de geopotencial con
+la latitud (\autoref{fig:ghz-ncep}) y con la altura
+(\autoref{fig:ghz-ncep-corte60}) indica que las mismas están asociadas
+con transporte perturbado hacia el polo tanto de cantidad de movimiento
+zonal como de temperatura \citep{James}. En verano las anomalías zonales
+tienen una estructura barotrópica equivalente y carecen de inclinación
+en la horizontal.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-ncep-corte60-1} \caption{Corte zonal de Z* (mgp) en 60°S (NCEP).}\label{fig:ghz-ncep-corte60}
+\end{figure*}
+
+\hypertarget{temperatura}{%
+\section{Temperatura}\label{temperatura}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/t-ncep-1} 
+
+}
+
+\caption{Temperatura media (°C). Contornos cada 5°C (NCEP).}\label{fig:t-ncep}
+\end{figure}
+\end{landscape}
+
+La distribución horizontal de la temperatura media
+(\autoref{fig:t-ncep}), al igual que la altura geopotencial media, tiene
+una estructura principalmente zonal en todos los niveles y estaciones.
+Por debajo de los 200hPa, donde el gradiente meridional de temperatura
+es mínimo, la temperatura disminuye con la latitud en todas las
+estaciones. Por encima de este nivel, en cambio, en verano la
+temperatura crece con la latitud, y en el resto de las estaciones
+muestra un máximo centrado en 60°S en otoño y en 45°S en invierno y
+primavera. En el nivel de 850hPa se ven las asimetrías zonales más
+importantes asociadas con los contrastes de temperatura entre continente
+y océanos, como el máximo sobre Australia en verano.
+
+En 300hPa, el gradiente meridional de temperatura en latitudes medias
+tiene un importante ciclo anual con máximo en invierno y mínimo en
+verano. En niveles inferiores, el ciclo anual es menos marcado y más
+dependiente de la latitud. En 500hPa, en 150°E, 30°S el máximo gradiente
+meridional de temperatura ocurre en invierno y el mínimo en verano,
+mientras que en 50°S el ciclo es el inverso.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/t-ncep-corte-1} \caption{Media zonal de la temperatura (°C) para cada nivel vertical y latitud (NCEP). La región blanca representa la topografía media.}\label{fig:t-ncep-corte}
+\end{figure*}
+
+El promedio zonal de la temperatura se muestra en la
+\autoref{fig:t-ncep-corte}. Al norte de 45° la temperatura decrece con
+la altura por debajo de los 100hPa aproximadamente, donde alcanza un
+mínimo que marca la tropopausa, y crece por encima durante todo el año.
+La altura del mínimo de temperatura varía mucho estacionalmente al sur
+de 45°, siendo mínima en verano (300hPa) y máxima en invierno y otoño
+(30hPa). Hay que tener en cuenta, sin embargo, que la tropopausa no está
+bien definida en el invierno antártico \citep{Court1942, Zangl2001} por
+lo que el uso de la tropopausa térmica no es conveniente.
+\citet{Zangl2001}, utilizando datos del Reanálisis del Centro Europeo de
+Predicción a Plazo Medio (ECMWF) para el período 1979-93, encontraron
+que la tropopausa térmica se encuentra en 320hPa en enero y 170hPa en
+agosto, aunque advierten que el uso del criterio térmico es
+``problemático'' en el invierno antártico debido a la reducida
+estabilidad estática en la estratósfera baja.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/tz-ncep-1} 
+
+}
+
+\caption{Anomalía zonal de temperatura (°C) (NCEP).}\label{fig:tz-ncep}
+\end{figure}
+\end{landscape}
+
+En la \autoref{fig:tz-ncep} se muestran las anomalías zonales de
+temperatura media. En 850hPa se aprecia el efecto del contraste de
+temperatura entre el suelo y el mar. Se observan anomalías positivas
+sobre los continentes y negativas sobre los océanos en todas las
+estaciones, aunque más intensas en verano y primavera. En niveles más
+altos éstas pierden intensidad pero reaparecen en 100hPa con signo
+invertido. Estas características tienen su correlato en la altura
+geopotencial (\autoref{fig:ghz-ncep}) y corresponden a circulaciones de
+tipo monzónico.
+
+En invierno y primavera, los niveles altos están dominados por una QS1
+con máximo en el sur de Australia y mínimo en el Atlántico sur. En
+niveles bajos, esta onda disminuye su amplitud y se defasa hacia el este
+y queda casi en cuadratura con la onda de niveles altos, presentando un
+máximo en 850hPa en Antártida occidental, como se observa en el corte
+zonal de la anomalía zonal de temperatura en 60°S
+(\autoref{fig:t-ncep-corte60}). En otoño la QS1 también está presente,
+pero con amplitud muy reducida y maximizando en niveles medios. En
+verano ésta desaparece por encima de 100hPa.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/t-ncep-corte60-1} \caption{Corte zonal de anomalía zonal de temperatura (°C) en 60°S (NCEP).}\label{fig:t-ncep-corte60}
+\end{figure*}
+
+Las anomalías por debajo de 300hPa mantienen su intensidad durante todo
+el año, aunque tienen más extensión en invierno y primavera en
+comparación con verano y otoño y son barotrópicas equivalentes. Por
+encima de 300hPa, en cambio, se observa un importante ciclo anual con
+máximo en primavera y mínimo en verano con importante inclinación hacia
+el oeste con la altura.
+
+\hypertarget{viento-zonal}{%
+\section{Viento zonal}\label{viento-zonal}}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/u-ncep-corte-1} \caption{Media zonal del viento zonal (m/s) para cada nivel vertical y latitud (NCEP). La región blanca representa la topografía media.}\label{fig:u-ncep-corte}
+\end{figure*}
+
+La media zonal del viento zonal (\autoref{fig:u-ncep-corte}) muestra dos
+máximos, uno en latitudes medias en 200hPa y otro en latitudes polares
+en la estratósfera, correspondientes al jet subtropical y subpolar,
+respectivamente. El primero está presente durante todo el año, aunque
+con mayor intensidad y corrido hacia latitudes más ecuatoriales en
+invierno y primavera. El segundo está presente principalmente en
+invierno y primavera, e incipiente en otoño. Además, en la estratósfera
+se observan vientos del este en latitudes bajas que son más intensos en
+verano y otoño.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/u-ncep-1} 
+
+}
+
+\caption{Viento zonal medio (m/s) (NCEP).}\label{fig:u-ncep}
+\end{figure}
+\end{landscape}
+
+En la \autoref{fig:u-ncep} se muestra el viento zonal medio. Se observa,
+principalmente en invierno y primavera por encima de 100hPa, que el jet
+subpolar es más intenso al sur de África, donde además se encuentra en
+una latitud más ecuatorial que en la región del Pacífico. El jet
+subtropical también tiene un máximo al sur de África y otro al norte de
+Nueva Zelanda --especialmente en invierno--, donde además se produce una
+bifurcación del jet. Se trata de una región de persistentes y frecuentes
+bloqueos \citep[ej.][]{Trenberth1985}.
+
+Esta bifurcación del jet sobre Nueva Zelanda se evidencia en el campo de
+anomalías zonales de viento zonal (\autoref{fig:uz-ncep}) como una
+anomalía negativa sobre la isla acompañada por anomalías positivas al
+norte y sur. En 50hPa se observa un par de QS1 al norte y al sur de 60°S
+defasadas en 180°. Estas anomalías se corresponden con la variación
+meridional del jet observada en la \autoref{fig:u-ncep} y son
+consistentes con la QS1 de geopotencial observada en la
+\autoref{fig:ghz-ncep}. Por el balance de viento geostrófico, centros
+anticiclónicos de Z* están flanqueados por anomalías zonales negativas
+de viento zonal al norte y positivas al sur y viceversa para los centros
+ciclónicos. Además, como el viento zonal no depende del parámetro de
+Coriolis como Z, esto permite la identificación de QS en regiones
+tropicales. Un ejemplo de esto son la alternancia de centros de
+diferente signo en las zonas tropicales en verano, que describen las
+ondas de Rossby estacionarias asociadas con los sistemas monzónicos de
+Sudamérica y el norte de Australia. En particular, se distingue entre
+300hPa y 100hPa sobre el Pacífico ecuatorial una zona de anomalías del
+viento zonal positivas al este y negativas al oeste, que implica
+divergencias en niveles altos (compensada con convergencias en niveles
+bajos que no se muestra).
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/uz-ncep-1} 
+
+}
+
+\caption{Anomalía zonal de viento zonal (m/s) (NCEP).}\label{fig:uz-ncep}
+\end{figure}
+\end{landscape}
+
+\hypertarget{viento-meridional}{%
+\section{Viento meridional}\label{viento-meridional}}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/v-ncep-corte-1} \caption{Media zonal del viento meridional (m/s) (NCEP). La región blanca representa la topografía media.}\label{fig:v-ncep-corte}
+\end{figure*}
+
+El corte vertical-meridional del promedio zonal viento meridional medio
+(de aquí en más V, \autoref{fig:v-ncep-corte}) muestra los máximos
+tropicales presentes en superficie y altura en todas las estaciones,
+relacionados con la circulación de Hadley. En verano, la rama ascendente
+se encuentra en el HS y se tiene convergencias en niveles bajos y
+divergencias en niveles altos. En invierno, en cambio, sólo se ve la
+rama descendente, mucho más intensa que en verano, que genera
+convergencias en niveles altos y divergencias en niveles bajos al
+rededor de los 30°S.
+
+Presente durante todo el año, también se observa un máximo de vientos
+del sur en la costa antártica. Los mismos son evidencia de los vientos
+catabáticos antárticos producidos por una capa muy estable cerca de
+superficie y la consistente inclinación de la topografía del continente
+\citep{King1997}. Sin embargo, los datos allí pueden tener limitaciones
+por la falta de observaciones y la pobre representación de la orografía
+en los modelos.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/v-ncep-1} 
+
+}
+
+\caption{Viento meridional medio (m/s) (NCEP).}\label{fig:v-ncep}
+\end{figure}
+\end{landscape}
+
+Dado que la media zonal de V es nula en gran parte del dominio, el campo
+de anomalías zonales de V es virtualmente idéntico al campo de V medio.
+Por lo tanto, sólo se muestra el campo horizontal de V en la
+\autoref{fig:v-ncep}. Consistente con los campos de Z*
+(\autoref{fig:ghz-ncep}), en niveles altos se observa una QS1 que
+alcanza su máximo en la estratósfera de primavera. En invierno entre
+500hPa y 100hPa, existe evidencia de un tren de ondas de Rossby que se
+propaga desde el sur del Índico llegando a su máxima latitud en 150°O
+donde comienza a propagarse hacia el norte hasta llegar al sur de
+Sudamérica. Este tren de ondas puede identificarse en el campo de Z*
+(\autoref{fig:ghz-ncep}), pero con mayor dificultad debido a la
+presencia de la QS1 y a la dependencia de Z* con el parámetro de
+Coriolis. El tren de ondas en V se distingue en la troposfera alta,
+también en primavera y con menor intensidad en verano y otoño.
+
+Las anomalías zonales del viento meridional también permiten distinguir
+otras características cuasiestacionarias del clima, como aquellas
+asociadas con los monzones. En el invierno, en los trópicos se puede
+observar la anomalía positiva en 850hPa en la costa oeste de África
+asociada con el flujo hacia el monzón de la India. En altura, el monzón
+de la India se evidencia en esa estación como anomalía de viento hacia
+el sur producto de la divergencia de niveles altos generada por la
+convección anómala. Por otra parte, en verano se evidencia en la
+troposfera alta sobre Sudamérica tropical anomalías positivas sobre el
+centro-este del continente y negativas en los océanos subyacentes. Tal
+patrón de ondas estacionario se relaciona con la presencia del Alta de
+Bolivia y las vaguadas estacionarias a sus lados, siendo la del este
+típicamente llamada la Baja del Nordeste \citep{Vera2006}.
+
+\hypertarget{funcion-corriente}{%
+\section{Función corriente}\label{funcion-corriente}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-ncep-1} 
+
+}
+
+\caption{Función corriente media en $\sigma = 0,2101$ (contornos cada $2\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\times10^{-9}m^2/s$) y flujos de actividad de onda medios (NCEP).}\label{fig:psi-ncep}
+\end{figure}
+\end{landscape}
+
+Para analizar la influencia tropical en la circulación no es posible
+usar la altura geopotencial, ya que el balance geostrófico pierde
+validez cerca del ecuador. Por lo tanto, es útil analizar el campo de
+función corriente (\(\psi\)). Los datos NCEP proveen esta variable en
+niveles sigma (\(\sigma\)) en vez de presión. En la
+\autoref{fig:psi-ncep} se muestra \(\psi\) en el nivel
+\(\sigma = 0,2101\), que equivale aproximadamente a 250hPa. Además del
+campo medio, se muestran las anomalías zonales de esta variable en
+sombreado y los flujos de actividad de onda en flechas.
+
+Las características de los campos de \(\psi\), tanto el total como las
+anomalías zonales, son similares a los de Z y Z* respectivamente, con
+una estructura eminentemente zonal y un aumento del gradiente meridional
+en invierno y primavera y los mismos centros de anomalías. La principal
+diferencia es, además del cambio de signo dada por la dependencia de Z
+con el parámetro de Coriolis, que los patrones presentes en las
+latitudes tropicales se ven con mayor magnitud que los de latitudes
+medias y altas.
+
+Los flujos de actividad de onda en verano muestran transporte de energía
+desde el Pacífico este hacia el sur de África pasando por el Atlántico
+que se sostiene durante todo el año con menor intensidad. Desde ese
+lugar también se observa transporte de energía hacia el hemisferio
+norte, que se junta con otra región de flujos intensos que viene desde
+el Pacífico oeste. Sobre el Índico, los flujos son de mayor magnitud en
+invierno, transportando energía hacia el sur.
+
+\hypertarget{propagacion-meridional-de-ondas-de-rossby}{%
+\section{Propagación Meridional de Ondas de
+Rossby}\label{propagacion-meridional-de-ondas-de-rossby}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/etady-ncep-1} 
+
+}
+
+\caption{Gradiente meridional de vorticidad absoluta ($1\times10^{11}(ms)^{-1}$). La línea negra marca regiones con valores negativos.}\label{fig:etady-ncep}
+\end{figure}
+\end{landscape}
+
+La \autoref{fig:etady-ncep} muestra el campo de \(\eta_y\). Resalta una
+región de valores negativos centrada sobre Nueva Zelanda, en invierno
+entre 300hPa y 200hPa, coincidiendo con la región de bloqueos. Está
+flanqueada por el jet subtropical intenso y el jet subpolar más al sur,
+dando lugar a gradientes meridionales de viento zonal negativos más
+intensos que \(\beta\). Otras regiones con valores negativos se
+distinguen en la costa antártica.
+
+Los valores de \(\eta_{y}\) negativos impiden la propagación meridional
+de ondas de Rossby barotrópicas. Esta figura reproduce y extiende el
+resultado de \citet{Berbery1992} (su Figura~3) que utilizaron 5 años de
+análisis objetivo del ECMWF. Asimismo, como se describió en la
+\autoref{metodologia}, aún con \(\eta_{y}\) positivo, las ondas de
+Rossby barotrópicas sólo se pueden propagar si su número de onda zonal
+es menor que el número de onda estacionario \citep{James}. En la
+\autoref{fig:ks-ncep} se muestra el número de onda estacionario para el
+nivel de 200hPa. Entre otoño y primavera se destaca claramente la región
+del Pacífico Oeste en la cual la propagación meridional está inhibida.
+Además, en todas las estaciones, las ondas cortas no pueden propagarse
+meridionalmente en latitudes altas. La \autoref{fig:ks-ncep} muestra que
+las ondas de Rossby barotrópicas con k menores o iguales a 3 pueden
+propagarse meridionalmente en las cuatro estaciones hasta
+aproximadamente los 60°S, excepto en la franja de longitudes entre 60°E
+y 120°O, donde quedan atrapadas al sur de 45°S (excepto en verano).
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ks-ncep-1} 
+
+}
+
+\caption{Número de onda estacionario en 200hPa en contornos (NCEP). En gris se marcan las áreas donde el número de onda estacionario es imaginario.}\label{fig:ks-ncep}
+\end{figure}
+\end{landscape}
+
+\hypertarget{ondas-quasiestacionarias}{%
+\section{Ondas Quasiestacionarias}\label{ondas-quasiestacionarias}}
+
+La \autoref{fig:r2-ncep} muestra el corte vertical-meridional de \(r^2\)
+de Fourier (definido en la \autoref{metodologia}) para las ondas
+estacionarias 1 a 4 de manera de analizar la importancia relativa de
+cada una con respecto a la variabilidad total. Consistente con lo
+encontrado previamente en el campo de Z*, la QS1 explica la mayor parte
+de la variabilidad en todo el dominio al sur de los 45°S. La QS2 es
+preponderante en la estratósfera ecuatorial, en la costa antártica y
+alrededor de 35°S, donde es el modo dominante en toda la columna de aire
+en verano. La QS3, a diferencia de las ondas anteriores, es importante
+en una región reducida. Explica una parte substancial de la varianza en
+niveles bajos al rededor de los 45°S y mayormente en invierno. La QS4
+explica muy poca varianza a excepción de cerca de superficie entre 15°S
+y 30°S. Ondas más cortas son aún menos importantes (no se muestra).
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/r2-ncep-1} 
+
+}
+
+\caption{Proporción de varianza explicada ($r^2$)  Fourier para números de onda 1 a 4 (NCEP). }\label{fig:r2-ncep}
+\end{figure}
+\end{landscape}
+
+El \(r^2\) permite analizar la importancia relativa de cada modo con
+respecto a la variabilidad total pero la amplitud (cuyo corte
+vertica-meridional se muestra en la \autoref{fig:ampl-ncep}) permite
+estimar la magnitud de cada onda independientemente de las demás. Las
+diferencias entre los campos de \(r^2\) y los de amplitud son evidentes
+comparando esta figura con la \autoref{fig:r2-ncep} (notar la escala
+logarítmica en los colores). La amplitud de la QS1 muestra un máximo
+bien definido centrado en 60°S que en verano se encuentra en niveles más
+bajos que en las otras estaciones. También exhibe un máximo relativo
+entre 15°S y 30°S en verano, mientras que maximiza en latitudes medias
+en invierno y primavera. Estas características están presentes también
+en las otras ondas estacionarias consideradas.
+
+En el caso de la QS2, se evidencia que a pesar de tener máximos de
+\(r^2\) en la estratósfera al norte de 45°S, alcanza su máxima amplitud
+al sur de esa latitud y en 200hPa en verano y en 30hPa en invierno. Su
+actividad en la costa antártica se extiende en toda la tropósfera en
+invierno (a pesar de que en \(r^2\) pierde importancia por encima de los
+200hPa).
+
+La región de amplitud máxima de la QS3, coincide aproximadamente con la
+región de máximo \(r^2\) entre otoño y primavera, aunque con menor
+magnitud en superficie y menor extensión en toda la columna. En verano,
+en cambio, exhibe un máximo de amplitud importante en latitudes medias
+que no se asocia con valores máximos de \(r^2\).
+
+La QS4 presenta un máximo de amplitud bien definido en la troposfera
+media-alta sólo en verano, entre 15°S y 30°S.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ampl-ncep-1} 
+
+}
+
+\caption{Amplitud de Fourier (mgp) para números de onda 1 a 4 (NCEP).}\label{fig:ampl-ncep}
+\end{figure}
+\end{landscape}
+
+\hypertarget{onda-3}{%
+\chapter{Onda 3}\label{onda-3}}
+
+En este capítulo se analiza la climatología observada de la QS3 a partir
+de su reconstrucción mediante descomposición de Fourier. Se estudia su
+amplitud y fase y se propone una división estacional alternativa a
+partir del análisis de componentes principales. Además, se muestran la
+estructura típica de la altura geopotencial y la función corriente
+asociada a la QS3 a partir de regresiones con respecto a la amplitud de
+la QS3.
+
+\hypertarget{caracteristicas-tipicas}{%
+\section{Características típicas}\label{caracteristicas-tipicas}}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-1} \caption{Z* media (mgp) reconstruida a partir de la QS3 en 300hPa (NCEP).}\label{fig:qs3-ncep}
+\end{figure*}
+
+En la \autoref{fig:qs3-ncep} se muestra el campo de Z* reconstruido sólo
+a partir de la QS3 en 300hPa, que ilustra lo que sucede en todos los
+niveles dado que su estructura es barotrópica equivalente (como se verá
+en la \autoref{fig:qs3-ncep-corte}). De acuerdo con lo encontrado en la
+amplitud de Fourier para la QS3 (\autoref{fig:ampl-ncep}), la amplitud
+es máxima entre 60°S y 45°S con menor intensidad en primavera. En el
+verano la fase es tal que una de las tres anomalías anticiclónicas se
+ubica hacia el este del sur de Sudamérica. Se observa que existe un
+corrimiento de la fase entre verano e invierno de poco más de 15° (algo
+ya observado por \citet{Loon1972} y \citet{Mo1985}) anticipando que el
+efecto de la QS3 sobre cada lugar pueda tener una componente estacional.
+
+Además, las anomalías presentan una inclinación meridional que, como la
+teoría de ondas de Rossby indica, está asociada a transportes
+perturbados de cantidad de movimiento hacia el polo. La inclinación es
+más importante en las estaciones de transición, pero menor en verano y
+no detectable en el invierno.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-ncep-corte-1} \caption{Corte zonal en 60°S de Z* (mgp) reconstruida a partir de la QS3 (NCEP).}\label{fig:qs3-ncep-corte}
+\end{figure*}
+
+La estructura vertical de las perturbaciones zonales de geopotencial
+reconstruidas a partir de la QS3 se presenta en la
+\autoref{fig:qs3-ncep-corte}. En todas las estaciones la mayor amplitud
+se da en 300hPa, con el máximo desarrollo vertical en invierno, seguido
+por el otoño y verano. Se destaca además la variación estacional de la
+fase descripta previamente. Asimismo, se observa que existe una
+variación estacional en la inclinación vertical de las perturbaciones.
+En invierno y en primavera, los extremos de la onda presentan una ligera
+inclinación hacia el oeste por debajo de los 300hPa, que no se detecta
+en las otras estaciones.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3sd-ncep-1} \caption{Desvío estándar temporal de Z* (mgp) reconstruida a partir de la QS3. Se incluyen en negro los contornos de $\pm$ 20mgp de la amplitud de Fourier para indicar la posición de los centros de las perturbaciones (NCEP).}\label{fig:qs3sd-ncep}
+\end{figure*}
+
+En la \autoref{fig:qs3sd-ncep} se muestra el desvío estándar de Z*
+reconstruidas a partir de la QS3. La variabilidad máxima se da entre los
+centros de anomalías ciclónicas y anticiclónicas (marcados en la
+\autoref{fig:qs3sd-ncep} con contornos negros), indicando que la
+variabilidad del geopotencial asociada a la QS3 se asociaría
+principalmente con defasajes que ocurren dentro de cada estación.
+
+\section*{Variación meridional}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/wavelet-fourier-ncep-1} \caption{Amplitud (mgp) de la QS3 según wavelets (sombreados) y Fourier (contornos) (NCEP).}\label{fig:wavelet-fourier-ncep}
+\end{figure*}
+
+Como se describió en la \autoref{metodologia}, se utilizó la metodología
+de wavelets como alternativa a la de Fourier para aislar la QS3. La
+amplitud media obtenida mediante wavelets es prácticamente idéntica a la
+amplitud obtenida con Fourier (\autoref{fig:wavelet-fourier-ncep}).
+
+La metodología de wavelets también permite obtener información sobre la
+variación meridional de la amplitud de la QS3, obteniendo así campos
+horizontales de la amplitud de la QS3. Al igual que con Fourier, esto
+puede hacerse promediando estacionalmente la amplitud de los campos
+mensuales o calculando la amplitud de los campos estacionales. Los
+valores de amplitud media zonal obtenidos por waveletes utilizando las
+dos metodologías AM y MA son similares (no se muestra) pero sí hay
+diferencias en las anomalías con respecto a la media zonal.
+
+\begin{figure}
+
+{\centering \includegraphics[width=155mm, ]{fig/tesis/waveletz-ncep-1} 
+
+}
+
+\caption{Anomalía zonal de la amplitud de la QS3 según wavelets (mpg) en 300hPa para el método AM y MA (\autoref{metodologia}) (NCEP).}\label{fig:waveletz-ncep}
+\end{figure}
+
+Las anomalías zonales de la amplitud de la QS3 en 300hPa, computadas con
+wavelets se muestran en la \autoref{fig:waveletz-ncep} para los dos
+métodos utilizados. Al norte de los 30°S, ambas metodologías muestran
+resultados similares: en verano, otoño y primavera hay anomalías zonales
+positivas sobre el Pacífico y negativas en el Índico, indicando que en
+estas latitudes la QS3 tiene mayor amplitud en el hemisferio occidental
+que en el oriental; en invierno, no hay anomalías zonales importantes en
+esta región.
+
+Al sur de 30°S las dos metodologías, en cambio, dan resultados
+diferentes. Ambas presentan en todas las estaciones, una región elongada
+de máxima amplitud en el sur del Índico centrado en 45°S que se extiende
+hacia el este en latitudes más altas hasta alcanzar los 60°S
+aproximadamente. La principal diferencia entre las metodologías,
+entonces, es que la amplitud de la media estacional tiene los máximos
+desvíos en 45°S, mientras que la media de la amplitud instantánea tiene
+su máximo al sur de los 60°S.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/estacionariedad-1} \caption{Estacionariedad de la QS3 (NCEP).}\label{fig:estacionariedad}
+\end{figure*}
+
+Estas diferencias en la \autoref{fig:waveletz-ncep} están relacionadas
+con el grado de estacionariedad de las ondas. Se puede utilizar el
+cociente entre la amplitud que resulta del método AM y la media de la
+amplitud instantánea que resulta del método MA para definir un índice de
+estacionariedad. Valores cercanos a 1, indican que el carácter
+estacionario de las ondas sería el dominante, mientras que valores
+cercanos a 0 implican que las ondas no tienen una localización
+preferencial. La distribución horizontal de este índice de
+estacionariedad se muestra en la \autoref{fig:estacionariedad}. La
+máxima estacionariedad se observa en el verano tropical, pero esto se
+debe a que la actividad de ondas estacionarias es casi nula.
+
+Aproximadamente entre 30° y 60° se observa una banda de alta
+estacionariedad, consistente con la región de mayor amplitud de QS3
+(\autoref{fig:qs3-ncep}), que presenta un máximo al sur del Índico. Esto
+sugiere que en esta región, la actividad de onda es particularmente
+estacionaria, en contra de la sugerencia de \citet{Hobbs2010} de que el
+principal patrón estacionario se da en el Pacífico Sur.
+
+Estas observaciones destacan la utilidad de wavelets en el análisis de
+ondas cuasiestacionarias. Mientras que el tratamiento con Fourier asume
+a las ondas como una propiedad media de cada círculo de latitud,
+wavelets permite reconocer su heterogeneidad meridional. Evaluando esta
+heterogeneidad, sería posible distinguir entre campos donde una onda con
+un determinado número de onda está presente en todo un círculo de
+latitud de campos donde ésta está localizada en una región acotada.
+
+Por otro lado, la no ortogonalidad de los wavelets complejiza la
+interpretación de los resultados ya que no es posible la separación
+estricta de un campo en modos oscilatorios con distinto número de onda.
+El análisis de una QS específica, por lo tanto, está contaminado por la
+actividad de otras QS con longitud de onda cercana.
+
+El análisis de wavelets, en resumen, puede considerarse como
+complementario al de Fourier agregando información de las asimetrías
+zonales. Si embargo, dado que la variabilidad zonal es del orden de un
+10\% de la amplitud media, en lo que sigue de la tesis se utilizará sólo
+Fourier, dejando el análisis e interpretación de estudios de la QS3
+utilizando wavelets para futuros trabajos.
+
+\hypertarget{amplitud}{%
+\section{Amplitud}\label{amplitud}}
+
+Existen varios estadísticos que podrían utilizarse para representar la
+amplitud de la QS3 en una región extendida, como la media, la máxima, la
+moda o la mediana. En este caso, se estudió la posibilidad de
+representarla con su media o su máxima, estimadas en la región
+comprendida entre los 65°S y 40°S y entre 700hPa y 100hPa.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-max-mean-1} \caption{Amplitud de la QS3 máxima y media (mgp) para 9 casos seleccionados.}\label{fig:ampl-max-mean}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-max-mean-corte-1} \caption{Corte vertical de amplitud de la QS3 (mgp) para 9 casos seleccionados. La línea punteada indica la región sobre la cual se toma el promedio o el máximo. La región blanca representa la topografía media.}\label{fig:ampl-max-mean-corte}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-ncep-select-1} \caption{Z* (mgp) en 300hPa con QS1 y QS2 eliminadas para 9 casos seleccionados.}\label{fig:ghz-ncep-select}
+\end{figure*}
+
+A modo exploratorio se seleccionaron 9 casos que representan distintas
+características de la amplitud media y la máxima. Sus magnitudes
+correspondientes se muestran en la \autoref{fig:ampl-max-mean}, el corte
+vertical de la amplitud, en la \autoref{fig:ampl-max-mean-corte}, y los
+campos de Z* (con las contribuciones de las QS1 y QS2 removidas como se
+explicó en la \autoref{metodologia}) en la
+\autoref{fig:ghz-ncep-select}.
+
+Comparando el caso de mayo de 1997 con el de abril de 2012, ambos tienen
+una amplitud media muy similar (\autoref{fig:ampl-max-mean}), pero la
+amplitud máxima del primero es menor que la del segundo. El corte
+vertical de la amplitud (\autoref{fig:ampl-max-mean-corte}) muestra que
+la amplitud de la QS3 en abril de 2012 es grande y más localizada en la
+troposfera alta que en el caso de mayo de 1997, para el cual la amplitud
+es grande en la estratosfera. Esto se refleja en la comparación de las
+perturbaciones de geopotencial (\autoref{fig:ghz-ncep-select}), donde la
+QS3 en 300hPa se aprecia mucho más claramente en 2012 que en 1997.
+
+Los casos de enero de 1985 y julio de 1988 también son similares en
+amplitud media pero enero de 1985 tiene un valor mayor de amplitud
+máxima. La estructura vertical de la amplitud muestra diferencias en la
+extensión similares al par anterior de casos, con la amplitud en enero
+de 1985 presentando un máximo bien definido en la tropósfera mientras
+que en julio de 1988 alcanza valores importantes en niveles
+estratosféricos. En este par de casos, los campos de Z* son muy
+similares en cuanto a intensidad y claridad de la QS3. Ambos presentan
+un tren de ondas que ocupan aproximadamente medio de círculo de latitud.
+El tren de ondas de 1988 se ve algo más claro que el de 1985, a pesar de
+que la amplitud máxima de 1985 es menor que la de 1988.
+
+Los casos de noviembre de 1987 y enero de 2008 presentan características
+diferentes a los anteriores. La amplitud máxima en ambos meses es
+simliar, sin embargo en noviembre de 1987 la amplitud media es mayor que
+en enero de 2008. En noviembre de 1987 la amplitud de la QS3 está más
+extendida vertical y meridionalmente que en enero de 2008. Pero si se
+observa el campo de Z* en 300hPa, si bien ambos casos tienen una QS3
+clara, las anomalías en enero de 2008 son más intensas, especialmente en
+la región del Índico.
+
+Comparando los casos de diciembre de 1990 y septiembre de 2000, puede
+verse que ambas medidas de amplitud son mayores en diciembre de 1990 que
+en septiembre de 2000 y que ambos meses tienen un desarrollo vertical
+similar de la amplitud de la QS3. El campo de Z* en 300hPa muestra en
+diciembre de 1990 una estructura de la QS3 más zonal y coherente a lo
+largo de todas las longitudes. Sin embargo, en septiembre de 2000, se
+destaca principalmente un tren de ondas, asociado con anomalías más
+intensas, por lo que su efecto en la circulación local puede ser mayor
+que las de diciembre de 1990.
+
+Más extrema aún es la diferencia entre los casos de septiembre de 2000 y
+octubre de 2003. Ambos tienen métricas de amplitud similares tanto en
+media como en máxima y una extensión vertical de la QS3 similar. No
+obstante, la QS3 en 300hPa de octubre de 2003 es apenas distinguible en
+comparación con septiembre de 2000.
+
+Estos casos ilustran, entonces, la diversidad de situaciones en que
+puede desarrollar la QS3 y las limitaciones que un estudio
+dinámico-estadístico como el que sigue, puede tener. Algunos problemas
+son inherentes a cualquier intento de representar una estructura con
+variabilidad espacial a partir de un sólo número o indicador y otros
+están relacionados con la limitación de la descomposición de Fourier que
+trata toda onda como una onda planetaria con igual estructura a lo largo
+de todo un círculo de latitud.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/cor-mean-max-1} \caption{Amplitud máxima y media de la QS3 para cada mes del período 1985-2015 (mgp). La línea sólida representa la regresión lineal entre ambas variables ($r^2 = 0,94 $) y la línea punteada es la línea amplitud máxima = amplitud media.}\label{fig:cor-mean-max}
+\end{figure*}
+
+Cabe aclarar además que estos 9 casos fueron seleccionados
+específicamente para ilustrar estas limitaciones y no son necesariamente
+representativos de la totalidad de casos posibles. Como se muestra en la
+\autoref{fig:cor-mean-max}, la amplitud media y la máxima tienen una
+relación lineal con un coeficiente alto de correlación asociado
+(\(r^2>0,9\)). Debido a esto, a fines estadísticos la elección de una u
+otra métrica no tendría, en promedio, una influencia importante (aunque
+podría tenerla en casos individuales, como lo ilustraron los casos
+previos).
+
+A partir de esta discusión, se definió un índice de la QS3 (\(A_3\))
+como el promedio espacial de la amplitud (computada a partir de cada
+media mensual) entre 65°S y 40°S y entre 700hPa y 100hPa.
+
+El ciclo anual de \(A_3\) se muestra en la Figura~\ref{fig:ampl-ts1} a
+través de boxplots de los correspondientes valores mensuales
+individuales. Los valores mayores de amplitud se dan en agosto y los
+mínimos en diciembre, y la variabilidad sigue un ciclo similar. Este
+ciclo anual es consistente con trabajos previos
+\citep{Loon1972, Karoly1985, Raphael2004}. Se nota que \(A_3\) no es
+mínimo en los meses de primavera, en contraste con lo observado en el
+análisis climatológico (\autoref{fig:ampl-ncep}) y los campos
+reconstruidos (\autoref{fig:qs3-ncep}). Esta aparente contradicción
+surge, como se verá más adelante, en la falta de considerar también la
+fase de la QS3 (\autoref{fase}).
+
+\begin{figure*}
+\subfloat[Boxplot para cada mes. La línea central representa la mediana, la caja se extiende desde el percentil 25\% hasta el percentil 75\% y las líneas se extienden desde los extremos de la caja hasta 1,5 veces el intervalo intercuartil. Los puntos son los valores mensuales individuales.\label{fig:ampl-ts1}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-1} }\newline\subfloat[Serie temporal. Las líneas horizontales representan la media anual, en rojo (azul) cuando ésta es mayor (menor) que la media de todo el período marcada con línea punteada.\label{fig:ampl-ts2}]{\includegraphics[width=155mm, ]{fig/tesis/ampl-ts-2} }\caption{Índice $A_3$ (mgp).}\label{fig:ampl-ts}
+\end{figure*}
+
+La serie temporal de \(A_3\) se muestra en la Figura~\ref{fig:ampl-ts2}.
+La serie exhibe tanto variaciones interanuales como subanuales de la
+amplitud. Además, se observan series de años con anomalías positivas
+consistentemente seguidos por anomalías negativas (1985-1990, 1992-1996
+y 1999-2005) y otras con persistencia de anomalías positivas o negativas
+(2005-2009 y 2012-2015). No hay evidencia visual de periodicidades ni de
+una tendencia secular.
+
+Un análisis de wavelets de la serie de anomalías temporales de \(A_3\)
+(definidas a partir de la remoción del ciclo anual) presenta picos
+alrededor de 3, 12 y 24 meses, aunque ninguno es estadísticamente
+significativo a 95\% de confianza (no se muestra). \citet{Raphael2004},
+también utilizando wavelets, pero en el período 1958-2001, encontró que
+su índice de actividad de la QS3 (discutido en la \autoref{metodologia})
+muestra variabilidad importante entre 4 y 12 años, algo que no se
+encontró en este estudio, quizás porque cada índice captura
+características diferentes o porque los períodos de los datos analizados
+son distintos.
+
+\hypertarget{fase}{%
+\section{Fase}\label{fase}}
+
+Resulta evidente que además de la amplitud, las ondas planetarias se
+caracterizan por su fase. Los resultados de trabajos previos incluidos
+en la Introducción (como por ejemplo los de \citet{Trenberth1985}) y así
+como los de las secciones anteriores muestran que la fase de la QS3
+puede presentar cambios importantes. En este trabajo se definió el
+índice \(F_3\) como el promedio espacial de la fase (computada a partir
+de cada media mensual) entre 65°S y 40°S y entre 700hPa y 100hPa. La
+fase se computó de manera que represente la longitud del máximo de
+perturbación de Z* explicada por la QS3 entre 120°O y 0° de longitud.
+
+La \autoref{fig:fase-boxplot} muestra, para cada mes, en rojo los
+valores de \(F_3\) y en azul \(F_3\pm 60^{\circ}\) (representando la
+longitud del \emph{mínimo} de Z* explicado por la QS3) para los 20 años
+con un valor de \(A_3\) más extremo. Se incluye el promedio y el rango
+delimitado por \(\pm\) 1 desvío estándar. El mapa se muestra para
+referencia. Si bien la posición de los puntos en la dirección horizontal
+tiene relación con la longitud, en el eje vertical no tiene relación con
+la latitud y sí en cambio con los meses del año.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/fase-boxplot-1} 
+
+}
+
+\caption{$F_3$ (grados) para cada mes del año a partir de los 20 años con un valor de $A_3$ más extremo y el rango definido por $\pm$ 1 desvío estándar  (puntos negros y barras negras). En rojo y azul se identifica respectivamente la localización del máximo y el mínimo de perturbación de Z para cada año individual}\label{fig:fase-boxplot}
+\end{figure}
+\end{landscape}
+
+El ciclo anual de \(F_3\) que se obtiene de esta manera es coherente con
+el descripto en la \autoref{fig:qs3-ncep}. La fase se centra en promedio
+en 55°O en enero y en 90°O en junio con ubicaciones intermedias en los
+meses de transición. En particular, el continente queda al este del
+máximo de anomalía de geopotencial en invierno lo que, por balance
+geostrófico, implicaría anomalías positivas del viento meridional, que
+favorecerían los vientos del sur. En verano, en cambio, se da la
+situación contraria. Esto confirma que el efecto de la QS3 sobre
+Sudamérica depende crucialmente de su fase.
+
+La variabilidad interanual de la fase para cada mes es considerable y de
+una magnitud comparable a la amplitud del ciclo anual. En particular, es
+notorio el aumento en la variabilidad de la fase en los meses de
+primavera, al punto de que en noviembre la fase prácticamente no tiene
+una posición predilecta.
+
+La gran variabilidad presente durante los meses de primavera, en
+comparación con el resto del año, explica por qué en los campos medios
+la QS3 aparece débil en esa estación, a pesar de que su amplitud mensual
+no es pequeña. Como se mencionó en la \autoref{metodologia}, promediar
+campos que están defasados en entre 1/3 y 2/3 de longitud de onda (entre
+40° y 80° en el caso de la QS3) interfiere destructivamente entre ellos,
+eliminando la señal en los campos medios. En primavera, más del 18\% de
+los meses tienen algún grado de interferencia destructiva (estimada como
+se describió en la \autoref{metodologia}), porcentaje mayor a, por
+ejemplo, el encontrado del 8\% en verano.
+
+Observando la distribución de los centros de anomalías ciclónicas y
+anticiclónicas (puntos azules y rojos, respectivamente) se nota que, a
+pesar de que Sudamérica está principalmente afectada por centros
+anticiclónicos asociados a la QS3, existe un número no despreciable de
+años en los que se observa un centro ciclónico sobre el continente. En
+particular, sumando noviembre y diciembre se pueden observar 9 años
+donde esto sucedió.
+
+\hypertarget{estaciones}{%
+\section{Estaciones}\label{estaciones}}
+
+En las secciones anteriores se mostraron campos medios estacionales
+utilizando la definición tradicional de las estaciones climatológicas
+(verano = DEF, otoño = MAM, invierno = JJA, primavera = SON). Sin
+embargo, como éstas son definidas a partir del ciclo anual de
+temperatura en latitudes medias, no constituyen necesariamente el mejor
+agrupamiento de los datos para otras variables u otras latitudes (por
+ejemplo, la Antártida \citep{King1997}).
+
+Una metodología muy utilizada para la clasificación de campos es el
+análisis de componentes principales (PCA). Como se explicó en la
+\autoref{metodologia}, se aplicó esta metodología a los campos mensuales
+de Z* reconstruidos a partir de la QS3 pesados por la raíz cuadrada del
+coseno de la latitud para caracterizar más objetivamente su
+variabilidad.
+
+La \autoref{eoftabla} muestra la varianza explicada de cada componente
+principal obtenida a partir de los campos reconstruidos de QS3. Las
+primeras dos componentes explican en conjunto más del 80\% de la
+varianza, explicando cada una parte similar de la varianza (lo que
+indica que se trata de autovalores degenerados). Sabiendo, además, que
+los campos de QS3 prácticamente sólo tienen dos grados de libertad
+(amplitud y fase), la elección de seleccionar las dos primera
+componentes resulta natural además de justificada por la
+\autoref{eoftabla}
+
+\begin{longtable}[]{@{}lrrrrr@{}}
+\caption{Varianza explicada por las 5 primeras componentes principales
+de los campos de QS3 reconstruidos.\label{eoftabla}}\tabularnewline
+\toprule
+& PC 1 & PC 2 & PC 3 & PC 4 & PC 5\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& PC 1 & PC 2 & PC 3 & PC 4 & PC 5\tabularnewline
+\midrule
+\endhead
+\(r^2\) & 0,439 & 0,396 & 0,046 & 0,043 & 0,026\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/eof-field-1} \caption{Primeras dos componentes principales del campo de Z* reconstruido a partir de la QS3.}\label{fig:eof-field}
+\end{figure*}
+
+Las dos primeras componentes principales del campo de QS3
+(\autoref{fig:eof-field}) se encuentran en cuadratura y su combinación
+lineal resulta en otra QS3 cuya fase depende de la amplitud relativa de
+cada componente. En verano predomina la PC1, mientras que en invierno
+predomina la PC2 como se muestra en la \autoref{fig:pc1-pc2}.
+
+Se observa que enero, febrero y marzo tienen preponderancia de la PC1 y
+valores casi nulos de la PC2, por lo que podrían agruparse. Abril, mayo,
+agosto, septiembre y octubre tienen una mezcla similar de componentes,
+pero es conveniente separar los dos primeros para respetar la progresión
+temporal. Junio y julio tienen un comportamiento diferente al de los
+demás meses, con gran magnitud de PC2. Noviembre y diciembre aparecen
+como \emph{outliers} en este diagrama debido a que su mayor variabilidad
+(como se notó en la \autoref{fig:fase-boxplot}) hace que no predomine
+ninguna componente principal. Podrían ser clasificarlos juntos como
+meses de ``no estacionariedad'' indicando que se trata de una época del
+año donde la QS3 no está presente.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/pc1-pc2-1} \caption{Valor medio de las dos primeras componentes principales del campo de Z* reconstruido a partir de la QS3 para cada mes. Las líneas unen cada mes siguiendo el orden anual y los colores separan a las 5 "estaciones" definidas en el texto.}\label{fig:pc1-pc2}
+\end{figure*}
+
+La descripción de la QS3 basada en esta nueva descomposición estacional
+se presenta en la \autoref{fig:qs3-qsseason-ncep}, donde se muestra el
+campo de Z* reconstruido sólo a partir de la QS3 en 300hPa. En la
+\autoref{fig:qs3-qsseason-ncep-corte} que muestra el corte
+vertical-zonal correspondiente a 52,5°S. Comparando con las Figuras
+\ref{fig:qs3-ncep} y \ref{fig:qs3-ncep-corte} de la
+\autoref{caracteristicas-tipicas} se ve que en las estaciones
+alternativas los campos de las estaciones de transición (AM y ASO) son
+más similares entre sí, tanto en el campo horizontal como en el corte
+meridional. Como era de esperarse, el bimestre ND prácticamente carece
+de valores medios significativos asociados con la QS3.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-1} \caption{Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.}\label{fig:qs3-qsseason-ncep}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-qsseason-ncep-corte-1} \caption{Corte en 52,5°S de Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.}\label{fig:qs3-qsseason-ncep-corte}
+\end{figure*}
+
+Además, la inclinación vertical de las perturbaciones que en la
+\autoref{fig:qs3-ncep-corte} aparece sólo levemente en invierno se
+observa con más claridad con la nueva descripción estacional
+(\autoref{fig:qs3-qsseason-ncep-corte}). En el bimestre JJ la
+inclinación hacia el oeste es importante en la troposfera, estando
+presente también en AM y ASO en menor medida.
+
+La teoría de ondas de Rossby indica que una inclinación hacia el oeste
+está asociada con transporte de calor hacia el polo por las
+perturbaciones y propagación vertical de las mismas \citep{James}. Esto
+podría explicar la variación estacional de la extensión vertical de la
+QS3, la cual tendría condiciones favorables para desarrollarse en la
+estratósfera alta en JJ, cuando la inclinación es máxima y quedaría
+atrapada en niveles más bajos en verano cuando la inclinación es mínima.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/lag-cor-1} \caption{Correlación lageada para cada mes con los 12 siguientes. Valores a la derecha de la línea indican correlación entre meses del mismo año y a la izquierda, entre un mes con el del año siguiente. Los colores indican el valor de la correlación. }\label{fig:lag-cor}
+\end{figure*}
+
+De manera de explorar la persistencia de la actividad de la QS3, se
+presenta la \autoref{fig:lag-cor}, que muestra la correlación defasada
+del campo de QS3 correspondiente a cada mes con todos los demás. Es
+decir, el valor de enero con el de febrero siguiente representa la
+correlación entre los campos de QS3 de todos los eneros con los campos
+de todos los febreros que les siguen. La línea escalonada marca la
+separación del año de manera que un número a la izquierda de ésta
+implica correlación de ese mes con el mismo mes del año siguiente. Las
+correlaciones justo a la izquierda de la línea escalonada son positivas
+y relativamente altas para casi todos los meses salvo noviembre,
+diciembre y agosto. Esto implica que el comportamiento de la QS3 en
+estos meses son similares de un año a otro. Noviembre y diciembre
+también presentan bajas correlaciones en general con los demás meses, lo
+que es coherente con los resultados de las secciones anteriores, es
+decir, al ser meses con actividad de la onda 3 poco estacionaria, sus
+campos de QS3 no son consistentemente similares con ningún otro mes.
+Esta interpretación no parece posible para agosto, ya que su
+variabilidad no es particularmente alta.
+
+Los valores de un mes a la derecha de la línea escalonada son en
+generalmente altos indicando buena concordancia entre los campos de un
+mes y el siguiente. Para esto nuevamente las excepciones son noviembre,
+diciembre y julio. Las correlaciones entre meses corridos 6 meses son
+bajas para los meses de verano e invierno y medias para los meses de
+transición. Es decir, los meses de verano son muy distintos de los de
+invierno, mientras que los de transición son medianamente parecidos a
+todos. Esta es una consecuencia del ciclo anual de la fase
+(\autoref{fig:fase-boxplot}).
+
+Se observa que los máximos valores de correlación se dan entre enero,
+febrero y marzo, indicando un nivel de persistencia relativamente alto.
+Esto puede deberse a la baja variabilidad de la fase presente en estos
+meses o también a la influencia de los eventos ENSO, cuyos precursores
+podrían estar relacionados con una onda 3 durante el verano
+\citep{Qin2017}.
+
+El uso de componentes principales para el análisis de una onda que
+cambia de fase es similar a la metodología utilizada para el monitoreo
+de la MJO \citep{Wheeler2004}, por lo que sería posible su utilización
+como indicador de la actividad de la QS3 distinto a \(A_3\). La
+exploración de dicho indicador está por fuera del objetivo de este
+trabajo.
+
+\hypertarget{r2}{%
+\section{\texorpdfstring{\(r^2\)}{r\^{}2}}\label{r2}}
+
+En el \autoref{ondas-quasiestacionarias} se discutió la relevancia del
+parámetro \(r^2\) como indicador de las características de la QS3. En
+particular, se mostró que la estructura vertical de la varianza
+explicada por la QS3 para cada estación (\autoref{fig:r2-ncep}) se
+caracteriza por máximos valores cerca de 45°S entre la superficie y
+200hPa y un ciclo anual con máximo en invierno y mínimo en verano. En
+esta sección se explora su distribución horizontal para la QS3. Para
+esto, se definió el \(r^2\) como la correlación cuadrada entre el valor
+de Z* y el de QS3 correspondiente para cada punto de grilla y cada mes.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/cor-campo-1} \caption{$r^2$ entre Z* en 300hPa y QS3 (sombrados). Se incluyen en  los contornos de $\pm$ 20mgp de la amplitud de Fourier para indicar la posición de los centros de las perturbaciones, en rojo los centros anticiclónicos y en azul, los ciclónicos (NCEP).}\label{fig:cor-campo}
+\end{figure*}
+
+Los campos horizontales de \(r^2\) en 300hPa se muestran en la
+\autoref{fig:cor-campo}. En las cuatro estaciones la QS3 explica la
+mayor parte de la varianza en el hemisferio occidental entre 60°S y
+45°S. Lejos de ser homogéneos, los campos muestran tres máximos
+localizados con cierta persistencia durante el año. El primero, al sur
+del Índico, está presente en verano y otoño en 60°E que se encuentra más
+hacia el este en invierno y primavera. Algo similar sucede con el
+segundo máximo ubicado al sur del Pacífico, que se encuentra en 180° en
+otoño y en 120°O en primavera. Se observa un tercer máximo en el
+Atlántico sur cuya ubicación varía longitudinalmente poco. En verano y
+otoño se distingue un máximo en latitudes bajas en el pacífico central.
+
+Si se compara la posición de los máximos de \(r^2\) con los centros de
+QS3, en verano, el máximo del Índico, por ejemplo, coincide con un
+centro anómalamente anticiclónico en verano. No obstante, el máximo de
+\(r^2\) de otoño sobre esa cuenca se encuentra entre dos centros de la
+onda y lo mismo pasa con el máximo del Atlántico. Éste último coincide
+con un centro de anomalía anticiclónica en verano, aunque en invierno
+está más cerca de uno ciclónico. En suma, no parece haber una asociación
+entre los máximos de \(r^2\) y la ubicación de los centros de la QS3.
+
+Se realizó el mismo análisis en base a las estaciones definidas según
+las características de la QS3 (\autoref{estaciones}) y los resultados
+generales no se modifican. Las principales diferencias son un
+debilitamiento de los máximos de \(r^2\) durante EFM y una fuerte
+intensificación del máximo del Atlántico durante ND (no se muestra).
+
+\hypertarget{regresiones}{%
+\section{Regresiones}\label{regresiones}}
+
+Los campos de Z* explicados por la QS3 descripta por el método de
+Fourier proporcionan una descripción inicial pero limitada de la
+influencia de esta onda sobre las anomalías de circulación ya que no
+permiten describir completamente el estado típico de la atmósfera cuando
+la QS3 está activa. En esta sección se exploran brevemente las anomalías
+típicas de esas variables explicadas por la actividad de la QS3, a
+través del cómputo de mapas de regresión lineal entre \(A_3\)
+(\autoref{amplitud}) y diferentes variables. En esta metodología, la
+serie de \(A_3\) está estandarizada de manera que los valores de
+regresión representan la porción de anomalía de la variable en cuestión
+asociado con un cambio de la amplitud de la QS3 de 1 desvío estándar de
+magnitud. En ese sentido los valores de regresión tienen las unidades de
+la variable regresionada. Para facilitar la interpretación de los
+resultados, se los describe asumiendo que las regresiones corresponden a
+un cambio positivo en la amplitud de la QS3 de 1 desvío estándar.
+
+\section*{Geopotencial}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-gh-ncep-1} 
+
+}
+
+\caption{Regresión de Z en 300hPa con $A_3$ estandarizado (mgp).}\label{fig:regr-gh-ncep}
+\end{figure}
+\end{landscape}
+
+En la \autoref{fig:regr-gh-ncep} se muestra la regresión del campo de Z
+en 300hPa con \(A_3\) para los doce meses del año. Si bien todos
+presentan evidencias visibles de la actividad de la QS3, presentan
+también mucha heterogeneidad en las características observadas en los
+distintos meses.
+
+En enero, se observa un patrón hemisférico de onda 3, con un centro
+anómalamente negativo importante en el Pacífico sudeste, embebido además
+en un tren de ondas extendido entre el este de Nueva Zelanda, y
+Sudamérica. En febrero, la estructura se mantiene similar, pero con
+menor evidencia de propagación meridional, y el centro anticiclónico en
+Sudamérica intensificado y un debilitamiento de aquel ubicado al sur del
+Índico. En marzo, la estructura de onda 3 exhibe mínima variación
+meridional y ocupa todo el círculo de latitud entre 60°S y 45°S. Abril
+es similar a marzo, pero sin centros ciclónicos significativos. En mayo,
+se distingue nuevamente un tren de ondas con propagación meridional,
+emanando desde Australia, pero con evidencias de reflexión en el Mar de
+Weddell. Junio, al igual que marzo, presenta una estructura de QS3
+zonal, pero menos definida y, consistente con el corrimiento de la fase
+observado (\autoref{fase}), con los centros ciclónicos y anticiclónicos
+desplazados hacia el oeste.
+
+En julio, el patrón de QS3 se encuentra superpuesto con un fuerte patrón
+anular, con anomalías positiva de geopotencial en latitudes polares y
+negativas en latitudes medias. En la \autoref{fig:regr-gh-polar} se
+muestran los mismos campos para julio y diciembre que en la
+\autoref{fig:regr-gh-ncep} pero en proyección estereográfica polar. En
+esta proyección es fácil identificar un patrón anular similar en julio a
+una fase negativa del SAM y a una fase positiva del SAM en diciembre. En
+efecto, la correlación entre el índice SAM y \(A_3\) en julio es -0,55
+(p-valor \(\sim 0,0017\)) y en diciembre es 0,4 (p-valor
+\(\sim 0,0318\))\footnote{Correlación de Pearson, tests a dos colas.}.
+Estos dos meses son los únicos con una relación significativa con el SAM
+al nivel del 95\% de confianza.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/regr-gh-polar-1} \caption{Idem \autoref{fig:regr-gh-ncep}, pero en coordenadas estereográficas polares para julio y diciembre.}\label{fig:regr-gh-polar}
+\end{figure*}
+
+La \autoref{fig:regr-gh-ncep} muestra que en agosto el campo de
+regresión tiene una estructura de QS3 zonal salvo en la región de
+Sudamérica, donde el centro anticiclónico se encuentra a mayor latitud,
+sobre la Península Antártica. En septiembre se observa, embebido sobre
+el patrón de onda 3, un tren de ondas sobre el Pacífico con importante
+propagación meridional, similar al de otros meses (como enero, por
+ejemplo). En octubre, el patrón de QS3 se ve claramente en los centros
+de anomalías positivas, pero no tanto en los negativos. En este mes, hay
+evidencias de propagación meridional de trenes de onda. En particular,
+se distingue un tren de ondas extendido entre el Pacífico central y el
+Atlántico, con fase tal que exhibe un centro negativo sobre Sudamérica.
+El campo de regresión en noviembre es muy similar al de abril; con
+evidencias de un tren de ondas extendido entre el sur de Australia y
+Sudamérica. En diciembre el patrón es similar al de enero pero
+modificado por el patrón anular similar a la fase positiva del SAM,
+discutido previamente.
+
+\section*{Función Corriente}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/regr-psi-ncep-1} 
+
+}
+
+\caption{Regresión de la anomalía zonal de $\psi$ en $\sigma = 0,2101$ con $A_3$ estandarizado ($1\times10^{-6}m^2/s$) y flujos de actividad de onda calculados a partir de la misma.}\label{fig:regr-psi-ncep}
+\end{figure}
+\end{landscape}
+
+Como se mostró previamente, la función corriente (\(\psi\)) resulta una
+mejor variable que Z para describir anomalías de circulación tanto sobre
+latitudes ecuatoriales como polares. Asimismo, los mapas de regresión de
+Z explicadas por la QS3 muestran en varios meses del año evidencias de
+trenes de onda extendidos entre zonas tropicales y extratropicales. En
+este sentido, esta subsección describe las características de la
+regresión entre las anomalías zonales de \(\psi\) con \(A_3\). Se
+incluye además los flujos de actividad de onda calculados a partir de
+tal regresión. El estudio de estos flujos permite confirmar (o no) que
+una determinada alternancia de centros de diferente signo está
+relacionada (o nó) con un tren de onda.
+
+La \autoref{fig:regr-psi-ncep} muestra evidencias de propagación
+meridional de ondas de Rossby desde la zona ecuatorial y atravesando el
+Pacífico Sur hasta Sudamérica en varios meses del año aunque con
+diferentes características.
+
+En enero y febrero, trenes de onda parecen emanar desde la zona
+ecuatorial ubicada al noreste de Nueva Zelanda, aunque con diferente
+fase y reflejadas a diferentes longitudes. En marzo, los flujos
+confirman la dominancia de la dispersión zonal de energía de ondas
+Rossby entre el Indico y el Pacífico, mientras que, en abril, las
+señales son muy débiles. En mayo, se observa un tren intenso desde el
+norte de Australia hacia el sur de Sudamérica. En junio la actividad de
+onda que emana desde Australia lo hace principalmente a lo largo de los
+subtrópicos para luego, en el Pacífico sudeste, dispersarse hacia el sur
+e influenciar el sur de Sudamérica. En agosto y septiembre, la actividad
+de onda que influye el sur de Sudamérica emana principalmente de la
+vecindad de Nueva Zelanda. En octubre, domina el flujo de actividad de
+onda que emana desde el norte de Nueva Zelanda hacia el Pacífico
+ecuatorial central para luego dispersar hacia el sudeste hasta
+Sudamérica y el Atlántico Sur. En noviembre, se distingue una dispersión
+de energía desde el sur de Australia, hacia el sur, que se observa más
+fuerte y coherente en diciembre influenciando Sudamérica.
+
+Cabe mencionar que se hicieron también análisis de regresión entre las
+anomalías de la temperatura de la superficie del mar y \(A_3\) con el
+fin de explorar en qué medida los trenes de onda descriptos previamente
+están relacionados con variaciones en la temperatura de superficie del
+océano, en especial de los océanos tropicales, pero no se encontraron
+relaciones significativas. Las limitaciones que tiene la descripción de
+las características de la QS3 solo a partir de la amplitud, y también la
+imposibilidad de los análisis con observaciones de poder separar
+limpiamente los factores asociados con todas las posibles causas,
+motivaron la realización de los experimentos con el modelo SPEEDY que se
+discuten en el capítulo siguiente.
+
+\hypertarget{simulaciones-con-el-modelo-speedy}{%
+\chapter{Simulaciones con el modelo
+SPEEDY}\label{simulaciones-con-el-modelo-speedy}}
+
+El modelo SPEEDY fue utilizado para explorar las posibles causas que
+expliquen el desarrollo de un patrón de onda 3 en la circulación del HS,
+más allá de las causas relacionadas con las vacilaciones del flujo de
+los oestes. En este capítulo se presentan y discuten los resultados de
+la corrida Control, así como de los experimentos de sensibilidad
+realizados.
+
+\hypertarget{validacion}{%
+\section{Validación}\label{validacion}}
+
+Se realizó primero una corrida Control utilizando el modelo SPEEDY. La
+misma cubrió el período 1985-2014, con los modelos de suelo y hielo
+activados y considerando como forzante las medias mensuales de SST
+provenientes de la base de datos HadISST \citep{Rayner2003}. Se utilizó
+una atmósfera en reposo como condición inicial observando que el tiempo
+de \emph{spin-up} es menor a un mes, por lo que se utilizaron todos los
+meses de simulación en el análisis.
+
+Para la validación de la corrida Control se utilizaron los datos del
+NCEP, descriptos en la \autoref{datos-y-modelo} y utilizados en los
+Capítulos \ref{climatologia-observada} y \ref{onda-3}. La descripción se
+concentra en mostrar los resultados para diferentes variables en los
+niveles de 200hPa y 500hPa, como representativos de los niveles altos y
+medios de la troposfera respectivamente. Las conclusiones no cambian
+substancialmente en el resto de los niveles.
+
+Como se mencionó previamente (\autoref{datos-y-modelo}), la
+representación de la estratósfera en SPEEDY es muy limitada debido a que
+el único nivel estratosférico disponible (30hPa) es la tapa del modelo,
+funcionando como ``esponja'' que evita la propagación de ondas de
+gravedad. Teniendo en cuenta, los resultados de trabajos previos y del
+\autoref{climatologia-observada}, donde se presentan evidencias de
+actividad de la QS3 en la estratosfera invernal, se asume que esto puede
+limitar la calidad de las simulaciones durante esa época del año.
+
+\hypertarget{altura-geopotencial-1}{%
+\subsection{Altura Geopotencial}\label{altura-geopotencial-1}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-sp-nc-1} 
+
+}
+
+\caption{Z* (mgp) (SPEEDY --Control-- sombreado, NCEP contornos).}\label{fig:ghz-sp-nc}
+\end{figure}
+\end{landscape}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ghz-sp-nc-corte60-1} \caption{Corte zonal de Z* (mgp) en 60°S (SPEEDY --Control-- sombreado, NCEP contornos).}\label{fig:ghz-sp-nc-corte60}
+\end{figure*}
+
+La validación del campo medio de altura geopotencial (no se muestra)
+confirma que está bien representado por el modelo. La comparación de las
+anomalías zonales del campo medio representadas por SPEEDY se muestra en
+la \autoref{fig:ghz-sp-nc} (campo horizontal) y en la
+\autoref{fig:ghz-sp-nc-corte60} (corte zonal en 60°S), donde en
+sombreado se muestra el campo de SPEEDY y en contornos el
+correspondiente a NCEP (convención que se mantendrá en el resto de las
+figuras de validación). SPEEDY representa correctamente la estructura
+aproximadamente barotrópica equivalente de las anomalías zonales y la
+predominancia de la señal asociada con la QS1. Sin embargo, las
+simulaciones presentan errores en la ubicación, intensidad e inclinación
+de las perturbaciones.
+
+En invierno, las anomalías simuladas son de magnitud importante como las
+observadas, aunque el modelo no representa la inclinación observada de
+las mismas hacia el oeste con la altura
+(\autoref{fig:ghz-sp-nc-corte60}). Este error es coherente con la falta
+de representación de la estratosfera en el modelo y que los estudios
+previos relacionan la inclinación hacia el oeste con propagación
+vertical de ondas de Rossby desde la troposfera hacia la estratosfera.
+Sin embargo el hecho que las anomalías en la troposfera estén
+razonablemente simuladas (aunque algo más intensas que las observadas),
+da evidencias la importancia de los procesos troposféricos en mantener
+estas anomalías. Las anomalías simuladas en otoño y primavera presentan
+características similares a las invernales. En cambio, en verano el
+patrón es bastante más débil que el observado. Se destaca además que si
+bien en líneas generales la ubicación de los máximos y mínimos de Z* en
+SPEEDY es aproximadamente la correcta, no logra capturar parte de la
+estructura fina. Las anomalías simuladas en 500hPa en otoño, invierno y
+primavera, presentan un sólo máximo en 120°O a pesar de que NCEP muestra
+dos máximos, uno que se mantiene en la línea de fecha durante todo el
+año y otro entre 120°O y 60°O según la época del año.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-dif-sp-nc-1} 
+
+}
+
+\caption{Diferencia de Z* (mgp) entre SPEEDY --Control-- y NCEP.}\label{fig:ghz-dif-sp-nc}
+\end{figure}
+\end{landscape}
+
+En la \autoref{fig:ghz-dif-sp-nc} se muestra la diferencia entre el
+campo de Z* de NCEP y SPEEDY. En verano y otoño la principal diferencia
+radica en que NCEP muestra una alta más intensa de la QS1 al norte de
+60°S. En invierno y primavera se observa un tren de ondas con
+propagación meridional que une el Índico con el Atlántico con número de
+onda planetaria 3. Un tren de ondas similar fue identificado en las
+observaciones en la \autoref{viento-meridional}. Su aparición al hacer
+la resta NCEP - SPEEDY indica que el mismo no está presente en la
+corrida Control.
+
+\hypertarget{temperatura-1}{%
+\subsection{Temperatura}\label{temperatura-1}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/t-nc-sp-1} 
+
+}
+
+\caption{Campo medio de temperatura (°C) (SPEEDY --Control-- sombreado, NCEP contornos).}\label{fig:t-nc-sp}
+\end{figure}
+\end{landscape}
+
+En la \autoref{fig:t-nc-sp} se muestra el campo medio de temperatura de
+SPEEDY y NCEP. En 850hPa y 500hPa, ambos campos son muy similares. En
+niveles altos (200hPa) la simulación control difiere considerablemente
+de las observaciones. En verano y en otoño, SPEEDY muestra un gradiente
+meridional mucho más importante que NCEP y en invierno y primavera el
+gradiente máximo se da entre 30°S y 45°S para SPEEDY, y en 60°S en NCEP.
+
+La \autoref{fig:tz-sp-nc} presenta las anomalías zonales de temperatura
+simuladas y observadas. La estructura de ambas coincide en niveles
+bajos, donde la influencia superficial es importante, pero son
+diferentes en altura. En 500hPa, las anomalías Antárticas de SPEEDY
+coinciden aproximadamente en ubicación con las de NCEP aunque son
+ligeramente más débiles en invierno y primavera. En 60°S, en verano hay
+buena coincidencia, pero entre otoño e invierno la QS1 observada en esas
+latitudes virtualmente desaparece en SPEEDY mientras que en primavera
+vuelve a crecer incluso con mayor intensidad que en NCEP. En 200hPa,
+SPEEDY carece casi totalmente de anomalías zonales significativas al sur
+de los 45°S durante todo el año a diferencia de NCEP, que muestra una
+estructura de QS1 bien definida con máxima amplitud en primavera.
+Nuevamente, esto puede deberse a la falta de representación de la
+estratosfera en el modelo. Al norte de esa latitud las anomalías de
+SPEEDY coinciden mejor con NCEP.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/tz-sp-nc-1} 
+
+}
+
+\caption{Anomalía zonal de temperatura (°C) (SPEEDY --Control-- sombreado, NCEP contornos)}\label{fig:tz-sp-nc}
+\end{figure}
+\end{landscape}
+
+\hypertarget{viento-zonal-1}{%
+\subsection{Viento zonal}\label{viento-zonal-1}}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/u-sp-nc-corte-1} \caption{Media zonal del viento zonal (m/s) (SPEEDY --Control-- sombreado, NCEP contornos). La región blanca representa la topografía media.}\label{fig:u-sp-nc-corte}
+\end{figure*}
+
+En la \autoref{fig:u-sp-nc-corte} se muestra el viento zonal medio para
+SPEEDY y NCEP. El modelo es capaz de representar varias de las
+características observadas más importantes, como ser la existencia de
+regiones de vientos del oeste intensos en latitudes subtropicales y
+subpolares, así como sus variaciones estacionales. Sin embargo, el jet
+simulado en verano se encuentra más al norte y ligeramente más elevado,
+así como los jets subtropicales son simulados considerablemente más
+intensos en todas las estaciones. Se especula que esto podría deberse a
+una celda de Hadley simulada más intensificada y con menor variación
+estacional. Se destaca además la ausencia de un máximo asociado al jet
+subpolar, lo cual podría deberse a la falta de suficientes niveles
+verticales en la porción superior.
+
+Dada la importancia del jet polar en la dinámica atmosférica durante los
+meses de invierno y primavera, su mala representación es una limitación
+muy importante del modelo SPEEDY.
+
+\hypertarget{gradiente-meridional-de-vorticidad-absoluta}{%
+\subsection{Gradiente meridional de vorticidad
+absoluta}\label{gradiente-meridional-de-vorticidad-absoluta}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/etady-sp-nc-1} 
+
+}
+
+\caption{Gradiente meridional de vorticidad absoluta ($1\times10^{11}(ms)^{-1}$) (SPEEDY --Control--). La línea negra marca regiones con valores negativos.}\label{fig:etady-sp-nc}
+\end{figure}
+\end{landscape}
+
+La \autoref{fig:etady-sp-nc} muestra el campo de \(\eta_{y}\) simulado
+por SPEEDY en 200hPa. Comparando con la figura \autoref{fig:etady-ncep},
+se ve que la franja de máximo gradiente presente en todas las estaciones
+es más zonal en el caso de SPEEDY y corrida hacia el sur en verano. La
+región de gradientes negativos que se desarrolla en invierno sobre Nueva
+Zelanda tiene menor extensión y no aparece en otoño ni primavera.
+
+En la \autoref{fig:ks-sp-nc-corte} se muestra un corte meridional del
+número de onda estacionario en 180°. En verano no hay regiones
+prohibidas en ningún modelo, pero la región entre 45°S y 60°S aparece
+como un mínimo en SPEEDY y un máximo en NCEP. Esto implica que la
+propagación meridional está inhibida para un amplio rango de números de
+onda en SPEEDY pero no en NCEP. En particular, la QS3 puede propagarse
+meridionalmente en las observaciones, pero no en el modelo. En otoño, la
+situación es inversa: alrededor de 40°S, NCEP muestra una región con
+número de onda estacionario imaginario, impidiendo la propagación
+meridional, mientras que en SPEEDY no existe tan impedimento. La QS3
+nuevamente se ve afectada, teniendo propagación meridional irrestricta
+al norte de 60°S en SPEEDY pero quedando atrapada al sur de 50°S en las
+observaciones. En invierno y primavera la concordancia entre SPEEDY y
+NCEP es mayor.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ks-sp-nc-corte-1} \caption{Número de onda estacionario en 200hPa en 180°O.}\label{fig:ks-sp-nc-corte}
+\end{figure*}
+
+\hypertarget{funcion-corriente-1}{%
+\subsection{Función corriente}\label{funcion-corriente-1}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-sp-1} 
+
+}
+
+\caption{$\psi$ media en 200hPa (contornos cada $2\times10^{-7}m^2/s$), anomalía zonal de $\psi$ (sombreado,  $0,25\times10^{-7}m^2/s$) y flujos de actividad de onda medios. (SPEEDY --Control--)}\label{fig:psi-sp}
+\end{figure}
+\end{landscape}
+
+La función corriente en 200hPa de SPEEDY se muestra en la
+\autoref{fig:psi-sp} (donde el sombreado corresponde a la anomalía zonal
+y las flechas a los flujos de actividad de onda) en comparación con los
+mismos campos de NCEP (\autoref{fig:psi-ncep}, notar que en NCEP está en
+coordenadas \(\sigma\)). Existe una correspondencia general buena en los
+trópicos y la localización de los máximos y mínimos coincide
+aproximadamente en todas las estaciones. En verano y primavera no se
+simula el anticiclón de Bolivia relacionado con el SAMS, pero sí la baja
+del nordeste. La intensidad de las anomalías es menor en todas las
+estaciones, especialmente en el HN. Consecuentemente, también tienen
+menor magnitud los flujos de actividad de onda, aunque sin embargo las
+simulaciones representan dispersión media de energía de los trópicos a
+los extratrópicos.
+
+\hypertarget{onda-3-1}{%
+\subsection{Onda 3}\label{onda-3-1}}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/ampl-sp-nc-1} \caption{Amplitud de la QS3 a partir de Fourier (mgp) (SPEEDY --Control-- sombreado, NCEP contornos).}\label{fig:ampl-sp-nc}
+\end{figure*}
+
+En la \autoref{fig:ampl-sp-nc} se muestra la amplitud de la QS3 media
+para SPEEDY en contornos y NCEP en líneas (ambos calculados según el
+método AM). En verano, entre 45°S y 60°S SPEEDY coincide con NCEP en la
+localización y extensión del máximo, pero subestima su intensidad. El
+máximo secundario en latitudes bajas aparece más al sur y en un nivel
+más alto en SPEEDY. En otoño, el modelo carece casi por completo de
+señal de QS3 en comparación con NCEP. Sin embargo, la amplitud de la QS3
+simulada por SPEEDY utilizando el método MA sí es importante (no se
+muestra). Esto indica que la diferencia con NCEP se debe no a la falta
+de una onda 3, sino a su característica no estacionaria. En invierno, la
+amplitud de la QS3 media está subestimada en SPEEDY y corrida hacia el
+polo. Además, está mucho más restringida a niveles troposféricos en
+comparación con NCEP; posiblemente como consecuencia de la falta de
+niveles verticales altos y consecuentemente a la mala representación del
+jet subpolar. En primavera, por el contrario, la señal en SPEEDY es
+considerablemente mayor que en NCEP.
+
+La distribución horizontal de Z* explicada por la QS3 simulada se
+muestra en la \autoref{fig:qs3-sp-nc}. En verano, invierno y primavera,
+la inclinación de los centros es hacia el este, contraria a las
+observaciones e indicando transporte de cantidad de movimiento zonal
+hacia el norte en vez de hacia el sur. En otoño el campo de QS3 de
+SPEEDY es virtualmente nulo. En invierno y primavera, la fase de la onda
+simulada por SPEEDY está defasada 180° con respecto a la observada en
+NCEP.
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/qs3-sp-nc-1} \caption{Z* reconstruida a partir de la QS3 (mgp) (SPEEDY --Control-- sombreado, NCEP contornos).}\label{fig:qs3-sp-nc}
+\end{figure*}
+
+\hypertarget{experimentos-de-sensibilidad}{%
+\section{Experimentos de
+sensibilidad}\label{experimentos-de-sensibilidad}}
+
+La evaluación de la corrida Control muestra que el modelo es capaz de
+representar una estructura de QS3 y da evidencias del papel de los
+procesos de superficie y troposféricos en mantenerla. En consecuencia,
+se diseñaron y realizaron 2 corridas adicionales para explorar la
+sensibilidad de la QS3 a distintos parámetros del modelo, que tienen las
+siguientes características:
+
+\begin{description}
+
+\item[NOLAND]
+es equivalente a la corrida Control, a excepción de que la temperatura del mar, el suelo y el hielo marino no responden a los flujos desde la atmósfera. Además, las anomalías mensuales observadas de la SST por sus correspondientes medias climatológicas. Esto implica que la simulación no considera interacción con la superficie y en cambio es solo forzada por la climatología.
+
+\item[SSTZONAL]
+
+es equivalente a NOLAND, pero en las condiciones de contorno se consideraron las medias zonales de los promedios climatológicos mensuales de las SST. Esto implica no considerar las asimetrías zonales del forzante oceánico.
+
+\end{description}
+
+\hypertarget{altura-geopotencial-2}{%
+\subsection{Altura geopotencial}\label{altura-geopotencial-2}}
+
+Los campos de Z* en 200hPa para cada corrida se muestra en la
+\autoref{fig:ghz-sp-runs}. La corrida NOLAND no presenta diferencias
+importantes en la ubicación de las anomalías con respecto a Control. Se
+observan algunas diferencias en la intensidad, como un debilitamiento
+importante de la anomalía positiva al sudeste de Nueva Zelanda en
+primavera y en la ubicación e intensidad de tal centro durante el
+invierno. SSTZONAL en cambio, muestra una clara disminución de la
+intensidad de las anomalías, confirmando entonces el papel de las
+asimetrías de las SST medias climatológicas en determinarlas.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-sp-runs-1} 
+
+}
+
+\caption{Z* en 200hPa para cada corrida de SPEEDY (mgp).}\label{fig:ghz-sp-runs}
+\end{figure}
+\end{landscape}
+
+La figura \autoref{fig:ghz-dif-sp-runs} muestra la diferencia entre Z*
+de la corrida Control y las corridas de sensibilidad. NOLAND sólo
+muestra valores significativos en invierno y primavera. Se destaca que
+la diferencia tiene una estructura de onda 3 en latitudes medias y
+altas. Esto confirma que la falta de interacción entre el suelo y la
+atmósfera tiene influencia sobre este patrón de onda.
+
+La diferencia entre SSTZONAL y Control se da principalmente entre 45°S y
+60°S y muestra también estructura de onda 3, en particular en primavera
+y algo menos en el invierno. En cambio, en verano y otoño, el campo de
+diferencia presenta evidencia de estructura de onda~1. Estos resultados
+son consistentes con los de \citet{Quintanar1995} dado que la
+eliminación de las asimetrías zonales de SST en los trópicos reduciría
+la convección anómala que genera los trenes de onda que ellos
+concluyeron son el principal sostén de este patrón.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ghz-dif-sp-runs-1} 
+
+}
+
+\caption{Diferencia de Z* (mgp) en 200hPa entre las simulaciones NOLAND y SSTZONAL y la corrida Control.}\label{fig:ghz-dif-sp-runs}
+\end{figure}
+\end{landscape}
+
+\hypertarget{viento-zonal-2}{%
+\subsection{Viento zonal}\label{viento-zonal-2}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/u-dif-sp-runs-1} 
+
+}
+
+\caption{Diferencia de viento zonal en 200hPa (m/s) entre las simulaciones NOLAND y SSTZONAL y la corrida Control.}\label{fig:u-dif-sp-runs}
+\end{figure}
+\end{landscape}
+
+La diferencia del viento medio zonal entre corridas se muestra en la
+\autoref{fig:u-dif-sp-runs}. La resta NOLAND - Control muestra valores
+casi nulos en otoño. En verano NOLAND tiene vientos más intensos al
+norte y sur de Nueva Zelanda y menos intensos sobre ésta región,
+indicando una intensificación de los bloqueos con respeto a la corrida
+Control; el mismo patrón se observa en primavera. En invierno y
+primavera hay valores positivos en latitudes bajas indicando un
+debilitamiento de los alisios.
+
+En SSTZONAL el patrón de aumento de los bloqueos se ve intensificado. En
+otoño, invierno y primavera se observan franjas de valores negativos al
+sur de 30° y positivos al norte, indicando que el jet se encuentra
+desplazado hacia el norte.
+
+\hypertarget{funcion-corriente-2}{%
+\subsection{Función corriente}\label{funcion-corriente-2}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/psi-sp-runs-1} 
+
+}
+
+\caption{Anomalía zonal de $\psi$ (sombreado,  $1\times10^{-7}m^2/s$) y flujos de actividad de onda medios para cada corrida.}\label{fig:psi-sp-runs}
+\end{figure}
+\end{landscape}
+
+En la \autoref{fig:psi-sp-runs} se muestra la anomalía zonal de la
+función corriente para cada corrida y los flujos de acción de onda. La
+misma es consistente con las observaciones generales de la
+\autoref{fig:ghz-sp-runs}. En verano, las diferencias entre los flujos
+de Control y NOLAND no parecen ser importantes, mientras que los flujos
+han disminuido considerablemente en SSTZONAL. Esto se destaca también,
+aunque en menor medida en las otras tres estaciones y confirmaría el
+papel de las asimetrías zonales del forzante oceánico en mantener las
+ondas cuasiestacionarias.
+
+\hypertarget{onda-3-2}{%
+\subsection{Onda 3}\label{onda-3-2}}
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ampl-sp-runs-1} 
+
+}
+
+\caption{Amplitud de la QS3 (mgp) para cada corrida según Fourier y método AM.}\label{fig:ampl-sp-runs}
+\end{figure}
+\end{landscape}
+
+En la \autoref{fig:ampl-sp-runs} se muestra la amplitud de la QS3
+(método AM) para cada estación y cada corrida. Primavera es la estación
+con el cambio más dramático. Mientras que la señal es muy alta en la
+troposfera y latitudes medias para la corrida Control, es prácticamente
+despreciable en NOLAND y SSTZONAL. En verano se observa también una
+reducción de la señal de la QS3 en 60°S entre Control, NOLAND y SSTZONAL
+además de un ligero corrimiento hacia el sur. La señal de más al norte,
+en cambio, no presenta cambios importantes. En otoño la poca señal
+existente en latitudes medias en Control y NOLAND prácticamente
+desaparece en SSTZONAL pero se observa un aumento de la amplitud de la
+QS3 en la costa antártica. No obstante, la baja resolución del modelo
+hace cuestionable los resultados en la vecindad de una topografía tan
+compleja como la Antártida.
+
+En invierno, NOLAND tiene la mayor señal de QS3 entre las simulaciones y
+Control, la mínima, con SSTZONAL presentando valores intermedios. Hay
+que tener en cuenta que la falta de representación de la estratósfera
+limita la simulación de las ondas estacionarias y en particular la QS3
+en esta estación. En consecuencia, se requieren más estudios para
+evaluar y entender este resultado que superan los planeados en esta
+tesis.
+
+Es importante notar que estas observaciones son sensibles a la
+metodología utilizada. La \autoref{fig:ampl-mean-sp-runs} muestra la
+amplitud media de la QS3 a partir del método MA para cada corrida y es
+útil compararla con la \autoref{fig:ampl-sp-runs} (construida a partir
+del método AM). Verano se comporta de manera similar, con una ligera
+disminución de la señal en NOLAND y SSTZONAL pero Otoño tiene un gran
+cambio. Tanto la corrida Control como NOLAND y SSTZONAL tienen una señal
+fuerte que no cambia significativamente entre corridas. Esto indica que
+la baja señal en otoño en SPEEDY se asocia con que la onda 3 está
+presente mes a mes, pero no estacionariamente. Lo mismo parece suceder
+invierno de la corrida Control y primavera de NOLAND y SSTZONAL.
+
+\begin{landscape}\begin{figure}
+
+{\centering \includegraphics[width=247mm,]{fig/tesis/ampl-mean-sp-runs-1} 
+
+}
+
+\caption{Amplitud de la QS3 (mgp) para cada corrida según Fourier y método MA.}\label{fig:ampl-mean-sp-runs}
+\end{figure}
+\end{landscape}
+
+\begin{figure*}
+\includegraphics[width=155mm, ]{fig/tesis/sd-fase-sp-runs-1} \caption{Desvío estándar (en grados) de la fase media mensual para cada estación y cada corrida.}\label{fig:sd-fase-sp-runs}
+\end{figure*}
+
+Para profundizar en esta observación, la \autoref{fig:sd-fase-sp-runs}
+muestra el desvío estándar de la fase media mensual para cada estación y
+corrida. Si se asume distribución normal, aproximadamente el 95\% de los
+datos están en un rango de \(\pm 2\sigma\) al rededor de la media. Como
+la fase está acotada entre 0° y 120°, valores de \(\sigma\) por encima
+de 30° implica que los datos están distribuidos casi uniformemente en
+todo el dominio.
+
+En verano, el desvío es mínimo y aumenta ligeramente en NOLAND y
+SSTZONAL pero siempre por debajo de los 30°. En otoño, todas las
+corridas muestran valores altos muy por encima de los 30°, indicando que
+hay muy poca estacionariedad en todas las corridas. En invierno, la
+corrida Control está en el límite de los 30° y NOLAND y SSTZONAL tienen
+valores menores. En primavera, la corrida Control tiene valores mínimos
+de \(\sigma\) mientras que NOLAND y SSTZONAL presentan valores muy
+altos, por encima de los 30°. Estos valores son consistentes con lo
+observado en la comparación de las Figuras~\ref{fig:ampl-sp-runs}
+y~\ref{fig:ampl-mean-sp-runs} y sugieren que las diferencias observadas
+entre las corridas en la señal de la QS3 se deben principalmente a una
+mayor o menor estacionariedad y no a una mayor o menor amplitud de las
+onda planetaria 3.
+
+\hypertarget{conclusiones}{%
+\chapter{Conclusiones}\label{conclusiones}}
+
+Este trabajo describe las características de la onda planetaria de
+número de onda zonal 3 (QS3) en el HS y realiza una primera exploración
+sobre las posibles causas de su establecimiento y variabilidad.
+
+Consistente con estudios previos, se encontró que la circulación media
+del HS está dominada por un patrón de QS1 y la QS3 contribuye en
+latitudes medias, con amplitud moderada a lo largo de las cuatro
+estaciones.
+
+El análisis de la fase de la QS3 mostró un ciclo estacional de 35° de
+amplitud consistente con estudios previos pero además se observó una
+considerable variabilidad interanual para cada mes. En particular, se
+observó que a pesar de que Sudamérica climatológicamente se ve afectada
+por un centro de anomalía anticiclónica asociado a la QS3, la
+variabilidad en la fase es lo suficientemente grande como para que
+exista un número no despreciable de años en los que se observa un centro
+ciclónico sobre el continente. Estos resultados resaltan la importancia
+de esta variable al momento de evaluar las influencias locales de la QS3
+y deben tenerse en cuenta en los promedios climatológicos ya que pueden
+enmascarar una señal fuerte de onda 3 mediante interferencia
+destructiva.
+
+Una exploración preliminar de la aplicación de wavelets al estudio de
+las ondas planetarias resultó prometedora. Al permitir la variabilidad
+de la amplitud en la dirección zonal, posibilitaría capturar variaciones
+espaciales de las ondas en vez de tratarlas como características
+globales de que afectan homogéneamente a todo un círculo de latitud. A
+partir de esta metodología se estudió preliminarmente la estacionariedad
+de las ondas planetarias y se encontró que la QS3 es más estacionaria en
+la región del Índico que en el pacífico. Su estudio más profundo será
+abordado en trabajos posteriores.
+
+A través de la aplicación del análisis de componentes principales se
+encontró que la estacionalidad de la QS3 no coincide exactamente con las
+estaciones climatológicas clásicas. Se concluyó que la división EFM, AM,
+JJ, ASO y ND representa una mejor clasificación. La misma resaltó que
+durante noviembre y diciembre la QS3 no presenta rasgos de onda
+estacionaria y permitió describir con mayor claridad la inclinación de
+la QS3 en la vertical durante junio y julio. Esto sugiere que la
+extensión vertical de la QS3 hasta la estratósfera se debe, al menos en
+parte, a la propagación vertical de ondas de Rossby desde la tropósfera.
+
+A partir de las regresiones entre las anomalías de circulación y un
+índice de actividad de la QS3 definido en este trabajo (\(A_3\)) se
+observó que la QS3 tiene comportamientos muy heterogéneos según el mes.
+Existen meses donde la QS3 se asocia a importantes trenes de onda desde
+los trópicos y otros con una estructura más zonal. Se encontró
+asociación con el SAM en julio y diciembre, aunque con signo opuesto.
+Esto podría indicar que la QS3 es en realidad una familia de fenómenos
+que tienen en común que en una descomposición de Fourier resultan en una
+onda 3 intensa.
+
+La validación de la corrida Control realizada con el modelo SPEEDY
+mostró que es capaz de generar la QS3, aunque su desempeño varía
+considerablemente según la estación, con el peor desempeño en otoño. La
+estructura horizontal de la QS3 simulada se caracterizó por inclinación
+de los centros hacia el este en todas las estaciones, contrario a la
+inclinación hacia el oeste presente en NCEP en verano, otoño y primavera
+y un defasaje de 180° con respecto a la QS3 observada en NCEP.
+
+Se observó que a pesar de no desarrollar un jet subpolar --producto de
+su burda representación de la estratósfera-- el modelo reprodujo la QS1
+en la tropósfera y su variación estacional, aunque crudamente. A pesar
+de no carecer de inclinación con la altura --sugiriendo ausencia de
+propagación vertical--, la QS1 simulada por SPEEDY alcanza máximos en
+los niveles más altos disponibles.
+
+Los experimentos de sensibilidad mostraron variaciones importantes en la
+QS3, principalmente en invierno y primavera. En primavera, la amplitud
+de la QS3 disminuye dramáticamente ausencia de procesos de interacción
+suelo-atmosfera. Esto ocurre también en el verano, aunque en menor
+medida. En invierno en cambio, eliminar la interacción entre la
+superficie y la atmósfera incrementó la intensidad de la QS3 en
+comparación con la corrida Control, posiblemente por la aparición de un
+tren de ondas de número de onda zonal 3 con propagación meridional que
+está presente en las observaciones, pero ausente en la corrida Control.
+En esa estación, la eliminación de las anomalías zonales de SST en la
+corrida SSTZONAL no cambió la amplitud de la QS3 significativamente en
+comparación con la NOLAND. Dada la ausencia de representación de la
+estratosfera en el modelo, los resultados del invierno pueden no ser
+concluyentes y requieren mas estudios futuros.
+
+La comparación entre el método AM y el MA para la caracterización de la
+onda 3 mostró que el cambio en la amplitud de la QS3 entre corridas no
+se debió a una disminución en la actividad de la onda planetaria 3 sino
+a una reducción en su estacionariedad. Esto sugiere que la onda 3 puede
+generarse a partir de la variabilidad interna de la atmósfera pero que
+las influencias superficiales cumplen un rol importante en su
+localización. Alternativamente, si se considera que distintos mecanismos
+posiblemente independientes pueden generar una señal de onda 3, es
+posible que los influenciados con las condiciones de superficie tengan
+características más estacionarias que los relacionados con la
+variabilidad interna de la atmósfera.
+
+Un análisis más completo de las corridas de sensibilidad realizadas será
+tema de futuras investigaciones, así como el uso de modelos más
+sofisticados.
+
+\renewcommand\bibname{Referencias}
+\bibliography{Papers/Biblio.bib,Papers/packages.bib}
+
+
+\end{document}
