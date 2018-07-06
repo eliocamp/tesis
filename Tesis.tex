@@ -247,11 +247,11 @@ estacionales son importantes
 La variabilidad del clima en el sur de Sudamérica (SSA) es afectada
 tanto por la variabilidad en regiones de latitudes medias y polares
 como, remotamente, por las condiciones del clima en regiones tropicales
-y extratropicales \citep[ej.][]{Vera2006}. La influencia de éstas
-últimas ha sido y es estudiada más extensamente debido a que exhiben
-altos niveles de predictibilidad asociados, en escalas estacionales con
-el fenómeno del Niño-Oscilación del Sur (ENSO, por sus siglas en inglés)
-y en escalas intraestacionales, con la oscilación de Madden-Julian (MJO,
+y subtropicales \citep[ej.][]{Vera2006}. La influencia de éstas últimas
+ha sido y es estudiada más extensamente debido a que exhiben altos
+niveles de predictibilidad asociados, en escalas estacionales con el
+fenómeno del Niño-Oscilación del Sur (ENSO, por sus siglas en inglés) y
+en escalas intraestacionales, con la oscilación de Madden-Julian (MJO,
 por sus siglas en inglés). Sin embargo, estudios recientes de la
 variabilidad climática en las regiones subpolares y polares del
 Hemisferio Sur (HS) destacan la actividad del Modo Anular del Sur (SAM,
@@ -361,7 +361,7 @@ Reanálisis NCEP/NCAR \citep{Kalnay1996} (de aquí en adelante datos NCEP)
 entre enero de 1985 y diciembre de 2015. Los mismos poseen originalmente
 una resolución espectral de T62, 28 niveles sigma y registros cada 6hs
 que son luego interpolados a una grilla regular de 2,5° en longitud y
-latitud y 17 niveles verticales entre 1000hPa y 10hPa y promediados
+latitud, 17 niveles verticales entre 1000hPa y 10hPa y promediados
 mensualmente. A partir de los datos mensuales se calcularon las medias
 estacionales definidas a partir de las estaciones climatológicas del HS.
 
@@ -375,12 +375,11 @@ primitivas espectrales y parametrizaciones simplificadas. En su versión
 41, posee una resolución horizontal espectral de T30 (3,75° en longitud
 y latitud) y 8 niveles verticales entre 925hPa y 30hPa. El modelo
 incluye parametrizaciones de las diferentes formas de convección,
-radiación, flujos y difusión vertical. La componente atmosférica
-opcionalmente puede acoplarse a las variables de supericie. En el
-océano, mediante un modelo de una sola capa (slab) de 50m se espesor, y
-tanto en el suelo como en el hielo marino, estimando la temperatura
-superficial a partir de flujos de calor desde la atmósfera y un ajuste
-newtoneano hacia la temperatura climatológica.
+radiación, flujos y difusión vertical. Opcionalmente, las variables de
+superficie puede responder a la componente atmosférica. En el océano,
+mediante un modelo de una sola capa (slab) de 50m se espesor. En el
+suelo y en el hielo marino, a partir de flujos de calor desde la
+atmósfera y un ajuste newtoneano hacia la temperatura climatológica.
 
 Una primera gran limitación de SPEEDY es su pobre representación de la
 estratósfera. El más alto de sus 8 niveles está en 30hPa y al ser la
@@ -426,11 +425,12 @@ latitud como la diferencia entre el valor de la variable en una
 determinada longitud y su promedio zonal. También se calcularon campos
 de anomalía zonal de geopotencial eliminando la influencia de las ondas
 planetarias 1 y 2. Para esto se reconstruyeron los campos de anomalía
-zonal de geopotencial de las ondas planetarias 1 y 2 mediante Fourier
-(\autoref{fourier}) y luego se restaron al campo de anomalía zonal
-total.
+zonal de geopotencial de las ondas planetarias 1 y 2 mediante
+descomposición de Fourier (\autoref{fourier}) y luego se restaron al
+campo de anomalía zonal total.
 
-\section*{Fourier}
+\hypertarget{fourier}{%
+\section*{Fourier}\label{fourier}}
 
 La descomposición de Fourier permite representar una serie de datos como
 una sumatoria de ondas sinusoidales de distinto número de onda, amplitud
@@ -445,7 +445,7 @@ requiere un tratamiento especial. Para el cálculo de estadísticas
 circulares se se utilizó el paquete \texttt{circular}
 \citep{R-circular}.
 
-La descripción de las QS a partir de Fourier puede realizarse ya sea
+La descripción de las QS utilizando Fourier puede realizarse ya sea
 descomponiendo los campos medios climatológicos (de aquí en adelante
 \emph{método AM}, por Amplitud de la Media) o calculando el promedio de
 la descomposición de los campos instantáneos --mensuales, en este caso--
@@ -666,8 +666,8 @@ año, excepto en verano, en coincidencia con lo encontrado por
 \citet{Quintanar1995a}. \citet{Karoly1985} describió una estructura
 barotrópica equivalente tanto en verano como en invierno en 55°S, pero
 dicho resultado es producto de la falta de niveles verticales por encima
-de los 100hPa disponibles en ese momento, que es donde la inclinación es
-más importante.
+de los 100hPa disponibles en ese momento, que es donde se da la máxima
+inclinación.
 
 La inclinación hacia el oeste de las perturbaciones de geopotencial con
 la latitud (\autoref{fig:ghz-ncep}) y con la altura
@@ -709,9 +709,9 @@ y océanos, como el máximo sobre Australia en verano.
 En 300hPa, el gradiente meridional de temperatura en latitudes medias
 tiene un importante ciclo anual con máximo en invierno y mínimo en
 verano. En niveles inferiores, el ciclo anual es menos marcado y más
-dependiente de la latitud. En 500hPa, en 150°E, 30°S el máximo gradiente
+dependiente de la latitud. En 500hPa, en 150°E 30°S, el máximo gradiente
 meridional de temperatura ocurre en invierno y el mínimo en verano,
-mientras que en 50°S el ciclo es el inverso.
+mientras que en 150°E 50°S el ciclo se invierte.
 
 \begin{figure*}
 \includegraphics[width=155mm, ]{fig/tesis/t-ncep-corte-1} \caption{Media zonal de la temperatura (°C) para cada nivel vertical y latitud (NCEP). La región blanca representa la topografía media.}\label{fig:t-ncep-corte}
@@ -727,8 +727,8 @@ de 45°, siendo mínima en verano (300hPa) y máxima en invierno y otoño
 bien definida en el invierno antártico \citep{Court1942, Zangl2001} por
 lo que el uso de la tropopausa térmica no es conveniente.
 \citet{Zangl2001}, utilizando datos del Reanálisis del Centro Europeo de
-Predicción a Plazo Medio (ECMWF) para el período 1979-93, encontraron
-que la tropopausa térmica se encuentra en 320hPa en enero y 170hPa en
+Predicción a Plazo Medio (ERA) para el período 1979-93, encontraron que
+la tropopausa térmica se encuentra en 320hPa en enero y 170hPa en
 agosto, aunque advierten que el uso del criterio térmico es
 ``problemático'' en el invierno antártico debido a la reducida
 estabilidad estática en la estratósfera baja.
@@ -2056,7 +2056,7 @@ siguientes características:
 \begin{description}
 
 \item[NOLAND]
-es equivalente a la corrida Control, a excepción de que la temperatura del mar, el suelo y el hielo marino no responden a los flujos desde la atmósfera. Además, las anomalías mensuales observadas de la SST por sus correspondientes medias climatológicas. Esto implica que la simulación no considera interacción con la superficie y en cambio es solo forzada por la climatología.
+es equivalente a la corrida Control, a excepción de que la temperatura del mar, el suelo y el hielo marino no responden a los flujos de calor desde la atmósfera. Además, las anomalías mensuales observadas de la SST por sus correspondientes medias climatológicas. Esto implica que la simulación no considera interacción con la superficie y en cambio es solo forzada por la climatología.
 
 \item[SSTZONAL]
 

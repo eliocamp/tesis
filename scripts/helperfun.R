@@ -410,7 +410,7 @@ geom_contour_back <- function(..., color = "black", size = 0.2, alpha = 0.5) {
     geom_contour2(..., color = color, size = size, alpha = alpha)
 }
 geom_label_contour_back <- function(...) {
-    geom_text_contour(..., alpha = 0.5, size = 3, rotate = FALSE,
+    geom_text_contour(..., alpha = 0.5, size = 1.6, rotate = FALSE,
                       stroke = 0.2)
 }
 

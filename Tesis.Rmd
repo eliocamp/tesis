@@ -12,7 +12,7 @@ output:
     keep_tex: yes
     latex_engine: xelatex
     number_sections: yes
-csl: Papers/mi-meteorologica2.csl
+csl: Papers/mi-meteorologica3.csl
 bibliography:
 - Papers/Biblio.bib
 - Papers/packages.bib
@@ -70,8 +70,8 @@ library(WaveletComp)
 library(patchwork)
 library(circular)
 
-knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR", "circular"), 
-                 file = "Papers/packages.bib")
+# knitr::write_bib(c("base", "data.table", "ggplot2", "WaveletComp", "metR", "circular"), 
+#                  file = "Papers/packages.bib")
 
 source("scripts/helperfun.R")
 
@@ -93,7 +93,7 @@ pres.mean <- rbind(data.table(lat = 0.0, pres = Inf),
                    pres.mean, 
                    data.table(lat = -90.0, pres = Inf))
 surface <- geom_polygon(data = pres.mean, aes(y = pres), fill = "white", 
-                        alpha = 0.5, color = "gray30", size = 0.5)
+                        alpha = 0.9, color = "gray30", size = 0.5)
 pres <- pres[, .(pres = mean(pres)), by = .(lon, lat)]
 
 theme_elio <- theme_minimal(base_size = 11) +
@@ -329,7 +329,7 @@ Una validación del modelo SPEEDY muestra que éste desarrolla la QS3, aunque su
 
 # Introducción
 
-La variabilidad del clima en el sur de Sudamérica (SSA) es afectada tanto por la variabilidad en regiones de latitudes medias y polares como, remotamente, por las condiciones del clima en regiones tropicales y extratropicales [ej. @Vera2006]. La influencia de éstas últimas ha sido y es estudiada más extensamente debido a que exhiben altos niveles de predictibilidad asociados, en escalas estacionales con el fenómeno del Niño-Oscilación del Sur (ENSO, por sus siglas en inglés) y en escalas intraestacionales, con la oscilación de Madden-Julian (MJO, por sus siglas en inglés). Sin embargo, estudios recientes de la variabilidad climática en las regiones subpolares y polares del Hemisferio Sur (HS) destacan la actividad del Modo Anular del Sur (SAM, por sus siglas en inglés) como una fuente de variabilidad climática de significativa influencia sobre los continentes del HS y en particular en SSA (ej. @Silvestri2009 en escalas interanuales y @Alvarez2014 en escalas intraestacionales). 
+La variabilidad del clima en el sur de Sudamérica (SSA) es afectada tanto por la variabilidad en regiones de latitudes medias y polares como, remotamente, por las condiciones del clima en regiones tropicales y subtropicales [ej. @Vera2006]. La influencia de éstas últimas ha sido y es estudiada más extensamente debido a que exhiben altos niveles de predictibilidad asociados, en escalas estacionales con el fenómeno del Niño-Oscilación del Sur (ENSO, por sus siglas en inglés) y en escalas intraestacionales, con la oscilación de Madden-Julian (MJO, por sus siglas en inglés). Sin embargo, estudios recientes de la variabilidad climática en las regiones subpolares y polares del Hemisferio Sur (HS) destacan la actividad del Modo Anular del Sur (SAM, por sus siglas en inglés) como una fuente de variabilidad climática de significativa influencia sobre los continentes del HS y en particular en SSA (ej. @Silvestri2009 en escalas interanuales y @Alvarez2014 en escalas intraestacionales). 
 
 La distribución espacial del SAM en su fase positiva se caracteriza por una anomalía negativa de presión o altura geopotencial sobre el continente antártico y anomalías de signo opuesto en latitudes medias. Esta estructura zonalmente simétrica generalmente está asociada con un patrón de onda planetario de números de onda zonal entre 3 y 4. La alternancia del signo entre las anomalías polares y extratropicales del SAM se asocia con intensificaciones y debilitamiento de los vientos Oestes que caracterizan las latitudes medias del HS. Si bien hay evidencia de que los flujos de cantidad de movimiento por las ondas planetarias de baja frecuencia son importantes en los procesos de intensificación y debilitamiento de los Oestes [@Lorenz2001; @Simpson2013] las causas por las cuales estas variaciones se asocian con el desarrollo de la QS3 aún no se conocen con certeza. 
 
@@ -351,9 +351,9 @@ En este capítulo se describen los datos utilizados y las metodologías aplicada
 
 ## Datos y modelo
 
-Se analizaron datos mensuales de altura geopotencial, temperatura, viento zonal, viento meridional y función corriente provenientes del Reanálisis NCEP/NCAR [@Kalnay1996] (de aquí en adelante datos NCEP) entre enero de 1985 y diciembre de 2015. Los mismos poseen originalmente una resolución espectral de T62, 28 niveles sigma y registros cada 6hs que son luego interpolados a una grilla regular de 2,5° en longitud y latitud y 17 niveles verticales entre 1000hPa y 10hPa y promediados mensualmente. A partir de los datos mensuales se calcularon las medias estacionales definidas a partir de las estaciones climatológicas del HS.
+Se analizaron datos mensuales de altura geopotencial, temperatura, viento zonal, viento meridional y función corriente provenientes del Reanálisis NCEP/NCAR [@Kalnay1996] (de aquí en adelante datos NCEP) entre enero de 1985 y diciembre de 2015. Los mismos poseen originalmente una resolución espectral de T62, 28 niveles sigma y registros cada 6hs que son luego interpolados a una grilla regular de 2,5° en longitud y latitud, 17 niveles verticales entre 1000hPa y 10hPa y promediados mensualmente. A partir de los datos mensuales se calcularon las medias estacionales definidas a partir de las estaciones climatológicas del HS.
 
-Se utilizó el modelo global de circulación general atmosférica del Centro Internacional de Física Teórica (ICTP) [@Molteni2003;@Kucharski2006] para realizar corridas de sensibilidad de la QS3 a diferentes condiciones (descriptas en la \autoref{experimentos-de-sensibilidad}). El modelo -- denominado SPEEDY-- es un modelo de complejidad intermedia basado en ecuaciones primitivas espectrales y parametrizaciones simplificadas. En su versión 41, posee una resolución horizontal espectral de T30 (3,75° en longitud y latitud) y 8 niveles verticales entre 925hPa y 30hPa. El modelo incluye parametrizaciones de las diferentes formas de convección, radiación, flujos y difusión vertical. La componente atmosférica opcionalmente puede acoplarse a las variables de supericie. En el océano, mediante un modelo de una sola capa (slab) de 50m se espesor, y tanto en el suelo como en el hielo marino, estimando la temperatura superficial a partir de flujos de calor desde la atmósfera y un ajuste newtoneano hacia la temperatura climatológica. 
+Se utilizó el modelo global de circulación general atmosférica del Centro Internacional de Física Teórica (ICTP) [@Molteni2003;@Kucharski2006] para realizar corridas de sensibilidad de la QS3 a diferentes condiciones (descriptas en la \autoref{experimentos-de-sensibilidad}). El modelo -- denominado SPEEDY-- es un modelo de complejidad intermedia basado en ecuaciones primitivas espectrales y parametrizaciones simplificadas. En su versión 41, posee una resolución horizontal espectral de T30 (3,75° en longitud y latitud) y 8 niveles verticales entre 925hPa y 30hPa. El modelo incluye parametrizaciones de las diferentes formas de convección, radiación, flujos y difusión vertical. Opcionalmente, las variables de superficie puede responder a la componente atmosférica. En el océano, mediante un modelo de una sola capa (slab) de 50m se espesor. En el suelo y en el hielo marino, a partir de flujos de calor desde la atmósfera y un ajuste newtoneano hacia la temperatura climatológica. 
 
 Una primera gran limitación de SPEEDY es su pobre representación de la estratósfera. El más alto de sus 8 niveles está en 30hPa y al ser la tapa del modelo, que tiene una “esponja” para evitar la propagación de ondas de gravedad, no es un nivel con información confiable. Esto limita seriamente la posibilidad de describir numéricamente lo que ocurre en la estratosfera como, por ejemplo, la dinámica del vórtice polar.
 
@@ -373,13 +373,14 @@ donde los corchetes indican el promedio zonal y el asterisco indica el desvío c
 
 Se denomina ondas cuasiestacionarias (QS) a la componente asimétrica de la circulación media climatológica. Las mismas generan flujos meridionales de calor y cantidad de movimiento, principalmente en el HN en invierno [@James], y en gran medida son forzadas por forzantes superficiales como orografía y contrastes de temperatura así como por interacciones con los transcientes [@Rao2004]. 
 
-En este trabajo las anomalías zonales se calcularon para cada círculo de latitud como la diferencia entre el valor de la variable en una determinada longitud y su promedio zonal. También se calcularon campos de anomalía zonal de geopotencial eliminando la influencia de las ondas planetarias 1 y 2. Para esto se reconstruyeron los campos de anomalía zonal de geopotencial de las ondas planetarias 1 y 2 mediante Fourier (\autoref{fourier}) y luego se restaron al campo de anomalía zonal total. 
+En este trabajo las anomalías zonales se calcularon para cada círculo de latitud como la diferencia entre el valor de la variable en una determinada longitud y su promedio zonal. También se calcularon campos de anomalía zonal de geopotencial eliminando la influencia de las ondas planetarias 1 y 2. Para esto se reconstruyeron los campos de anomalía zonal de geopotencial de las ondas planetarias 1 y 2 mediante descomposición de Fourier (\autoref{fourier}) y luego se restaron al campo de anomalía zonal total. 
 
-\section*{Fourier}
+\hypertarget{fourier}{%
+\section*{Fourier}\label{fourier}}
 
 La descomposición de Fourier permite representar una serie de datos como una sumatoria de ondas sinusoidales de distinto número de onda, amplitud y fase. Adicionalmente, es posible calcular la proporción de varianza total explicada por cada onda individual\ ($r^2$) [@Wilks2011]. Para describir las ondas planetarias se aplicó esta metodología a cada círculo de latitud del campo de geopotencial usando la función `FitWave()` del paquete `metR` [@R-metR] de manera de obtener un valor de la amplitud, la fase y el $r^2$ para los números de onda 1 a 4. Dado que la fase es una variable circular, su estudio requiere un tratamiento especial. Para el cálculo de estadísticas circulares se se utilizó el paquete `circular` [@R-circular].
 
-La descripción de las QS a partir de Fourier puede realizarse ya sea descomponiendo los campos medios climatológicos (de aquí en adelante *método AM*, por Amplitud de la Media) o calculando el promedio de la descomposición de los campos instantáneos –mensuales, en este caso– (de aquí en adelante *método MA*, por Media de la Amplitud instantánea). Resulta evidente que a partir del método AM se obtiene una descripción de las ondas presentes en los campos medios y que sobreviven a la interferencia destructiva del promedio temporal, brindando información sobre las ondas estacionarias. El método MA, en cambio, indica las propiedades medias de las ondas planetarias independientemente de su fase, mezclando información de las anomalías zonales instantáneas que no necesariamente son estacionarias.
+La descripción de las QS utilizando Fourier puede realizarse ya sea descomponiendo los campos medios climatológicos (de aquí en adelante *método AM*, por Amplitud de la Media) o calculando el promedio de la descomposición de los campos instantáneos –mensuales, en este caso– (de aquí en adelante *método MA*, por Media de la Amplitud instantánea). Resulta evidente que a partir del método AM se obtiene una descripción de las ondas presentes en los campos medios y que sobreviven a la interferencia destructiva del promedio temporal, brindando información sobre las ondas estacionarias. El método MA, en cambio, indica las propiedades medias de las ondas planetarias independientemente de su fase, mezclando información de las anomalías zonales instantáneas que no necesariamente son estacionarias.
 
 Utilizando los datos NCEP, no se encontraron diferencias importantes entre ambas metodologías, por lo que se muestran en general los resultados sólo del método AM (excepto que se indique lo contrario). 
 
@@ -521,7 +522,7 @@ Las anomalías zonales de geopotencial (Z\*, \autoref{fig:ghz-ncep}) muestran un
 
 En latitudes tropicales, en verano hay una anomalía negativa sobre el Pacífico este con máxima amplitud en 200hPa que está presente --aunque con menor intensidad-- en las otras estaciones del año. Sobre Sudamérica, en verano y primavera en ese mismo nivel aparece un centro anticiclónico (alta de Bolivia) con un centro ciclónico al noroeste y otro al noreste (Baja del Nordeste). Estas anomalías son características del Sistema Monzónico Sudamericano [@Vera2006].
 
-En la \autoref{fig:ghz-ncep-corte60} se muestra un corte zonal en 60°S de Z\*. Se aprecia la coherencia vertical de la QS1 y es evidente la inclinación hacia el oeste con la altura en todas las estaciones del año, excepto en verano, en coincidencia con lo encontrado por @Quintanar1995a. @Karoly1985 describió una estructura barotrópica equivalente tanto en verano como en invierno en 55°S, pero dicho resultado es producto de la falta de niveles verticales por encima de los 100hPa disponibles en ese momento, que es donde la inclinación es más importante.
+En la \autoref{fig:ghz-ncep-corte60} se muestra un corte zonal en 60°S de Z\*. Se aprecia la coherencia vertical de la QS1 y es evidente la inclinación hacia el oeste con la altura en todas las estaciones del año, excepto en verano, en coincidencia con lo encontrado por @Quintanar1995a. @Karoly1985 describió una estructura barotrópica equivalente tanto en verano como en invierno en 55°S, pero dicho resultado es producto de la falta de niveles verticales por encima de los 100hPa disponibles en ese momento, que es donde se da la máxima inclinación.
 
 La inclinación hacia el oeste de las perturbaciones de geopotencial con la latitud (\autoref{fig:ghz-ncep}) y con la altura (\autoref{fig:ghz-ncep-corte60}) indica que las mismas están asociadas con transporte perturbado hacia el polo tanto de cantidad de movimiento zonal como de temperatura [@James]. En verano las anomalías zonales tienen una estructura barotrópica equivalente y carecen de inclinación en la horizontal.
 
@@ -581,7 +582,7 @@ ggplot(aes(lon, lat)) +
 
 La distribución horizontal de la temperatura media (\autoref{fig:t-ncep}), al igual que la altura geopotencial media, tiene una estructura principalmente zonal en todos los niveles y estaciones. Por debajo de los 200hPa, donde el gradiente meridional de temperatura es mínimo, la temperatura disminuye con la latitud en todas las estaciones. Por encima de este nivel, en cambio, en verano la temperatura crece con la latitud, y en el resto de las estaciones muestra un máximo centrado en 60°S en otoño y en 45°S en invierno y primavera. En el nivel de 850hPa se ven las asimetrías zonales más importantes  asociadas con los contrastes de temperatura entre continente y océanos, como el máximo sobre Australia en verano.
 
-En 300hPa, el gradiente meridional de temperatura en latitudes medias tiene un importante ciclo anual con máximo en invierno y mínimo en verano. En niveles inferiores, el ciclo anual es menos marcado y más dependiente de la latitud. En 500hPa, en 150°E, 30°S el máximo gradiente meridional de temperatura ocurre en invierno y el mínimo en verano, mientras que en 50°S el ciclo es el inverso.
+En 300hPa, el gradiente meridional de temperatura en latitudes medias tiene un importante ciclo anual con máximo en invierno y mínimo en verano. En niveles inferiores, el ciclo anual es menos marcado y más dependiente de la latitud. En 500hPa, en 150°E 30°S, el máximo gradiente meridional de temperatura ocurre en invierno y el mínimo en verano, mientras que en 150°E 50°S el ciclo se invierte.
 
 ```{r t-ncep-corte, fig.class = "pagewidth", fig.cap = "Media zonal de la temperatura (°C) para cada nivel vertical y latitud (NCEP). La región blanca representa la topografía media."}
 binwidth <- 10
@@ -599,7 +600,7 @@ ggplot(ncep.mean.season[, .(t = mean(t)), by = .(lat, lev, season)],
     facet_wrap(~season)
 ```
 
-El promedio zonal de la temperatura se muestra en la \autoref{fig:t-ncep-corte}. Al norte de 45° la temperatura decrece con la altura por debajo de los 100hPa aproximadamente, donde alcanza un mínimo que marca la tropopausa, y crece por encima durante todo el año. La altura del mínimo de temperatura varía mucho estacionalmente al sur de 45°, siendo mínima en verano (300hPa) y máxima en invierno y otoño (30hPa). Hay que tener en cuenta, sin embargo, que la tropopausa no está bien definida en el invierno antártico [@Court1942; @Zangl2001] por lo que el uso de la tropopausa térmica no es conveniente. @Zangl2001, utilizando datos del Reanálisis del Centro Europeo de Predicción a Plazo Medio (ECMWF) para el período 1979-93, encontraron que la tropopausa térmica se encuentra en 320hPa en enero y 170hPa en agosto, aunque advierten que el uso del criterio térmico es "problemático" en el invierno antártico debido a la reducida estabilidad estática en la estratósfera baja.
+El promedio zonal de la temperatura se muestra en la \autoref{fig:t-ncep-corte}. Al norte de 45° la temperatura decrece con la altura por debajo de los 100hPa aproximadamente, donde alcanza un mínimo que marca la tropopausa, y crece por encima durante todo el año. La altura del mínimo de temperatura varía mucho estacionalmente al sur de 45°, siendo mínima en verano (300hPa) y máxima en invierno y otoño (30hPa). Hay que tener en cuenta, sin embargo, que la tropopausa no está bien definida en el invierno antártico [@Court1942; @Zangl2001] por lo que el uso de la tropopausa térmica no es conveniente. @Zangl2001, utilizando datos del Reanálisis del Centro Europeo de Predicción a Plazo Medio (ERA) para el período 1979-93, encontraron que la tropopausa térmica se encuentra en 320hPa en enero y 170hPa en agosto, aunque advierten que el uso del criterio térmico es "problemático" en el invierno antártico debido a la reducida estabilidad estática en la estratósfera baja.
 
 ```{r tz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de temperatura (°C) (NCEP)."}
 binwidth <- 0.5
@@ -1005,7 +1006,7 @@ wv.mean.season[, .(amplitude = mean(amplitude)),
     geom_text_contour(aes(z = amplitude, label = ..level..), 
                       data = ncep.qs[k == 3], rotate = FALSE,
                       stroke = 0.1, stroke.color = "#452F73",
-                      color = "white",
+                      color = "white", size = 1.6,
                       binwidth = binwidth) +
     scale_fill_viridis_c(name = expression(r^2), 
                          breaks = MakeBreaks(binwidth),
@@ -2310,7 +2311,7 @@ La evaluación de la corrida Control muestra que el modelo es capaz de represent
 \begin{description}
 
 \item[NOLAND]
-es equivalente a la corrida Control, a excepción de que la temperatura del mar, el suelo y el hielo marino no responden a los flujos desde la atmósfera. Además, las anomalías mensuales observadas de la SST por sus correspondientes medias climatológicas. Esto implica que la simulación no considera interacción con la superficie y en cambio es solo forzada por la climatología.
+es equivalente a la corrida Control, a excepción de que la temperatura del mar, el suelo y el hielo marino no responden a los flujos de calor desde la atmósfera. Además, las anomalías mensuales observadas de la SST por sus correspondientes medias climatológicas. Esto implica que la simulación no considera interacción con la superficie y en cambio es solo forzada por la climatología.
 
 \item[SSTZONAL]
 
