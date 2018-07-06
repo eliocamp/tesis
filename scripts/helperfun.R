@@ -414,8 +414,8 @@ geom_label_contour_back <- function(...) {
                       stroke = 0.2)
 }
 
-geom_contour_fine <- function(...) geom_contour(..., size = 0.4)
-stat_contour_fine <- function(...) stat_contour(..., size = 0.4)
+geom_contour_fine <- function(...) geom_contour2(..., size = 0.4)
+stat_contour_fine <- function(...) stat_contour2(..., size = 0.4)
 
 geom_cross <- function(x = 0, y = 0, ...) {
     list(geom_vline(xintercept = x, ...),

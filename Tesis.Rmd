@@ -450,10 +450,11 @@ En este capítulo se presentan campos medios y anomalías zonales de altura geop
 plot.levs <- c(500, 300, 200, 100, 50)
 binwidth <- 250
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
-    geom_contour_fine(aes(z = gh), binwidth = binwidth, color = "black") +
+    geom_contour_fine(aes(z = gh), binwidth = binwidth, color = "black", 
+                      xwrap = c(0, 360)) +
     map.SH +
     geom_text_contour(aes(z = gh), binwidth = binwidth, size = 1.6, 
-                      stroke = 0.25, rotate = FALSE) +
+                      stroke = 0.25, rotate = FALSE, xwrap = c(0, 360)) +
     # geom_label_contour2(aes(z = gh, label = ..level..), binwidth = binwidth,
     # size = 1.6) +
     scale_s_map() +
@@ -489,9 +490,8 @@ En la \autoref{fig:sd-gh-ncep} se muestra, para cada latitud y mes, el desvío e
 binwidth <- 15
 ncep.mean[lev %in% plot.levs & !(lev %in% c(50)), .(sd = sd(gh.z)), by = .(lat, lev, month)] %>% 
     ggplot(aes(month, lat)) +
-    stat_contour(aes(z = sd, color = ..level..), binwidth = binwidth,
+    geom_contour2(aes(z = sd, color = ..level..), binwidth = binwidth,
                  size = 0.3) +
-    # geom_contour(aes(z = sd), binwidth = binwidth) +
     scale_color_viridis_c(name = "Desvío estándar de Z* por círculo de latitud",
                           breaks = MakeBreaks(binwidth),
                           guide = guide_colorstrip_bottom(inside = T)) +
@@ -506,7 +506,8 @@ ncep.mean[lev %in% plot.levs & !(lev %in% c(50)), .(sd = sd(gh.z)), by = .(lat, 
 binwidth <- 30
 cutlat <- -60
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
-    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth,0)) +
+    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth,0),
+                      xwrap = c(0, 360)) +
     # geom_hline(yintercept = cutlat, linetype = 2, size = 0.5) +
     map.SH +
     scale_y_latitude() +
@@ -529,7 +530,8 @@ La inclinación hacia el oeste de las perturbaciones de geopotencial con la lati
 ```{r ghz-ncep-corte60, fig.class = "pagewidth", fig.cap = "Corte zonal de Z* (mgp) en 60°S (NCEP)."}
 binwidth <- 60
 ggplot(ncep.mean.season[lat %~% -55], aes(lon, lev)) +
-    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
                          name = "Z*",
                          guide = guide_colorstrip_bottom(width = 25)) +
@@ -544,7 +546,7 @@ ggplot(ncep.mean.season[lat %~% -55], aes(lon, lev)) +
 ```{r uzvz-ncep-corte, fig.cap = "Transportes", fig.subcap = c("u*v*", "T*v*"), fig.publish = FALSE}
 ncep[, mean(u.z*v.z), by = .(lat, lev, season(date))] %>% 
     ggplot(aes(lat, lev)) +
-    geom_contour(aes(z = V1, color = ..level..), binwidth = 5) +
+    geom_contour2(aes(z = V1, color = ..level..), binwidth = 5) +
     scale_color_divergent(breaks = MakeBreaks(5)) +
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
@@ -553,7 +555,7 @@ ncep[, mean(u.z*v.z), by = .(lat, lev, season(date))] %>%
 
 ncep[, mean(v.z*t.z), by = .(lat, lev, season(date))] %>% 
     ggplot(aes(lat, lev)) +
-    geom_contour(aes(z = V1, color = ..level..)) +
+    geom_contour2(aes(z = V1, color = ..level..)) +
     scale_color_divergent(breaks = MakeBreaks(5)) +
     scale_y_level() +
     scale_x_latitude(trans = "reverse") +
@@ -569,9 +571,11 @@ ncep.mean.season[lev %in% c(plot.levs, 850)] %>%
     copy(pres)[., on = c("lon", "lat")] %>% 
     .[pres < lev, t := NA] %>% 
 ggplot(aes(lon, lat)) +
-    geom_contour(aes(z = t), binwidth = binwidth, color = "black") +
+    geom_contour2(aes(z = t), binwidth = binwidth, color = "black",
+                 xwrap = c(0, 360)) +
     geom_text_contour(aes(z = t), binwidth = binwidth, stroke = 0.25,
-                      size = 1.6, rotate = FALSE) +
+                      size = 1.6, rotate = FALSE,
+                      xwrap = c(0, 360)) +
     # geom_tile(data = copy(pres)[, lev := 850][pres < 850],
               # fill = "white", color = "white") +
     map.SH +
@@ -612,7 +616,8 @@ gdata <- copy(pres)[ncep.mean.season[lev %in% c(plot.levs, 850)],
     .[lev < pres, t.z := Anomaly(t), by = .(lat, lev, season)]
 
 ggplot(gdata, aes(lon, lat)) +
-    geom_contour_fill(aes(z = t.z), breaks = AnchorBreaks(0, binwidth2, 0)) +
+    geom_contour_fill(aes(z = t.z), breaks = AnchorBreaks(0, binwidth2, 0),
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth2, 0),
                          limits = c(-9, NA),
@@ -630,7 +635,8 @@ En invierno y primavera, los niveles altos están dominados por una QS1 con máx
 ```{r t-ncep-corte60, fig.class = "pagewidth", fig.cap = "Corte zonal de anomalía zonal de temperatura (°C) en 60°S (NCEP)."}
 binwidth <- 1
 ggplot(ncep.mean.season[lat %~% cutlat], aes(lon, lev)) +
-    stat_contour_fill(aes(z = t.z), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = t.z), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth2, 0),
                          name = "T*",
                          guide = guide_colorstrip_bottom(width = 25)) +
@@ -648,10 +654,6 @@ Las anomalías por debajo de 300hPa mantienen su intensidad durante todo el año
 ncep.mean.season[, .(u = mean(u)), by = .(lat, lev, season)] %>% 
     ggplot(aes(lat, lev)) +
     geom_contour_fill(aes(z = u), breaks = AnchorBreaks(0, 5, 0)) +
-    # geom_contour(aes(z = u, color = ..level..), binwidth = 15) +
-    # geom_contour(aes(z = u, color = ..level..), binwidth = 5, size = 0.1) +
-    # geom_label_contour2(aes(z = u, color = ..level.., label = ..level..),
-    # binwidth = 15, skip = 0) +
     surface +
     scale_y_level(breaks = c(1000, plot.levs, 10)) +
     scale_x_latitude(name = "latitud", trans = "reverse", ticks = 15) +
@@ -666,7 +668,8 @@ La media zonal del viento zonal (\autoref{fig:u-ncep-corte}) muestra dos máximo
 
 ```{r u-ncep, fig.class = "fullpage", fig.cap = "Viento zonal medio (m/s) (NCEP)."}
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
-    geom_contour_fill(aes(z = u), breaks = AnchorBreaks(0, 5, 0)) +
+    geom_contour_fill(aes(z = u), breaks = AnchorBreaks(0, 5, 0),
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
@@ -683,7 +686,8 @@ Esta bifurcación del jet sobre Nueva Zelanda se evidencia en el campo de anomal
 ```{r uz-ncep, fig.class = "fullpage", fig.cap = "Anomalía zonal de viento zonal (m/s) (NCEP)."}
 binwidth <- 2.5
 ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
-    stat_contour_fill(aes(z = u.z), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = u.z), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_y_latitude() +
     scale_x_longitude() +
@@ -700,7 +704,7 @@ ggplot(ncep.mean.season[lev %in% plot.levs], aes(lon, lat)) +
 binwidth <- 0.5
 ggplot(ncep.mean.season[, .(v = mean(v)), by = .(lat, lev, season)],
        aes(lat, lev)) +
-    stat_contour_fill(aes(z = v), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = v), breaks = AnchorBreaks(0, binwidth, 0)) +
     surface + 
     scale_y_level(breaks = c(1000, plot.levs, 10), limits = c(1000, 10)) +
     scale_x_latitude(name = "latitud", trans = "reverse", ticks = 15) +
@@ -718,7 +722,8 @@ Presente durante todo el año, también se observa un máximo de vientos del sur
 ```{r v-ncep, fig.class = "fullpage", fig.cap = "Viento meridional medio (m/s) (NCEP)."}
 binwidth <- 2
 ggplot(ncep.mean.season[lev %in% c(850, plot.levs)], aes(lon, lat)) +
-    geom_contour_fill(aes(z = v), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = v), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     geom_tile(data = copy(pres)[, lev := 850][pres < 850], fill = "white",
               color = "white") +
     map.SH +
@@ -741,8 +746,10 @@ ncep.mean.season[lev == 200] %>%
       by = .(lat, lev, season)] %>% 
     .[lev %in% plot.levs] %>% 
     ggplot(aes(lon, lat)) +
-    geom_contour_fill(aes(z = gh.minus), breaks = AnchorBreaks(0, 10, 0)) +
-    geom_contour(aes(z = k.full), breaks = 3, color = "gray50") +
+    geom_contour_fill(aes(z = gh.minus), breaks = AnchorBreaks(0, 10, 0),
+                      xwrap = c(0, 360)) +
+    geom_contour2(aes(z = k.full), breaks = 3, color = "gray50",
+                  xwrap = c(0, 360)) +
     stat_subset(aes(subset = k.full < 3 ), color = "gray50",
                 fill = "gray50", alpha = 0.07, geom = "tile") +
     map.SH +
@@ -773,14 +780,14 @@ stream.mean.season[, c("f.lon", "f.lat") := WaveFlux(.SD), by = season]
 
 ```{r psi-ncep,  fig.class = "fullpage", fig.cap = "Función corriente media en $\\sigma = 0,2101$ (contornos cada $2\\times10^{-11}m^2/s$), anomalía zonal de función corriente (sombreado,  $1\\times10^{-9}m^2/s$) y flujos de actividad de onda medios (NCEP)."}
 ggplot(stream.mean.season,aes(lon, lat)) +
-    stat_contour_fill(aes(z = psi.z*10^-9), 
+    geom_contour_fill(aes(z = psi.z*10^-9), xwrap = c(0, 360),
                       breaks = AnchorBreaks(0, 0.005, 0)) +
     geom_contour_fine(aes(z = psi*10^(-9)), color = "black", 
-                      binwidth = 0.02) +
+                      binwidth = 0.02, xwrap = c(0, 360)) +
     geom_map2(data.world[lat < 30]) +
     geom_text_contour(aes(z = psi*10^(-9)), color = "black", 
                       binwidth = 0.02, stroke = 0.25, rotate = FALSE,
-                      size = 1.6) +
+                      size = 1.6, xwrap = c(0, 360)) +
     geom_vector(aes(dx = f.lon, dy = f.lat), skip = 3, min.mag = 0.05,
                 size = 0.2) +
     scale_mag(max = 1, label = "1") +
@@ -806,8 +813,8 @@ mult <- 1e11
 binwidth <- 1e-11*mult
 ggplot(ncep.mean.season[lev %in% plot.levs & lat > -85], 
        aes(lon, lat, z = eta.dy*mult)) +
-    geom_contour_fill(breaks = AnchorBreaks(0, binwidth)) +
-    geom_contour_fine(breaks = 0, color = "black") +
+    geom_contour_fill(breaks = AnchorBreaks(0, binwidth), xwrap = c(0, 360)) +
+    geom_contour_fine(breaks = 0, color = "black", xwrap = c(0, 360)) +
     map.SH +
     scale_fill_divergent(name = "Gradiente meridional de vorticiad absoluta", 
                          guide = guide_colorstrip_bottom(45),
@@ -829,10 +836,12 @@ ggplot(aes(lon, lat)) +
     stat_subset(aes(subset = !is.finite(k)), 
                 geom = "tile", color = "gray50",
                 fill = "gray50") +
-    geom_contour_fine(aes(z = k), breaks = 0:9, color = "black") +
+    geom_contour_fine(aes(z = k), breaks = 0:9, color = "black", 
+                      xwrap = c(0, 360)) +
     geom_text_contour(aes(z = k), breaks = 0:9, skip = 0, size = 1.6,
                       check_overlap = TRUE, stroke = 0.25,
-                      rotate = FALSE, min.size = 10) +
+                      rotate = FALSE, min.size = 10,
+                      xwrap = c(0, 360)) +
     scale_fill_viridis_c(oob = scales::squish, 
                          limits = c(1, 9)) +
     map.SH +
@@ -855,7 +864,7 @@ ncep.qs <- ncep.mean.season[, FitWave(gh, k = 1:4),
 
 binwidth <- 0.1
 ggplot(ncep.qs, aes(lat, lev)) +
-    geom_contour_fill(aes(z = r2), binwidth = binwidth, na.rm = T) +
+    geom_contour_fill(aes(z = r2), binwidth = binwidth, na.rm = TRUE) +
     surface +
     # geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = expression(r^2), limits = c(0, 1),
@@ -880,7 +889,7 @@ La QS4 presenta un máximo de amplitud bien definido en la troposfera media-alta
 ```{r ampl-ncep, fig.class = "fullpage", fig.cap = "Amplitud de Fourier (mgp) para números de onda 1 a 4 (NCEP)."}
 breaks <- 2^seq(0, log2(650), by = 1)
 ggplot(ncep.qs, aes(lat, lev)) +
-    geom_contour_fill(aes(z = amplitude), breaks = breaks) +
+    geom_contour_fill(aes(z = amplitude), breaks = breaks, na.rm = TRUE) +
     surface +
     # geom_index.region(rect.annotation) +
     scale_fill_viridis_c(name = "Amplitud (escala logarítmica)", 
@@ -917,7 +926,8 @@ binwidth <- 10
 cutlat <- data.frame(lat = c(-52.5, rep(NA, 3)),
                      season = c("Verano", "Invierno", "Otoño", "Primavera"))
 ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
-    geom_contour_fill(aes(z = mean), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = mean), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0), 
@@ -943,7 +953,8 @@ qs.wave.season[,
 
 ```{r qs3-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte zonal en 60°S de Z* (mgp) reconstruida a partir de la QS3 (NCEP).", fig.height = 4}
 ggplot(qs.wave.season[lat %~% cutlat$lat[1]], aes(lon, lev)) +
-    geom_contour_fill(aes(z = mean), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = mean), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     scale_y_level(breaks = c(1000, plot.levs, 10)) +
     scale_x_longitude(name = "longitud") +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
@@ -958,9 +969,9 @@ La estructura vertical de las perturbaciones zonales de geopotencial reconstruid
 binwidth <- 5
 cutlat <- -52.5
 ggplot(qs.wave.season[lev == 300], aes(lon, lat)) +
-    geom_contour_fill(aes(z = sd), binwidth = binwidth) +
-    geom_contour(aes(z = mean), breaks = c(1, -1)*20, color = "black", 
-                 size = 0.5) +
+    geom_contour_fill(aes(z = sd), binwidth = binwidth, xwrap = c(0, 360)) +
+    geom_contour2(aes(z = mean), breaks = c(1, -1)*20, color = "black", 
+                 size = 0.5, xwrap = c(0, 360)) +
     map.SH +
     scale_s_map() +
     scale_fill_viridis_c(name = "Desvío estándar de QS3", 
@@ -1032,7 +1043,8 @@ wv.comp <- copy(wv.mean.season) %>%
       by = .(lat, lev, season, method)]
 wv.comp[lev == 300] %>% 
     ggplot(aes(lon, lat)) +
-    geom_contour_fill(aes(z = value.z), breaks = AnchorBreaks(0, 1, 0)) +
+    geom_contour_fill(aes(z = value.z), breaks = AnchorBreaks(0, 1, 0),
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(name = "Anomalía de ampltiud wavelets",
@@ -1053,7 +1065,8 @@ copy(wv.mean.season) %>%
       by = .(lat, season)] %>% 
     .[lev == 300] %>% 
     ggplot(aes(lon, lat)) +
-    geom_contour_fill(aes(z = amplitude/i.amplitude), binwidth = binwidth) +
+    geom_contour_fill(aes(z = amplitude/i.amplitude), binwidth = binwidth,
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_fill_viridis_c(limits = c(0, 1), 
                          breaks = MakeBreaks(binwidth),
@@ -1206,7 +1219,8 @@ ncep[lev == 300 & date %in% select.dates,
     .[, date.f := factor(as.character(date), 
                          levels = as.character(select.dates))] %>% 
     ggplot(aes(lon, lat)) +
-    geom_contour_fill(aes(z = gh.minus), breaks = AnchorBreaks(0, 25, 0)) +
+    geom_contour_fill(aes(z = gh.minus), breaks = AnchorBreaks(0, 25, 0),
+                      xwrap = c(0, 360)) +
     map.SH + 
     scale_s_map() +
     scale_fill_divergent(breaks = AnchorBreaks(0, 25, 0),
@@ -1305,7 +1319,7 @@ cowplot::plot_grid(
             # .[, amplitude := ecdf(amplitude)(amplitude)] %>% 
             ggplot(aes(date, period)) +
             geom_contour_fill(aes(z = amplitude), breaks = c()) +
-            geom_contour(aes(z = p.val), breaks = 0.01) +
+            geom_contour2(aes(z = p.val), breaks = 0.01) +
             scale_y_continuous(trans = "log2", expand = c(0, 0),
                                breaks = 2^(seq(0, 7, by = 1))) +
             geom_hline(yintercept = c(12, 24)) +
@@ -1458,8 +1472,12 @@ qs.eof$sdev[, .(`$r^2$` = r2)] %>%
 qs.eof <- EOF(lon + lat ~ date, value.var = "QS3w", 
               data = fields[lev == 300][, QS3w := QS3*sqrt(cos(lat*pi/180))],
               n = 1:2)
+qs.eof$left[PC == "PC2", QS3w := -QS3w]
+qs.eof$right[PC == "PC2", QS3w := -QS3w]
+
 ggplot(qs.eof$left, aes(lon, lat)) + 
-    geom_contour_fill(aes(z = QS3w), breaks = AnchorBreaks(0, 0.01, 0)) +
+    geom_contour_fill(aes(z = QS3w), breaks = AnchorBreaks(0, 0.01, 0),
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_fill_divergent(breaks = AnchorBreaks(0, 0.01, 0),
                          guide = guide_colorstrip_bottom()) +
@@ -1499,7 +1517,8 @@ qs.qs.season <- qs.wave[,
 
 binwidth <- 10
 ggplot(qs.qs.season[lev == 300], aes(lon, lat)) +
-    geom_contour_fill(aes(z = QS3), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = QS3), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
@@ -1511,8 +1530,8 @@ ggplot(qs.qs.season[lev == 300], aes(lon, lat)) +
 
 ```{r qs3-qsseason-ncep-corte, fig.class = "pagewidth", fig.cap = "Corte en 52,5°S de Z* media reconstruida a partir de la QS3 en 300hPa (mgp) según las estaciones definidas en el texto.", fig.height = 4}
 ggplot(qs.qs.season[lat %~% -52.5], aes(lon, lev)) +
-    # stat_contour_fill(aes(z = sd), binwidth = 10) +
-    geom_contour_fill(aes(z = QS3), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = QS3), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     scale_y_level(breaks = c(1000, plot.levs, 10)) +
     scale_x_longitude(name = "longitud") +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
@@ -1574,11 +1593,11 @@ cor.season <- fields[lat > -90 & lev == 300,
 
 binwidth <- 0.1
 ggplot(cor.season, aes(lon, lat)) +
-    geom_contour_fill(aes(z = corelation), 
+    geom_contour_fill(aes(z = corelation), xwrap = c(0, 360),
                       breaks = MakeBreaks(binwidth)) +
     geom_contour_fine(aes(z = mean, color = factor(sign(..level..))),
                       data = qs.wave.season[lev == 300],
-                      breaks = c(1, -1)*20) +
+                      breaks = c(1, -1)*20, xwrap = c(0, 360)) +
     map.SH +
     scale_fill_viridis_c(breaks = MakeBreaks(binwidth),
                          limits = c(0.1, NA),
@@ -1603,9 +1622,11 @@ cor.season <- fields[lat > -90 & lev == 300,
 
 binwidth <- 0.1
 ggplot(cor.season, aes(lon, lat)) +
-    geom_contour_fill(aes(z = corelation), breaks = MakeBreaks(binwidth)(c(0.1, 0.6)),
+    geom_contour_fill(aes(z = corelation), xwrap = c(0, 360),
+                      breaks = MakeBreaks(binwidth)(c(0.1, 0.6)),
                       complete = FALSE) +
     geom_contour_fine(aes(z = mean, color = factor(sign(..level..))),
+                      xwrap = c(0, 360),
                       data = qs.wave[lev == 300, 
                                      .(mean = mean(QS3)), 
                                      by = .(lon, lat, season = qs.season(date))],
@@ -1704,7 +1725,7 @@ regression[term == "amplitude"] %>%
     # .[lat > -85] %>% 
     # .[, estimate.z := Anomaly(estimate), by = .(lat, month, term)] %>%
     ggplot(aes(lon, lat)) +
-    geom_contour_fill(aes(z = estimate), 
+    geom_contour_fill(aes(z = estimate), xwrap = c(0, 360),
                       breaks = AnchorBreaks(0, binwidth, 0)) +
     map.SH +
     scale_s_map() +
@@ -1735,10 +1756,9 @@ En julio, el patrón de QS3 se encuentra superpuesto con un fuerte patrón anula
 
 ```{r regr-gh-polar, fig.cap = "Idem \\autoref{fig:regr-gh-ncep}, pero en coordenadas estereográficas polares para julio y diciembre."}
 binwidth <- 10
-ggplot(WrapCircular(regression[term == "amplitude" & 
-                                   month %in% c(7,12)]), 
+ggplot(regression[term == "amplitude" & month %in% c(7,12)], 
        aes(lon, lat)) +
-    geom_contour_fill(aes(z = estimate), 
+    geom_contour_fill(aes(z = estimate), xwrap = c(0, 360),
                       breaks = AnchorBreaks(0, binwidth, 0)) +
     map.SH +
     scale_y_latitude(limits = c(-90, 0)) +
@@ -1807,7 +1827,7 @@ scale <- 600
 
 ggplot(stream.reg[term == "amplitude" & lat <= 0], 
        aes(lon, lat)) +
-    geom_contour_fill(aes(z = estimate*1e-6), 
+    geom_contour_fill(aes(z = estimate*1e-6), xwrap = c(0, 360),
                       breaks = AnchorBreaks(0, binwidth, 0)) +
     geom_vector(aes(dx = f.x, dy = f.y), skip = 4, min.mag = 0.005,
                 arrow.length = 0.2, size = 0.2) +
@@ -1938,14 +1958,16 @@ plot.levs.sp <- c(500, 200)
 binwidth <- 20
 cutlat <- -60
 
-ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp], aes(lon, lat)) +
-    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0)) +
+ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp],
+       aes(lon, lat)) +
+    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     # geom_contour_fine(aes(z = gh.z), binwidth = binwidth, exclude = 0,
     # color = "black", size = 0.2) +
     geom_contour_back(aes(z = gh.z, linetype = factor(sign(-..level..))),
-                      breaks = AnchorBreaks(0, binwidth, 0),
+                      breaks = AnchorBreaks(0, binwidth, 0), xwrap = c(0, 360),
                       data = ncep.mean.season[lev %in% plot.levs.sp]) +
-    geom_label_contour_back(aes(z = gh.z),
+    geom_label_contour_back(aes(z = gh.z), xwrap = c(0, 360),
                             breaks = AnchorBreaks(0, binwidth, 0),
                             data = ncep.mean.season[lev %in% plot.levs.sp]) +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
@@ -1963,11 +1985,14 @@ ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs.sp], aes(lon, la
 ```{r ghz-sp-nc-corte60, fig.class = "pagewidth", fig.cap = "Corte zonal de Z* (mgp) en 60°S (SPEEDY --Control-- sombreado, NCEP contornos)."}
 binwidth <- 20
 ggplot(speedy.mean.season[run == "Control" & lat %~% cutlat], aes(lon, lev)) +
-    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     geom_contour_back(aes(z = gh.z, linetype = factor(sign(-..level..))), 
+                      xwrap = c(0, 360),
                        breaks = AnchorBreaks(0, binwidth, 0),
                       data = ncep.mean.season[lat %~% cutlat]) + 
     geom_label_contour_back(aes(z = gh.z, label = ..level..), 
+                            xwrap = c(0, 360),
                              breaks = AnchorBreaks(0, binwidth, 0), skip = 2,
                             data = ncep.mean.season[lat %~% cutlat]) +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
@@ -1987,7 +2012,8 @@ En invierno, las anomalías simuladas son de magnitud importante como las observ
 ```{r ghz-dif-sp-nc, fig.class = "fullpage", fig.cap = "Diferencia de Z* (mgp) entre SPEEDY --Control-- y NCEP."}
 binwidth <- 20
 ggplot(sp.nc[lev %in% plot.levs.sp & variable == "gh.z"], aes(lon, lat)) +
-    geom_contour_fill(aes(z = dif), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = dif), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     scale_fill_divergent(name = "Z*", breaks = AnchorBreaks(0, binwidth, 0),
                          guide = guide_colorstrip_bottom(45)) +
     scale_linetype(guide = "none") +
@@ -2007,14 +2033,14 @@ binwidth <- 5
 cowplot::plot_grid({
     ggplot(speedy.mean.season[run == "Control" & lev %in% 200], 
            aes(lon, lat, z = t)) +
-        geom_contour_fill(binwidth = binwidth) +
+        geom_contour_fill(binwidth = binwidth, xwrap = c(0, 360)) +
         # geom_contour_fine(aes(z = gh.z), binwidth = binwidth, exclude = 0,
         # color = "black", size = 0.2) +
         geom_contour_back(aes(linetype = factor(sign(-..level..))),
-                          binwidth = binwidth,
+                          binwidth = binwidth, xwrap = c(0, 360),
                           data = ncep.mean.season[lev %in% 200]) +
         geom_label_contour_back(aes(label = ..level..),
-                                binwidth = binwidth,
+                                binwidth = binwidth, xwrap = c(0, 360),
                                 data = ncep.mean.season[lev %in% 200]) +
         # geom_hline(yintercept = cutlat,
         # linetype = 2, size = 0.5) +
@@ -2031,14 +2057,14 @@ cowplot::plot_grid({
 {
     ggplot(speedy.mean.season[run == "Control" & lev %in% 500],
            aes(lon, lat, z = t)) +
-        geom_contour_fill(binwidth = binwidth) +
+        geom_contour_fill(binwidth = binwidth, xwrap = c(0, 360)) +
         # geom_contour_fine(aes(z = gh.z), binwidth = binwidth, exclude = 0,
         # color = "black", size = 0.2) +
         geom_contour_back(aes(linetype = factor(sign(-..level..))),
-                          binwidth = binwidth,
+                          binwidth = binwidth, xwrap = c(0, 360),
                           data = ncep.mean.season[lev %in% 500]) +
         geom_label_contour_back(aes(label = ..level..),
-                                binwidth = binwidth,
+                                binwidth = binwidth, xwrap = c(0, 360),
                                 data = ncep.mean.season[lev %in% 500]) +
         # geom_hline(yintercept = cutlat,
         # linetype = 2, size = 0.5) +
@@ -2054,14 +2080,14 @@ cowplot::plot_grid({
 {
     ggplot(speedy.mean.season[run == "Control" & lev %in% 850], 
            aes(lon, lat, z = t)) +
-        geom_contour_fill(binwidth = binwidth) +
+        geom_contour_fill(binwidth = binwidth, xwrap = c(0, 360)) +
         # geom_contour_fine(aes(z = gh.z), binwidth = binwidth, exclude = 0,
         # color = "black", size = 0.2) +
         geom_contour_back(aes(linetype = factor(sign(-..level..))),
-                          binwidth = binwidth,
+                          binwidth = binwidth, xwrap = c(0, 360),
                           data = ncep.mean.season[lev %in% 850]) +
         geom_label_contour_back(aes(label = ..level..),
-                                binwidth = binwidth,
+                                binwidth = binwidth, xwrap = c(0, 360),
                                 data = ncep.mean.season[lev %in% 850]) +
         stat_subset(aes(subset = lev > sp),
                     geom = "tile", color = "white", fill = "white") +
@@ -2093,12 +2119,14 @@ binwidth <- 1
 b <- function(x, binwidth) 1
 ggplot(speedy.mean.season[run == "Control" & lev %in% plot.levs2], 
        aes(lon, lat, z = t.z)) +
-    geom_contour_fill(breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(breaks = AnchorBreaks(0, binwidth, 0), 
+                      xwrap = c(0, 360)) +
     geom_contour2(aes(linetype = factor(sign(-..level..))),
+                  xwrap = c(0, 360),
                       breaks = AnchorBreaks(0, binwidth, 0),
                       data = tz.ncep) +
     geom_label_contour_back(aes(label = ..level..),
-                            skip = 2,
+                            skip = 2, xwrap = c(0, 360),
                             breaks = AnchorBreaks(0, binwidth, 0),
                             data = tz.ncep) +
     scale_fill_divergent(name = "Z*", 
@@ -2125,7 +2153,7 @@ speedy.mean.season[run == "Control",
                       breaks = AnchorBreaks(0, 5, 0),
                       data = ncep.mean.season[, .(u = mean(u)), 
                                               by = .(lat, lev, season)]) +
-    geom_label_contour_back(aes(z = u), 
+    geom_label_contour_back(aes(z = u),
                             breaks = AnchorBreaks(0, 5, 0),
                             data = ncep.mean.season[, .(u = mean(u)), 
                                                     by = .(lat, lev, season)]) +
@@ -2152,8 +2180,8 @@ mult <- 1e11
 binwidth <- 1e-11*mult
 ggplot(speedy.mean.season[run == "Control" & lev == 200 & lat > -85], 
        aes(lon, lat, z = eta.dy*mult)) +
-    stat_contour_fill(breaks = AnchorBreaks(0, binwidth)) +
-    geom_contour_fine(breaks = 0, color = "black") +
+    geom_contour_fill(breaks = AnchorBreaks(0, binwidth), xwrap = c(0, 360)) +
+    geom_contour_fine(breaks = 0, color = "black", xwrap = c(0, 360)) +
     map.SH +
     scale_fill_divergent(name = "Gradiente meridional de vorticiad absoluta", 
                          guide = guide_colorstrip_bottom(45),
@@ -2216,9 +2244,9 @@ remove(sp.l)
 mult <- 1e-7
 binwidth <- 0.25
 ggplot(psi.sp.season[run == "Control"], aes(lon, lat)) +
-    stat_contour_fill(aes(z = psi.z*mult),
+    geom_contour_fill(aes(z = psi.z*mult), xwrap = c(0, 360),
                       breaks = AnchorBreaks(0, binwidth, 0)) +
-    geom_contour_fine(aes(z = psi*mult), 
+    geom_contour_fine(aes(z = psi*mult), xwrap = c(0, 360),
                       binwidth = 2,
                       color = "black") +
     geom_vector(aes(dx = f.lon, dy = f.lat), skip = 1, min.mag = 0.01,
@@ -2250,7 +2278,7 @@ qs.sp.season <- speedy.mean.season[, FitWave(gh, k = 3), by = .(lat, lev, run, s
 binwidth <- 5
 ggplot(qs.sp.season[run == "Control"], aes(lat, lev)) +
     geom_contour_fill(aes(z = amplitude), binwidth = binwidth) +
-    geom_contour_back(aes(z = amplitude), 
+    geom_contour_back(aes(z = amplitude),
                       data = ncep.qs[k == 3], binwidth = binwidth) +
     geom_label_contour_back(aes(z = amplitude), alpha = 1,
                             stroke.color = "#452F73", color = "white",
@@ -2285,12 +2313,11 @@ cutlat <- data.frame(lat = c(-52.5),
                      season = c("Verano"))
 ggplot(qs.wave.sp.season[run == "Control"], aes(lon, lat)) +
     geom_contour_fill(aes(z = mean), breaks = AnchorBreaks(0, binwidth, 0),
-                      na.rm= T) +
-    # geom_contour(aes(z = mean), binwidth = binwidth) +
+                      na.rm = T, xwrap = c(0, 360)) +
     geom_contour_back(aes(z = mean, linetype = factor(-sign(..level..))),
-                      binwidth = binwidth,
+                      binwidth = binwidth, xwrap = c(0, 360),
                       data = qs.wave.season[lev == 300]) +
-    geom_label_contour_back(aes(z = mean), 
+    geom_label_contour_back(aes(z = mean), xwrap = c(0, 360),
                             binwidth = binwidth,
                             data = qs.wave.season[lev == 300]) +
     map.SH +
@@ -2329,7 +2356,8 @@ plot.levs.sp <- 200
 binwidth <- 20
 
 ggplot(speedy.mean.season[lev == 200], aes(lon, lat)) +
-    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = gh.z), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
                          name = "Z*", 
                          guide = guide_colorstrip_bottom(45)) +
@@ -2360,7 +2388,8 @@ remove(speedy.mean.season.l)
 
 binwidth <- 10
 ggplot(sp.dif[lev == 200], aes(lon, lat, z = gh.z)) +
-    geom_contour_fill(breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(breaks = AnchorBreaks(0, binwidth, 0), 
+                      xwrap = c(0, 360)) +
     map.SH +
     scale_s_map() +
     scale_fill_divergent(breaks = AnchorBreaks(0, binwidth, 0),
@@ -2394,7 +2423,8 @@ ggplot(sp.dif[lev == 200], aes(lon, lat, z = gh.z)) +
 ```{r u-dif-sp-runs, fig.cap = "Diferencia de viento zonal en 200hPa (m/s) entre las simulaciones NOLAND y SSTZONAL y la corrida Control.", fig.class = "fullpage"}
 binwidth <- 2.5
 ggplot(sp.dif[lev == 200], aes(lon, lat)) +
-    geom_contour_fill(aes(z = u), breaks = AnchorBreaks(0, binwidth, 0)) +
+    geom_contour_fill(aes(z = u), breaks = AnchorBreaks(0, binwidth, 0),
+                      xwrap = c(0, 360)) +
     scale_fill_divergent(name = "Z*", 
                          breaks = AnchorBreaks(0, binwidth, 0),
                          guide = guide_colorstrip_bottom(45)) +
@@ -2416,7 +2446,7 @@ En SSTZONAL el patrón de aumento de los bloqueos se ve intensificado. En otoño
 mult <- 1e-7
 binwidth <- 0.25
 ggplot(psi.sp.season, aes(lon, lat)) +
-    geom_contour_fill(aes(z = psi.z*mult), 
+    geom_contour_fill(aes(z = psi.z*mult), xwrap = c(0, 360),
                       breaks = AnchorBreaks(0, binwidth, 0)) +
     scale_fill_divergent(name = "Z*", 
                          breaks = AnchorBreaks(0, binwidth, 0),
